@@ -13,6 +13,9 @@ export default function Withdraw() {
   const [isLoading, setIsLoading] = useState(false);
   const { profile } = useAuth();
 
+  const fee = amount ? Math.round(parseFloat(amount) * 0.1) : 0;
+  const amountToReceive = amount ? parseFloat(amount) - fee : 0;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const amountNum = parseInt(amount);
@@ -124,10 +127,28 @@ export default function Withdraw() {
             />
           </div>
 
+          {/* Fee breakdown */}
+          {amount && parseFloat(amount) > 0 && (
+            <div className="bg-muted/50 rounded-xl p-4 space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Amount</span>
+                <span className="text-foreground">{parseFloat(amount).toLocaleString()} RWF</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Fee (10%)</span>
+                <span className="text-destructive">-{fee.toLocaleString()} RWF</span>
+              </div>
+              <div className="border-t border-border pt-2 flex justify-between font-semibold">
+                <span className="text-foreground">You receive</span>
+                <span className="text-primary">{amountToReceive.toLocaleString()} RWF</span>
+              </div>
+            </div>
+          )}
+
           <div className="flex items-start gap-2 p-3 bg-accent rounded-xl">
             <Info className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
             <p className="text-sm text-accent-foreground">
-              Withdrawal will be processed within 10 minutes
+              10% fee applies. Withdrawal will be processed within 10 minutes.
             </p>
           </div>
 
