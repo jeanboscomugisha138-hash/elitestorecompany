@@ -34,11 +34,14 @@ export function ProductCard({
           </span>
         </div>
         <div className="flex justify-between text-sm">
-          <span className="text-muted-foreground">Daily Profit</span>
+          <span className="text-muted-foreground">Daily Income (30%)</span>
           <span className="font-semibold text-primary">
             {dailyProfit.toLocaleString()} RWF
           </span>
         </div>
+        <p className="text-xs text-muted-foreground text-center">
+          Auto-credited daily at 00:00
+        </p>
         <div className="flex justify-between text-sm">
           <span className="text-muted-foreground">Duration</span>
           <span className="font-semibold text-foreground">{duration} days</span>
