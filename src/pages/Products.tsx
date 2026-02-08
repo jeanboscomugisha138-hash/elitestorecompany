@@ -1,28 +1,96 @@
+import { useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ProductCard } from '@/components/ProductCard';
 import { BottomNav } from '@/components/BottomNav';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 
-const products = [
-  { id: 1, investment: 10000, dailyProfit: 3000, duration: 30 },
-  { id: 2, investment: 20000, dailyProfit: 6000, duration: 30 },
-  { id: 3, investment: 30000, dailyProfit: 9000, duration: 30 },
-  { id: 4, investment: 40000, dailyProfit: 12000, duration: 30 },
-  { id: 5, investment: 50000, dailyProfit: 15000, duration: 30 },
-  { id: 6, investment: 100000, dailyProfit: 30000, duration: 30 },
-  { id: 7, investment: 250000, dailyProfit: 75000, duration: 30 },
-  { id: 8, investment: 500000, dailyProfit: 150000, duration: 30 },
-  { id: 9, investment: 1000000, dailyProfit: 300000, duration: 30 },
-];
+interface Product {
+  id: string;
+  investment_amount: number;
+  daily_profit_rate: number;
+  duration_days: number;
+}
 
 export default function Products() {
-  const handleInvest = (id: number) => {
-    const product = products.find((p) => p.id === id);
-    if (product) {
-      toast.success(`Investment request for ${product.investment.toLocaleString()} RWF submitted!`);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { profile, refreshProfile } = useAuth();
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    const { data, error } = await supabase
+      .from('investment_products')
+      .select('*')
+      .eq('is_active', true)
+      .order('investment_amount', { ascending: true });
+
+    if (!error && data) {
+      setProducts(data);
     }
+    setIsLoading(false);
   };
+
+  const handleInvest = async (productId: string) => {
+    const product = products.find((p) => p.id === productId);
+    if (!product) return;
+
+    if ((profile?.main_balance || 0) < product.investment_amount) {
+      toast.error('Insufficient balance. Please deposit first.');
+      return;
+    }
+
+    const dailyProfit = product.investment_amount * product.daily_profit_rate;
+    const endDate = new Date();
+    endDate.setDate(endDate.getDate() + product.duration_days);
+
+    // Create investment
+    const { error: investError } = await supabase
+      .from('user_investments')
+      .insert({
+        user_id: profile?.user_id,
+        product_id: productId,
+        amount: product.investment_amount,
+        daily_profit: dailyProfit,
+        end_date: endDate.toISOString(),
+        status: 'active'
+      });
+
+    if (investError) {
+      toast.error('Failed to create investment');
+      return;
+    }
+
+    // Update profile balance
+    const { error: updateError } = await supabase
+      .from('profiles')
+      .update({
+        main_balance: (profile?.main_balance || 0) - product.investment_amount,
+        invested_amount: (profile?.invested_amount || 0) + product.investment_amount
+      })
+      .eq('user_id', profile?.user_id);
+
+    if (updateError) {
+      toast.error('Failed to update balance');
+      return;
+    }
+
+    toast.success(`Investment of ${product.investment_amount.toLocaleString()} RWF created!`);
+    refreshProfile();
+  };
+
+  if (isLoading) {
+    return (
+      <div className="page-container bg-background flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="page-container bg-background">
@@ -46,9 +114,9 @@ export default function Products() {
           >
             <ProductCard
               id={product.id}
-              investment={product.investment}
-              dailyProfit={product.dailyProfit}
-              duration={product.duration}
+              investment={product.investment_amount}
+              dailyProfit={product.investment_amount * product.daily_profit_rate}
+              duration={product.duration_days}
               onInvest={handleInvest}
             />
           </div>

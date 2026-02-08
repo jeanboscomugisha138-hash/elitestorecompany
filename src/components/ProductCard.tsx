@@ -1,11 +1,11 @@
 import drillingMachine from '@/assets/drilling-machine.png';
 
 interface ProductCardProps {
-  id: number;
+  id: string;
   investment: number;
   dailyProfit: number;
   duration: number;
-  onInvest: (id: number) => void;
+  onInvest: (id: string) => void;
 }
 
 export function ProductCard({

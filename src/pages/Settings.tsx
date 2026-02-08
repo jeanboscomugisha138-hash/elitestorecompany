@@ -1,14 +1,14 @@
-import { ArrowLeft, User, Phone, LogOut, Shield, Bell, HelpCircle } from 'lucide-react';
+import { ArrowLeft, User, Phone, Mail, LogOut, Shield, Bell, HelpCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BottomNav } from '@/components/BottomNav';
-import { useApp } from '@/contexts/AppContext';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function Settings() {
-  const { user, logout } = useApp();
+  const { profile, user, signOut } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await signOut();
     navigate('/login');
   };
 
@@ -39,10 +39,14 @@ export default function Settings() {
             <User className="w-8 h-8 text-primary-foreground" />
           </div>
           <div>
-            <h3 className="font-semibold text-foreground">{user?.name || 'User'}</h3>
+            <h3 className="font-semibold text-foreground">{profile?.full_name || 'User'}</h3>
             <div className="flex items-center gap-2 text-muted-foreground text-sm">
               <Phone className="w-4 h-4" />
-              <span>{user?.phone || '+250 XXX XXX XXX'}</span>
+              <span>{profile?.phone || '+250 XXX XXX XXX'}</span>
+            </div>
+            <div className="flex items-center gap-2 text-muted-foreground text-sm mt-1">
+              <Mail className="w-4 h-4" />
+              <span>{user?.email || 'email@example.com'}</span>
             </div>
           </div>
         </div>

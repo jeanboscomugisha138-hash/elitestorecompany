@@ -1,20 +1,36 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Lock, User, ArrowRight, Shield } from 'lucide-react';
-import { useApp } from '@/contexts/AppContext';
+import { useNavigate, Link } from 'react-router-dom';
+import { Lock, Mail, ArrowRight, Shield, Eye, EyeOff } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 
 export default function AdminLogin() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { adminLogin } = useApp();
+  const { signIn, isAdmin } = useAuth();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (username && password) {
-      adminLogin();
-      navigate('/admin/dashboard');
+    setError('');
+    setIsLoading(true);
+
+    const { error: signInError } = await signIn(email, password);
+
+    if (signInError) {
+      setError(signInError.message);
+      setIsLoading(false);
+      return;
     }
+
+    // Wait a bit for the auth state to update
+    setTimeout(() => {
+      navigate('/admin/dashboard');
+      toast.success('Welcome, Admin!');
+    }, 500);
   };
 
   return (
@@ -35,14 +51,20 @@ export default function AdminLogin() {
             Admin Login
           </h2>
 
+          {error && (
+            <div className="bg-destructive/10 text-destructive text-sm p-3 rounded-xl mb-4 text-center">
+              {error}
+            </div>
+          )}
+
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="relative">
-              <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                type="email"
+                placeholder="Admin Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="input-field pl-12"
                 required
               />
@@ -51,20 +73,37 @@ export default function AdminLogin() {
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="input-field pl-12"
+                className="input-field pl-12 pr-12"
                 required
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
             </div>
 
-            <button type="submit" className="w-full bg-secondary text-secondary-foreground font-semibold py-3 px-6 rounded-xl shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
-              Login to Admin
-              <ArrowRight className="w-5 h-5" />
+            <button 
+              type="submit" 
+              className="w-full bg-secondary text-secondary-foreground font-semibold py-3 px-6 rounded-xl shadow-lg transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Logging in...' : 'Login to Admin'}
+              {!isLoading && <ArrowRight className="w-5 h-5" />}
             </button>
           </form>
+
+          <p className="text-center mt-6">
+            <Link to="/login" className="text-sm text-muted-foreground hover:text-primary">
+              Back to User Login
+            </Link>
+          </p>
         </div>
       </div>
     </div>

@@ -3,20 +3,43 @@ import { ArrowLeft, Phone, User, Banknote, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { BottomNav } from '@/components/BottomNav';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function Deposit() {
   const [phone, setPhone] = useState('');
   const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { profile } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (phone && name && amount) {
-      toast.success('Deposit request submitted! Will be confirmed within 5 minutes.');
-      setPhone('');
-      setName('');
-      setAmount('');
+    if (!phone || !name || !amount) return;
+
+    setIsLoading(true);
+
+    const { error } = await supabase
+      .from('deposit_transactions')
+      .insert({
+        user_id: profile?.user_id,
+        phone,
+        full_name: name,
+        amount: parseFloat(amount),
+        status: 'pending'
+      });
+
+    if (error) {
+      toast.error('Failed to submit deposit request');
+      setIsLoading(false);
+      return;
     }
+
+    toast.success('Deposit request submitted! Will be confirmed within 5 minutes.');
+    setPhone('');
+    setName('');
+    setAmount('');
+    setIsLoading(false);
   };
 
   return (
@@ -78,8 +101,8 @@ export default function Deposit() {
             </p>
           </div>
 
-          <button type="submit" className="action-btn w-full">
-            Submit Deposit
+          <button type="submit" className="action-btn w-full" disabled={isLoading}>
+            {isLoading ? 'Submitting...' : 'Submit Deposit'}
           </button>
         </form>
       </div>

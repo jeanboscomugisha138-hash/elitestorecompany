@@ -3,29 +3,65 @@ import { ArrowLeft, Phone, User, Banknote, Info, AlertCircle } from 'lucide-reac
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { BottomNav } from '@/components/BottomNav';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function Withdraw() {
   const [phone, setPhone] = useState('');
   const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { profile } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const amountNum = parseInt(amount);
+
+    if ((profile?.invested_amount || 0) <= 0) {
+      toast.error('Only investors can withdraw. Please invest first.');
+      return;
+    }
+
     if (amountNum < 2000) {
       toast.error('Minimum withdrawal is 2,000 RWF');
       return;
     }
+
     if (amountNum > 1000000) {
       toast.error('Maximum withdrawal is 1,000,000 RWF');
       return;
     }
-    if (phone && name && amount) {
-      toast.success('Withdrawal request submitted! Will be processed within 10 minutes.');
-      setPhone('');
-      setName('');
-      setAmount('');
+
+    if (amountNum > (profile?.main_balance || 0)) {
+      toast.error('Insufficient balance');
+      return;
     }
+
+    if (!phone || !name || !amount) return;
+
+    setIsLoading(true);
+
+    const { error } = await supabase
+      .from('withdrawal_transactions')
+      .insert({
+        user_id: profile?.user_id,
+        phone,
+        full_name: name,
+        amount: amountNum,
+        status: 'pending'
+      });
+
+    if (error) {
+      toast.error('Failed to submit withdrawal request');
+      setIsLoading(false);
+      return;
+    }
+
+    toast.success('Withdrawal request submitted! Will be processed within 10 minutes.');
+    setPhone('');
+    setName('');
+    setAmount('');
+    setIsLoading(false);
   };
 
   return (
@@ -39,6 +75,12 @@ export default function Withdraw() {
           <ArrowLeft className="w-5 h-5 text-foreground" />
         </Link>
         <h1 className="page-title mb-0 flex-1 text-left">Withdraw</h1>
+      </div>
+
+      {/* Balance Info */}
+      <div className="bg-card rounded-2xl p-4 shadow-card mb-4 animate-slide-up">
+        <p className="text-sm text-muted-foreground">Available Balance</p>
+        <p className="text-xl font-bold text-primary">{(profile?.main_balance || 0).toLocaleString()} RWF</p>
       </div>
 
       {/* Form */}
@@ -96,8 +138,8 @@ export default function Withdraw() {
             </p>
           </div>
 
-          <button type="submit" className="action-btn w-full">
-            Submit Withdrawal
+          <button type="submit" className="action-btn w-full" disabled={isLoading}>
+            {isLoading ? 'Submitting...' : 'Submit Withdrawal'}
           </button>
         </form>
       </div>
