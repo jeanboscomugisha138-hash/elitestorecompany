@@ -1,21 +1,45 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Phone, Lock, Shield, ArrowRight, Drill } from 'lucide-react';
+import { Phone, Lock, User, ArrowRight, Drill, ShieldCheck, Eye, EyeOff } from 'lucide-react';
 import { useApp } from '@/contexts/AppContext';
 
 export default function Signup() {
+  const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
-  const [code, setCode] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
   const { signup } = useApp();
 
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
-    if (phone && password && code) {
-      signup(phone, 'New User');
-      navigate('/dashboard');
+    setError('');
+
+    if (!fullName.trim()) {
+      setError('Please enter your full name');
+      return;
     }
+
+    if (phone.length < 10) {
+      setError('Please enter a valid phone number');
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    signup(phone, fullName);
+    navigate('/dashboard');
   };
 
   return (
@@ -32,11 +56,34 @@ export default function Signup() {
 
         {/* Signup Form */}
         <div className="bg-card rounded-3xl p-6 shadow-card animate-slide-up">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <ShieldCheck className="w-5 h-5 text-primary" />
+            <span className="text-sm text-muted-foreground">Secure Registration</span>
+          </div>
+
           <h2 className="text-xl font-bold text-foreground text-center mb-6">
             Create Account
           </h2>
 
+          {error && (
+            <div className="bg-destructive/10 text-destructive text-sm p-3 rounded-xl mb-4 text-center">
+              {error}
+            </div>
+          )}
+
           <form onSubmit={handleSignup} className="space-y-4">
+            <div className="relative">
+              <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Full name"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="input-field pl-12"
+                required
+              />
+            </div>
+
             <div className="relative">
               <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <input
@@ -52,29 +99,43 @@ export default function Signup() {
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="input-field pl-12"
+                className="input-field pl-12 pr-12"
                 required
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
             </div>
 
             <div className="relative">
-              <Shield className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <input
-                type="text"
-                placeholder="Verification code"
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-                className="input-field pl-12"
+                type={showConfirmPassword ? 'text' : 'password'}
+                placeholder="Confirm password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="input-field pl-12 pr-12"
                 required
               />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
             </div>
 
             <button type="submit" className="action-btn w-full flex items-center justify-center gap-2">
-              Create Account
+              Create Secure Account
               <ArrowRight className="w-5 h-5" />
             </button>
           </form>
