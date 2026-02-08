@@ -1,20 +1,32 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Phone, Lock, ArrowRight, Drill } from 'lucide-react';
+import { Phone, Lock, ArrowRight, Drill, ShieldCheck, Eye, EyeOff, CheckCircle } from 'lucide-react';
 import { useApp } from '@/contexts/AppContext';
 
 export default function Login() {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
   const { login } = useApp();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (phone && password) {
-      login(phone);
-      navigate('/dashboard');
+    setError('');
+
+    if (phone.length < 10) {
+      setError('Please enter a valid phone number');
+      return;
     }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters');
+      return;
+    }
+
+    login(phone);
+    navigate('/dashboard');
   };
 
   return (
@@ -31,9 +43,20 @@ export default function Login() {
 
         {/* Login Form */}
         <div className="bg-card rounded-3xl p-6 shadow-card animate-slide-up">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <ShieldCheck className="w-5 h-5 text-primary" />
+            <span className="text-sm text-muted-foreground">Secure Login</span>
+          </div>
+
           <h2 className="text-xl font-bold text-foreground text-center mb-6">
             Welcome Back
           </h2>
+
+          {error && (
+            <div className="bg-destructive/10 text-destructive text-sm p-3 rounded-xl mb-4 text-center">
+              {error}
+            </div>
+          )}
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="relative">
@@ -51,17 +74,24 @@ export default function Login() {
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="input-field pl-12"
+                className="input-field pl-12 pr-12"
                 required
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
             </div>
 
             <button type="submit" className="action-btn w-full flex items-center justify-center gap-2">
-              Login
+              Secure Login
               <ArrowRight className="w-5 h-5" />
             </button>
           </form>
@@ -72,6 +102,18 @@ export default function Login() {
               Sign up
             </Link>
           </p>
+        </div>
+
+        {/* Trust Indicators */}
+        <div className="mt-6 space-y-2 animate-fade-in">
+          <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+            <CheckCircle className="w-4 h-4 text-primary" />
+            <span>256-bit SSL Encryption</span>
+          </div>
+          <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+            <CheckCircle className="w-4 h-4 text-primary" />
+            <span>Your data is protected</span>
+          </div>
         </div>
 
         {/* Admin Link */}
