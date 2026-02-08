@@ -22,8 +22,8 @@ interface AuthContextType {
   profile: Profile | null;
   isLoading: boolean;
   isAdmin: boolean;
-  signUp: (email: string, password: string, fullName: string, phone: string, referralCode?: string) => Promise<{ error: Error | null }>;
-  signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
+  signUp: (phone: string, password: string, fullName: string, referralCode?: string) => Promise<{ error: Error | null }>;
+  signIn: (phone: string, password: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
@@ -96,7 +96,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string, fullName: string, phone: string, referralCode?: string) => {
+  // Generate email from phone number for Supabase auth (internal use only)
+  const phoneToEmail = (phone: string) => `${phone.replace(/\D/g, '')}@drilltools.app`;
+
+  const signUp = async (phone: string, password: string, fullName: string, referralCode?: string) => {
+    const email = phoneToEmail(phone);
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -113,7 +117,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error: error as Error | null };
   };
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (phone: string, password: string) => {
+    const email = phoneToEmail(phone);
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
