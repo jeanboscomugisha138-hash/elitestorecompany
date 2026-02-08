@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Phone, Lock, User, ArrowRight, Drill, ShieldCheck, Eye, EyeOff } from 'lucide-react';
+import { Phone, Lock, User, ArrowRight, Drill, ShieldCheck, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 
 export default function Signup() {
   const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -24,12 +23,6 @@ export default function Signup() {
 
     if (!fullName.trim()) {
       setError('Please enter your full name');
-      setIsLoading(false);
-      return;
-    }
-
-    if (!email.includes('@')) {
-      setError('Please enter a valid email');
       setIsLoading(false);
       return;
     }
@@ -52,7 +45,7 @@ export default function Signup() {
       return;
     }
 
-    const { error: signUpError } = await signUp(email, password, fullName, phone);
+    const { error: signUpError } = await signUp(phone, password, fullName);
 
     if (signUpError) {
       setError(signUpError.message);
@@ -101,18 +94,6 @@ export default function Signup() {
                 placeholder="Full name"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="input-field pl-12"
-                required
-              />
-            </div>
-
-            <div className="relative">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-              <input
-                type="email"
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 className="input-field pl-12"
                 required
               />

@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, ArrowRight, Drill, ShieldCheck, Eye, EyeOff, CheckCircle } from 'lucide-react';
+import { Phone, Lock, ArrowRight, Drill, ShieldCheck, Eye, EyeOff, CheckCircle } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -18,8 +18,8 @@ export default function Login() {
     setError('');
     setIsLoading(true);
 
-    if (!email.includes('@')) {
-      setError('Please enter a valid email');
+    if (phone.length < 10) {
+      setError('Please enter a valid phone number');
       setIsLoading(false);
       return;
     }
@@ -30,7 +30,7 @@ export default function Login() {
       return;
     }
 
-    const { error: signInError } = await signIn(email, password);
+    const { error: signInError } = await signIn(phone, password);
 
     if (signInError) {
       setError(signInError.message);
@@ -73,12 +73,12 @@ export default function Login() {
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="relative">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <input
-                type="email"
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="tel"
+                placeholder="Phone number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 className="input-field pl-12"
                 required
               />
