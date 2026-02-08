@@ -94,10 +94,16 @@ export default function Deposit() {
             />
           </div>
 
+          {/* MOMO Pay Code */}
+          <div className="bg-primary/10 border-2 border-primary rounded-2xl p-4 text-center">
+            <p className="text-sm text-muted-foreground mb-2">Dial this MOMO Pay Code to deposit:</p>
+            <p className="text-xl font-bold text-primary tracking-wider">*182*8*1*1978296#</p>
+          </div>
+
           <div className="flex items-start gap-2 p-3 bg-accent rounded-xl">
             <Info className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
             <p className="text-sm text-accent-foreground">
-              Deposit will be confirmed within 5 minutes
+              After dialing, fill the form above and submit. Deposit will be confirmed within 5 minutes.
             </p>
           </div>
 
