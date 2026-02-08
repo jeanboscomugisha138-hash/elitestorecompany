@@ -1,31 +1,44 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Phone, Lock, ArrowRight, Drill, ShieldCheck, Eye, EyeOff, CheckCircle } from 'lucide-react';
-import { useApp } from '@/contexts/AppContext';
+import { Mail, Lock, ArrowRight, Drill, ShieldCheck, Eye, EyeOff, CheckCircle } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 
 export default function Login() {
-  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { login } = useApp();
+  const { signIn } = useAuth();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
 
-    if (phone.length < 10) {
-      setError('Please enter a valid phone number');
+    if (!email.includes('@')) {
+      setError('Please enter a valid email');
+      setIsLoading(false);
       return;
     }
 
     if (password.length < 6) {
       setError('Password must be at least 6 characters');
+      setIsLoading(false);
       return;
     }
 
-    login(phone);
+    const { error: signInError } = await signIn(email, password);
+
+    if (signInError) {
+      setError(signInError.message);
+      setIsLoading(false);
+      return;
+    }
+
+    toast.success('Welcome back!');
     navigate('/dashboard');
   };
 
@@ -60,12 +73,12 @@ export default function Login() {
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="relative">
-              <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <input
-                type="tel"
-                placeholder="Phone number"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                type="email"
+                placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="input-field pl-12"
                 required
               />
@@ -90,9 +103,13 @@ export default function Login() {
               </button>
             </div>
 
-            <button type="submit" className="action-btn w-full flex items-center justify-center gap-2">
-              Secure Login
-              <ArrowRight className="w-5 h-5" />
+            <button 
+              type="submit" 
+              className="action-btn w-full flex items-center justify-center gap-2"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Logging in...' : 'Secure Login'}
+              {!isLoading && <ArrowRight className="w-5 h-5" />}
             </button>
           </form>
 

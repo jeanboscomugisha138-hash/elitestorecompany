@@ -1,12 +1,26 @@
+import { useState, useEffect } from 'react';
 import { Gift } from 'lucide-react';
 import { PopupModal } from './PopupModal';
-import { useApp } from '@/contexts/AppContext';
 
 export function BonusPopup() {
-  const { showBonusPopup, closeBonusPopup } = useApp();
+  const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(() => {
+    // Check if this is a new signup (show bonus popup once)
+    const hasSeenBonus = sessionStorage.getItem('hasSeenBonusPopup');
+    if (!hasSeenBonus) {
+      const timer = setTimeout(() => {
+        setShowPopup(true);
+        sessionStorage.setItem('hasSeenBonusPopup', 'true');
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const closePopup = () => setShowPopup(false);
 
   return (
-    <PopupModal isOpen={showBonusPopup} onClose={closeBonusPopup}>
+    <PopupModal isOpen={showPopup} onClose={closePopup}>
       <div className="text-center">
         <div className="w-20 h-20 gradient-primary rounded-full flex items-center justify-center mx-auto mb-4">
           <Gift className="w-10 h-10 text-primary-foreground" />
@@ -15,7 +29,7 @@ export function BonusPopup() {
         <p className="text-muted-foreground mb-4">
           You received <span className="text-primary font-bold">1,500 RWF</span> bonus!
         </p>
-        <button onClick={closeBonusPopup} className="action-btn w-full">
+        <button onClick={closePopup} className="action-btn w-full">
           Start Investing
         </button>
       </div>

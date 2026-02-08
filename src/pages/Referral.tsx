@@ -1,12 +1,30 @@
+import { useState, useEffect } from 'react';
 import { ArrowLeft, Copy, Users, Gift } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { BottomNav } from '@/components/BottomNav';
-import { useApp } from '@/contexts/AppContext';
+import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function Referral() {
-  const { user } = useApp();
-  const referralLink = `https://drilltools.com/ref/${user?.referralCode || 'ABC123'}`;
+  const { profile } = useAuth();
+  const [referralCount, setReferralCount] = useState(0);
+  const referralLink = `https://drilltools.com/ref/${profile?.referral_code || 'XXXXXX'}`;
+
+  useEffect(() => {
+    fetchReferralCount();
+  }, [profile]);
+
+  const fetchReferralCount = async () => {
+    if (!profile?.user_id) return;
+    
+    const { count } = await supabase
+      .from('profiles')
+      .select('*', { count: 'exact', head: true })
+      .eq('referred_by', profile.user_id);
+
+    setReferralCount(count || 0);
+  };
 
   const copyLink = () => {
     navigator.clipboard.writeText(referralLink);
@@ -24,6 +42,18 @@ export default function Referral() {
           <ArrowLeft className="w-5 h-5 text-foreground" />
         </Link>
         <h1 className="page-title mb-0 flex-1 text-left">Referral Program</h1>
+      </div>
+
+      {/* Referral Code */}
+      <div className="bg-card rounded-3xl p-6 shadow-card mb-4 animate-slide-up">
+        <div className="text-center mb-4">
+          <p className="text-sm text-muted-foreground mb-2">Your Referral Code</p>
+          <p className="text-3xl font-bold text-primary tracking-wider">{profile?.referral_code || 'XXXXXX'}</p>
+        </div>
+        <div className="flex items-center gap-2 text-sm text-muted-foreground justify-center">
+          <Users className="w-4 h-4" />
+          <span>{referralCount} referrals</span>
+        </div>
       </div>
 
       {/* Referral Link */}
@@ -82,7 +112,7 @@ export default function Referral() {
           <div>
             <p className="text-sm text-muted-foreground">Total Referral Earnings</p>
             <p className="text-2xl font-bold text-primary">
-              {(user?.referralBalance || 0).toLocaleString()} RWF
+              {(profile?.referral_balance || 0).toLocaleString()} RWF
             </p>
           </div>
         </div>

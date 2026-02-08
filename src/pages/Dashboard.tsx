@@ -12,27 +12,70 @@ import {
   Settings,
   Drill,
 } from 'lucide-react';
-import { useApp } from '@/contexts/AppContext';
+import { useAuth } from '@/hooks/useAuth';
 import { StatCard } from '@/components/StatCard';
 import { ActionButton } from '@/components/ActionButton';
 import { BottomNav } from '@/components/BottomNav';
 import { BonusPopup } from '@/components/BonusPopup';
 import { ChannelPopup } from '@/components/ChannelPopup';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 export default function Dashboard() {
-  const { user, claimDailyBonus } = useApp();
+  const { profile, refreshProfile } = useAuth();
 
   const formatRWF = (amount: number) => `${amount.toLocaleString()} RWF`;
 
   const getLastClaimText = () => {
-    if (!user?.lastBonusClaim) return 'Never claimed';
-    const date = new Date(user.lastBonusClaim);
+    if (!profile?.last_bonus_claim) return 'Never claimed';
+    const date = new Date(profile.last_bonus_claim);
     return date.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
     });
+  };
+
+  const canClaimBonus = () => {
+    if (!profile?.last_bonus_claim) return true;
+    const lastClaim = new Date(profile.last_bonus_claim);
+    const now = new Date();
+    const hoursSinceLastClaim = (now.getTime() - lastClaim.getTime()) / (1000 * 60 * 60);
+    return hoursSinceLastClaim >= 24;
+  };
+
+  const claimDailyBonus = async () => {
+    if (!canClaimBonus()) {
+      toast.error('You can only claim once every 24 hours');
+      return;
+    }
+
+    const { error: bonusError } = await supabase
+      .from('daily_bonuses')
+      .insert({ user_id: profile?.user_id, amount: 50 });
+
+    if (bonusError) {
+      toast.error('Failed to claim bonus');
+      return;
+    }
+
+    // Update profile balance
+    const { error: updateError } = await supabase
+      .from('profiles')
+      .update({ 
+        main_balance: (profile?.main_balance || 0) + 50,
+        last_bonus_claim: new Date().toISOString()
+      })
+      .eq('user_id', profile?.user_id);
+
+    if (updateError) {
+      toast.error('Failed to update balance');
+      return;
+    }
+
+    toast.success('Daily bonus of 50 RWF claimed!');
+    refreshProfile();
   };
 
   return (
@@ -48,7 +91,7 @@ export default function Dashboard() {
           </div>
           <div>
             <h1 className="text-lg font-bold text-foreground">Drilltools Company</h1>
-            <p className="text-sm text-muted-foreground">Welcome back!</p>
+            <p className="text-sm text-muted-foreground">Welcome, {profile?.full_name || 'User'}!</p>
           </div>
         </div>
       </div>
@@ -57,22 +100,22 @@ export default function Dashboard() {
       <div className="grid grid-cols-2 gap-3 mb-6">
         <StatCard
           label="Main Balance"
-          value={formatRWF(user?.mainBalance || 0)}
+          value={formatRWF(profile?.main_balance || 0)}
           icon={Wallet}
         />
         <StatCard
           label="Referral Balance"
-          value={formatRWF(user?.referralBalance || 0)}
+          value={formatRWF(profile?.referral_balance || 0)}
           icon={Users}
         />
         <StatCard
           label="Invested"
-          value={formatRWF(user?.investedAmount || 0)}
+          value={formatRWF(profile?.invested_amount || 0)}
           icon={PiggyBank}
         />
         <StatCard
           label="Total Profit"
-          value={formatRWF(user?.totalProfit || 0)}
+          value={formatRWF(profile?.total_profit || 0)}
           icon={TrendingUp}
         />
       </div>
@@ -90,8 +133,12 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        <button onClick={claimDailyBonus} className="action-btn w-full text-sm">
-          Claim Daily Bonus (50 RWF)
+        <button 
+          onClick={claimDailyBonus} 
+          className="action-btn w-full text-sm"
+          disabled={!canClaimBonus()}
+        >
+          {canClaimBonus() ? 'Claim Daily Bonus (50 RWF)' : 'Already Claimed Today'}
         </button>
       </div>
 
