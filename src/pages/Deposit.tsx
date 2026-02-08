@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, Banknote, Info, Copy, Check } from 'lucide-react';
+import { ArrowLeft, Banknote, Info, Copy, Check, Phone, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { BottomNav } from '@/components/BottomNav';
@@ -7,6 +7,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 
 export default function Deposit() {
+  const [phone, setPhone] = useState('');
+  const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -23,7 +25,7 @@ export default function Deposit() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!amount) return;
+    if (!phone || !name || !amount) return;
 
     setIsLoading(true);
 
@@ -31,8 +33,8 @@ export default function Deposit() {
       .from('deposit_transactions')
       .insert({
         user_id: profile?.user_id,
-        phone: profile?.phone || '',
-        full_name: profile?.full_name || '',
+        phone,
+        full_name: name,
         amount: parseFloat(amount),
         status: 'pending'
       });
@@ -44,6 +46,8 @@ export default function Deposit() {
     }
 
     toast.success('Deposit request submitted! Will be confirmed within 5 minutes.');
+    setPhone('');
+    setName('');
     setAmount('');
     setIsLoading(false);
   };
@@ -64,6 +68,30 @@ export default function Deposit() {
       {/* Form */}
       <div className="bg-card rounded-3xl p-6 shadow-card animate-slide-up">
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="relative">
+            <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <input
+              type="tel"
+              placeholder="Phone number used for payment"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="input-field pl-12"
+              required
+            />
+          </div>
+
+          <div className="relative">
+            <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Name used for payment"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="input-field pl-12"
+              required
+            />
+          </div>
+
           <div className="relative">
             <Banknote className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
             <input
