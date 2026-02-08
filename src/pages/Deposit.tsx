@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, Banknote, Info } from 'lucide-react';
+import { ArrowLeft, Banknote, Info, Copy, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { BottomNav } from '@/components/BottomNav';
@@ -9,7 +9,17 @@ import { supabase } from '@/integrations/supabase/client';
 export default function Deposit() {
   const [amount, setAmount] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
   const { profile } = useAuth();
+
+  const momoCode = '*182*8*1*1978296#';
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(momoCode);
+    setCopied(true);
+    toast.success('Code copied!');
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,7 +80,20 @@ export default function Deposit() {
           <div className="bg-primary/10 border-2 border-primary rounded-2xl p-4 text-center">
             <p className="text-sm text-muted-foreground mb-1">Pay to: <span className="font-semibold text-foreground">Thacienne</span></p>
             <p className="text-sm text-muted-foreground mb-2">Dial this MOMO Pay Code:</p>
-            <p className="text-xl font-bold text-primary tracking-wider">*182*8*1*1978296#</p>
+            <div className="flex items-center justify-center gap-2">
+              <p className="text-xl font-bold text-primary tracking-wider">{momoCode}</p>
+              <button
+                type="button"
+                onClick={handleCopy}
+                className="p-2 rounded-lg bg-primary/20 hover:bg-primary/30 transition-colors"
+              >
+                {copied ? (
+                  <Check className="w-5 h-5 text-primary" />
+                ) : (
+                  <Copy className="w-5 h-5 text-primary" />
+                )}
+              </button>
+            </div>
           </div>
 
           <div className="flex items-start gap-2 p-3 bg-accent rounded-xl">
