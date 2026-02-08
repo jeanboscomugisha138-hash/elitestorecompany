@@ -5,13 +5,15 @@ import { BottomNav } from '@/components/BottomNav';
 import { toast } from 'sonner';
 
 const products = [
-  { id: 1, investment: 5000, dailyProfit: 300, duration: 11 },
-  { id: 2, investment: 10000, dailyProfit: 600, duration: 12 },
-  { id: 3, investment: 15000, dailyProfit: 900, duration: 13 },
-  { id: 4, investment: 20000, dailyProfit: 1200, duration: 14 },
-  { id: 5, investment: 25000, dailyProfit: 1500, duration: 15 },
-  { id: 6, investment: 30000, dailyProfit: 1800, duration: 16 },
-  { id: 7, investment: 35000, dailyProfit: 2100, duration: 17 },
+  { id: 1, investment: 10000, dailyProfit: 3000, duration: 30 },
+  { id: 2, investment: 20000, dailyProfit: 6000, duration: 30 },
+  { id: 3, investment: 30000, dailyProfit: 9000, duration: 30 },
+  { id: 4, investment: 40000, dailyProfit: 12000, duration: 30 },
+  { id: 5, investment: 50000, dailyProfit: 15000, duration: 30 },
+  { id: 6, investment: 100000, dailyProfit: 30000, duration: 30 },
+  { id: 7, investment: 250000, dailyProfit: 75000, duration: 30 },
+  { id: 8, investment: 500000, dailyProfit: 150000, duration: 30 },
+  { id: 9, investment: 1000000, dailyProfit: 300000, duration: 30 },
 ];
 
 export default function Products() {
