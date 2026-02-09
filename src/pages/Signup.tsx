@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Phone, Lock, User, ArrowRight, Drill, ShieldCheck, Eye, EyeOff } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Phone, Lock, User, ArrowRight, Drill, ShieldCheck, Eye, EyeOff, Gift } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 
@@ -9,12 +9,22 @@ export default function Signup() {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [referralCode, setReferralCode] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { signUp } = useAuth();
+  const [searchParams] = useSearchParams();
+
+  // Get referral code from URL on mount
+  useEffect(() => {
+    const ref = searchParams.get('ref');
+    if (ref) {
+      setReferralCode(ref.toUpperCase());
+    }
+  }, [searchParams]);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,7 +55,7 @@ export default function Signup() {
       return;
     }
 
-    const { error: signUpError } = await signUp(phone, password, fullName);
+    const { error: signUpError } = await signUp(phone, password, fullName, referralCode || undefined);
 
     if (signUpError) {
       setError(signUpError.message);
@@ -147,6 +157,18 @@ export default function Signup() {
               >
                 {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
+            </div>
+
+            {/* Referral Code Field */}
+            <div className="relative">
+              <Gift className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Referral code (optional)"
+                value={referralCode}
+                onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+                className="input-field pl-12 uppercase"
+              />
             </div>
 
             <button 
