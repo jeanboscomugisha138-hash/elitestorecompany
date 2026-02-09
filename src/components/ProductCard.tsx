@@ -6,6 +6,7 @@ interface ProductCardProps {
   dailyProfit: number;
   duration: number;
   onInvest: (id: string) => void;
+  isLoading?: boolean;
 }
 
 export function ProductCard({
@@ -14,6 +15,7 @@ export function ProductCard({
   dailyProfit,
   duration,
   onInvest,
+  isLoading,
 }: ProductCardProps) {
   const totalProfit = dailyProfit * duration;
 
@@ -55,8 +57,9 @@ export function ProductCard({
         <button
           onClick={() => onInvest(id)}
           className="action-btn w-full mt-3 text-sm py-2.5"
+          disabled={isLoading}
         >
-          Invest Now
+          {isLoading ? 'Processing...' : 'Invest Now'}
         </button>
       </div>
     </div>

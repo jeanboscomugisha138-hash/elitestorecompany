@@ -36,9 +36,13 @@ export default function Products() {
     setIsLoading(false);
   };
 
+  const [investingId, setInvestingId] = useState<string | null>(null);
+
   const handleInvest = async (productId: string) => {
+    if (investingId) return; // Prevent double clicks
     const product = products.find((p) => p.id === productId);
     if (!product) return;
+    setInvestingId(productId);
 
     if ((profile?.main_balance || 0) < product.investment_amount) {
       toast.error('Insufficient balance. Please deposit first.');
@@ -63,6 +67,7 @@ export default function Products() {
 
     if (investError) {
       toast.error('Failed to create investment');
+      setInvestingId(null);
       return;
     }
 
@@ -77,10 +82,12 @@ export default function Products() {
 
     if (updateError) {
       toast.error('Failed to update balance');
+      setInvestingId(null);
       return;
     }
 
     toast.success(`Investment of ${product.investment_amount.toLocaleString()} RWF created!`);
+    setInvestingId(null);
     refreshProfile();
   };
 
@@ -118,6 +125,7 @@ export default function Products() {
               dailyProfit={product.investment_amount * product.daily_profit_rate}
               duration={product.duration_days}
               onInvest={handleInvest}
+              isLoading={investingId === product.id}
             />
           </div>
         ))}
