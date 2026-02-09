@@ -16,6 +16,7 @@ interface ReferralUser {
 interface ReferralEarning {
   level: number;
   total: number;
+  count: number;
 }
 
 export default function Referral() {
@@ -56,20 +57,22 @@ export default function Referral() {
     
     const { data, error } = await supabase
       .from('referral_earnings')
-      .select('level, amount')
+      .select('level, amount, from_user_id')
       .eq('user_id', profile.user_id);
 
     if (!error && data) {
-      // Group earnings by level
-      const grouped = data.reduce((acc: Record<number, number>, curr) => {
-        acc[curr.level] = (acc[curr.level] || 0) + Number(curr.amount);
-        return acc;
-      }, {});
+      // Group earnings by level (amount + unique users)
+      const grouped: Record<number, { total: number; users: Set<string> }> = {};
+      data.forEach((curr) => {
+        if (!grouped[curr.level]) grouped[curr.level] = { total: 0, users: new Set() };
+        grouped[curr.level].total += Number(curr.amount);
+        grouped[curr.level].users.add(curr.from_user_id);
+      });
       
       setEarnings([
-        { level: 1, total: grouped[1] || 0 },
-        { level: 2, total: grouped[2] || 0 },
-        { level: 3, total: grouped[3] || 0 },
+        { level: 1, total: grouped[1]?.total || 0, count: grouped[1]?.users.size || 0 },
+        { level: 2, total: grouped[2]?.total || 0, count: grouped[2]?.users.size || 0 },
+        { level: 3, total: grouped[3]?.total || 0, count: grouped[3]?.users.size || 0 },
       ]);
     }
   };
@@ -132,6 +135,35 @@ export default function Referral() {
         </div>
       </div>
 
+      {/* Team Stats */}
+      <div className="bg-card rounded-3xl p-6 shadow-card mb-4 animate-slide-up">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center">
+            <Users className="w-6 h-6 text-primary" />
+          </div>
+          <div>
+            <h3 className="font-semibold text-foreground">Total Team</h3>
+            <p className="text-2xl font-bold text-primary">
+              {referrals.length + (earnings[1]?.count || 0) + (earnings[2]?.count || 0)} members
+            </p>
+          </div>
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          <div className="bg-accent rounded-xl p-3 text-center">
+            <p className="text-lg font-bold text-primary">{referrals.length}</p>
+            <p className="text-xs text-muted-foreground">Level 1</p>
+          </div>
+          <div className="bg-accent rounded-xl p-3 text-center">
+            <p className="text-lg font-bold text-primary">{earnings[1]?.count || 0}</p>
+            <p className="text-xs text-muted-foreground">Level 2</p>
+          </div>
+          <div className="bg-accent rounded-xl p-3 text-center">
+            <p className="text-lg font-bold text-primary">{earnings[2]?.count || 0}</p>
+            <p className="text-xs text-muted-foreground">Level 3</p>
+          </div>
+        </div>
+      </div>
+
       {/* Commission Levels with Earnings */}
       <div className="bg-card rounded-3xl p-6 shadow-card mb-4 animate-slide-up">
         <h3 className="font-semibold text-foreground mb-4">Commission Levels</h3>
@@ -140,6 +172,7 @@ export default function Referral() {
             <div>
               <span className="text-foreground font-medium">Level 1</span>
               <span className="text-primary font-bold ml-2">15%</span>
+              <span className="text-xs text-muted-foreground ml-1">({referrals.length} people)</span>
             </div>
             <span className="text-primary font-semibold">{earnings[0]?.total.toLocaleString() || 0} RWF</span>
           </div>
@@ -147,6 +180,7 @@ export default function Referral() {
             <div>
               <span className="text-foreground font-medium">Level 2</span>
               <span className="text-primary font-bold ml-2">4%</span>
+              <span className="text-xs text-muted-foreground ml-1">({earnings[1]?.count || 0} people)</span>
             </div>
             <span className="text-primary font-semibold">{earnings[1]?.total.toLocaleString() || 0} RWF</span>
           </div>
@@ -154,6 +188,7 @@ export default function Referral() {
             <div>
               <span className="text-foreground font-medium">Level 3</span>
               <span className="text-primary font-bold ml-2">1%</span>
+              <span className="text-xs text-muted-foreground ml-1">({earnings[2]?.count || 0} people)</span>
             </div>
             <span className="text-primary font-semibold">{earnings[2]?.total.toLocaleString() || 0} RWF</span>
           </div>
