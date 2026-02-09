@@ -6,12 +6,12 @@ export function BonusPopup() {
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
-    // Check if this is a new signup (show bonus popup once)
-    const hasSeenBonus = sessionStorage.getItem('hasSeenBonusPopup');
+    // Check if this is a new signup (show bonus popup once ever using localStorage)
+    const hasSeenBonus = localStorage.getItem('hasSeenBonusPopup');
     if (!hasSeenBonus) {
       const timer = setTimeout(() => {
         setShowPopup(true);
-        sessionStorage.setItem('hasSeenBonusPopup', 'true');
+        localStorage.setItem('hasSeenBonusPopup', 'true');
       }, 500);
       return () => clearTimeout(timer);
     }
