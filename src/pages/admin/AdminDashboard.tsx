@@ -219,10 +219,16 @@ export default function AdminDashboard() {
   };
 
   const handleApproveDeposit = async (tx: Transaction) => {
+    if (tx.status !== 'pending') {
+      toast.error('This deposit has already been processed');
+      return;
+    }
+
     const { error: txError } = await supabase
       .from('deposit_transactions')
       .update({ status: 'approved' })
-      .eq('id', tx.id);
+      .eq('id', tx.id)
+      .eq('status', 'pending');
 
     if (txError) {
       toast.error('Failed to approve deposit');
@@ -263,49 +269,61 @@ export default function AdminDashboard() {
   };
 
   const handleApproveWithdrawal = async (tx: Transaction) => {
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('main_balance')
-      .eq('user_id', tx.user_id)
-      .single();
-
-    if (!profile || profile.main_balance < tx.amount) {
-      toast.error('Insufficient user balance');
+    if (tx.status !== 'pending') {
+      toast.error('This withdrawal has already been processed');
       return;
     }
 
     const { error: txError } = await supabase
       .from('withdrawal_transactions')
       .update({ status: 'approved' })
-      .eq('id', tx.id);
+      .eq('id', tx.id)
+      .eq('status', 'pending');
 
     if (txError) {
       toast.error('Failed to approve withdrawal');
       return;
     }
 
-    await supabase
-      .from('profiles')
-      .update({ main_balance: profile.main_balance - tx.amount })
-      .eq('user_id', tx.user_id);
-
+    // Balance already deducted by trigger on insert - no need to deduct again
     toast.success(`Withdrawal of ${tx.amount.toLocaleString()} RWF approved`);
     fetchData();
     fetchStats();
   };
 
   const handleRejectWithdrawal = async (tx: Transaction) => {
+    if (tx.status !== 'pending') {
+      toast.error('This withdrawal has already been processed');
+      return;
+    }
+
+    // Refund the balance since it was deducted on insert
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('main_balance')
+      .eq('user_id', tx.user_id)
+      .single();
+
     const { error } = await supabase
       .from('withdrawal_transactions')
       .update({ status: 'rejected' })
-      .eq('id', tx.id);
+      .eq('id', tx.id)
+      .eq('status', 'pending');
 
     if (error) {
       toast.error('Failed to reject withdrawal');
       return;
     }
 
-    toast.error(`Withdrawal rejected`);
+    // Refund the deducted amount
+    if (profile) {
+      await supabase
+        .from('profiles')
+        .update({ main_balance: profile.main_balance + tx.amount })
+        .eq('user_id', tx.user_id);
+    }
+
+    toast.error(`Withdrawal rejected and balance refunded`);
     fetchData();
   };
 
