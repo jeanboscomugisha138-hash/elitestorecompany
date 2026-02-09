@@ -14,6 +14,7 @@ import {
   TrendingUp,
   PiggyBank,
   Save,
+  Search,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
@@ -68,6 +69,7 @@ export default function AdminDashboard() {
   const [editingUser, setEditingUser] = useState<Profile | null>(null);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [editBalance, setEditBalance] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const [editProductData, setEditProductData] = useState({
     investment_amount: '',
     daily_profit_rate: '',
@@ -76,6 +78,12 @@ export default function AdminDashboard() {
   });
   const { signOut } = useAuth();
   const navigate = useNavigate();
+
+  // Filter users based on search query
+  const filteredUsers = users.filter(user => 
+    user.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.phone.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   useEffect(() => {
     fetchStats();
@@ -435,9 +443,25 @@ export default function AdminDashboard() {
           <>
             {activeTab === 'users' && (
               <div className="bg-card rounded-2xl shadow-card overflow-hidden">
-                <div className="p-4 border-b border-border flex items-center justify-between">
-                  <h2 className="font-semibold text-foreground">Users Management</h2>
-                  <span className="text-sm text-muted-foreground">{users.length} users</span>
+                <div className="p-4 border-b border-border">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <h2 className="font-semibold text-foreground">Users Management</h2>
+                    <div className="flex items-center gap-3">
+                      <div className="relative flex-1 sm:flex-none">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <input
+                          type="text"
+                          placeholder="Search by name or phone..."
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          className="w-full sm:w-64 pl-9 pr-4 py-2 border border-border rounded-xl bg-background text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        />
+                      </div>
+                      <span className="text-sm text-muted-foreground whitespace-nowrap">
+                        {filteredUsers.length} of {users.length} users
+                      </span>
+                    </div>
+                  </div>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full">
@@ -452,7 +476,7 @@ export default function AdminDashboard() {
                       </tr>
                     </thead>
                     <tbody>
-                      {users.map((user) => (
+                      {filteredUsers.map((user) => (
                         <tr key={user.id} className="border-b border-border hover:bg-muted/50">
                           <td className="p-4 font-medium text-foreground">{user.full_name}</td>
                           <td className="p-4 text-muted-foreground">{user.phone}</td>
