@@ -24,8 +24,10 @@ export default function Referral() {
   const [earnings, setEarnings] = useState<ReferralEarning[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   
-  // Use the actual app URL for the referral link
-  const referralLink = `${window.location.origin}/signup?ref=${profile?.referral_code || 'XXXXXX'}`;
+  // Use the published domain for the referral link
+  const baseUrl = 'https://drilltoolcompany.lovable.app';
+  const referralLink = `${baseUrl}/signup?ref=${profile?.referral_code || 'XXXXXX'}`;
+  const shortLink = `drilltoolcompany.lovable.app/signup?ref=${profile?.referral_code || 'XXXXXX'}`;
 
   useEffect(() => {
     if (profile?.user_id) {
@@ -117,9 +119,9 @@ export default function Referral() {
         <div className="flex items-center gap-2">
           <input
             type="text"
-            value={referralLink}
+            value={shortLink}
             readOnly
-            className="input-field text-sm"
+            className="input-field text-xs"
           />
           <button
             onClick={copyLink}
