@@ -18,6 +18,7 @@ export default function Withdraw() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isLoading) return;
     const amountNum = parseInt(amount);
 
     if ((profile?.invested_amount || 0) <= 0) {
@@ -37,6 +38,21 @@ export default function Withdraw() {
 
     if (amountNum > (profile?.main_balance || 0)) {
       toast.error('Insufficient balance');
+      return;
+    }
+
+    // Check if user already withdrew today
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const { data: todayWithdrawals } = await supabase
+      .from('withdrawal_transactions')
+      .select('id')
+      .eq('user_id', profile?.user_id)
+      .gte('created_at', today.toISOString())
+      .limit(1);
+
+    if (todayWithdrawals && todayWithdrawals.length > 0) {
+      toast.error('You can only withdraw once per day. Try again tomorrow.');
       return;
     }
 
