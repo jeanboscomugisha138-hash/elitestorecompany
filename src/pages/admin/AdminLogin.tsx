@@ -13,10 +13,20 @@ export default function AdminLogin() {
   const navigate = useNavigate();
   const { signIn } = useAuth();
 
+  const ADMIN_PHONE = '0736644205';
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
+
+    // Only allow the designated admin phone number
+    const cleanPhone = phone.replace(/\s+/g, '');
+    if (cleanPhone !== ADMIN_PHONE) {
+      setError('Access denied. This phone number is not authorized for admin access.');
+      setIsLoading(false);
+      return;
+    }
 
     const { error: signInError } = await signIn(phone, password);
 
