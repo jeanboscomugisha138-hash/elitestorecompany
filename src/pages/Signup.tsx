@@ -160,15 +160,24 @@ export default function Signup() {
             </div>
 
             {/* Referral Code Field */}
-            <div className="relative">
-              <Gift className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Referral code (optional)"
-                value={referralCode}
-                onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
-                className="input-field pl-12 uppercase"
-              />
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-sm text-primary">
+                <Gift className="w-4 h-4" />
+                <span className="font-medium">Have an invitation code?</span>
+              </div>
+              <div className="relative">
+                <Gift className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Enter invitation code"
+                  value={referralCode}
+                  onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+                  className="input-field pl-12 uppercase"
+                />
+              </div>
+              <p className="text-xs text-muted-foreground text-center">
+                Enter your friend's code to connect. You'll both earn bonuses when you invest!
+              </p>
             </div>
 
             <button 
