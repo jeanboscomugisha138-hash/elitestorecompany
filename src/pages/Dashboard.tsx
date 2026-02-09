@@ -18,6 +18,7 @@ import { ActionButton } from '@/components/ActionButton';
 import { BottomNav } from '@/components/BottomNav';
 import { BonusPopup } from '@/components/BonusPopup';
 import { ChannelPopup } from '@/components/ChannelPopup';
+import { CustomerServiceButton } from '@/components/CustomerServiceButton';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -153,6 +154,7 @@ export default function Dashboard() {
         <ActionButton icon={Settings} label="Settings" to="/settings" />
       </div>
 
+      <CustomerServiceButton />
       <BottomNav />
     </div>
   );
