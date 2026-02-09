@@ -6,11 +6,12 @@ import { BottomNav } from '@/components/BottomNav';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 
-interface ReferralUser {
+interface TeamMember {
   id: string;
   full_name: string;
   invested_amount: number;
   created_at: string;
+  level: number;
 }
 
 interface ReferralEarning {
@@ -21,7 +22,7 @@ interface ReferralEarning {
 
 export default function Referral() {
   const { profile } = useAuth();
-  const [referrals, setReferrals] = useState<ReferralUser[]>([]);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [earnings, setEarnings] = useState<ReferralEarning[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   
@@ -30,24 +31,25 @@ export default function Referral() {
   const referralLink = `${baseUrl}/signup?ref=${profile?.referral_code || 'XXXXXX'}`;
   const shortLink = `drilltoolcompany.lovable.app/signup?ref=${profile?.referral_code || 'XXXXXX'}`;
 
+  const level1 = teamMembers.filter(m => m.level === 1);
+  const level2 = teamMembers.filter(m => m.level === 2);
+  const level3 = teamMembers.filter(m => m.level === 3);
+
   useEffect(() => {
     if (profile?.user_id) {
-      fetchReferrals();
+      fetchTeamMembers();
       fetchEarnings();
     }
   }, [profile]);
 
-  const fetchReferrals = async () => {
+  const fetchTeamMembers = async () => {
     if (!profile?.user_id) return;
     
     const { data, error } = await supabase
-      .from('profiles')
-      .select('id, full_name, invested_amount, created_at')
-      .eq('referred_by', profile.user_id)
-      .order('created_at', { ascending: false });
+      .rpc('get_team_members', { _user_id: profile.user_id });
 
     if (!error && data) {
-      setReferrals(data);
+      setTeamMembers(data as TeamMember[]);
     }
     setIsLoading(false);
   };
@@ -103,7 +105,7 @@ export default function Referral() {
         </div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground justify-center">
           <Users className="w-4 h-4" />
-          <span>{referrals.length} referrals</span>
+          <span>{teamMembers.length} team members</span>
         </div>
       </div>
 
@@ -144,21 +146,21 @@ export default function Referral() {
           <div>
             <h3 className="font-semibold text-foreground">Total Team</h3>
             <p className="text-2xl font-bold text-primary">
-              {referrals.length + (earnings[1]?.count || 0) + (earnings[2]?.count || 0)} members
+              {teamMembers.length} members
             </p>
           </div>
         </div>
         <div className="grid grid-cols-3 gap-2">
           <div className="bg-accent rounded-xl p-3 text-center">
-            <p className="text-lg font-bold text-primary">{referrals.length}</p>
+            <p className="text-lg font-bold text-primary">{level1.length}</p>
             <p className="text-xs text-muted-foreground">Level 1</p>
           </div>
           <div className="bg-accent rounded-xl p-3 text-center">
-            <p className="text-lg font-bold text-primary">{earnings[1]?.count || 0}</p>
+            <p className="text-lg font-bold text-primary">{level2.length}</p>
             <p className="text-xs text-muted-foreground">Level 2</p>
           </div>
           <div className="bg-accent rounded-xl p-3 text-center">
-            <p className="text-lg font-bold text-primary">{earnings[2]?.count || 0}</p>
+            <p className="text-lg font-bold text-primary">{level3.length}</p>
             <p className="text-xs text-muted-foreground">Level 3</p>
           </div>
         </div>
@@ -172,7 +174,7 @@ export default function Referral() {
             <div>
               <span className="text-foreground font-medium">Level 1</span>
               <span className="text-primary font-bold ml-2">15%</span>
-              <span className="text-xs text-muted-foreground ml-1">({referrals.length} people)</span>
+              <span className="text-xs text-muted-foreground ml-1">({level1.length} people)</span>
             </div>
             <span className="text-primary font-semibold">{earnings[0]?.total.toLocaleString() || 0} RWF</span>
           </div>
@@ -180,7 +182,7 @@ export default function Referral() {
             <div>
               <span className="text-foreground font-medium">Level 2</span>
               <span className="text-primary font-bold ml-2">4%</span>
-              <span className="text-xs text-muted-foreground ml-1">({earnings[1]?.count || 0} people)</span>
+              <span className="text-xs text-muted-foreground ml-1">({level2.length} people)</span>
             </div>
             <span className="text-primary font-semibold">{earnings[1]?.total.toLocaleString() || 0} RWF</span>
           </div>
@@ -188,7 +190,7 @@ export default function Referral() {
             <div>
               <span className="text-foreground font-medium">Level 3</span>
               <span className="text-primary font-bold ml-2">1%</span>
-              <span className="text-xs text-muted-foreground ml-1">({earnings[2]?.count || 0} people)</span>
+              <span className="text-xs text-muted-foreground ml-1">({level3.length} people)</span>
             </div>
             <span className="text-primary font-semibold">{earnings[2]?.total.toLocaleString() || 0} RWF</span>
           </div>
@@ -210,15 +212,15 @@ export default function Referral() {
         </div>
       </div>
 
-      {/* Referrals List */}
+      {/* Team Members List */}
       <div className="bg-card rounded-3xl p-6 shadow-card animate-slide-up">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-12 h-12 bg-accent rounded-xl flex items-center justify-center">
             <TrendingUp className="w-6 h-6 text-primary" />
           </div>
           <div>
-            <h3 className="font-semibold text-foreground">Your Referrals</h3>
-            <p className="text-sm text-muted-foreground">{referrals.length} people joined</p>
+            <h3 className="font-semibold text-foreground">Your Team</h3>
+            <p className="text-sm text-muted-foreground">{teamMembers.length} people joined</p>
           </div>
         </div>
 
@@ -226,29 +228,29 @@ export default function Referral() {
           <div className="text-center py-4">
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto"></div>
           </div>
-        ) : referrals.length === 0 ? (
+        ) : teamMembers.length === 0 ? (
           <div className="text-center py-6 text-muted-foreground">
             <Users className="w-12 h-12 mx-auto mb-2 opacity-50" />
-            <p>No referrals yet</p>
-            <p className="text-sm">Share your link to start earning!</p>
+            <p>No team members yet</p>
+            <p className="text-sm">Share your link to start building your team!</p>
           </div>
         ) : (
-          <div className="space-y-3 max-h-64 overflow-y-auto">
-            {referrals.map((referral) => (
-              <div key={referral.id} className="flex items-center justify-between p-3 bg-accent rounded-xl">
+          <div className="space-y-3 max-h-80 overflow-y-auto">
+            {teamMembers.map((member) => (
+              <div key={member.id} className="flex items-center justify-between p-3 bg-accent rounded-xl">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
                     <User className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <p className="font-medium text-foreground">{referral.full_name}</p>
+                    <p className="font-medium text-foreground">{member.full_name}</p>
                     <p className="text-xs text-muted-foreground">
-                      Joined {new Date(referral.created_at).toLocaleDateString()}
+                      Level {member.level} · Joined {new Date(member.created_at).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
                 <div className="text-right">
-                  {referral.invested_amount > 0 ? (
+                  {member.invested_amount > 0 ? (
                     <span className="text-xs px-2 py-1 bg-primary/20 text-primary rounded-full">
                       Active Investor
                     </span>
