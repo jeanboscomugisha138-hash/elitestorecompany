@@ -6,12 +6,12 @@ export function ChannelPopup() {
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
-    // Check if user has seen channel popup
-    const hasSeenChannel = sessionStorage.getItem('hasSeenChannelPopup');
-    if (!hasSeenChannel) {
+    // Show channel popup every time after login
+    const justLoggedIn = sessionStorage.getItem('justLoggedIn');
+    if (justLoggedIn) {
       const timer = setTimeout(() => {
         setShowPopup(true);
-        sessionStorage.setItem('hasSeenChannelPopup', 'true');
+        sessionStorage.removeItem('justLoggedIn');
       }, 1500);
       return () => clearTimeout(timer);
     }

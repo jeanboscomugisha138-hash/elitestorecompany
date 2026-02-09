@@ -38,6 +38,8 @@ export default function Login() {
       return;
     }
 
+    // Set flag to show channel popup after login
+    sessionStorage.setItem('justLoggedIn', 'true');
     toast.success('Welcome back!');
     navigate('/dashboard');
   };
