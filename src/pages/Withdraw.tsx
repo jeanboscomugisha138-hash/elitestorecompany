@@ -13,7 +13,7 @@ export default function Withdraw() {
   const [isLoading, setIsLoading] = useState(false);
   const { profile } = useAuth();
 
-  const fee = amount ? Math.round(parseFloat(amount) * 0.1) : 0;
+  const fee = amount ? Math.round(parseFloat(amount) * 0.2) : 0;
   const amountToReceive = amount ? parseFloat(amount) - fee : 0;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -151,7 +151,7 @@ export default function Withdraw() {
                 <span className="text-foreground">{parseFloat(amount).toLocaleString()} RWF</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Fee (10%)</span>
+                <span className="text-muted-foreground">Fee (20%)</span>
                 <span className="text-destructive">-{fee.toLocaleString()} RWF</span>
               </div>
               <div className="border-t border-border pt-2 flex justify-between font-semibold">
@@ -164,7 +164,7 @@ export default function Withdraw() {
           <div className="flex items-start gap-2 p-3 bg-accent rounded-xl">
             <Info className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
             <p className="text-sm text-accent-foreground">
-              10% fee applies. Withdrawal will be processed within 10 minutes.
+              20% fee applies. Withdrawal will be processed within 10 minutes.
             </p>
           </div>
 
