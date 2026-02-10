@@ -18,6 +18,7 @@ import { ActionButton } from '@/components/ActionButton';
 import { BottomNav } from '@/components/BottomNav';
 import { BonusPopup } from '@/components/BonusPopup';
 import { ChannelPopup } from '@/components/ChannelPopup';
+import { AnnouncementPopup } from '@/components/AnnouncementPopup';
 import { CustomerServiceButton } from '@/components/CustomerServiceButton';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -83,6 +84,7 @@ export default function Dashboard() {
     <div className="page-container bg-background">
       <BonusPopup />
       <ChannelPopup />
+      <AnnouncementPopup />
 
       {/* Header */}
       <div className="flex items-center justify-between mb-6 animate-fade-in">
