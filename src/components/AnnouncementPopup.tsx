@@ -6,14 +6,10 @@ export function AnnouncementPopup() {
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
-    const hasSeenAnnouncement = localStorage.getItem('hasSeenAnnouncementV1');
-    if (!hasSeenAnnouncement) {
-      const timer = setTimeout(() => {
-        setShowPopup(true);
-        localStorage.setItem('hasSeenAnnouncementV1', 'true');
-      }, 2500);
-      return () => clearTimeout(timer);
-    }
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+    }, 2500);
+    return () => clearTimeout(timer);
   }, []);
 
   const closePopup = () => setShowPopup(false);
