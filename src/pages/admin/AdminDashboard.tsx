@@ -15,6 +15,9 @@ import {
   PiggyBank,
   Save,
   Search,
+  Trash2,
+  Eye,
+  XCircle,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
@@ -58,6 +61,16 @@ interface Stats {
   totalInvested: number;
 }
 
+interface UserInvestment {
+  id: string;
+  amount: number;
+  daily_profit: number;
+  start_date: string;
+  end_date: string;
+  status: string;
+  product_id: string;
+}
+
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<TabType>('users');
   const [users, setUsers] = useState<Profile[]>([]);
@@ -70,6 +83,11 @@ export default function AdminDashboard() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [editBalance, setEditBalance] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
+  const [viewingInvestmentsUser, setViewingInvestmentsUser] = useState<Profile | null>(null);
+  const [userInvestments, setUserInvestments] = useState<UserInvestment[]>([]);
+  const [loadingInvestments, setLoadingInvestments] = useState(false);
+  const [cancellingInvestmentId, setCancellingInvestmentId] = useState<string | null>(null);
   const [editProductData, setEditProductData] = useState({
     investment_amount: '',
     daily_profit_rate: '',
@@ -168,6 +186,108 @@ export default function AdminDashboard() {
     setEditBalance('');
     fetchData();
     fetchStats();
+  };
+
+  const handleDeleteUser = async (user: Profile) => {
+    if (deletingUserId) return;
+    
+    const confirmed = window.confirm(`Are you sure you want to delete user "${user.full_name}"? This will remove all their data permanently.`);
+    if (!confirmed) return;
+
+    setDeletingUserId(user.user_id);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/delete-user`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session?.access_token}`,
+          },
+          body: JSON.stringify({ user_id: user.user_id }),
+        }
+      );
+
+      const result = await response.json();
+      if (!response.ok) {
+        toast.error(result.error || 'Failed to delete user');
+        return;
+      }
+
+      toast.success(`User "${user.full_name}" deleted successfully`);
+      fetchData();
+      fetchStats();
+    } catch (error) {
+      toast.error('Failed to delete user');
+    } finally {
+      setDeletingUserId(null);
+    }
+  };
+
+  const viewUserInvestments = async (user: Profile) => {
+    setViewingInvestmentsUser(user);
+    setLoadingInvestments(true);
+    const { data } = await supabase
+      .from('user_investments')
+      .select('*')
+      .eq('user_id', user.user_id)
+      .order('created_at', { ascending: false });
+    setUserInvestments(data || []);
+    setLoadingInvestments(false);
+  };
+
+  const cancelInvestment = async (investment: UserInvestment) => {
+    if (cancellingInvestmentId) return;
+    
+    const confirmed = window.confirm(`Cancel this investment of ${investment.amount.toLocaleString()} RWF? The amount will be refunded to the user's balance.`);
+    if (!confirmed) return;
+
+    setCancellingInvestmentId(investment.id);
+    try {
+      // Update investment status
+      const { error: invError } = await supabase
+        .from('user_investments')
+        .update({ status: 'cancelled' })
+        .eq('id', investment.id);
+
+      if (invError) {
+        toast.error('Failed to cancel investment');
+        return;
+      }
+
+      // Refund balance and reduce invested_amount
+      const userId = viewingInvestmentsUser?.user_id;
+      if (userId) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('main_balance, invested_amount')
+          .eq('user_id', userId)
+          .single();
+
+        if (profile) {
+          await supabase
+            .from('profiles')
+            .update({
+              main_balance: profile.main_balance + investment.amount,
+              invested_amount: Math.max(0, profile.invested_amount - investment.amount),
+            })
+            .eq('user_id', userId);
+        }
+      }
+
+      toast.success('Investment cancelled and amount refunded');
+      // Refresh investments list
+      if (viewingInvestmentsUser) {
+        viewUserInvestments(viewingInvestmentsUser);
+      }
+      fetchData();
+      fetchStats();
+    } catch (error) {
+      toast.error('Failed to cancel investment');
+    } finally {
+      setCancellingInvestmentId(null);
+    }
   };
 
   // Product edit functions
@@ -529,18 +649,106 @@ export default function AdminDashboard() {
                                 </button>
                               </div>
                             ) : (
-                              <button
-                                onClick={() => startEditUser(user)}
-                                className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
-                              >
-                                <Edit className="w-4 h-4" />
-                              </button>
+                              <div className="flex gap-1">
+                                <button
+                                  onClick={() => startEditUser(user)}
+                                  className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                                  title="Edit balance"
+                                >
+                                  <Edit className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={() => viewUserInvestments(user)}
+                                  className="p-2 text-secondary hover:bg-secondary/10 rounded-lg transition-colors"
+                                  title="View investments"
+                                >
+                                  <Eye className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteUser(user)}
+                                  disabled={deletingUserId === user.user_id}
+                                  className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors disabled:opacity-50"
+                                  title="Delete user"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </div>
                             )}
                           </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
+                </div>
+              </div>
+            )}
+
+            {/* User Investments Modal */}
+            {viewingInvestmentsUser && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={() => setViewingInvestmentsUser(null)}>
+                <div className="bg-card rounded-2xl shadow-xl max-w-2xl w-full mx-4 max-h-[80vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
+                  <div className="p-4 border-b border-border flex items-center justify-between">
+                    <div>
+                      <h2 className="font-semibold text-foreground">Investments - {viewingInvestmentsUser.full_name}</h2>
+                      <p className="text-sm text-muted-foreground">{viewingInvestmentsUser.phone}</p>
+                    </div>
+                    <button onClick={() => setViewingInvestmentsUser(null)} className="p-2 hover:bg-muted rounded-lg">
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+                  <div className="overflow-auto max-h-[60vh]">
+                    {loadingInvestments ? (
+                      <div className="flex items-center justify-center py-12">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                      </div>
+                    ) : userInvestments.length === 0 ? (
+                      <div className="text-center py-12 text-muted-foreground">No investments found</div>
+                    ) : (
+                      <table className="w-full">
+                        <thead className="bg-muted">
+                          <tr>
+                            <th className="text-left p-3 text-sm font-medium text-muted-foreground">Amount</th>
+                            <th className="text-left p-3 text-sm font-medium text-muted-foreground">Daily Profit</th>
+                            <th className="text-left p-3 text-sm font-medium text-muted-foreground">Start</th>
+                            <th className="text-left p-3 text-sm font-medium text-muted-foreground">End</th>
+                            <th className="text-left p-3 text-sm font-medium text-muted-foreground">Status</th>
+                            <th className="text-left p-3 text-sm font-medium text-muted-foreground">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {userInvestments.map((inv) => (
+                            <tr key={inv.id} className="border-b border-border">
+                              <td className="p-3 font-medium text-foreground">{inv.amount.toLocaleString()} RWF</td>
+                              <td className="p-3 text-primary">{inv.daily_profit.toLocaleString()} RWF</td>
+                              <td className="p-3 text-muted-foreground">{formatDate(inv.start_date)}</td>
+                              <td className="p-3 text-muted-foreground">{formatDate(inv.end_date)}</td>
+                              <td className="p-3">
+                                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                  inv.status === 'active' ? 'bg-green-100 text-green-700' :
+                                  inv.status === 'cancelled' ? 'bg-red-100 text-red-700' :
+                                  'bg-muted text-muted-foreground'
+                                }`}>
+                                  {inv.status}
+                                </span>
+                              </td>
+                              <td className="p-3">
+                                {inv.status === 'active' && (
+                                  <button
+                                    onClick={() => cancelInvestment(inv)}
+                                    disabled={cancellingInvestmentId === inv.id}
+                                    className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors disabled:opacity-50"
+                                    title="Cancel & refund"
+                                  >
+                                    <XCircle className="w-4 h-4" />
+                                  </button>
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
