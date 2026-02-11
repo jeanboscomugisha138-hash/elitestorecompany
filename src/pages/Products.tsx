@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ProductCard } from '@/components/ProductCard';
@@ -37,58 +37,75 @@ export default function Products() {
   };
 
   const [investingId, setInvestingId] = useState<string | null>(null);
+  const investingRef = useRef(false);
 
   const handleInvest = async (productId: string) => {
-    if (investingId) return; // Prevent double clicks
+    if (investingRef.current) return;
     const product = products.find((p) => p.id === productId);
-    if (!product) return;
+    if (!product || !profile?.user_id) return;
+
+    investingRef.current = true;
     setInvestingId(productId);
 
-    if ((profile?.main_balance || 0) < product.investment_amount) {
-      toast.error('Insufficient balance. Please deposit first.');
-      return;
-    }
+    try {
+      // Fetch fresh balance from DB to avoid stale state
+      const { data: freshProfile, error: fetchError } = await supabase
+        .from('profiles')
+        .select('main_balance, invested_amount')
+        .eq('user_id', profile.user_id)
+        .single();
 
-    const dailyProfit = product.investment_amount * product.daily_profit_rate;
-    const endDate = new Date();
-    endDate.setDate(endDate.getDate() + product.duration_days);
+      if (fetchError || !freshProfile) {
+        toast.error('Failed to verify balance');
+        return;
+      }
 
-    // Create investment
-    const { error: investError } = await supabase
-      .from('user_investments')
-      .insert({
-        user_id: profile?.user_id,
-        product_id: productId,
-        amount: product.investment_amount,
-        daily_profit: dailyProfit,
-        end_date: endDate.toISOString(),
-        status: 'active'
-      });
+      if (freshProfile.main_balance < product.investment_amount) {
+        toast.error('Insufficient balance. Please deposit first.');
+        return;
+      }
 
-    if (investError) {
-      toast.error('Failed to create investment');
+      const dailyProfit = product.investment_amount * product.daily_profit_rate;
+      const endDate = new Date();
+      endDate.setDate(endDate.getDate() + product.duration_days);
+
+      // Create investment
+      const { error: investError } = await supabase
+        .from('user_investments')
+        .insert({
+          user_id: profile.user_id,
+          product_id: productId,
+          amount: product.investment_amount,
+          daily_profit: dailyProfit,
+          end_date: endDate.toISOString(),
+          status: 'active'
+        });
+
+      if (investError) {
+        toast.error('Failed to create investment');
+        return;
+      }
+
+      // Update profile balance using fresh DB values
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({
+          main_balance: freshProfile.main_balance - product.investment_amount,
+          invested_amount: freshProfile.invested_amount + product.investment_amount
+        })
+        .eq('user_id', profile.user_id);
+
+      if (updateError) {
+        toast.error('Failed to update balance');
+        return;
+      }
+
+      toast.success(`Investment of ${product.investment_amount.toLocaleString()} RWF created!`);
+      refreshProfile();
+    } finally {
+      investingRef.current = false;
       setInvestingId(null);
-      return;
     }
-
-    // Update profile balance
-    const { error: updateError } = await supabase
-      .from('profiles')
-      .update({
-        main_balance: (profile?.main_balance || 0) - product.investment_amount,
-        invested_amount: (profile?.invested_amount || 0) + product.investment_amount
-      })
-      .eq('user_id', profile?.user_id);
-
-    if (updateError) {
-      toast.error('Failed to update balance');
-      setInvestingId(null);
-      return;
-    }
-
-    toast.success(`Investment of ${product.investment_amount.toLocaleString()} RWF created!`);
-    setInvestingId(null);
-    refreshProfile();
   };
 
   if (isLoading) {
