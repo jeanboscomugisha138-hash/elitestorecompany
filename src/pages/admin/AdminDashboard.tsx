@@ -82,6 +82,8 @@ export default function AdminDashboard() {
   const [editingUser, setEditingUser] = useState<Profile | null>(null);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [editBalance, setEditBalance] = useState('');
+  const [editingInvestedUser, setEditingInvestedUser] = useState<Profile | null>(null);
+  const [editInvestedAmount, setEditInvestedAmount] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
   const [viewingInvestmentsUser, setViewingInvestmentsUser] = useState<Profile | null>(null);
@@ -288,6 +290,43 @@ export default function AdminDashboard() {
     } finally {
       setCancellingInvestmentId(null);
     }
+  };
+
+  // User invested amount edit functions
+  const startEditInvested = (user: Profile) => {
+    setEditingInvestedUser(user);
+    setEditInvestedAmount(user.invested_amount.toString());
+  };
+
+  const cancelEditInvested = () => {
+    setEditingInvestedUser(null);
+    setEditInvestedAmount('');
+  };
+
+  const saveUserInvestedAmount = async () => {
+    if (!editingInvestedUser) return;
+
+    const newAmount = parseFloat(editInvestedAmount);
+    if (isNaN(newAmount) || newAmount < 0) {
+      toast.error('Please enter a valid amount');
+      return;
+    }
+
+    const { error } = await supabase
+      .from('profiles')
+      .update({ invested_amount: newAmount })
+      .eq('user_id', editingInvestedUser.user_id);
+
+    if (error) {
+      toast.error('Failed to update invested amount');
+      return;
+    }
+
+    toast.success(`Invested amount updated to ${newAmount.toLocaleString()} RWF`);
+    setEditingInvestedUser(null);
+    setEditInvestedAmount('');
+    fetchData();
+    fetchStats();
   };
 
   // Product edit functions
@@ -630,46 +669,50 @@ export default function AdminDashboard() {
                               <span className="text-primary font-medium">{user.main_balance.toLocaleString()} RWF</span>
                             )}
                           </td>
-                          <td className="p-4 text-secondary font-medium">{user.invested_amount.toLocaleString()} RWF</td>
+                          <td className="p-4">
+                            {editingInvestedUser?.id === user.id ? (
+                              <input
+                                type="number"
+                                value={editInvestedAmount}
+                                onChange={(e) => setEditInvestedAmount(e.target.value)}
+                                className="w-32 px-2 py-1 border border-border rounded-lg bg-background text-foreground"
+                              />
+                            ) : (
+                              <span className="text-secondary font-medium">{user.invested_amount.toLocaleString()} RWF</span>
+                            )}
+                          </td>
                           <td className="p-4 text-muted-foreground">{formatDate(user.created_at)}</td>
                           <td className="p-4">
                             {editingUser?.id === user.id ? (
                               <div className="flex gap-2">
-                                <button
-                                  onClick={saveUserBalance}
-                                  className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors"
-                                >
+                                <button onClick={saveUserBalance} className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors">
                                   <Save className="w-4 h-4" />
                                 </button>
-                                <button
-                                  onClick={cancelEditUser}
-                                  className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
-                                >
+                                <button onClick={cancelEditUser} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors">
+                                  <X className="w-4 h-4" />
+                                </button>
+                              </div>
+                            ) : editingInvestedUser?.id === user.id ? (
+                              <div className="flex gap-2">
+                                <button onClick={saveUserInvestedAmount} className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors">
+                                  <Save className="w-4 h-4" />
+                                </button>
+                                <button onClick={cancelEditInvested} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors">
                                   <X className="w-4 h-4" />
                                 </button>
                               </div>
                             ) : (
                               <div className="flex gap-1">
-                                <button
-                                  onClick={() => startEditUser(user)}
-                                  className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
-                                  title="Edit balance"
-                                >
+                                <button onClick={() => startEditUser(user)} className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Edit balance">
                                   <Edit className="w-4 h-4" />
                                 </button>
-                                <button
-                                  onClick={() => viewUserInvestments(user)}
-                                  className="p-2 text-secondary hover:bg-secondary/10 rounded-lg transition-colors"
-                                  title="View investments"
-                                >
+                                <button onClick={() => startEditInvested(user)} className="p-2 text-purple-500 hover:bg-purple-500/10 rounded-lg transition-colors" title="Edit invested amount">
+                                  <PiggyBank className="w-4 h-4" />
+                                </button>
+                                <button onClick={() => viewUserInvestments(user)} className="p-2 text-secondary hover:bg-secondary/10 rounded-lg transition-colors" title="View investments">
                                   <Eye className="w-4 h-4" />
                                 </button>
-                                <button
-                                  onClick={() => handleDeleteUser(user)}
-                                  disabled={deletingUserId === user.user_id}
-                                  className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors disabled:opacity-50"
-                                  title="Delete user"
-                                >
+                                <button onClick={() => handleDeleteUser(user)} disabled={deletingUserId === user.user_id} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors disabled:opacity-50" title="Delete user">
                                   <Trash2 className="w-4 h-4" />
                                 </button>
                               </div>
