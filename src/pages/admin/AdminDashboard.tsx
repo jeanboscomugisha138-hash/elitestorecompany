@@ -90,6 +90,7 @@ export default function AdminDashboard() {
   const [userInvestments, setUserInvestments] = useState<UserInvestment[]>([]);
   const [loadingInvestments, setLoadingInvestments] = useState(false);
   const [cancellingInvestmentId, setCancellingInvestmentId] = useState<string | null>(null);
+  const [processingTxId, setProcessingTxId] = useState<string | null>(null);
   const [editProductData, setEditProductData] = useState({
     investment_amount: '',
     daily_profit_rate: '',
@@ -382,49 +383,65 @@ export default function AdminDashboard() {
       toast.error('This deposit has already been processed');
       return;
     }
+    if (processingTxId) return;
+    setProcessingTxId(tx.id);
+    try {
+      const { error: txError } = await supabase
+        .from('deposit_transactions')
+        .update({ status: 'approved' })
+        .eq('id', tx.id)
+        .eq('status', 'pending');
 
-    const { error: txError } = await supabase
-      .from('deposit_transactions')
-      .update({ status: 'approved' })
-      .eq('id', tx.id)
-      .eq('status', 'pending');
+      if (txError) {
+        toast.error('Failed to approve deposit');
+        return;
+      }
 
-    if (txError) {
-      toast.error('Failed to approve deposit');
-      return;
-    }
-
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('main_balance')
-      .eq('user_id', tx.user_id)
-      .single();
-
-    if (profile) {
-      await supabase
+      const { data: profile } = await supabase
         .from('profiles')
-        .update({ main_balance: profile.main_balance + tx.amount })
-        .eq('user_id', tx.user_id);
-    }
+        .select('main_balance')
+        .eq('user_id', tx.user_id)
+        .single();
 
-    toast.success(`Deposit of ${tx.amount.toLocaleString()} RWF approved`);
-    fetchData();
-    fetchStats();
+      if (profile) {
+        await supabase
+          .from('profiles')
+          .update({ main_balance: profile.main_balance + tx.amount })
+          .eq('user_id', tx.user_id);
+      }
+
+      toast.success(`Deposit of ${tx.amount.toLocaleString()} RWF approved`);
+      fetchData();
+      fetchStats();
+    } finally {
+      setProcessingTxId(null);
+    }
   };
 
   const handleRejectDeposit = async (tx: Transaction) => {
-    const { error } = await supabase
-      .from('deposit_transactions')
-      .update({ status: 'rejected' })
-      .eq('id', tx.id);
-
-    if (error) {
-      toast.error('Failed to reject deposit');
+    if (tx.status !== 'pending') {
+      toast.error('This deposit has already been processed');
       return;
     }
+    if (processingTxId) return;
+    setProcessingTxId(tx.id);
+    try {
+      const { error } = await supabase
+        .from('deposit_transactions')
+        .update({ status: 'rejected' })
+        .eq('id', tx.id)
+        .eq('status', 'pending');
 
-    toast.error(`Deposit rejected`);
-    fetchData();
+      if (error) {
+        toast.error('Failed to reject deposit');
+        return;
+      }
+
+      toast.error(`Deposit rejected`);
+      fetchData();
+    } finally {
+      setProcessingTxId(null);
+    }
   };
 
   const handleApproveWithdrawal = async (tx: Transaction) => {
@@ -432,22 +449,26 @@ export default function AdminDashboard() {
       toast.error('This withdrawal has already been processed');
       return;
     }
+    if (processingTxId) return;
+    setProcessingTxId(tx.id);
+    try {
+      const { error: txError } = await supabase
+        .from('withdrawal_transactions')
+        .update({ status: 'approved' })
+        .eq('id', tx.id)
+        .eq('status', 'pending');
 
-    const { error: txError } = await supabase
-      .from('withdrawal_transactions')
-      .update({ status: 'approved' })
-      .eq('id', tx.id)
-      .eq('status', 'pending');
+      if (txError) {
+        toast.error('Failed to approve withdrawal');
+        return;
+      }
 
-    if (txError) {
-      toast.error('Failed to approve withdrawal');
-      return;
+      toast.success(`Withdrawal of ${tx.amount.toLocaleString()} RWF approved`);
+      fetchData();
+      fetchStats();
+    } finally {
+      setProcessingTxId(null);
     }
-
-    // Balance already deducted by trigger on insert - no need to deduct again
-    toast.success(`Withdrawal of ${tx.amount.toLocaleString()} RWF approved`);
-    fetchData();
-    fetchStats();
   };
 
   const handleRejectWithdrawal = async (tx: Transaction) => {
@@ -455,35 +476,38 @@ export default function AdminDashboard() {
       toast.error('This withdrawal has already been processed');
       return;
     }
-
-    // Refund the balance since it was deducted on insert
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('main_balance')
-      .eq('user_id', tx.user_id)
-      .single();
-
-    const { error } = await supabase
-      .from('withdrawal_transactions')
-      .update({ status: 'rejected' })
-      .eq('id', tx.id)
-      .eq('status', 'pending');
-
-    if (error) {
-      toast.error('Failed to reject withdrawal');
-      return;
-    }
-
-    // Refund the deducted amount
-    if (profile) {
-      await supabase
+    if (processingTxId) return;
+    setProcessingTxId(tx.id);
+    try {
+      const { data: profile } = await supabase
         .from('profiles')
-        .update({ main_balance: profile.main_balance + tx.amount })
-        .eq('user_id', tx.user_id);
-    }
+        .select('main_balance')
+        .eq('user_id', tx.user_id)
+        .single();
 
-    toast.error(`Withdrawal rejected and balance refunded`);
-    fetchData();
+      const { error } = await supabase
+        .from('withdrawal_transactions')
+        .update({ status: 'rejected' })
+        .eq('id', tx.id)
+        .eq('status', 'pending');
+
+      if (error) {
+        toast.error('Failed to reject withdrawal');
+        return;
+      }
+
+      if (profile) {
+        await supabase
+          .from('profiles')
+          .update({ main_balance: profile.main_balance + tx.amount })
+          .eq('user_id', tx.user_id);
+      }
+
+      toast.error(`Withdrawal rejected and balance refunded`);
+      fetchData();
+    } finally {
+      setProcessingTxId(null);
+    }
   };
 
   const tabs = [
@@ -952,14 +976,16 @@ export default function AdminDashboard() {
                               <div className="flex gap-2">
                                 <button
                                   onClick={() => handleApproveDeposit(tx)}
-                                  className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors"
+                                  disabled={processingTxId === tx.id}
+                                  className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors disabled:opacity-50 disabled:pointer-events-none"
                                   title="Approve"
                                 >
                                   <Check className="w-4 h-4" />
                                 </button>
                                 <button
                                   onClick={() => handleRejectDeposit(tx)}
-                                  className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
+                                  disabled={processingTxId === tx.id}
+                                  className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors disabled:opacity-50 disabled:pointer-events-none"
                                   title="Reject"
                                 >
                                   <X className="w-4 h-4" />
@@ -1016,14 +1042,16 @@ export default function AdminDashboard() {
                               <div className="flex gap-2">
                                 <button
                                   onClick={() => handleApproveWithdrawal(tx)}
-                                  className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors"
+                                  disabled={processingTxId === tx.id}
+                                  className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors disabled:opacity-50 disabled:pointer-events-none"
                                   title="Approve"
                                 >
                                   <Check className="w-4 h-4" />
                                 </button>
                                 <button
                                   onClick={() => handleRejectWithdrawal(tx)}
-                                  className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
+                                  disabled={processingTxId === tx.id}
+                                  className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors disabled:opacity-50 disabled:pointer-events-none"
                                   title="Reject"
                                 >
                                   <X className="w-4 h-4" />
