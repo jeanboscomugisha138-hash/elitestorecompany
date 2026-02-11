@@ -648,6 +648,7 @@ export default function AdminDashboard() {
                         <th className="text-left p-4 text-sm font-medium text-muted-foreground">Phone</th>
                         <th className="text-left p-4 text-sm font-medium text-muted-foreground">Balance</th>
                         <th className="text-left p-4 text-sm font-medium text-muted-foreground">Invested</th>
+                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Referral Bonus</th>
                         <th className="text-left p-4 text-sm font-medium text-muted-foreground">Joined</th>
                         <th className="text-left p-4 text-sm font-medium text-muted-foreground">Actions</th>
                       </tr>
@@ -681,6 +682,7 @@ export default function AdminDashboard() {
                               <span className="text-secondary font-medium">{user.invested_amount.toLocaleString()} RWF</span>
                             )}
                           </td>
+                          <td className="p-4 text-accent-foreground font-medium">{user.referral_balance.toLocaleString()} RWF</td>
                           <td className="p-4 text-muted-foreground">{formatDate(user.created_at)}</td>
                           <td className="p-4">
                             {editingUser?.id === user.id ? (
