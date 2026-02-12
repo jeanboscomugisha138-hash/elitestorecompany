@@ -41,6 +41,14 @@ export default function Withdraw() {
       return;
     }
 
+    // Check withdrawal time window: 10:00 AM - 9:00 PM
+    const now = new Date();
+    const currentHour = now.getHours();
+    if (currentHour < 10 || currentHour >= 21) {
+      toast.error('Withdrawals are only allowed between 10:00 AM and 9:00 PM');
+      return;
+    }
+
     // Check if user already withdrew today
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -164,7 +172,7 @@ export default function Withdraw() {
           <div className="flex items-start gap-2 p-3 bg-accent rounded-xl">
             <Info className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
             <p className="text-sm text-accent-foreground">
-              20% fee applies. Withdrawal will be processed within 10 minutes.
+              20% fee applies. Withdrawal will be processed within 10 minutes. Allowed between 10:00 AM – 9:00 PM.
             </p>
           </div>
 
