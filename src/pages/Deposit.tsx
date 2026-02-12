@@ -14,7 +14,7 @@ export default function Deposit() {
   const [copied, setCopied] = useState(false);
   const { profile } = useAuth();
 
-  const momoCode = '*182*8*1*1978296#';
+  const momoCode = '*182*8*1*1943783#';
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(momoCode);
@@ -106,7 +106,7 @@ export default function Deposit() {
 
           {/* MOMO Pay Code */}
           <div className="bg-primary/10 border-2 border-primary rounded-2xl p-4 text-center">
-            <p className="text-sm text-muted-foreground mb-1">Pay to: <span className="font-semibold text-foreground">Thacienne</span></p>
+            <p className="text-sm text-muted-foreground mb-1">Pay to: <span className="font-semibold text-foreground">Vestine</span></p>
             <p className="text-sm text-muted-foreground mb-2">Dial this MOMO Pay Code:</p>
             <div className="flex items-center justify-center gap-2">
               <p className="text-xl font-bold text-primary tracking-wider">{momoCode}</p>
