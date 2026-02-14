@@ -32,7 +32,7 @@ export function AnnouncementPopup() {
             Inyungu ya buri munsi yahindutse: ubu ni <span className="font-bold">15%</span> aho gukunda kuba 30%. Kandi bonus yo kwiyandikisha ubu ni <span className="font-bold">500 RWF</span> aho gukunda kuba 1,500 RWF.
           </p>
           <p className="text-sm text-destructive/90 mt-1">
-            Withdrawal: kuva saa <span className="font-bold">10:00 AM kugeza 9:00 PM</span> gusa.
+            Withdrawal: minimum ni <span className="font-bold">1,000 RWF</span>. Ushobora gukura igihe icyo ari cyo cyose, ariko inshuro <span className="font-bold">1 ku munsi</span>.
           </p>
         </div>
         <p className="text-sm font-semibold text-foreground mb-2">✨ Ibyiza bya platform:</p>
@@ -41,7 +41,7 @@ export function AnnouncementPopup() {
           <li>✔ Inyungu ya <span className="text-primary font-semibold">15%</span> buri munsi ku mafaranga washyize mu ishoramari</li>
           <li>✔ Daily bonus: ushobora gusaba buri munsi</li>
           <li>✔ Referral system: winjize inshuti, ubone commission (Level 1: 15%, Level 2: 4%, Level 3: 1%)</li>
-          <li>✔ Withdrawal: <span className="font-semibold text-primary">10:00 AM - 9:00 PM</span> gusa</li>
+          <li>✔ Withdrawal: igihe icyo ari cyo cyose, inshuro <span className="font-semibold text-primary">1 ku munsi</span></li>
           <li>✔ Byoroshye gukoresha – ukeneye gusa telefoni na internet</li>
         </ul>
         <button onClick={closePopup} className="action-btn w-full text-sm">
