@@ -26,16 +26,19 @@ export function AnnouncementPopup() {
         <p className="text-sm text-muted-foreground mb-3">
           Injira kuri <span className="font-semibold text-foreground">Drilltools Company</span> – urubuga rwizewe kandi rworoshye gukoresha mu gushora imari no kunguka!
         </p>
-        <div className="p-3 bg-destructive/10 border border-destructive/20 rounded-xl mb-3">
+         <div className="p-3 bg-destructive/10 border border-destructive/20 rounded-xl mb-3">
           <p className="text-sm font-semibold text-destructive">⚠️ Itangazo ry'ingenzi:</p>
           <p className="text-sm text-destructive/90 mt-1">
-            Withdrawal zose zabaye pending zasubitswe. Murasabwa kongera gusaba withdrawal kuva saa <span className="font-bold">10:00 AM kugeza 9:00 PM</span> gusa.
+            Inyungu ya buri munsi yahindutse: ubu ni <span className="font-bold">15%</span> aho gukunda kuba 30%. Kandi bonus yo kwiyandikisha ubu ni <span className="font-bold">500 RWF</span> aho gukunda kuba 1,500 RWF.
+          </p>
+          <p className="text-sm text-destructive/90 mt-1">
+            Withdrawal: kuva saa <span className="font-bold">10:00 AM kugeza 9:00 PM</span> gusa.
           </p>
         </div>
         <p className="text-sm font-semibold text-foreground mb-2">✨ Ibyiza bya platform:</p>
         <ul className="text-sm text-muted-foreground space-y-1.5 mb-4">
-          <li>✔ Bonus yo gutangira: <span className="text-primary font-semibold">1500 RWF</span> ku kwiyandikisha</li>
-          <li>✔ Inyungu buri munsi ku mafaranga washyize mu ishoramari</li>
+          <li>✔ Bonus yo gutangira: <span className="text-primary font-semibold">500 RWF</span> ku kwiyandikisha</li>
+          <li>✔ Inyungu ya <span className="text-primary font-semibold">15%</span> buri munsi ku mafaranga washyize mu ishoramari</li>
           <li>✔ Daily bonus: ushobora gusaba buri munsi</li>
           <li>✔ Referral system: winjize inshuti, ubone commission (Level 1: 15%, Level 2: 4%, Level 3: 1%)</li>
           <li>✔ Withdrawal: <span className="font-semibold text-primary">10:00 AM - 9:00 PM</span> gusa</li>
