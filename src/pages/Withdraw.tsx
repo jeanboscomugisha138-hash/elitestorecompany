@@ -26,8 +26,8 @@ export default function Withdraw() {
       return;
     }
 
-    if (amountNum < 2000) {
-      toast.error('Minimum withdrawal is 2,000 RWF');
+    if (amountNum < 1000) {
+      toast.error('Minimum withdrawal is 1,000 RWF');
       return;
     }
 
@@ -41,13 +41,7 @@ export default function Withdraw() {
       return;
     }
 
-    // Check withdrawal time window: 10:00 AM - 9:00 PM
-    const now = new Date();
-    const currentHour = now.getHours();
-    if (currentHour < 10 || currentHour >= 21) {
-      toast.error('Withdrawals are only allowed between 10:00 AM and 9:00 PM');
-      return;
-    }
+    // No time restriction - users can withdraw anytime
 
     // Check if user already withdrew today
     const today = new Date();
@@ -141,11 +135,11 @@ export default function Withdraw() {
             <Banknote className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
             <input
               type="number"
-              placeholder="Amount (2,000 - 1,000,000 RWF)"
+              placeholder="Amount (1,000 - 1,000,000 RWF)"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               className="input-field pl-12"
-              min="2000"
+              min="1000"
               max="1000000"
               required
             />
@@ -172,7 +166,7 @@ export default function Withdraw() {
           <div className="flex items-start gap-2 p-3 bg-accent rounded-xl">
             <Info className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
             <p className="text-sm text-accent-foreground">
-              20% fee applies. Withdrawal will be processed within 10 minutes. Allowed between 10:00 AM – 9:00 PM.
+              20% fee applies. Withdrawal will be processed within 10 minutes. One withdrawal per day. Available anytime.
             </p>
           </div>
 
