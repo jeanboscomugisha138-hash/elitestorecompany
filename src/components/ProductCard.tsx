@@ -36,7 +36,7 @@ export function ProductCard({
           </span>
         </div>
         <div className="flex justify-between text-sm">
-          <span className="text-muted-foreground">Daily Income (30%)</span>
+          <span className="text-muted-foreground">Daily Income (15%)</span>
           <span className="font-semibold text-primary">
             {dailyProfit.toLocaleString()} RWF
           </span>
