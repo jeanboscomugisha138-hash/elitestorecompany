@@ -26,18 +26,20 @@ export function AnnouncementPopup() {
         <p className="text-sm text-muted-foreground mb-3">
           Injira kuri <span className="font-semibold text-foreground">Drilltools Company</span> – urubuga rwizewe kandi rworoshye gukoresha mu gushora imari no kunguka!
         </p>
-         <div className="p-3 bg-destructive/10 border border-destructive/20 rounded-xl mb-3">
-          <p className="text-sm font-semibold text-destructive">⚠️ Itangazo ry'ingenzi:</p>
-          <p className="text-sm text-destructive/90 mt-1">
-            Inyungu ya buri munsi yahindutse: ubu ni <span className="font-bold">15%</span> aho gukunda kuba 30%. Kandi bonus yo kwiyandikisha ubu ni <span className="font-bold">500 RWF</span> aho gukunda kuba 1,500 RWF.
+        <div className="p-3 bg-primary/10 border border-primary/20 rounded-xl mb-3">
+          <p className="text-sm font-semibold text-primary">🎉 Itangazo rishya:</p>
+          <p className="text-sm text-foreground mt-1">
+            Company yashyiriyeho abanyamuryango bayo ibicuruzwa byamafaranga macye ariyo <span className="font-bold text-primary">3,500 RWF</span> na <span className="font-bold text-primary">6,500 RWF</span> kugirango yorohereza abanyamuryango bayo gushora imari bijyanye n'ubushobozi bwabo. <span className="font-semibold">Ntawuhejwe!</span>
           </p>
-          <p className="text-sm text-destructive/90 mt-1">
-            Withdrawal: minimum ni <span className="font-bold">1,000 RWF</span>. Ushobora gukura igihe icyo ari cyo cyose, ariko inshuro <span className="font-bold">1 ku munsi</span>.
-          </p>
+        </div>
+        <div className="p-3 bg-secondary/10 border border-secondary/20 rounded-xl mb-3">
+          <p className="text-sm font-semibold text-secondary">📱 Injira mu WhatsApp group yacu:</p>
+          <a href="https://chat.whatsapp.com/DRmt2Kr4cA4LGt4z0V7uMj" target="_blank" rel="noopener noreferrer" className="text-sm text-primary underline font-medium">Kanda hano winjire mu group</a>
         </div>
         <p className="text-sm font-semibold text-foreground mb-2">✨ Ibyiza bya platform:</p>
         <ul className="text-sm text-muted-foreground space-y-1.5 mb-4">
           <li>✔ Bonus yo gutangira: <span className="text-primary font-semibold">500 RWF</span> ku kwiyandikisha</li>
+          <li>✔ Ibicuruzwa bitangirira kuri <span className="text-primary font-semibold">3,500 RWF</span> gusa!</li>
           <li>✔ Inyungu ya <span className="text-primary font-semibold">15%</span> buri munsi ku mafaranga washyize mu ishoramari</li>
           <li>✔ Daily bonus: ushobora gusaba buri munsi</li>
           <li>✔ Referral system: winjize inshuti, ubone commission (Level 1: 15%, Level 2: 4%, Level 3: 1%)</li>
