@@ -25,18 +25,18 @@ export function ChannelPopup() {
         <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
           <MessageCircle className="w-10 h-10 text-white" />
         </div>
-        <h3 className="text-xl font-bold text-foreground mb-2">Join Our Channel!</h3>
+        <h3 className="text-xl font-bold text-foreground mb-2">Join Our WhatsApp Group!</h3>
         <p className="text-muted-foreground mb-4">
-          Join our official WhatsApp channel for the latest updates and announcements.
+          Injira mu WhatsApp group yacu kugirango ubone amakuru mashya n'ubufasha bwihuse.
         </p>
         <a
-          href="https://whatsapp.com/channel/0029Vb7CmXWAe5VmWVZQTX3p"
+          href="https://chat.whatsapp.com/DRmt2Kr4cA4LGt4z0V7uMj"
           target="_blank"
           rel="noopener noreferrer"
           className="action-btn w-full inline-block text-center"
           onClick={closePopup}
         >
-          Join Channel
+          Join WhatsApp Group
         </a>
       </div>
     </PopupModal>
