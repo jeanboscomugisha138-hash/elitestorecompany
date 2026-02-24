@@ -26,6 +26,13 @@ export default function Deposit() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!phone || !name || !amount) return;
+    if (isLoading) return;
+
+    const amountNum = parseFloat(amount);
+    if (amountNum < 3500) {
+      toast.error('Minimum deposit is 3,500 RWF');
+      return;
+    }
 
     setIsLoading(true);
 
@@ -35,7 +42,7 @@ export default function Deposit() {
         user_id: profile?.user_id,
         phone,
         full_name: name,
-        amount: parseFloat(amount),
+        amount: amountNum,
         status: 'pending'
       });
 
@@ -96,7 +103,8 @@ export default function Deposit() {
             <Banknote className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
             <input
               type="number"
-              placeholder="Amount (RWF)"
+              placeholder="Amount (min 3,500 RWF)"
+              min="3500"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               className="input-field pl-12"
