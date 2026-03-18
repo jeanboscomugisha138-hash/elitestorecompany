@@ -29,7 +29,7 @@ export function AnnouncementPopup() {
         <div className="p-3 bg-primary/10 border border-primary/20 rounded-xl mb-3">
           <p className="text-sm font-semibold text-primary">🎉 Itangazo rishya:</p>
           <p className="text-sm text-foreground mt-1">
-            Company yashyiriyeho abanyamuryango bayo ibicuruzwa byamafaranga macye ariyo <span className="font-bold text-primary">3,500 RWF</span> na <span className="font-bold text-primary">6,500 RWF</span> kugirango yorohereza abanyamuryango bayo gushora imari bijyanye n'ubushobozi bwabo. <span className="font-semibold">Ntawuhejwe!</span>
+            Samsung World Technology yashyiriyeho abanyamuryango bayo ibicuruzwa byamafaranga macye ariyo <span className="font-bold text-primary">3,500 RWF</span> na <span className="font-bold text-primary">6,500 RWF</span> kugirango yorohereza abanyamuryango bayo gushora imari bijyanye n'ubushobozi bwabo. <span className="font-semibold">Ntawuhejwe!</span>
           </p>
         </div>
         <div className="p-3 bg-secondary/10 border border-secondary/20 rounded-xl mb-3">
