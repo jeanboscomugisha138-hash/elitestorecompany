@@ -97,7 +97,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   // Generate email from phone number for Supabase auth (internal use only)
-  const phoneToEmail = (phone: string) => `${phone.replace(/\D/g, '')}@drilltools.app`;
+  const phoneToEmail = (phone: string) => `${phone.replace(/\D/g, '')}@samsungworldtech.app`;
 
   const signUp = async (phone: string, password: string, fullName: string, referralCode?: string) => {
     const email = phoneToEmail(phone);
