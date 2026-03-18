@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Phone, Lock, User, ArrowRight, Drill, ShieldCheck, Eye, EyeOff, Gift } from 'lucide-react';
+import { Phone, Lock, User, ArrowRight, Smartphone, ShieldCheck, Eye, EyeOff, Gift } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 
