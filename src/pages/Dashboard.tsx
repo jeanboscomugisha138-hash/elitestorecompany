@@ -9,7 +9,7 @@ import {
   Share2,
   Clock,
   Settings,
-  Drill,
+  Smartphone,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { StatCard } from '@/components/StatCard';
