@@ -9,7 +9,7 @@ import {
   Share2,
   Clock,
   Settings,
-  Drill,
+  Smartphone,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { StatCard } from '@/components/StatCard';
@@ -33,10 +33,10 @@ export default function Dashboard() {
       <div className="flex items-center justify-between mb-6 animate-fade-in">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center shadow-button">
-            <Drill className="w-6 h-6 text-primary-foreground" />
+            <Smartphone className="w-6 h-6 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="text-lg font-bold text-foreground">Drilltools Company</h1>
+            <h1 className="text-lg font-bold text-foreground">Samsung World Technology</h1>
             <p className="text-sm text-muted-foreground">Welcome, {profile?.full_name || 'User'}!</p>
           </div>
         </div>
