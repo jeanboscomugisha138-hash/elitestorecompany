@@ -24,7 +24,7 @@ export function AnnouncementPopup() {
           <h3 className="text-lg font-bold text-foreground">📢 Muraho 👋</h3>
         </div>
         <p className="text-sm text-muted-foreground mb-3">
-          Injira kuri <span className="font-semibold text-foreground">Drilltools Company</span> – urubuga rwizewe kandi rworoshye gukoresha mu gushora imari no kunguka!
+          Injira kuri <span className="font-semibold text-foreground">Samsung World Technology</span> – urubuga rwizewe kandi rworoshye gukoresha mu gushora imari no kunguka!
         </p>
         <div className="p-3 bg-primary/10 border border-primary/20 rounded-xl mb-3">
           <p className="text-sm font-semibold text-primary">🎉 Itangazo rishya:</p>
