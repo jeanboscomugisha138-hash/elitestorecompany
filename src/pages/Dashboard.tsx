@@ -27,7 +27,7 @@ export default function Dashboard() {
   return (
     <div className="page-container bg-background">
       <ChannelPopup />
-      <AnnouncementPopup />
+      
 
       {/* Header */}
       <div className="flex items-center justify-between mb-6 animate-fade-in">
