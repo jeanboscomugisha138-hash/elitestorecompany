@@ -16,7 +16,7 @@ import { StatCard } from '@/components/StatCard';
 import { ActionButton } from '@/components/ActionButton';
 import { BottomNav } from '@/components/BottomNav';
 import { ChannelPopup } from '@/components/ChannelPopup';
-import { AnnouncementPopup } from '@/components/AnnouncementPopup';
+
 import { CustomerServiceButton } from '@/components/CustomerServiceButton';
 
 export default function Dashboard() {
@@ -27,7 +27,7 @@ export default function Dashboard() {
   return (
     <div className="page-container bg-background">
       <ChannelPopup />
-      <AnnouncementPopup />
+      
 
       {/* Header */}
       <div className="flex items-center justify-between mb-6 animate-fade-in">
