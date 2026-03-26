@@ -16,7 +16,7 @@ import { StatCard } from '@/components/StatCard';
 import { ActionButton } from '@/components/ActionButton';
 import { BottomNav } from '@/components/BottomNav';
 import { ChannelPopup } from '@/components/ChannelPopup';
-import { AnnouncementPopup } from '@/components/AnnouncementPopup';
+
 import { CustomerServiceButton } from '@/components/CustomerServiceButton';
 
 export default function Dashboard() {
