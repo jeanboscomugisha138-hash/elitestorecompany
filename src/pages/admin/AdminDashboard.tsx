@@ -18,12 +18,26 @@ import {
   Trash2,
   Eye,
   XCircle,
+  Gift,
+  Plus,
+  ToggleLeft,
+  ToggleRight,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
-type TabType = 'users' | 'products' | 'deposits' | 'withdrawals';
+type TabType = 'users' | 'products' | 'deposits' | 'withdrawals' | 'giftcodes';
+
+interface GiftCode {
+  id: string;
+  code: string;
+  amount: number;
+  max_uses: number;
+  current_uses: number;
+  is_active: boolean;
+  created_at: string;
+}
 
 interface Profile {
   id: string;
@@ -89,6 +103,10 @@ export default function AdminDashboard() {
   const [viewingInvestmentsUser, setViewingInvestmentsUser] = useState<Profile | null>(null);
   const [userInvestments, setUserInvestments] = useState<UserInvestment[]>([]);
   const [loadingInvestments, setLoadingInvestments] = useState(false);
+  const [giftCodes, setGiftCodes] = useState<GiftCode[]>([]);
+  const [newGiftCode, setNewGiftCode] = useState({ code: '', amount: '', max_uses: '1' });
+  const [creatingGiftCode, setCreatingGiftCode] = useState(false);
+  const [showNewGiftForm, setShowNewGiftForm] = useState(false);
   const [cancellingInvestmentId, setCancellingInvestmentId] = useState<string | null>(null);
   const [processingTxId, setProcessingTxId] = useState<string | null>(null);
   const [editProductData, setEditProductData] = useState({
@@ -144,6 +162,9 @@ export default function AdminDashboard() {
     } else if (activeTab === 'withdrawals') {
       const { data } = await supabase.from('withdrawal_transactions').select('*').order('created_at', { ascending: false });
       setWithdrawals(data || []);
+    } else if (activeTab === 'giftcodes') {
+      const { data } = await supabase.from('gift_codes').select('*').order('created_at', { ascending: false });
+      setGiftCodes((data as GiftCode[]) || []);
     }
 
     setIsLoading(false);
@@ -510,11 +531,54 @@ export default function AdminDashboard() {
     }
   };
 
+  const createGiftCode = async () => {
+    const code = newGiftCode.code.trim().toUpperCase();
+    const amount = parseFloat(newGiftCode.amount);
+    const maxUses = parseInt(newGiftCode.max_uses);
+    if (!code || isNaN(amount) || amount <= 0 || isNaN(maxUses) || maxUses <= 0) {
+      toast.error('Please fill all fields correctly');
+      return;
+    }
+    setCreatingGiftCode(true);
+    const { error } = await supabase.from('gift_codes').insert({ code, amount, max_uses: maxUses } as any);
+    if (error) {
+      toast.error(error.message.includes('duplicate') ? 'Code already exists' : 'Failed to create gift code');
+    } else {
+      toast.success(`Gift code "${code}" created`);
+      setNewGiftCode({ code: '', amount: '', max_uses: '1' });
+      setShowNewGiftForm(false);
+      fetchData();
+    }
+    setCreatingGiftCode(false);
+  };
+
+  const toggleGiftCodeActive = async (gc: GiftCode) => {
+    const { error } = await supabase.from('gift_codes').update({ is_active: !gc.is_active } as any).eq('id', gc.id);
+    if (error) {
+      toast.error('Failed to update gift code');
+    } else {
+      toast.success(`Gift code ${!gc.is_active ? 'activated' : 'deactivated'}`);
+      fetchData();
+    }
+  };
+
+  const deleteGiftCode = async (gc: GiftCode) => {
+    if (!window.confirm(`Delete gift code "${gc.code}"?`)) return;
+    const { error } = await supabase.from('gift_codes').delete().eq('id', gc.id);
+    if (error) {
+      toast.error('Failed to delete gift code');
+    } else {
+      toast.success('Gift code deleted');
+      fetchData();
+    }
+  };
+
   const tabs = [
     { id: 'users' as TabType, label: 'Users', icon: Users },
     { id: 'products' as TabType, label: 'Products', icon: Package },
     { id: 'deposits' as TabType, label: 'Deposits', icon: ArrowDownToLine },
     { id: 'withdrawals' as TabType, label: 'Withdrawals', icon: ArrowUpFromLine },
+    { id: 'giftcodes' as TabType, label: 'Gift Codes', icon: Gift },
   ];
 
   const formatDate = (dateString: string) => {
@@ -1058,6 +1122,109 @@ export default function AdminDashboard() {
                                 </button>
                               </div>
                             )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'giftcodes' && (
+              <div className="bg-card rounded-2xl shadow-card overflow-hidden">
+                <div className="p-4 border-b border-border flex items-center justify-between">
+                  <h2 className="font-semibold text-foreground">Gift Codes Management</h2>
+                  <button
+                    onClick={() => setShowNewGiftForm(!showNewGiftForm)}
+                    className="flex items-center gap-2 px-3 py-2 bg-primary text-primary-foreground rounded-xl text-sm font-medium hover:bg-primary/90 transition-colors"
+                  >
+                    <Plus className="w-4 h-4" /> New Code
+                  </button>
+                </div>
+
+                {showNewGiftForm && (
+                  <div className="p-4 border-b border-border bg-muted/50">
+                    <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                      <input
+                        type="text"
+                        placeholder="Code (e.g. WELCOME500)"
+                        value={newGiftCode.code}
+                        onChange={(e) => setNewGiftCode({ ...newGiftCode, code: e.target.value.toUpperCase() })}
+                        className="px-3 py-2 border border-border rounded-xl bg-background text-foreground text-sm placeholder:text-muted-foreground"
+                      />
+                      <input
+                        type="number"
+                        placeholder="Amount (RWF)"
+                        value={newGiftCode.amount}
+                        onChange={(e) => setNewGiftCode({ ...newGiftCode, amount: e.target.value })}
+                        className="px-3 py-2 border border-border rounded-xl bg-background text-foreground text-sm placeholder:text-muted-foreground"
+                      />
+                      <input
+                        type="number"
+                        placeholder="Max uses"
+                        value={newGiftCode.max_uses}
+                        onChange={(e) => setNewGiftCode({ ...newGiftCode, max_uses: e.target.value })}
+                        className="px-3 py-2 border border-border rounded-xl bg-background text-foreground text-sm placeholder:text-muted-foreground"
+                      />
+                      <button
+                        onClick={createGiftCode}
+                        disabled={creatingGiftCode}
+                        className="px-4 py-2 bg-primary text-primary-foreground rounded-xl text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+                      >
+                        {creatingGiftCode ? 'Creating...' : 'Create'}
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-muted">
+                      <tr>
+                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Code</th>
+                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Amount</th>
+                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Uses</th>
+                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Status</th>
+                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Created</th>
+                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {giftCodes.length === 0 ? (
+                        <tr>
+                          <td colSpan={6} className="p-8 text-center text-muted-foreground">No gift codes yet</td>
+                        </tr>
+                      ) : giftCodes.map((gc) => (
+                        <tr key={gc.id} className="border-b border-border hover:bg-muted/50">
+                          <td className="p-4 font-mono font-bold text-foreground tracking-wider">{gc.code}</td>
+                          <td className="p-4 text-primary font-medium">{gc.amount.toLocaleString()} RWF</td>
+                          <td className="p-4 text-muted-foreground">{gc.current_uses} / {gc.max_uses}</td>
+                          <td className="p-4">
+                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              gc.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                            }`}>
+                              {gc.is_active ? 'Active' : 'Inactive'}
+                            </span>
+                          </td>
+                          <td className="p-4 text-muted-foreground">{formatDate(gc.created_at)}</td>
+                          <td className="p-4">
+                            <div className="flex gap-1">
+                              <button
+                                onClick={() => toggleGiftCodeActive(gc)}
+                                className="p-2 text-secondary hover:bg-secondary/10 rounded-lg transition-colors"
+                                title={gc.is_active ? 'Deactivate' : 'Activate'}
+                              >
+                                {gc.is_active ? <ToggleRight className="w-4 h-4" /> : <ToggleLeft className="w-4 h-4" />}
+                              </button>
+                              <button
+                                onClick={() => deleteGiftCode(gc)}
+                                className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
+                                title="Delete"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       ))}
