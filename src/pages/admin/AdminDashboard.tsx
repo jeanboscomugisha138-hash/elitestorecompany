@@ -162,6 +162,9 @@ export default function AdminDashboard() {
     } else if (activeTab === 'withdrawals') {
       const { data } = await supabase.from('withdrawal_transactions').select('*').order('created_at', { ascending: false });
       setWithdrawals(data || []);
+    } else if (activeTab === 'giftcodes') {
+      const { data } = await supabase.from('gift_codes').select('*').order('created_at', { ascending: false });
+      setGiftCodes((data as GiftCode[]) || []);
     }
 
     setIsLoading(false);
