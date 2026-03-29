@@ -103,6 +103,10 @@ export default function AdminDashboard() {
   const [viewingInvestmentsUser, setViewingInvestmentsUser] = useState<Profile | null>(null);
   const [userInvestments, setUserInvestments] = useState<UserInvestment[]>([]);
   const [loadingInvestments, setLoadingInvestments] = useState(false);
+  const [giftCodes, setGiftCodes] = useState<GiftCode[]>([]);
+  const [newGiftCode, setNewGiftCode] = useState({ code: '', amount: '', max_uses: '1' });
+  const [creatingGiftCode, setCreatingGiftCode] = useState(false);
+  const [showNewGiftForm, setShowNewGiftForm] = useState(false);
   const [cancellingInvestmentId, setCancellingInvestmentId] = useState<string | null>(null);
   const [processingTxId, setProcessingTxId] = useState<string | null>(null);
   const [editProductData, setEditProductData] = useState({
