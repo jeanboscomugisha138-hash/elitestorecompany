@@ -531,11 +531,54 @@ export default function AdminDashboard() {
     }
   };
 
+  const createGiftCode = async () => {
+    const code = newGiftCode.code.trim().toUpperCase();
+    const amount = parseFloat(newGiftCode.amount);
+    const maxUses = parseInt(newGiftCode.max_uses);
+    if (!code || isNaN(amount) || amount <= 0 || isNaN(maxUses) || maxUses <= 0) {
+      toast.error('Please fill all fields correctly');
+      return;
+    }
+    setCreatingGiftCode(true);
+    const { error } = await supabase.from('gift_codes').insert({ code, amount, max_uses: maxUses } as any);
+    if (error) {
+      toast.error(error.message.includes('duplicate') ? 'Code already exists' : 'Failed to create gift code');
+    } else {
+      toast.success(`Gift code "${code}" created`);
+      setNewGiftCode({ code: '', amount: '', max_uses: '1' });
+      setShowNewGiftForm(false);
+      fetchData();
+    }
+    setCreatingGiftCode(false);
+  };
+
+  const toggleGiftCodeActive = async (gc: GiftCode) => {
+    const { error } = await supabase.from('gift_codes').update({ is_active: !gc.is_active } as any).eq('id', gc.id);
+    if (error) {
+      toast.error('Failed to update gift code');
+    } else {
+      toast.success(`Gift code ${!gc.is_active ? 'activated' : 'deactivated'}`);
+      fetchData();
+    }
+  };
+
+  const deleteGiftCode = async (gc: GiftCode) => {
+    if (!window.confirm(`Delete gift code "${gc.code}"?`)) return;
+    const { error } = await supabase.from('gift_codes').delete().eq('id', gc.id);
+    if (error) {
+      toast.error('Failed to delete gift code');
+    } else {
+      toast.success('Gift code deleted');
+      fetchData();
+    }
+  };
+
   const tabs = [
     { id: 'users' as TabType, label: 'Users', icon: Users },
     { id: 'products' as TabType, label: 'Products', icon: Package },
     { id: 'deposits' as TabType, label: 'Deposits', icon: ArrowDownToLine },
     { id: 'withdrawals' as TabType, label: 'Withdrawals', icon: ArrowUpFromLine },
+    { id: 'giftcodes' as TabType, label: 'Gift Codes', icon: Gift },
   ];
 
   const formatDate = (dateString: string) => {
