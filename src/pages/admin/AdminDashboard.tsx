@@ -27,7 +27,17 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
-type TabType = 'users' | 'products' | 'deposits' | 'withdrawals';
+type TabType = 'users' | 'products' | 'deposits' | 'withdrawals' | 'giftcodes';
+
+interface GiftCode {
+  id: string;
+  code: string;
+  amount: number;
+  max_uses: number;
+  current_uses: number;
+  is_active: boolean;
+  created_at: string;
+}
 
 interface Profile {
   id: string;
