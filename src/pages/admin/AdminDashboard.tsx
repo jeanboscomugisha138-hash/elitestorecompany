@@ -1130,6 +1130,109 @@ export default function AdminDashboard() {
                 </div>
               </div>
             )}
+
+            {activeTab === 'giftcodes' && (
+              <div className="bg-card rounded-2xl shadow-card overflow-hidden">
+                <div className="p-4 border-b border-border flex items-center justify-between">
+                  <h2 className="font-semibold text-foreground">Gift Codes Management</h2>
+                  <button
+                    onClick={() => setShowNewGiftForm(!showNewGiftForm)}
+                    className="flex items-center gap-2 px-3 py-2 bg-primary text-primary-foreground rounded-xl text-sm font-medium hover:bg-primary/90 transition-colors"
+                  >
+                    <Plus className="w-4 h-4" /> New Code
+                  </button>
+                </div>
+
+                {showNewGiftForm && (
+                  <div className="p-4 border-b border-border bg-muted/50">
+                    <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                      <input
+                        type="text"
+                        placeholder="Code (e.g. WELCOME500)"
+                        value={newGiftCode.code}
+                        onChange={(e) => setNewGiftCode({ ...newGiftCode, code: e.target.value.toUpperCase() })}
+                        className="px-3 py-2 border border-border rounded-xl bg-background text-foreground text-sm placeholder:text-muted-foreground"
+                      />
+                      <input
+                        type="number"
+                        placeholder="Amount (RWF)"
+                        value={newGiftCode.amount}
+                        onChange={(e) => setNewGiftCode({ ...newGiftCode, amount: e.target.value })}
+                        className="px-3 py-2 border border-border rounded-xl bg-background text-foreground text-sm placeholder:text-muted-foreground"
+                      />
+                      <input
+                        type="number"
+                        placeholder="Max uses"
+                        value={newGiftCode.max_uses}
+                        onChange={(e) => setNewGiftCode({ ...newGiftCode, max_uses: e.target.value })}
+                        className="px-3 py-2 border border-border rounded-xl bg-background text-foreground text-sm placeholder:text-muted-foreground"
+                      />
+                      <button
+                        onClick={createGiftCode}
+                        disabled={creatingGiftCode}
+                        className="px-4 py-2 bg-primary text-primary-foreground rounded-xl text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+                      >
+                        {creatingGiftCode ? 'Creating...' : 'Create'}
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-muted">
+                      <tr>
+                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Code</th>
+                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Amount</th>
+                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Uses</th>
+                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Status</th>
+                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Created</th>
+                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {giftCodes.length === 0 ? (
+                        <tr>
+                          <td colSpan={6} className="p-8 text-center text-muted-foreground">No gift codes yet</td>
+                        </tr>
+                      ) : giftCodes.map((gc) => (
+                        <tr key={gc.id} className="border-b border-border hover:bg-muted/50">
+                          <td className="p-4 font-mono font-bold text-foreground tracking-wider">{gc.code}</td>
+                          <td className="p-4 text-primary font-medium">{gc.amount.toLocaleString()} RWF</td>
+                          <td className="p-4 text-muted-foreground">{gc.current_uses} / {gc.max_uses}</td>
+                          <td className="p-4">
+                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              gc.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                            }`}>
+                              {gc.is_active ? 'Active' : 'Inactive'}
+                            </span>
+                          </td>
+                          <td className="p-4 text-muted-foreground">{formatDate(gc.created_at)}</td>
+                          <td className="p-4">
+                            <div className="flex gap-1">
+                              <button
+                                onClick={() => toggleGiftCodeActive(gc)}
+                                className="p-2 text-secondary hover:bg-secondary/10 rounded-lg transition-colors"
+                                title={gc.is_active ? 'Deactivate' : 'Activate'}
+                              >
+                                {gc.is_active ? <ToggleRight className="w-4 h-4" /> : <ToggleLeft className="w-4 h-4" />}
+                              </button>
+                              <button
+                                onClick={() => deleteGiftCode(gc)}
+                                className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
+                                title="Delete"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
           </>
         )}
       </div>
