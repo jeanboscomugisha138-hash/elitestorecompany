@@ -27,9 +27,9 @@ export default function Referral() {
   const [isLoading, setIsLoading] = useState(true);
   
   // Use the published domain for the referral link
-  const baseUrl = 'https://samsung-world-technology.lovable.app';
+  const baseUrl = 'https://samsung-worldtechnology.lovable.app';
   const referralLink = `${baseUrl}/signup?ref=${profile?.referral_code || 'XXXXXX'}`;
-  const shortLink = `samsung-world-technology.lovable.app/signup?ref=${profile?.referral_code || 'XXXXXX'}`;
+  const shortLink = `samsung-worldtechnology.lovable.app/signup?ref=${profile?.referral_code || 'XXXXXX'}`;
 
   const level1 = teamMembers.filter(m => m.level === 1);
   const level2 = teamMembers.filter(m => m.level === 2);
