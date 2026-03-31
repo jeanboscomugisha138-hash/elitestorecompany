@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Phone, Lock, User, ArrowRight, Smartphone, ShieldCheck, Eye, EyeOff, Gift } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import { SuccessNotification } from '@/components/SuccessNotification';
 
 export default function Signup() {
   const [fullName, setFullName] = useState('');
