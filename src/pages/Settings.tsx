@@ -23,6 +23,7 @@ import {
   Wallet,
   Loader2,
 } from 'lucide-react';
+import { SuccessNotification } from '@/components/SuccessNotification';
 
 export default function Settings() {
   const { profile, user, signOut, refreshProfile } = useAuth();
