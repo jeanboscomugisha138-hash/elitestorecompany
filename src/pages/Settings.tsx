@@ -31,6 +31,7 @@ export default function Settings() {
   const [giftDialogOpen, setGiftDialogOpen] = useState(false);
   const [giftCode, setGiftCode] = useState('');
   const [isRedeeming, setIsRedeeming] = useState(false);
+  const [giftSuccess, setGiftSuccess] = useState<{ show: boolean; amount: number }>({ show: false, amount: 0 });
 
   const formatRWF = (amount: number) => `${amount.toLocaleString()} RWF`;
 
