@@ -65,8 +65,7 @@ export default function Signup() {
       return;
     }
 
-    toast.success('Account created! You received 1,500 RWF bonus!');
-    navigate('/dashboard');
+    setShowWelcomeBonus(true);
   };
 
   return (
