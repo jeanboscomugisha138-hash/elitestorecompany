@@ -6,6 +6,7 @@ import { BottomNav } from '@/components/BottomNav';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import { SuccessNotification } from '@/components/SuccessNotification';
 
 interface Product {
   id: string;
@@ -38,6 +39,7 @@ export default function Products() {
 
   const [investingId, setInvestingId] = useState<string | null>(null);
   const investingRef = useRef(false);
+  const [investSuccess, setInvestSuccess] = useState<{ show: boolean; amount: number; name: string }>({ show: false, amount: 0, name: '' });
 
   const handleInvest = async (productId: string) => {
     if (investingRef.current) return;
@@ -100,8 +102,10 @@ export default function Products() {
         return;
       }
 
-      toast.success(`Investment of ${product.investment_amount.toLocaleString()} RWF created!`);
       refreshProfile();
+      // Get product name from ProductCard mapping
+      const names: Record<string, string> = { '3500': 'Galaxy Buds', '6500': 'Galaxy Watch', '12000': 'Galaxy A15', '20000': 'Galaxy A35', '35000': 'Galaxy Tab A9', '60000': 'Galaxy Tab S9', '100000': 'Galaxy Book', '200000': 'Galaxy Book Pro', '500000': 'Samsung Smart TV', '1000000': 'Samsung Neo QLED' };
+      setInvestSuccess({ show: true, amount: product.investment_amount, name: names[product.investment_amount.toString()] || 'Samsung Device' });
     } finally {
       investingRef.current = false;
       setInvestingId(null);
@@ -147,6 +151,14 @@ export default function Products() {
           </div>
         ))}
       </div>
+
+      <SuccessNotification
+        isOpen={investSuccess.show}
+        onClose={() => setInvestSuccess({ show: false, amount: 0, name: '' })}
+        type="investment"
+        amount={investSuccess.amount}
+        productName={investSuccess.name}
+      />
 
       <BottomNav />
     </div>

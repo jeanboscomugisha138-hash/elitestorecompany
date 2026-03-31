@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Phone, Lock, User, ArrowRight, Smartphone, ShieldCheck, Eye, EyeOff, Gift } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import { SuccessNotification } from '@/components/SuccessNotification';
 
 export default function Signup() {
   const [fullName, setFullName] = useState('');
@@ -12,6 +13,7 @@ export default function Signup() {
   const [referralCode, setReferralCode] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showWelcomeBonus, setShowWelcomeBonus] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -63,8 +65,7 @@ export default function Signup() {
       return;
     }
 
-    toast.success('Account created! You received 1,500 RWF bonus!');
-    navigate('/dashboard');
+    setShowWelcomeBonus(true);
   };
 
   return (
@@ -198,6 +199,12 @@ export default function Signup() {
           </p>
         </div>
       </div>
+      <SuccessNotification
+        isOpen={showWelcomeBonus}
+        onClose={() => { setShowWelcomeBonus(false); navigate('/dashboard'); }}
+        type="welcome"
+        amount={1500}
+      />
     </div>
   );
 }

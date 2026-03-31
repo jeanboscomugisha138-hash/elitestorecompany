@@ -23,6 +23,7 @@ import {
   Wallet,
   Loader2,
 } from 'lucide-react';
+import { SuccessNotification } from '@/components/SuccessNotification';
 
 export default function Settings() {
   const { profile, user, signOut, refreshProfile } = useAuth();
@@ -30,6 +31,7 @@ export default function Settings() {
   const [giftDialogOpen, setGiftDialogOpen] = useState(false);
   const [giftCode, setGiftCode] = useState('');
   const [isRedeeming, setIsRedeeming] = useState(false);
+  const [giftSuccess, setGiftSuccess] = useState<{ show: boolean; amount: number }>({ show: false, amount: 0 });
 
   const formatRWF = (amount: number) => `${amount.toLocaleString()} RWF`;
 
@@ -53,10 +55,10 @@ export default function Settings() {
       if (error || data?.error) {
         toast({ title: data?.error || 'Failed to redeem code', variant: 'destructive' });
       } else {
-        toast({ title: data.message || 'Gift code redeemed!' });
         setGiftCode('');
         setGiftDialogOpen(false);
         await refreshProfile();
+        setGiftSuccess({ show: true, amount: data.amount || 0 });
       }
     } catch {
       toast({ title: 'Something went wrong', variant: 'destructive' });
@@ -185,6 +187,13 @@ export default function Settings() {
           </div>
         </DialogContent>
       </Dialog>
+
+      <SuccessNotification
+        isOpen={giftSuccess.show}
+        onClose={() => setGiftSuccess({ show: false, amount: 0 })}
+        type="gift"
+        amount={giftSuccess.amount}
+      />
 
       <BottomNav />
     </div>
