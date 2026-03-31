@@ -2,29 +2,34 @@ import productBuds from '@/assets/product-buds.png';
 import productWatch from '@/assets/product-watch.png';
 import productPhoneA15 from '@/assets/product-phone-a15.png';
 import productPhoneA35 from '@/assets/product-phone-a35.png';
+import productSpeaker from '@/assets/product-speaker.png';
+import productCharger from '@/assets/product-charger.png';
+import productFlip from '@/assets/product-flip.png';
 import productTabA9 from '@/assets/product-tab-a9.png';
-import productTabS9 from '@/assets/product-tab-s9.png';
 import productLaptopBook from '@/assets/product-laptop-book.png';
+import productMonitor from '@/assets/product-monitor.png';
+import productFold from '@/assets/product-fold.png';
 import productLaptopPro from '@/assets/product-laptop-pro.png';
 import productTvSmart from '@/assets/product-tv-smart.png';
 import productTvNeo from '@/assets/product-tv-neo.png';
 
 const productImages: Record<string, { image: string; name: string }> = {
-  '3500': { image: productBuds, name: 'Galaxy Buds' },
-  '6500': { image: productWatch, name: 'Galaxy Watch' },
-  '12000': { image: productPhoneA15, name: 'Galaxy A15' },
-  '20000': { image: productPhoneA35, name: 'Galaxy A35' },
-  '35000': { image: productTabA9, name: 'Galaxy Tab A9' },
-  '60000': { image: productTabS9, name: 'Galaxy Tab S9' },
-  '100000': { image: productLaptopBook, name: 'Galaxy Book' },
-  '200000': { image: productLaptopPro, name: 'Galaxy Book Pro' },
-  '500000': { image: productTvSmart, name: 'Samsung Smart TV' },
-  '1000000': { image: productTvNeo, name: 'Samsung Neo QLED' },
+  '3500':    { image: productBuds,       name: 'Galaxy Buds' },
+  '6500':    { image: productWatch,      name: 'Galaxy Watch' },
+  '10000':   { image: productSpeaker,    name: 'Galaxy Speaker' },
+  '20000':   { image: productPhoneA15,   name: 'Galaxy A15' },
+  '30000':   { image: productCharger,    name: 'Wireless Charger Duo' },
+  '40000':   { image: productFlip,       name: 'Galaxy Z Flip' },
+  '50000':   { image: productPhoneA35,   name: 'Galaxy A35' },
+  '100000':  { image: productTabA9,      name: 'Galaxy Tab A9' },
+  '250000':  { image: productLaptopBook, name: 'Galaxy Book' },
+  '500000':  { image: productTvSmart,    name: 'Samsung Smart TV' },
+  '1000000': { image: productTvNeo,      name: 'Samsung Neo QLED' },
 };
 
 function getProductInfo(investment: number) {
   const key = investment.toString();
-  return productImages[key] || { image: productPhoneA15, name: 'Samsung Device' };
+  return productImages[key] || { image: productFold, name: 'Samsung Device' };
 }
 
 interface ProductCardProps {
