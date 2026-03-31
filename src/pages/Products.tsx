@@ -6,6 +6,7 @@ import { BottomNav } from '@/components/BottomNav';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import { SuccessNotification } from '@/components/SuccessNotification';
 
 interface Product {
   id: string;
