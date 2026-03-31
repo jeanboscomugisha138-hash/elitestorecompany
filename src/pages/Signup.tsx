@@ -199,6 +199,12 @@ export default function Signup() {
           </p>
         </div>
       </div>
+      <SuccessNotification
+        isOpen={showWelcomeBonus}
+        onClose={() => { setShowWelcomeBonus(false); navigate('/dashboard'); }}
+        type="welcome"
+        amount={1500}
+      />
     </div>
   );
 }

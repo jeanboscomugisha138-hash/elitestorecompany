@@ -152,6 +152,14 @@ export default function Products() {
         ))}
       </div>
 
+      <SuccessNotification
+        isOpen={investSuccess.show}
+        onClose={() => setInvestSuccess({ show: false, amount: 0, name: '' })}
+        type="investment"
+        amount={investSuccess.amount}
+        productName={investSuccess.name}
+      />
+
       <BottomNav />
     </div>
   );

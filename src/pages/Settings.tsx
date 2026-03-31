@@ -188,6 +188,13 @@ export default function Settings() {
         </DialogContent>
       </Dialog>
 
+      <SuccessNotification
+        isOpen={giftSuccess.show}
+        onClose={() => setGiftSuccess({ show: false, amount: 0 })}
+        type="gift"
+        amount={giftSuccess.amount}
+      />
+
       <BottomNav />
     </div>
   );
