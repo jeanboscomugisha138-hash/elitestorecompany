@@ -102,8 +102,10 @@ export default function Products() {
         return;
       }
 
-      toast.success(`Investment of ${product.investment_amount.toLocaleString()} RWF created!`);
       refreshProfile();
+      // Get product name from ProductCard mapping
+      const names: Record<string, string> = { '3500': 'Galaxy Buds', '6500': 'Galaxy Watch', '12000': 'Galaxy A15', '20000': 'Galaxy A35', '35000': 'Galaxy Tab A9', '60000': 'Galaxy Tab S9', '100000': 'Galaxy Book', '200000': 'Galaxy Book Pro', '500000': 'Samsung Smart TV', '1000000': 'Samsung Neo QLED' };
+      setInvestSuccess({ show: true, amount: product.investment_amount, name: names[product.investment_amount.toString()] || 'Samsung Device' });
     } finally {
       investingRef.current = false;
       setInvestingId(null);
