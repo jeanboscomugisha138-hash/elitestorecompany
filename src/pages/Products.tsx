@@ -39,6 +39,7 @@ export default function Products() {
 
   const [investingId, setInvestingId] = useState<string | null>(null);
   const investingRef = useRef(false);
+  const [investSuccess, setInvestSuccess] = useState<{ show: boolean; amount: number; name: string }>({ show: false, amount: 0, name: '' });
 
   const handleInvest = async (productId: string) => {
     if (investingRef.current) return;
