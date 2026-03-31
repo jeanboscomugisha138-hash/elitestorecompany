@@ -55,10 +55,10 @@ export default function Settings() {
       if (error || data?.error) {
         toast({ title: data?.error || 'Failed to redeem code', variant: 'destructive' });
       } else {
-        toast({ title: data.message || 'Gift code redeemed!' });
         setGiftCode('');
         setGiftDialogOpen(false);
         await refreshProfile();
+        setGiftSuccess({ show: true, amount: data.amount || 0 });
       }
     } catch {
       toast({ title: 'Something went wrong', variant: 'destructive' });
