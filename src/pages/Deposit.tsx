@@ -160,8 +160,17 @@ export default function Deposit() {
             </p>
           </div>
 
-          <button type="submit" className="action-btn w-full" disabled={isLoading}>
-            {isLoading ? 'Submitting...' : 'Submit Deposit'}
+          {hasPending && (
+            <div className="flex items-start gap-2 p-3 bg-destructive/10 rounded-xl border border-destructive/20">
+              <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-destructive font-medium">
+                You have a pending deposit. Please wait for it to be approved or rejected before submitting another.
+              </p>
+            </div>
+          )}
+
+          <button type="submit" className="action-btn w-full" disabled={isLoading || hasPending}>
+            {isLoading ? 'Submitting...' : hasPending ? 'Pending Deposit Exists' : 'Submit Deposit'}
           </button>
         </form>
       </div>
