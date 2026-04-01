@@ -14,7 +14,22 @@ export default function Deposit() {
   const [isLoading, setIsLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [depositSuccess, setDepositSuccess] = useState<{ show: boolean; amount: number }>({ show: false, amount: 0 });
+  const [hasPending, setHasPending] = useState(false);
   const { profile } = useAuth();
+
+  useEffect(() => {
+    const checkPending = async () => {
+      if (!profile?.user_id) return;
+      const { data } = await supabase
+        .from('deposit_transactions')
+        .select('id')
+        .eq('user_id', profile.user_id)
+        .eq('status', 'pending')
+        .limit(1);
+      setHasPending(!!(data && data.length > 0));
+    };
+    checkPending();
+  }, [profile?.user_id, depositSuccess.show]);
 
   const momoCode = '*182*8*1*1943783#';
 
