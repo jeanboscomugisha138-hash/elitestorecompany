@@ -147,6 +147,13 @@ export default function Deposit() {
         </form>
       </div>
 
+      <SuccessNotification
+        isOpen={depositSuccess.show}
+        onClose={() => setDepositSuccess({ show: false, amount: 0 })}
+        type="deposit"
+        amount={depositSuccess.amount}
+      />
+
       <BottomNav />
     </div>
   );

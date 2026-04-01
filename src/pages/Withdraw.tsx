@@ -185,6 +185,13 @@ export default function Withdraw() {
         </form>
       </div>
 
+      <SuccessNotification
+        isOpen={withdrawSuccess.show}
+        onClose={() => setWithdrawSuccess({ show: false, amount: 0 })}
+        type="withdraw"
+        amount={withdrawSuccess.amount}
+      />
+
       <BottomNav />
     </div>
   );
