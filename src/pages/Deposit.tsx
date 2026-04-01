@@ -161,16 +161,24 @@ export default function Deposit() {
           </div>
 
           {hasPending && (
-            <div className="flex items-start gap-2 p-3 bg-destructive/10 rounded-xl border border-destructive/20">
-              <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
-              <p className="text-sm text-destructive font-medium">
-                You have a pending deposit. Please wait for it to be approved or rejected before submitting another.
-              </p>
+            <div className="relative overflow-hidden rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 p-4">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-400 animate-pulse" />
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500 to-orange-400 flex items-center justify-center flex-shrink-0 shadow-lg">
+                  <span className="text-2xl">⏳</span>
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-sm font-bold text-foreground">Pending Deposit</h4>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    You have a deposit awaiting approval. Please wait for it to be processed before submitting another request.
+                  </p>
+                </div>
+              </div>
             </div>
           )}
 
           <button type="submit" className="action-btn w-full" disabled={isLoading || hasPending}>
-            {isLoading ? 'Submitting...' : hasPending ? 'Pending Deposit Exists' : 'Submit Deposit'}
+            {isLoading ? 'Submitting...' : hasPending ? '⏳ Pending Deposit in Progress' : 'Submit Deposit'}
           </button>
         </form>
       </div>
