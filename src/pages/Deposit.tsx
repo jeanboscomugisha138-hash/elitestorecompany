@@ -44,6 +44,10 @@ export default function Deposit() {
     e.preventDefault();
     if (!phone || !name || !amount) return;
     if (isLoading) return;
+    if (hasPending) {
+      toast.error('You already have a pending deposit. Please wait for it to be processed.');
+      return;
+    }
 
     const amountNum = parseFloat(amount);
     if (amountNum < 3500) {
