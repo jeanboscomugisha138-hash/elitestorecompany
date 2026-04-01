@@ -54,7 +54,7 @@ export default function Deposit() {
       return;
     }
 
-    toast.success('Deposit request submitted! Will be confirmed within 5 minutes.');
+    setDepositSuccess({ show: true, amount: amountNum });
     setPhone('');
     setName('');
     setAmount('');
