@@ -3,6 +3,7 @@ import { ArrowLeft, Banknote, Info, Copy, Check, Phone, User } from 'lucide-reac
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { BottomNav } from '@/components/BottomNav';
+import { SuccessNotification } from '@/components/SuccessNotification';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 
