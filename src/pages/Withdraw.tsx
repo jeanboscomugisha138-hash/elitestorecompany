@@ -12,6 +12,7 @@ export default function Withdraw() {
   const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [withdrawSuccess, setWithdrawSuccess] = useState<{ show: boolean; amount: number }>({ show: false, amount: 0 });
   const { profile } = useAuth();
 
   const fee = amount ? Math.round(parseFloat(amount) * 0.1) : 0;
