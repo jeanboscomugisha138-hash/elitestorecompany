@@ -3,6 +3,7 @@ import { ArrowLeft, Phone, User, Banknote, Info, AlertCircle } from 'lucide-reac
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { BottomNav } from '@/components/BottomNav';
+import { SuccessNotification } from '@/components/SuccessNotification';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -11,6 +12,7 @@ export default function Withdraw() {
   const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [withdrawSuccess, setWithdrawSuccess] = useState<{ show: boolean; amount: number }>({ show: false, amount: 0 });
   const { profile } = useAuth();
 
   const fee = amount ? Math.round(parseFloat(amount) * 0.1) : 0;
@@ -78,7 +80,7 @@ export default function Withdraw() {
       return;
     }
 
-    toast.success('Withdrawal request submitted! Will be processed within 10 minutes.');
+    setWithdrawSuccess({ show: true, amount: amountNum });
     setPhone('');
     setName('');
     setAmount('');
@@ -182,6 +184,13 @@ export default function Withdraw() {
           </button>
         </form>
       </div>
+
+      <SuccessNotification
+        isOpen={withdrawSuccess.show}
+        onClose={() => setWithdrawSuccess({ show: false, amount: 0 })}
+        type="withdraw"
+        amount={withdrawSuccess.amount}
+      />
 
       <BottomNav />
     </div>

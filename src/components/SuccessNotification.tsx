@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { PopupModal } from './PopupModal';
 import { Gift, CheckCircle, TrendingUp, PartyPopper } from 'lucide-react';
 
-type NotificationType = 'welcome' | 'gift' | 'investment';
+type NotificationType = 'welcome' | 'gift' | 'investment' | 'deposit' | 'withdraw';
 
 interface SuccessNotificationProps {
   isOpen: boolean;
@@ -39,6 +39,20 @@ const config: Record<NotificationType, {
     subtitle: 'Your investment is now earning daily profits.',
     buttonText: 'View Dashboard',
     gradient: 'from-emerald-500 to-green-400',
+  },
+  deposit: {
+    icon: TrendingUp,
+    title: 'Deposit Submitted! 💰',
+    subtitle: 'Your deposit request will be confirmed within 5 minutes.',
+    buttonText: 'Got It!',
+    gradient: 'from-blue-500 to-cyan-400',
+  },
+  withdraw: {
+    icon: TrendingUp,
+    title: 'Withdrawal Submitted! 🏦',
+    subtitle: 'Your withdrawal will be processed within 10 minutes.',
+    buttonText: 'Got It!',
+    gradient: 'from-amber-500 to-orange-400',
   },
 };
 

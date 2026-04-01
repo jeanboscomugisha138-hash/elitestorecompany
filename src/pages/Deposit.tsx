@@ -3,6 +3,7 @@ import { ArrowLeft, Banknote, Info, Copy, Check, Phone, User } from 'lucide-reac
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { BottomNav } from '@/components/BottomNav';
+import { SuccessNotification } from '@/components/SuccessNotification';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -12,6 +13,7 @@ export default function Deposit() {
   const [amount, setAmount] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [depositSuccess, setDepositSuccess] = useState<{ show: boolean; amount: number }>({ show: false, amount: 0 });
   const { profile } = useAuth();
 
   const momoCode = '*182*8*1*1943783#';
@@ -52,7 +54,7 @@ export default function Deposit() {
       return;
     }
 
-    toast.success('Deposit request submitted! Will be confirmed within 5 minutes.');
+    setDepositSuccess({ show: true, amount: amountNum });
     setPhone('');
     setName('');
     setAmount('');
@@ -144,6 +146,13 @@ export default function Deposit() {
           </button>
         </form>
       </div>
+
+      <SuccessNotification
+        isOpen={depositSuccess.show}
+        onClose={() => setDepositSuccess({ show: false, amount: 0 })}
+        type="deposit"
+        amount={depositSuccess.amount}
+      />
 
       <BottomNav />
     </div>
