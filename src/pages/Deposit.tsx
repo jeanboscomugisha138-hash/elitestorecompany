@@ -13,6 +13,7 @@ export default function Deposit() {
   const [amount, setAmount] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [depositSuccess, setDepositSuccess] = useState<{ show: boolean; amount: number }>({ show: false, amount: 0 });
   const { profile } = useAuth();
 
   const momoCode = '*182*8*1*1943783#';
