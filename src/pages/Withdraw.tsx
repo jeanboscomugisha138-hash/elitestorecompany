@@ -36,6 +36,12 @@ export default function Withdraw() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isLoading) return;
+
+    if (hasPending) {
+      toast.error('You already have a pending withdrawal. Please wait for it to be processed.');
+      return;
+    }
+
     const amountNum = parseInt(amount);
 
     if ((profile?.invested_amount || 0) <= 0) {
