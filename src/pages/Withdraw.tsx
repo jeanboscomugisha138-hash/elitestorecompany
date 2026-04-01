@@ -201,16 +201,24 @@ export default function Withdraw() {
           </div>
 
           {hasPending && (
-            <div className="flex items-start gap-2 p-3 bg-destructive/10 rounded-xl border border-destructive/20">
-              <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
-              <p className="text-sm text-destructive font-medium">
-                You have a pending withdrawal. Please wait for it to be approved or rejected before submitting another.
-              </p>
+            <div className="relative overflow-hidden rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 p-4">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-400 animate-pulse" />
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500 to-orange-400 flex items-center justify-center flex-shrink-0 shadow-lg">
+                  <span className="text-2xl">⏳</span>
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-sm font-bold text-foreground">Pending Withdrawal</h4>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    You have a withdrawal awaiting processing. Please wait for it to be completed before submitting another request.
+                  </p>
+                </div>
+              </div>
             </div>
           )}
 
           <button type="submit" className="action-btn w-full" disabled={isLoading || hasPending}>
-            {isLoading ? 'Submitting...' : hasPending ? 'Pending Withdrawal Exists' : 'Submit Withdrawal'}
+            {isLoading ? 'Submitting...' : hasPending ? '⏳ Pending Withdrawal in Progress' : 'Submit Withdrawal'}
           </button>
         </form>
       </div>
