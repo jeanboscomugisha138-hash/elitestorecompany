@@ -80,7 +80,7 @@ export default function Withdraw() {
       return;
     }
 
-    toast.success('Withdrawal request submitted! Will be processed within 10 minutes.');
+    setWithdrawSuccess({ show: true, amount: amountNum });
     setPhone('');
     setName('');
     setAmount('');
