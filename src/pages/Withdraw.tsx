@@ -13,7 +13,22 @@ export default function Withdraw() {
   const [amount, setAmount] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [withdrawSuccess, setWithdrawSuccess] = useState<{ show: boolean; amount: number }>({ show: false, amount: 0 });
+  const [hasPending, setHasPending] = useState(false);
   const { profile } = useAuth();
+
+  useEffect(() => {
+    const checkPending = async () => {
+      if (!profile?.user_id) return;
+      const { data } = await supabase
+        .from('withdrawal_transactions')
+        .select('id')
+        .eq('user_id', profile.user_id)
+        .eq('status', 'pending')
+        .limit(1);
+      setHasPending(!!(data && data.length > 0));
+    };
+    checkPending();
+  }, [profile?.user_id, withdrawSuccess.show]);
 
   const fee = amount ? Math.round(parseFloat(amount) * 0.1) : 0;
   const amountToReceive = amount ? parseFloat(amount) - fee : 0;
