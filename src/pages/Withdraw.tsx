@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ArrowLeft, Phone, User, Banknote, Info, AlertCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -13,7 +13,22 @@ export default function Withdraw() {
   const [amount, setAmount] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [withdrawSuccess, setWithdrawSuccess] = useState<{ show: boolean; amount: number }>({ show: false, amount: 0 });
+  const [hasPending, setHasPending] = useState(false);
   const { profile } = useAuth();
+
+  useEffect(() => {
+    const checkPending = async () => {
+      if (!profile?.user_id) return;
+      const { data } = await supabase
+        .from('withdrawal_transactions')
+        .select('id')
+        .eq('user_id', profile.user_id)
+        .eq('status', 'pending')
+        .limit(1);
+      setHasPending(!!(data && data.length > 0));
+    };
+    checkPending();
+  }, [profile?.user_id, withdrawSuccess.show]);
 
   const fee = amount ? Math.round(parseFloat(amount) * 0.1) : 0;
   const amountToReceive = amount ? parseFloat(amount) - fee : 0;
@@ -21,6 +36,12 @@ export default function Withdraw() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isLoading) return;
+
+    if (hasPending) {
+      toast.error('You already have a pending withdrawal. Please wait for it to be processed.');
+      return;
+    }
+
     const amountNum = parseInt(amount);
 
     if ((profile?.invested_amount || 0) <= 0) {
@@ -179,8 +200,17 @@ export default function Withdraw() {
             </p>
           </div>
 
-          <button type="submit" className="action-btn w-full" disabled={isLoading}>
-            {isLoading ? 'Submitting...' : 'Submit Withdrawal'}
+          {hasPending && (
+            <div className="flex items-start gap-2 p-3 bg-destructive/10 rounded-xl border border-destructive/20">
+              <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-destructive font-medium">
+                You have a pending withdrawal. Please wait for it to be approved or rejected before submitting another.
+              </p>
+            </div>
+          )}
+
+          <button type="submit" className="action-btn w-full" disabled={isLoading || hasPending}>
+            {isLoading ? 'Submitting...' : hasPending ? 'Pending Withdrawal Exists' : 'Submit Withdrawal'}
           </button>
         </form>
       </div>

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { ArrowLeft, Banknote, Info, Copy, Check, Phone, User } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ArrowLeft, Banknote, Info, Copy, Check, Phone, User, AlertCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { BottomNav } from '@/components/BottomNav';
@@ -14,7 +14,22 @@ export default function Deposit() {
   const [isLoading, setIsLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [depositSuccess, setDepositSuccess] = useState<{ show: boolean; amount: number }>({ show: false, amount: 0 });
+  const [hasPending, setHasPending] = useState(false);
   const { profile } = useAuth();
+
+  useEffect(() => {
+    const checkPending = async () => {
+      if (!profile?.user_id) return;
+      const { data } = await supabase
+        .from('deposit_transactions')
+        .select('id')
+        .eq('user_id', profile.user_id)
+        .eq('status', 'pending')
+        .limit(1);
+      setHasPending(!!(data && data.length > 0));
+    };
+    checkPending();
+  }, [profile?.user_id, depositSuccess.show]);
 
   const momoCode = '*182*8*1*1943783#';
 
@@ -29,6 +44,10 @@ export default function Deposit() {
     e.preventDefault();
     if (!phone || !name || !amount) return;
     if (isLoading) return;
+    if (hasPending) {
+      toast.error('You already have a pending deposit. Please wait for it to be processed.');
+      return;
+    }
 
     const amountNum = parseFloat(amount);
     if (amountNum < 3500) {
@@ -141,8 +160,17 @@ export default function Deposit() {
             </p>
           </div>
 
-          <button type="submit" className="action-btn w-full" disabled={isLoading}>
-            {isLoading ? 'Submitting...' : 'Submit Deposit'}
+          {hasPending && (
+            <div className="flex items-start gap-2 p-3 bg-destructive/10 rounded-xl border border-destructive/20">
+              <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-destructive font-medium">
+                You have a pending deposit. Please wait for it to be approved or rejected before submitting another.
+              </p>
+            </div>
+          )}
+
+          <button type="submit" className="action-btn w-full" disabled={isLoading || hasPending}>
+            {isLoading ? 'Submitting...' : hasPending ? 'Pending Deposit Exists' : 'Submit Deposit'}
           </button>
         </form>
       </div>
