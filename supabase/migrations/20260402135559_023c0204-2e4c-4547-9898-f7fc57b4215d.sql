@@ -1,0 +1,1 @@
+DROP TRIGGER IF EXISTS on_investment_created ON public.user_investments;
