@@ -14,6 +14,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { BottomNav } from '@/components/BottomNav';
 import { ChannelPopup } from '@/components/ChannelPopup';
 import { CustomerServiceButton } from '@/components/CustomerServiceButton';
+import { ReferralCommissionListener } from '@/components/ReferralCommissionListener';
 import { Link } from 'react-router-dom';
 
 export default function Dashboard() {
@@ -24,6 +25,7 @@ export default function Dashboard() {
   return (
     <div className="page-container bg-background">
       <ChannelPopup />
+      <ReferralCommissionListener />
 
       {/* Top Bar */}
       <div className="flex items-center justify-between mb-4 animate-fade-in">
