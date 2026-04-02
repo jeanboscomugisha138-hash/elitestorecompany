@@ -25,6 +25,7 @@ export default function Dashboard() {
   return (
     <div className="page-container bg-background">
       <ChannelPopup />
+      <ReferralCommissionListener />
 
       {/* Top Bar */}
       <div className="flex items-center justify-between mb-4 animate-fade-in">
