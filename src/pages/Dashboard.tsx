@@ -14,6 +14,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { BottomNav } from '@/components/BottomNav';
 import { ChannelPopup } from '@/components/ChannelPopup';
 import { CustomerServiceButton } from '@/components/CustomerServiceButton';
+import { ReferralCommissionListener } from '@/components/ReferralCommissionListener';
 import { Link } from 'react-router-dom';
 
 export default function Dashboard() {
