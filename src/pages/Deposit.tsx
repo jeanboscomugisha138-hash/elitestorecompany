@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Banknote, Info, Copy, Check, Phone, User, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Banknote, Info, Copy, Check, Phone, User, Wallet, Shield, Clock, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { BottomNav } from '@/components/BottomNav';
@@ -17,6 +17,9 @@ export default function Deposit() {
   const [hasPending, setHasPending] = useState(false);
   const { profile } = useAuth();
 
+  const momoNumber = '0794493396';
+  const momoName = 'Aphrodis ABAYIGAMBA';
+
   useEffect(() => {
     const checkPending = async () => {
       if (!profile?.user_id) return;
@@ -31,12 +34,10 @@ export default function Deposit() {
     checkPending();
   }, [profile?.user_id, depositSuccess.show]);
 
-  const momoCode = '*182*8*1*1943783#';
-
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(momoCode);
+    await navigator.clipboard.writeText(momoNumber);
     setCopied(true);
-    toast.success('Code copied!');
+    toast.success('Number copied!');
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -80,6 +81,8 @@ export default function Deposit() {
     setIsLoading(false);
   };
 
+  const quickAmounts = [5000, 10000, 25000, 50000];
+
   return (
     <div className="page-container bg-background">
       {/* Header */}
@@ -93,94 +96,175 @@ export default function Deposit() {
         <h1 className="page-title mb-0 flex-1 text-left">Deposit</h1>
       </div>
 
-      {/* Form */}
-      <div className="bg-card rounded-3xl p-6 shadow-card animate-slide-up">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="relative">
-            <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-            <input
-              type="tel"
-              placeholder="Phone number used for payment"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="input-field pl-12"
-              required
-            />
+      {/* Mobile Money Info Card */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary/90 to-secondary rounded-3xl p-5 mb-5 shadow-button">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-primary-foreground/10 rounded-full -translate-y-10 translate-x-10" />
+        <div className="absolute bottom-0 left-0 w-20 h-20 bg-primary-foreground/5 rounded-full translate-y-8 -translate-x-8" />
+        
+        <div className="relative z-10">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 rounded-lg bg-primary-foreground/20 flex items-center justify-center">
+              <Wallet className="w-4 h-4 text-primary-foreground" />
+            </div>
+            <span className="text-sm font-semibold text-primary-foreground/80 uppercase tracking-wider">Send Money To</span>
           </div>
 
-          <div className="relative">
-            <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-            <input
-              type="text"
-              placeholder="Name used for payment"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="input-field pl-12"
-              required
-            />
+          <p className="text-lg font-bold text-primary-foreground mb-1">{momoName}</p>
+          
+          <div className="flex items-center gap-3 mt-3">
+            <div className="flex-1 bg-primary-foreground/15 backdrop-blur-sm rounded-xl px-4 py-3">
+              <p className="text-2xl font-extrabold text-primary-foreground tracking-widest">{momoNumber}</p>
+            </div>
+            <button
+              type="button"
+              onClick={handleCopy}
+              className="w-12 h-12 rounded-xl bg-primary-foreground/20 hover:bg-primary-foreground/30 flex items-center justify-center transition-all active:scale-95"
+            >
+              {copied ? (
+                <Check className="w-5 h-5 text-primary-foreground" />
+              ) : (
+                <Copy className="w-5 h-5 text-primary-foreground" />
+              )}
+            </button>
           </div>
+        </div>
+      </div>
 
-          <div className="relative">
-            <Banknote className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-            <input
-              type="number"
-              placeholder="Amount (min 3,500 RWF)"
-              min="3500"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              className="input-field pl-12"
-              required
-            />
+      {/* Steps */}
+      <div className="flex items-center gap-3 mb-5 px-1">
+        {[
+          { step: '1', label: 'Send money' },
+          { step: '2', label: 'Fill form' },
+          { step: '3', label: 'Get confirmed' },
+        ].map((s, i) => (
+          <div key={i} className="flex items-center gap-2 flex-1">
+            <div className="w-6 h-6 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0">
+              <span className="text-xs font-bold text-primary">{s.step}</span>
+            </div>
+            <span className="text-xs font-medium text-muted-foreground">{s.label}</span>
           </div>
+        ))}
+      </div>
 
-          {/* MOMO Pay Code */}
-          <div className="bg-primary/10 border-2 border-primary rounded-2xl p-4 text-center">
-            <p className="text-sm text-muted-foreground mb-1">Pay to: <span className="font-semibold text-foreground">Vestine</span></p>
-            <p className="text-sm text-muted-foreground mb-2">Dial this MOMO Pay Code:</p>
-            <div className="flex items-center justify-center gap-2">
-              <p className="text-xl font-bold text-primary tracking-wider">{momoCode}</p>
-              <button
-                type="button"
-                onClick={handleCopy}
-                className="p-2 rounded-lg bg-primary/20 hover:bg-primary/30 transition-colors"
-              >
-                {copied ? (
-                  <Check className="w-5 h-5 text-primary" />
-                ) : (
-                  <Copy className="w-5 h-5 text-primary" />
-                )}
-              </button>
+      {/* Form Card */}
+      <div className="bg-card rounded-3xl p-5 shadow-card animate-slide-up mb-5">
+        <div className="flex items-center gap-2 mb-4">
+          <Shield className="w-4 h-4 text-primary" />
+          <span className="text-sm font-semibold text-foreground">Payment Details</span>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <div>
+            <label className="text-xs font-medium text-muted-foreground mb-1 block ml-1">Phone Number</label>
+            <div className="relative">
+              <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input
+                type="tel"
+                placeholder="Phone used for payment"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="input-field pl-11 text-sm"
+                required
+              />
             </div>
           </div>
 
-          <div className="flex items-start gap-2 p-3 bg-accent rounded-xl">
-            <Info className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-            <p className="text-sm text-accent-foreground">
-              After dialing, fill the form above and submit. Deposit will be confirmed within 5 minutes.
-            </p>
+          <div>
+            <label className="text-xs font-medium text-muted-foreground mb-1 block ml-1">Full Name</label>
+            <div className="relative">
+              <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Name used for payment"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="input-field pl-11 text-sm"
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="text-xs font-medium text-muted-foreground mb-1 block ml-1">Amount (RWF)</label>
+            <div className="relative">
+              <Banknote className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <input
+                type="number"
+                placeholder="Min 3,500 RWF"
+                min="3500"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                className="input-field pl-11 text-sm"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Quick Amount Buttons */}
+          <div className="flex gap-2 flex-wrap">
+            {quickAmounts.map((q) => (
+              <button
+                key={q}
+                type="button"
+                onClick={() => setAmount(String(q))}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                  amount === String(q)
+                    ? 'bg-primary text-primary-foreground shadow-button'
+                    : 'bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary'
+                }`}
+              >
+                {q.toLocaleString()}
+              </button>
+            ))}
           </div>
 
           {hasPending && (
             <div className="relative overflow-hidden rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 p-4">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-400 animate-pulse" />
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500 to-orange-400 flex items-center justify-center flex-shrink-0 shadow-lg">
-                  <span className="text-2xl">⏳</span>
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-400 flex items-center justify-center flex-shrink-0">
+                  <Clock className="w-5 h-5 text-primary-foreground" />
                 </div>
                 <div className="flex-1">
                   <h4 className="text-sm font-bold text-foreground">Pending Deposit</h4>
                   <p className="text-xs text-muted-foreground mt-0.5">
-                    You have a deposit awaiting approval. Please wait for it to be processed before submitting another request.
+                    Please wait for your current deposit to be processed.
                   </p>
                 </div>
               </div>
             </div>
           )}
 
-          <button type="submit" className="action-btn w-full" disabled={isLoading || hasPending}>
-            {isLoading ? 'Submitting...' : hasPending ? '⏳ Pending Deposit in Progress' : 'Submit Deposit'}
+          <button type="submit" className="action-btn w-full flex items-center justify-center gap-2" disabled={isLoading || hasPending}>
+            {isLoading ? (
+              <>
+                <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                Submitting...
+              </>
+            ) : hasPending ? (
+              <>
+                <Clock className="w-4 h-4" />
+                Pending Deposit in Progress
+              </>
+            ) : (
+              <>
+                <CheckCircle2 className="w-4 h-4" />
+                Submit Deposit
+              </>
+            )}
           </button>
         </form>
+      </div>
+
+      {/* Info Footer */}
+      <div className="flex items-start gap-3 p-4 bg-card rounded-2xl shadow-card">
+        <Info className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+        <div>
+          <p className="text-sm font-semibold text-foreground mb-1">How it works</p>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Send money to <span className="font-semibold text-foreground">{momoNumber}</span> via Mobile Money, then fill the form above and submit. Your deposit will be confirmed within <span className="font-semibold text-primary">5 minutes</span>.
+          </p>
+        </div>
       </div>
 
       <SuccessNotification
