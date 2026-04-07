@@ -30,7 +30,7 @@ export function ChannelPopup() {
           Injira mu WhatsApp group yacu kugirango ubone amakuru mashya n'ubufasha bwihuse.
         </p>
         <a
-          href="https://chat.whatsapp.com/DRmt2Kr4cA4LGt4z0V7uMj"
+          href="https://chat.whatsapp.com/H6FOMyuFACR5OepSGc7M0E?mode=gi_t"
           target="_blank"
           rel="noopener noreferrer"
           className="action-btn w-full inline-block text-center"

@@ -77,7 +77,7 @@ export default function Dashboard() {
 
       {/* WhatsApp Banner */}
       <a
-        href="https://chat.whatsapp.com/DRmt2Kr4cA4LGt4z0V7uMj"
+        href="https://chat.whatsapp.com/H6FOMyuFACR5OepSGc7M0E?mode=gi_t"
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center gap-3 bg-accent rounded-2xl p-4 mb-5 hover:shadow-card transition-all animate-fade-in"
