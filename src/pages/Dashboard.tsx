@@ -50,7 +50,7 @@ export default function Dashboard() {
           <div className="flex items-center gap-2">
             <Bell className="w-5 h-5 text-primary-foreground/80" />
             <a
-              href="https://chat.whatsapp.com/DRmt2Kr4cA4LGt4z0V7uMj"
+              href="https://chat.whatsapp.com/H6FOMyuFACR5OepSGc7M0E?mode=gi_t"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-primary-foreground/20 rounded-lg px-3 py-1 text-xs font-medium text-primary-foreground flex items-center gap-1"
