@@ -51,8 +51,8 @@ export default function Deposit() {
     }
 
     const amountNum = parseFloat(amount);
-    if (amountNum < 3500) {
-      toast.error('Minimum deposit is 3,500 RWF');
+    if (amountNum < 6500) {
+      toast.error('Minimum deposit is 6,500 RWF');
       return;
     }
 
@@ -190,8 +190,8 @@ export default function Deposit() {
               <Banknote className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
                 type="number"
-                placeholder="Min 3,500 RWF"
-                min="3500"
+                placeholder="Min 6,500 RWF"
+                min="6500"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 className="input-field pl-11 text-sm"
