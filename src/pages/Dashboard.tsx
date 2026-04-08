@@ -92,6 +92,23 @@ export default function Dashboard() {
         <span className="text-xs font-bold text-primary">JOIN →</span>
       </a>
 
+      {/* Online Service Button */}
+      <a
+        href="https://wa.me/qr/7UR4HRZZ63QFE1"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-3 bg-card rounded-2xl p-4 mb-5 shadow-card hover:shadow-lg-custom transition-all animate-fade-in border border-primary/20"
+      >
+        <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center shrink-0">
+          <MessageCircle className="w-5 h-5 text-primary" />
+        </div>
+        <div className="flex-1">
+          <p className="text-sm font-bold text-foreground">Online Service</p>
+          <p className="text-xs text-muted-foreground">Chat with us on WhatsApp for instant support</p>
+        </div>
+        <span className="text-xs font-bold text-primary">CHAT →</span>
+      </a>
+
       {/* Stats Row */}
       <div className="grid grid-cols-3 gap-3 mb-5">
         <div className="bg-card rounded-xl p-3 text-center shadow-card">
