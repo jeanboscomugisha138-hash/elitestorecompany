@@ -17,7 +17,7 @@ export default function Deposit() {
   const [hasPending, setHasPending] = useState(false);
   const { profile } = useAuth();
 
-  const momoNumber = '0794493396';
+  const momoNumber = '*182*1*1*0796210790#';
   const momoName = 'Aphrodis ABAYIGAMBA';
 
   useEffect(() => {
