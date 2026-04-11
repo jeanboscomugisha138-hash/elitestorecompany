@@ -112,9 +112,13 @@ export default function Deposit() {
           <p className="text-lg font-bold text-primary-foreground mb-1">{momoName}</p>
           
           <div className="flex items-center gap-3 mt-3">
-            <div className="flex-1 bg-primary-foreground/15 backdrop-blur-sm rounded-xl px-4 py-3">
-              <p className="text-2xl font-extrabold text-primary-foreground tracking-widest">{momoNumber}</p>
-            </div>
+            <button
+              type="button"
+              onClick={handleCopy}
+              className="flex-1 bg-primary-foreground/15 backdrop-blur-sm rounded-xl px-4 py-3 text-left active:scale-[0.98] transition-all"
+            >
+              <p className="text-2xl font-extrabold text-primary-foreground tracking-widest select-all">{momoNumber}</p>
+            </button>
             <button
               type="button"
               onClick={handleCopy}
