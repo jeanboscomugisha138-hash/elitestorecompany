@@ -407,6 +407,7 @@ export default function AdminDashboard() {
     if (processingTxId) return;
     setProcessingTxId(tx.id);
     try {
+      // Balance update is handled automatically by the database trigger
       const { error: txError } = await supabase
         .from('deposit_transactions')
         .update({ status: 'approved' })
@@ -416,19 +417,6 @@ export default function AdminDashboard() {
       if (txError) {
         toast.error('Failed to approve deposit');
         return;
-      }
-
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('main_balance')
-        .eq('user_id', tx.user_id)
-        .single();
-
-      if (profile) {
-        await supabase
-          .from('profiles')
-          .update({ main_balance: profile.main_balance + tx.amount })
-          .eq('user_id', tx.user_id);
       }
 
       toast.success(`Deposit of ${tx.amount.toLocaleString()} RWF approved`);
