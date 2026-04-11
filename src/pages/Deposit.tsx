@@ -111,26 +111,20 @@ export default function Deposit() {
 
           <p className="text-lg font-bold text-primary-foreground mb-1">{momoName}</p>
           
-          <div className="flex items-center gap-3 mt-3">
-            <button
-              type="button"
-              onClick={handleCopy}
-              className="flex-1 bg-primary-foreground/15 backdrop-blur-sm rounded-xl px-4 py-3 text-left active:scale-[0.98] transition-all"
-            >
-              <p className="text-2xl font-extrabold text-primary-foreground tracking-widest select-all">{momoNumber}</p>
-            </button>
-            <button
-              type="button"
-              onClick={handleCopy}
-              className="w-12 h-12 rounded-xl bg-primary-foreground/20 hover:bg-primary-foreground/30 flex items-center justify-center transition-all active:scale-95"
-            >
+          <button
+            type="button"
+            onClick={handleCopy}
+            className="w-full mt-3 bg-primary-foreground/15 backdrop-blur-sm rounded-xl px-4 py-3 flex items-center justify-between gap-2 active:scale-[0.98] transition-all"
+          >
+            <p className="text-base sm:text-xl font-extrabold text-primary-foreground tracking-wider select-all break-all">{momoNumber}</p>
+            <div className="w-10 h-10 rounded-lg bg-primary-foreground/20 flex items-center justify-center flex-shrink-0">
               {copied ? (
                 <Check className="w-5 h-5 text-primary-foreground" />
               ) : (
                 <Copy className="w-5 h-5 text-primary-foreground" />
               )}
-            </button>
-          </div>
+            </div>
+          </button>
         </div>
       </div>
 
