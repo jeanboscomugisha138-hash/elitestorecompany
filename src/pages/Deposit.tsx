@@ -116,7 +116,7 @@ export default function Deposit() {
             onClick={handleCopy}
             className="w-full mt-3 bg-primary-foreground/15 backdrop-blur-sm rounded-xl px-4 py-4 flex items-center justify-between gap-2 active:scale-[0.98] transition-all"
           >
-            <p className="text-2xl sm:text-3xl font-extrabold text-primary-foreground tracking-wider select-all break-all">{momoNumber}</p>
+            <p className="text-base sm:text-lg font-extrabold text-primary-foreground tracking-wider select-all break-all">{momoNumber}</p>
             <div className="w-12 h-12 rounded-lg bg-primary-foreground/20 flex items-center justify-center flex-shrink-0">
               {copied ? (
                 <Check className="w-6 h-6 text-primary-foreground" />
