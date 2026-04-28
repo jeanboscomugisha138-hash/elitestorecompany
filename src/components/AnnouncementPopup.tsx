@@ -5,12 +5,10 @@ export function AnnouncementPopup() {
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
-    const justLoggedIn = sessionStorage.getItem('showAnnouncement');
-    const hasSeenToday = sessionStorage.getItem('hasSeenAnnouncement');
-    if (!hasSeenToday) {
+    const justLoggedIn = sessionStorage.getItem('justLoggedIn');
+    if (justLoggedIn) {
       const timer = setTimeout(() => {
         setShowPopup(true);
-        sessionStorage.setItem('hasSeenAnnouncement', 'true');
       }, 800);
       return () => clearTimeout(timer);
     }
