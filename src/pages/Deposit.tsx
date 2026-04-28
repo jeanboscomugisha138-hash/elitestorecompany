@@ -109,22 +109,30 @@ export default function Deposit() {
             <span className="text-sm font-semibold text-primary-foreground/80 uppercase tracking-wider">Send Money To</span>
           </div>
 
-          <p className="text-lg font-bold text-primary-foreground mb-1">{momoName}</p>
+          <p className="text-3xl font-extrabold text-primary-foreground mb-3 tracking-wide">{momoName}</p>
           
           <button
             type="button"
             onClick={handleCopy}
-            className="w-full mt-3 bg-primary-foreground/15 backdrop-blur-sm rounded-xl px-4 py-3 flex items-center justify-between gap-2 active:scale-[0.98] transition-all"
+            className="w-full mt-3 bg-primary-foreground/15 backdrop-blur-sm rounded-xl px-4 py-4 flex items-center justify-between gap-2 active:scale-[0.98] transition-all"
           >
-            <p className="text-base sm:text-xl font-extrabold text-primary-foreground tracking-wider select-all break-all">{momoNumber}</p>
-            <div className="w-10 h-10 rounded-lg bg-primary-foreground/20 flex items-center justify-center flex-shrink-0">
+            <p className="text-2xl sm:text-3xl font-extrabold text-primary-foreground tracking-wider select-all break-all">{momoNumber}</p>
+            <div className="w-12 h-12 rounded-lg bg-primary-foreground/20 flex items-center justify-center flex-shrink-0">
               {copied ? (
-                <Check className="w-5 h-5 text-primary-foreground" />
+                <Check className="w-6 h-6 text-primary-foreground" />
               ) : (
-                <Copy className="w-5 h-5 text-primary-foreground" />
+                <Copy className="w-6 h-6 text-primary-foreground" />
               )}
             </div>
           </button>
+
+          <a
+            href={`tel:${encodeURIComponent(momoNumber)}`}
+            className="mt-3 w-full bg-primary-foreground text-primary font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all shadow-button"
+          >
+            <Phone className="w-5 h-5" />
+            Call to Pay
+          </a>
         </div>
       </div>
 
