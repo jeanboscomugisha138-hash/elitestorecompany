@@ -80,7 +80,7 @@ export default function Referral() {
   const shareLink = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({ title: 'Join Samsung World Technology', text: 'Start investing and earning!', url: referralLink });
+        await navigator.share({ title: 'Join ELITESTORE COMPANY', text: 'Start investing and earning!', url: referralLink });
       } catch { /* user cancelled */ }
     } else {
       copyLink();
