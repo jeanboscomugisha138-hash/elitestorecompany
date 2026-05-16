@@ -61,39 +61,49 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
+    let mounted = true;
+
+    const loadUserData = async (userId: string) => {
+      await Promise.all([fetchProfile(userId), checkAdminRole(userId)]);
+    };
+
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      (event, session) => {
+        if (!mounted) return;
         setSession(session);
         setUser(session?.user ?? null);
 
         if (session?.user) {
-          // Use setTimeout to avoid potential deadlocks
-          setTimeout(() => {
-            fetchProfile(session.user.id);
-            checkAdminRole(session.user.id);
+          // Defer to avoid deadlocks, then mark loading done after roles resolved
+          setTimeout(async () => {
+            await loadUserData(session.user.id);
+            if (mounted) setIsLoading(false);
           }, 0);
         } else {
           setProfile(null);
           setIsAdmin(false);
+          setIsLoading(false);
         }
-        setIsLoading(false);
       }
     );
 
     // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (!mounted) return;
       setSession(session);
       setUser(session?.user ?? null);
 
       if (session?.user) {
-        fetchProfile(session.user.id);
-        checkAdminRole(session.user.id);
+        await loadUserData(session.user.id);
       }
-      setIsLoading(false);
+      if (mounted) setIsLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   // Generate email from phone number for Supabase auth (internal use only)
