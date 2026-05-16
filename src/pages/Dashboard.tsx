@@ -1,14 +1,14 @@
 import {
-  ArrowDownToLine,
-  ArrowUpFromLine,
-  Package,
-  Share2,
-  Clock,
-  Settings,
-  Smartphone,
+  ArrowDownLeft,
+  ArrowUpRight,
+  Wallet,
+  Send,
+  Gift,
+  Users,
+  Megaphone,
   Bell,
-  MessageCircle,
-  TrendingUp,
+  Headphones,
+  Package,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { BottomNav } from '@/components/BottomNav';
@@ -20,176 +20,113 @@ import { Link } from 'react-router-dom';
 
 export default function Dashboard() {
   const { profile } = useAuth();
-
-  const formatRWF = (amount: number) => `${amount.toLocaleString()} RWF`;
+  const balance = profile?.main_balance || 0;
 
   return (
-    <div className="page-container bg-background">
+    <div className="min-h-screen pb-24 px-4 pt-5 max-w-md mx-auto bg-background">
       <AnnouncementPopup />
       <ChannelPopup />
       <ReferralCommissionListener />
 
-      {/* Top Bar */}
-      <div className="flex items-center justify-between mb-4 animate-fade-in">
-        <div className="text-sm font-medium text-foreground">{profile?.full_name || 'User'}</div>
-        <Link to="/settings" className="text-sm font-semibold text-primary">
-          Logout →
-        </Link>
-      </div>
-
-      {/* Header Card */}
-      <div className="gradient-primary rounded-2xl p-4 mb-4 animate-fade-in">
-        <div className="flex items-center justify-between mb-1">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-primary-foreground/20 rounded-xl flex items-center justify-center">
-              <Smartphone className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <div>
-              <h1 className="text-base font-bold text-primary-foreground">ELITESTORE COMPANY</h1>
-              <p className="text-xs text-primary-foreground/80">Welcome, {profile?.full_name || 'User'}!</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <Bell className="w-5 h-5 text-primary-foreground/80" />
-            <a
-              href="https://chat.whatsapp.com/DRmt2Kr4cA4LGt4z0V7uMj?mode=gi_t"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-primary-foreground/20 rounded-lg px-3 py-1 text-xs font-medium text-primary-foreground flex items-center gap-1"
-            >
-              <MessageCircle className="w-3 h-3" /> WhatsApp
-            </a>
-          </div>
-        </div>
-      </div>
-
       {/* Balance Card */}
-      <div className="bg-card rounded-2xl p-5 shadow-card mb-4 animate-fade-in">
-        <p className="text-sm text-muted-foreground mb-1">Available Balance</p>
-        <p className="text-3xl font-extrabold text-foreground mb-3">
-          {formatRWF(profile?.main_balance || 0)}
+      <div className="bg-card rounded-3xl p-5 shadow-card mb-5 animate-fade-in">
+        <div className="flex items-start justify-between mb-1">
+          <p className="text-sm text-muted-foreground">Balance</p>
+          <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center">
+            <Wallet className="w-5 h-5 text-primary-foreground" />
+          </div>
+        </div>
+        <div className="flex items-baseline gap-2 mb-5">
+          <span className="text-5xl font-extrabold text-foreground tracking-tight">
+            {balance.toLocaleString()}
+          </span>
+          <span className="text-base text-muted-foreground font-medium">RWF</span>
+        </div>
+        <p className="text-xs text-muted-foreground -mt-4 mb-4">Account balance</p>
+
+        <div className="flex gap-3">
+          <Link
+            to="/withdraw"
+            className="flex-1 flex items-center justify-center gap-2 border-2 border-foreground/80 text-foreground font-semibold py-3 rounded-full hover:bg-foreground hover:text-background transition-all"
+          >
+            <ArrowDownLeft className="w-4 h-4" /> Withdraw
+          </Link>
+          <Link
+            to="/deposit"
+            className="flex-1 flex items-center justify-center gap-2 bg-foreground text-background font-semibold py-3 rounded-full hover:opacity-90 transition-all"
+          >
+            <ArrowUpRight className="w-4 h-4" /> Deposit
+          </Link>
+        </div>
+      </div>
+
+      {/* Quick app icons */}
+      <div className="grid grid-cols-4 gap-3 mb-5 animate-fade-in">
+        {[
+          { icon: Send, label: 'Channel', bg: 'bg-card', color: 'text-foreground', badge: '!', href: 'https://chat.whatsapp.com/DRmt2Kr4cA4LGt4z0V7uMj?mode=gi_t', external: true },
+          { icon: Gift, label: 'Bonus', bg: 'bg-yellow-100', color: 'text-yellow-700', href: '/settings' },
+          { icon: Users, label: 'Referral', bg: 'bg-green-100', color: 'text-green-700', href: '/referral' },
+          { icon: Megaphone, label: 'News', bg: 'bg-red-100', color: 'text-red-600', href: '/history' },
+        ].map((item, i) => {
+          const inner = (
+            <>
+              <div className={`relative w-16 h-16 ${item.bg} rounded-2xl flex items-center justify-center shadow-card`}>
+                <item.icon className={`w-7 h-7 ${item.color}`} />
+                {item.badge && (
+                  <span className="absolute -top-1 -right-1 bg-foreground text-background text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {item.badge}
+                  </span>
+                )}
+              </div>
+              <span className="text-xs font-medium text-foreground mt-2">{item.label}</span>
+            </>
+          );
+          return item.external ? (
+            <a key={i} href={item.href} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center">
+              {inner}
+            </a>
+          ) : (
+            <Link key={i} to={item.href} className="flex flex-col items-center">
+              {inner}
+            </Link>
+          );
+        })}
+      </div>
+
+      {/* Ticker / latest activity */}
+      <div className="flex items-center gap-3 bg-card rounded-full pl-2 pr-4 py-2 shadow-card mb-6 animate-fade-in">
+        <span className="bg-foreground text-background text-xs font-semibold px-3 py-1 rounded-full">News</span>
+        <p className="text-xs text-foreground truncate flex-1">
+          ****{(profile?.referral_code || 'XXXX').slice(-4)} earned a new investment bonus
         </p>
-        <Link
-          to="/deposit"
-          className="inline-block border-2 border-primary text-primary font-semibold text-sm py-2 px-6 rounded-xl hover:bg-primary hover:text-primary-foreground transition-all"
-        >
-          Recharge
-        </Link>
+        <Bell className="w-4 h-4 text-muted-foreground shrink-0" />
       </div>
 
-      {/* WhatsApp Banner */}
-      <a
-        href="https://chat.whatsapp.com/DRmt2Kr4cA4LGt4z0V7uMj?mode=gi_t"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex items-center gap-3 bg-accent rounded-2xl p-4 mb-5 hover:shadow-card transition-all animate-fade-in"
+      {/* Investment news section */}
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-xl font-extrabold text-foreground">Investment News</h2>
+        <a
+          href="https://wa.me/qr/7UR4HRZZ63QFE1"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-10 h-10 rounded-full bg-foreground flex items-center justify-center"
+        >
+          <Headphones className="w-5 h-5 text-background" />
+        </a>
+      </div>
+
+      <Link
+        to="/products"
+        className="relative block rounded-3xl overflow-hidden shadow-card mb-5 animate-fade-in aspect-[16/10] bg-gradient-to-br from-primary/30 via-secondary/20 to-accent"
       >
-        <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shrink-0">
-          <MessageCircle className="w-5 h-5 text-primary-foreground" />
+        <div className="absolute inset-0 flex items-center justify-center opacity-30">
+          <Package className="w-32 h-32 text-foreground" />
         </div>
-        <div className="flex-1">
-          <p className="text-sm font-bold text-foreground">Join Our WhatsApp Group</p>
-          <p className="text-xs text-muted-foreground">Get updates & support from the community</p>
+        <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-foreground/80 to-transparent">
+          <h3 className="text-2xl font-extrabold text-background">PREMIUM PRODUCTS</h3>
+          <p className="text-sm text-background/80">Daily profits guaranteed</p>
         </div>
-        <span className="text-xs font-bold text-primary">JOIN →</span>
-      </a>
-
-      {/* Online Service Button */}
-      <a
-        href="https://wa.me/qr/7UR4HRZZ63QFE1"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex items-center gap-3 bg-card rounded-2xl p-4 mb-5 shadow-card hover:shadow-lg-custom transition-all animate-fade-in border border-primary/20"
-      >
-        <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center shrink-0">
-          <MessageCircle className="w-5 h-5 text-primary" />
-        </div>
-        <div className="flex-1">
-          <p className="text-sm font-bold text-foreground">Online Service</p>
-          <p className="text-xs text-muted-foreground">Chat with us on WhatsApp for instant support</p>
-        </div>
-        <span className="text-xs font-bold text-primary">CHAT →</span>
-      </a>
-
-      {/* Stats Row */}
-      <div className="grid grid-cols-3 gap-3 mb-5">
-        <div className="bg-card rounded-xl p-3 text-center shadow-card">
-          <p className="text-lg font-extrabold text-primary">{formatRWF(profile?.referral_balance || 0)}</p>
-          <p className="text-xs text-muted-foreground">Referral Balance</p>
-        </div>
-        <div className="bg-card rounded-xl p-3 text-center shadow-card">
-          <p className="text-lg font-extrabold text-primary">{formatRWF(profile?.invested_amount || 0)}</p>
-          <p className="text-xs text-muted-foreground">Invested</p>
-        </div>
-        <div className="bg-card rounded-xl p-3 text-center shadow-card">
-          <p className="text-lg font-extrabold text-primary">{formatRWF(profile?.total_profit || 0)}</p>
-          <p className="text-xs text-muted-foreground">Total Profit</p>
-        </div>
-      </div>
-
-      {/* Investment Plans heading */}
-      <div className="flex items-center gap-2 mb-4">
-        <TrendingUp className="w-5 h-5 text-primary" />
-        <h2 className="text-lg font-bold text-foreground">Quick Actions</h2>
-      </div>
-
-      {/* Quick Actions */}
-      <div className="grid grid-cols-3 gap-3 mb-6">
-        <Link
-          to="/deposit"
-          className="flex flex-col items-center gap-2 p-4 bg-card rounded-2xl shadow-card hover:shadow-lg-custom transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-        >
-          <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center">
-            <ArrowDownToLine className="w-6 h-6 text-primary-foreground" />
-          </div>
-          <span className="text-sm font-medium text-foreground">Deposit</span>
-        </Link>
-        <Link
-          to="/withdraw"
-          className="flex flex-col items-center gap-2 p-4 bg-card rounded-2xl shadow-card hover:shadow-lg-custom transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-        >
-          <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center">
-            <ArrowUpFromLine className="w-6 h-6 text-primary-foreground" />
-          </div>
-          <span className="text-sm font-medium text-foreground">Withdraw</span>
-        </Link>
-        <Link
-          to="/products"
-          className="flex flex-col items-center gap-2 p-4 bg-card rounded-2xl shadow-card hover:shadow-lg-custom transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-        >
-          <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center">
-            <Package className="w-6 h-6 text-primary-foreground" />
-          </div>
-          <span className="text-sm font-medium text-foreground">Products</span>
-        </Link>
-        <Link
-          to="/referral"
-          className="flex flex-col items-center gap-2 p-4 bg-card rounded-2xl shadow-card hover:shadow-lg-custom transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-        >
-          <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center">
-            <Share2 className="w-6 h-6 text-primary-foreground" />
-          </div>
-          <span className="text-sm font-medium text-foreground">Referral</span>
-        </Link>
-        <Link
-          to="/history"
-          className="flex flex-col items-center gap-2 p-4 bg-card rounded-2xl shadow-card hover:shadow-lg-custom transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-        >
-          <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center">
-            <Clock className="w-6 h-6 text-primary-foreground" />
-          </div>
-          <span className="text-sm font-medium text-foreground">History</span>
-        </Link>
-        <Link
-          to="/settings"
-          className="flex flex-col items-center gap-2 p-4 bg-card rounded-2xl shadow-card hover:shadow-lg-custom transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-        >
-          <div className="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center">
-            <Settings className="w-6 h-6 text-primary-foreground" />
-          </div>
-          <span className="text-sm font-medium text-foreground">Settings</span>
-        </Link>
-      </div>
+      </Link>
 
       <CustomerServiceButton />
       <BottomNav />
