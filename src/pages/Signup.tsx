@@ -76,7 +76,7 @@ export default function Signup() {
           <div className="w-20 h-20 gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-button">
             <Smartphone className="w-10 h-10 text-primary-foreground" />
           </div>
-          <h1 className="text-2xl font-bold text-secondary">Samsung World Technology</h1>
+          <h1 className="text-2xl font-bold text-secondary">ELITESTORE COMPANY</h1>
           <p className="text-muted-foreground mt-1">Investment Platform</p>
         </div>
 
