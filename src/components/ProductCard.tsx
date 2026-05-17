@@ -23,13 +23,13 @@ const productImages: Record<string, { image: string; name: string }> = {
   '50000':   { image: productPhoneA35,   name: 'Galaxy A35' },
   '100000':  { image: productTabA9,      name: 'Galaxy Tab A9' },
   '250000':  { image: productLaptopBook, name: 'Galaxy Book' },
-  '500000':  { image: productTvSmart,    name: 'Samsung Smart TV' },
-  '1000000': { image: productTvNeo,      name: 'Samsung Neo QLED' },
+  '500000':  { image: productTvSmart,    name: 'Elite Smart TV' },
+  '1000000': { image: productTvNeo,      name: 'Elite Neo QLED' },
 };
 
 function getProductInfo(investment: number) {
   const key = investment.toString();
-  return productImages[key] || { image: productFold, name: 'Samsung Device' };
+  return productImages[key] || { image: productFold, name: 'Elite Device' };
 }
 
 interface ProductCardProps {
