@@ -25,8 +25,7 @@ export default function Referral() {
   const [earnings, setEarnings] = useState<ReferralEarning[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const baseUrl = 'https://elitestorecompany.lovable.app';
-  const referralLink = `${baseUrl}/signup?ref=${profile?.referral_code || 'XXXXXX'}`;
+  const referralLink = `${typeof window !== 'undefined' ? window.location.origin : ''}/signup?ref=${profile?.referral_code || 'XXXXXX'}`;
 
   const level1 = teamMembers.filter(m => m.level === 1);
   const level2 = teamMembers.filter(m => m.level === 2);
