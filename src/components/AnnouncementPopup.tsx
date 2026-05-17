@@ -19,7 +19,7 @@ export function AnnouncementPopup() {
   if (!showPopup) return null;
 
   const announcements = [
-    'Welcome to SAMSUNG WORLD TECHNOLOGY!',
+    'Welcome to ELITESTORE COMPANY!',
     'Registration BONUS: 1,500 RWF',
     'Minimum deposit: 6,500 RWF',
     'Minimum withdrawal: 2,000 RWF',
@@ -52,7 +52,7 @@ export function AnnouncementPopup() {
               <X className="w-4 h-4 text-primary-foreground" />
             </button>
             <h3 className="text-xl font-bold text-primary-foreground text-center">
-              Welcome to SAMSUNG
+              Welcome to ELITESTORE
             </h3>
           </div>
 
