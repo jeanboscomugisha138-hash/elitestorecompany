@@ -9,6 +9,7 @@ import {
   Bell,
   Headphones,
   Package,
+  Copy,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { BottomNav } from '@/components/BottomNav';
@@ -17,10 +18,17 @@ import { AnnouncementPopup } from '@/components/AnnouncementPopup';
 import { CustomerServiceButton } from '@/components/CustomerServiceButton';
 import { ReferralCommissionListener } from '@/components/ReferralCommissionListener';
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
 
 export default function Dashboard() {
   const { profile } = useAuth();
   const balance = profile?.main_balance || 0;
+  const referralLink = `${typeof window !== 'undefined' ? window.location.origin : ''}/signup?ref=${profile?.referral_code || 'XXXXXX'}`;
+
+  const copyReferral = () => {
+    navigator.clipboard.writeText(referralLink);
+    toast.success('Invitation link copied!');
+  };
 
   return (
     <div className="min-h-screen pb-24 px-4 pt-5 max-w-md mx-auto bg-background">
@@ -91,6 +99,26 @@ export default function Dashboard() {
             </Link>
           );
         })}
+      </div>
+
+      {/* Invitation link card */}
+      <div className="rounded-2xl p-4 mb-5 bg-gradient-to-r from-primary to-secondary shadow-button animate-fade-in">
+        <div className="flex items-center gap-2 mb-2 text-white">
+          <Users className="w-4 h-4" />
+          <p className="text-sm font-semibold">Your Invitation Link · Earn 30%</p>
+        </div>
+        <div className="flex items-center gap-2 bg-white/15 rounded-xl px-3 py-2 backdrop-blur-sm">
+          <p className="text-xs text-white truncate flex-1 font-medium">{referralLink}</p>
+          <button
+            onClick={copyReferral}
+            className="bg-white text-primary font-bold px-4 py-1.5 rounded-full text-xs flex items-center gap-1 hover:opacity-90 transition-all shrink-0"
+          >
+            <Copy className="w-3 h-3" /> Copy
+          </button>
+        </div>
+        <Link to="/referral" className="block mt-2 text-center text-xs text-white/90 underline">
+          View my team & earnings →
+        </Link>
       </div>
 
       {/* Ticker / latest activity */}
