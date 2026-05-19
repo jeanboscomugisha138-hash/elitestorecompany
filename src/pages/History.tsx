@@ -8,10 +8,10 @@ import { supabase } from '@/integrations/supabase/client';
 type TabType = 'deposits' | 'withdrawals' | 'investments' | 'bonuses';
 
 const tabs: { id: TabType; label: string; icon: React.ElementType; gradient: string }[] = [
-  { id: 'deposits', label: 'Deposits', icon: ArrowDownToLine, gradient: 'from-emerald-500 to-green-600' },
-  { id: 'withdrawals', label: 'Withdrawals', icon: ArrowUpFromLine, gradient: 'from-violet-500 to-purple-600' },
-  { id: 'investments', label: 'Investments', icon: Package, gradient: 'from-amber-500 to-orange-600' },
-  { id: 'bonuses', label: 'Bonuses', icon: Gift, gradient: 'from-pink-500 to-rose-600' },
+  { id: 'deposits', label: 'Deposits', icon: ArrowDownToLine, gradient: 'from-primary to-primary/70' },
+  { id: 'withdrawals', label: 'Withdrawals', icon: ArrowUpFromLine, gradient: 'from-secondary to-secondary/70' },
+  { id: 'investments', label: 'Investments', icon: Package, gradient: 'from-primary via-secondary to-secondary' },
+  { id: 'bonuses', label: 'Bonuses', icon: Gift, gradient: 'from-secondary via-primary to-primary' },
 ];
 
 interface Transaction {
@@ -56,14 +56,14 @@ const getStatusStyle = (status: string) => {
   switch (status) {
     case 'approved':
     case 'active':
-      return 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20';
+      return 'bg-primary/10 text-primary border border-primary/20';
     case 'pending':
-      return 'bg-amber-500/10 text-amber-600 border border-amber-500/20';
+      return 'bg-secondary/10 text-secondary border border-secondary/20';
     case 'rejected':
     case 'cancelled':
-      return 'bg-red-500/10 text-red-600 border border-red-500/20';
+      return 'bg-destructive/10 text-destructive border border-destructive/20';
     case 'completed':
-      return 'bg-blue-500/10 text-blue-600 border border-blue-500/20';
+      return 'bg-primary/10 text-primary border border-primary/20';
     default:
       return 'bg-muted text-muted-foreground border border-border';
   }
@@ -185,7 +185,7 @@ export default function History() {
         >
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-sm">
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-primary via-secondary to-secondary flex items-center justify-center shadow-sm">
                 <Package className="w-5 h-5 text-primary-foreground" />
               </div>
               <div>
@@ -203,8 +203,8 @@ export default function History() {
           </div>
           <div className="flex items-center justify-between bg-accent/50 rounded-xl px-3 py-2.5">
             <div className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-emerald-500" />
-              <span className="text-sm font-semibold text-emerald-600">{inv.daily_profit.toLocaleString()} RWF/day</span>
+              <TrendingUp className="w-4 h-4 text-secondary" />
+              <span className="text-sm font-semibold text-secondary">{inv.daily_profit.toLocaleString()} RWF/day</span>
             </div>
             <div className="flex items-center gap-1 text-xs text-muted-foreground">
               <span>Ends</span>
@@ -224,13 +224,13 @@ export default function History() {
           className="group flex items-center gap-4 p-4 bg-card rounded-2xl border border-border/50 hover:border-primary/20 hover:shadow-md transition-all duration-300"
           style={{ animationDelay: `${i * 50}ms` }}
         >
-          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center flex-shrink-0 shadow-sm">
+          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-secondary via-primary to-primary flex items-center justify-center flex-shrink-0 shadow-sm">
             <Sparkles className="w-5 h-5 text-primary-foreground" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center justify-between mb-1">
               <p className="font-bold text-foreground text-base">Daily Bonus</p>
-              <p className="font-bold text-emerald-600 text-base">+{bonus.amount.toLocaleString()} RWF</p>
+              <p className="font-bold text-secondary text-base">+{bonus.amount.toLocaleString()} RWF</p>
             </div>
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <Calendar className="w-3 h-3" />

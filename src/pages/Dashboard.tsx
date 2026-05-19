@@ -6,10 +6,10 @@ import {
   Gift,
   Users,
   Megaphone,
-  Bell,
   Headphones,
-  Package,
-  Copy,
+  TrendingUp,
+  PiggyBank,
+  Sparkles,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { BottomNav } from '@/components/BottomNav';
@@ -18,17 +18,21 @@ import { AnnouncementPopup } from '@/components/AnnouncementPopup';
 import { CustomerServiceButton } from '@/components/CustomerServiceButton';
 import { ReferralCommissionListener } from '@/components/ReferralCommissionListener';
 import { Link } from 'react-router-dom';
-import { toast } from 'sonner';
+import investmentLaptop from '@/assets/investment-laptop.jpg';
 
 export default function Dashboard() {
   const { profile } = useAuth();
   const balance = profile?.main_balance || 0;
-  const referralLink = `${typeof window !== 'undefined' ? window.location.origin : ''}/signup?ref=${profile?.referral_code || 'XXXXXX'}`;
+  const totalInvested = profile?.invested_amount || 0;
+  const referralBalance = profile?.referral_balance || 0;
+  const totalProfit = profile?.total_profit || 0;
 
-  const copyReferral = () => {
-    navigator.clipboard.writeText(referralLink);
-    toast.success('Invitation link copied!');
-  };
+  const statBoxes = [
+    { label: 'Total Balance', value: balance, icon: Wallet, gradient: 'from-primary to-primary/70' },
+    { label: 'Daily Income', value: totalProfit, icon: TrendingUp, gradient: 'from-secondary to-secondary/70' },
+    { label: 'Referral Balance', value: referralBalance, icon: Sparkles, gradient: 'from-primary via-secondary to-secondary' },
+    { label: 'Total Invested', value: totalInvested, icon: PiggyBank, gradient: 'from-secondary via-primary to-primary' },
+  ];
 
   return (
     <div className="min-h-screen pb-24 px-4 pt-5 max-w-md mx-auto bg-background">
@@ -36,21 +40,20 @@ export default function Dashboard() {
       <ChannelPopup />
       <ReferralCommissionListener />
 
-      {/* Balance Card */}
-      <div className="bg-card rounded-3xl p-5 shadow-card mb-5 animate-fade-in">
+      {/* Balance Card with Withdraw/Deposit */}
+      <div className="bg-card rounded-3xl p-5 shadow-card mb-4 animate-fade-in border border-primary/10">
         <div className="flex items-start justify-between mb-1">
           <p className="text-sm text-muted-foreground">Balance</p>
-          <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center">
+          <div className="w-11 h-11 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-button">
             <Wallet className="w-5 h-5 text-primary-foreground" />
           </div>
         </div>
         <div className="flex items-baseline gap-2 mb-5">
-          <span className="text-5xl font-extrabold text-foreground tracking-tight">
+          <span className="text-5xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent tracking-tight">
             {balance.toLocaleString()}
           </span>
           <span className="text-base text-muted-foreground font-medium">RWF</span>
         </div>
-        <p className="text-xs text-muted-foreground -mt-4 mb-4">Account balance</p>
 
         <div className="flex gap-3">
           <Link
@@ -68,23 +71,40 @@ export default function Dashboard() {
         </div>
       </div>
 
+      {/* 2x2 stat boxes */}
+      <div className="grid grid-cols-2 gap-3 mb-5 animate-fade-in">
+        {statBoxes.map((s, i) => (
+          <div
+            key={i}
+            className={`rounded-2xl p-4 bg-gradient-to-br ${s.gradient} text-primary-foreground shadow-button relative overflow-hidden`}
+          >
+            <div className="absolute -top-3 -right-3 w-16 h-16 bg-primary-foreground/10 rounded-full" />
+            <div className="relative">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-medium opacity-90">{s.label}</span>
+                <s.icon className="w-4 h-4 opacity-90" />
+              </div>
+              <p className="text-xl font-extrabold tracking-tight">
+                {s.value.toLocaleString()}
+              </p>
+              <p className="text-[10px] opacity-80 mt-0.5">RWF</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
       {/* Quick app icons */}
       <div className="grid grid-cols-4 gap-3 mb-5 animate-fade-in">
         {[
-          { icon: Send, label: 'Channel', bg: 'bg-card', color: 'text-foreground', badge: '!', href: 'https://chat.whatsapp.com/DRmt2Kr4cA4LGt4z0V7uMj?mode=gi_t', external: true },
-          { icon: Gift, label: 'Bonus', bg: 'bg-yellow-100', color: 'text-yellow-700', href: '/settings' },
-          { icon: Users, label: 'Referral', bg: 'bg-green-100', color: 'text-green-700', href: '/referral' },
-          { icon: Megaphone, label: 'News', bg: 'bg-red-100', color: 'text-red-600', href: '/history' },
+          { icon: Send, label: 'Channel', bg: 'bg-gradient-to-br from-primary/15 to-secondary/15', color: 'text-primary', href: 'https://chat.whatsapp.com/HAWV3a3MW9G8ErOVRRdPSX', external: true },
+          { icon: Gift, label: 'Bonus', bg: 'bg-gradient-to-br from-secondary/20 to-secondary/5', color: 'text-secondary', href: '/settings' },
+          { icon: Users, label: 'Referral', bg: 'bg-gradient-to-br from-primary/20 to-primary/5', color: 'text-primary', href: '/referral' },
+          { icon: Megaphone, label: 'History', bg: 'bg-gradient-to-br from-secondary/15 to-primary/15', color: 'text-secondary', href: '/history' },
         ].map((item, i) => {
           const inner = (
             <>
-              <div className={`relative w-16 h-16 ${item.bg} rounded-2xl flex items-center justify-center shadow-card`}>
+              <div className={`w-16 h-16 ${item.bg} rounded-2xl flex items-center justify-center shadow-card`}>
                 <item.icon className={`w-7 h-7 ${item.color}`} />
-                {item.badge && (
-                  <span className="absolute -top-1 -right-1 bg-foreground text-background text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                    {item.badge}
-                  </span>
-                )}
               </div>
               <span className="text-xs font-medium text-foreground mt-2">{item.label}</span>
             </>
@@ -101,58 +121,34 @@ export default function Dashboard() {
         })}
       </div>
 
-      {/* Invitation link card */}
-      <div className="rounded-2xl p-4 mb-5 bg-gradient-to-r from-primary to-secondary shadow-button animate-fade-in">
-        <div className="flex items-center gap-2 mb-2 text-white">
-          <Users className="w-4 h-4" />
-          <p className="text-sm font-semibold">Your Invitation Link · Earn 30%</p>
-        </div>
-        <div className="flex items-center gap-2 bg-white/15 rounded-xl px-3 py-2 backdrop-blur-sm">
-          <p className="text-xs text-white truncate flex-1 font-medium">{referralLink}</p>
-          <button
-            onClick={copyReferral}
-            className="bg-white text-primary font-bold px-4 py-1.5 rounded-full text-xs flex items-center gap-1 hover:opacity-90 transition-all shrink-0"
-          >
-            <Copy className="w-3 h-3" /> Copy
-          </button>
-        </div>
-        <Link to="/referral" className="block mt-2 text-center text-xs text-white/90 underline">
-          View my team & earnings →
-        </Link>
-      </div>
-
-      {/* Ticker / latest activity */}
-      <div className="flex items-center gap-3 bg-card rounded-full pl-2 pr-4 py-2 shadow-card mb-6 animate-fade-in">
-        <span className="bg-foreground text-background text-xs font-semibold px-3 py-1 rounded-full">News</span>
-        <p className="text-xs text-foreground truncate flex-1">
-          ****{(profile?.referral_code || 'XXXX').slice(-4)} earned a new investment bonus
-        </p>
-        <Bell className="w-4 h-4 text-muted-foreground shrink-0" />
-      </div>
-
       {/* Investment news section */}
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-xl font-extrabold text-foreground">Investment News</h2>
+        <h2 className="text-xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Investment News</h2>
         <a
           href="https://wa.me/qr/7UR4HRZZ63QFE1"
           target="_blank"
           rel="noopener noreferrer"
-          className="w-10 h-10 rounded-full bg-foreground flex items-center justify-center"
+          className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-button"
         >
-          <Headphones className="w-5 h-5 text-background" />
+          <Headphones className="w-5 h-5 text-primary-foreground" />
         </a>
       </div>
 
       <Link
         to="/products"
-        className="relative block rounded-3xl overflow-hidden shadow-card mb-5 animate-fade-in aspect-[16/10] bg-gradient-to-br from-primary/30 via-secondary/20 to-accent"
+        className="relative block rounded-3xl overflow-hidden shadow-card mb-5 animate-fade-in aspect-[16/10]"
       >
-        <div className="absolute inset-0 flex items-center justify-center opacity-30">
-          <Package className="w-32 h-32 text-foreground" />
-        </div>
-        <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-foreground/80 to-transparent">
-          <h3 className="text-2xl font-extrabold text-background">PREMIUM PRODUCTS</h3>
-          <p className="text-sm text-background/80">Daily profits guaranteed</p>
+        <img
+          src={investmentLaptop}
+          alt="Premium laptop products"
+          loading="lazy"
+          width={1024}
+          height={640}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-primary/90 via-primary/50 to-transparent">
+          <h3 className="text-2xl font-extrabold text-primary-foreground">PREMIUM PRODUCTS</h3>
+          <p className="text-sm text-primary-foreground/90">Daily profits guaranteed</p>
         </div>
       </Link>
 

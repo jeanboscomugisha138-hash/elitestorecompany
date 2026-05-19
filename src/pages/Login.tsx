@@ -42,16 +42,16 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-[#e9eae4] flex flex-col items-center justify-center px-5 py-8">
-      <div className="w-full max-w-sm bg-white rounded-3xl px-6 py-8 shadow-card">
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 via-background to-secondary/10 flex flex-col items-center justify-center px-5 py-8">
+      <div className="w-full max-w-sm bg-card rounded-3xl px-6 py-8 shadow-card border border-primary/10">
         {/* Brand badge */}
         <div className="flex justify-center mb-6">
-          <div className="bg-primary text-primary-foreground font-bold text-sm tracking-wide px-5 py-2 rounded-md">
+          <div className="bg-gradient-to-r from-primary to-secondary text-primary-foreground font-bold text-sm tracking-wide px-5 py-2 rounded-md">
             ELITESTORE
           </div>
         </div>
 
-        <h1 className="text-4xl font-extrabold text-center text-foreground mb-1">Login</h1>
+        <h1 className="text-4xl font-extrabold text-center bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-1">Login</h1>
         <p className="text-center text-muted-foreground mb-8">Sign in to your account</p>
 
         {error && (
@@ -91,7 +91,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-foreground text-background font-semibold py-4 rounded-full hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-60"
+            className="w-full bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold py-4 rounded-full hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-60 shadow-button"
           >
             {isLoading ? 'Signing in...' : 'Login'}
           </button>

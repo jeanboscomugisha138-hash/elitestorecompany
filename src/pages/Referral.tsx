@@ -80,17 +80,17 @@ export default function Referral() {
   ];
 
   return (
-    <div className="min-h-screen pb-24 max-w-md mx-auto bg-[#e9eae4]">
+    <div className="min-h-screen pb-24 max-w-md mx-auto bg-gradient-to-br from-primary/5 via-background to-secondary/5">
       {/* Top invitation link bar */}
-      <div className="bg-[#e9eae4] px-4 pt-5 pb-3">
+      <div className="px-4 pt-5 pb-3">
         <div className="flex items-center gap-3">
           <div className="flex-1 min-w-0">
             <p className="text-sm text-foreground truncate font-medium">{referralLink}</p>
-            <p className="text-xs text-destructive font-semibold mt-0.5">Invitation link</p>
+            <p className="text-xs text-secondary font-semibold mt-0.5">Invitation link</p>
           </div>
           <button
             onClick={copyLink}
-            className="bg-gradient-to-br from-emerald-500 to-emerald-700 text-white font-semibold px-6 py-2.5 rounded-full text-sm shadow-md hover:opacity-90 transition-all flex items-center gap-2"
+            className="bg-gradient-to-br from-primary to-secondary text-primary-foreground font-semibold px-6 py-2.5 rounded-full text-sm shadow-button hover:opacity-90 transition-all flex items-center gap-2"
           >
             <Copy className="w-4 h-4" /> Copy
           </button>
@@ -98,14 +98,14 @@ export default function Referral() {
       </div>
 
       {/* Commission table */}
-      <div className="mx-4 mt-2 rounded-2xl overflow-hidden bg-gradient-to-b from-emerald-700 to-emerald-900 text-white">
-        <div className="grid grid-cols-3 px-4 py-3 text-xs font-semibold border-b border-white/15">
+      <div className="mx-4 mt-2 rounded-2xl overflow-hidden bg-gradient-to-br from-primary to-secondary text-primary-foreground shadow-button">
+        <div className="grid grid-cols-3 px-4 py-3 text-xs font-semibold border-b border-primary-foreground/20">
           <span>Commission rate</span>
           <span className="text-center">Number of guests</span>
           <span className="text-right">Income</span>
         </div>
         {tiers.map((t, i) => (
-          <div key={i} className="grid grid-cols-3 px-4 py-3 text-sm border-b border-white/10 last:border-0">
+          <div key={i} className="grid grid-cols-3 px-4 py-3 text-sm border-b border-primary-foreground/15 last:border-0">
             <span>{t.label}</span>
             <span className="text-center">{t.guests}</span>
             <span className="text-right">{t.income.toLocaleString()}</span>
@@ -115,26 +115,26 @@ export default function Referral() {
 
       {/* Two stat tiles */}
       <div className="grid grid-cols-2 gap-3 mx-4 mt-3">
-        <div className="rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-800 text-white p-4 text-center">
+        <div className="rounded-2xl bg-gradient-to-br from-primary to-primary/70 text-primary-foreground p-4 text-center shadow-button">
           <p className="text-2xl font-extrabold">{teamMembers.length}</p>
           <p className="text-xs mt-1 opacity-90">Number of guests</p>
         </div>
-        <div className="rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-800 text-white p-4 text-center">
+        <div className="rounded-2xl bg-gradient-to-br from-secondary to-secondary/70 text-primary-foreground p-4 text-center shadow-button">
           <p className="text-2xl font-extrabold">RWF {totalInvitedIncome.toLocaleString()}</p>
           <p className="text-xs mt-1 opacity-90">Invited income</p>
         </div>
       </div>
 
       {/* Invitation bonus panel */}
-      <div className="mx-4 mt-3 rounded-2xl bg-gradient-to-b from-emerald-800 to-emerald-950 text-white p-4">
+      <div className="mx-4 mt-3 rounded-2xl bg-gradient-to-br from-secondary via-primary to-primary text-primary-foreground p-4 shadow-button">
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-1 h-4 bg-white rounded-full" />
+          <div className="w-1 h-4 bg-primary-foreground rounded-full" />
           <h3 className="font-semibold">Invitation bonus</h3>
         </div>
-        <div className="space-y-2 text-xs leading-relaxed text-white/90">
-          <p>When a friend you invite signs up and invests, you immediately receive a cash reward of <span className="font-bold text-yellow-300">30%</span> of their investment amount.</p>
-          <p>When members of your Level 2 team invest, you receive a <span className="font-bold text-yellow-300">4%</span> cash bonus.</p>
-          <p>When members of your Level 3 team invest, you receive a <span className="font-bold text-yellow-300">1%</span> cash bonus.</p>
+        <div className="space-y-2 text-xs leading-relaxed text-primary-foreground/90">
+          <p>When a friend you invite signs up and invests, you immediately receive a cash reward of <span className="font-bold text-primary-foreground">30%</span> of their investment amount.</p>
+          <p>When members of your Level 2 team invest, you receive a <span className="font-bold text-primary-foreground">4%</span> cash bonus.</p>
+          <p>When members of your Level 3 team invest, you receive a <span className="font-bold text-primary-foreground">1%</span> cash bonus.</p>
           <p>Once your team member invests, the cash bonus is instantly credited to your referral balance.</p>
         </div>
       </div>
@@ -148,8 +148,8 @@ export default function Referral() {
           </div>
         ) : teamMembers.length === 0 ? (
           <div className="bg-card rounded-2xl p-6 shadow-card text-center">
-            <div className="w-14 h-14 rounded-full bg-accent flex items-center justify-center mx-auto mb-2">
-              <Users className="w-7 h-7 text-muted-foreground" />
+            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary/15 to-secondary/15 flex items-center justify-center mx-auto mb-2">
+              <Users className="w-7 h-7 text-primary" />
             </div>
             <p className="font-semibold text-foreground text-sm">No team members yet</p>
             <p className="text-xs text-muted-foreground mt-1">Share your invitation link to start!</p>
@@ -157,15 +157,15 @@ export default function Referral() {
         ) : (
           <div className="space-y-2">
             {teamMembers.map((m) => (
-              <div key={m.id} className="bg-card rounded-2xl p-3 shadow-card flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-emerald-100 flex items-center justify-center">
-                  <User className="w-4 h-4 text-emerald-700" />
+              <div key={m.id} className="bg-card rounded-2xl p-3 shadow-card flex items-center gap-3 border border-primary/10">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+                  <User className="w-4 h-4 text-primary" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-foreground truncate">{m.full_name}</p>
                   <p className="text-[11px] text-muted-foreground">L{m.level} · {new Date(m.created_at).toLocaleDateString()}</p>
                 </div>
-                <span className={`text-[10px] font-semibold px-2 py-1 rounded-full ${m.invested_amount > 0 ? 'bg-green-100 text-green-700' : 'bg-muted text-muted-foreground'}`}>
+                <span className={`text-[10px] font-semibold px-2 py-1 rounded-full ${m.invested_amount > 0 ? 'bg-secondary/15 text-secondary' : 'bg-muted text-muted-foreground'}`}>
                   {m.invested_amount > 0 ? 'Active' : 'Pending'}
                 </span>
               </div>

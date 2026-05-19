@@ -42,33 +42,33 @@ export function ProductCard({ id, investment, dailyProfit, duration, onInvest, i
   const { image, name, tier } = getProductInfo(investment);
 
   return (
-    <div className="rounded-2xl overflow-hidden shadow-card animate-slide-up bg-gradient-to-br from-[hsl(243_60%_12%)] to-[hsl(322_60%_15%)] border border-primary/20">
-      {/* Yellow header */}
+    <div className="rounded-2xl overflow-hidden shadow-card animate-slide-up bg-card border-2 border-primary/30">
+      {/* Header */}
       <div className="flex items-center justify-between px-4 py-2.5 bg-gradient-to-r from-primary to-secondary">
-        <span className="text-white font-extrabold text-base tracking-wide">{tier}</span>
-        <span className="text-xs font-semibold bg-black/40 text-white px-3 py-1 rounded-full">Standard</span>
+        <span className="text-primary-foreground font-extrabold text-base tracking-wide">{tier}</span>
+        <span className="text-xs font-semibold bg-primary-foreground/25 text-primary-foreground px-3 py-1 rounded-full backdrop-blur-sm">Standard</span>
       </div>
 
       {/* Body */}
       <div className="p-4 flex gap-3">
-        <div className="w-24 h-24 shrink-0 rounded-xl overflow-hidden bg-white/5 flex items-center justify-center">
+        <div className="w-24 h-24 shrink-0 rounded-xl overflow-hidden bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center">
           <img src={image} alt={name} loading="lazy" width={256} height={256} className="w-full h-full object-cover" />
         </div>
-        <div className="flex-1 space-y-1 text-[13px] text-white/85">
-          <div className="flex justify-between"><span>Rental Amount:</span><span className="font-bold text-white">{investment.toLocaleString()} RWF</span></div>
-          <div className="flex justify-between"><span>Income Cycle:</span><span className="font-bold text-white">{duration} Days</span></div>
-          <div className="flex justify-between"><span>Daily Income:</span><span className="font-bold text-white">{dailyProfit.toLocaleString()} RWF</span></div>
-          <div className="flex justify-between"><span>Est. Income:</span><span className="font-bold text-secondary">{totalProfit.toLocaleString()} RWF</span></div>
+        <div className="flex-1 space-y-1 text-[13px] text-foreground">
+          <div className="flex justify-between"><span className="text-muted-foreground">Rental Amount:</span><span className="font-bold text-primary">{investment.toLocaleString()} RWF</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Income Cycle:</span><span className="font-bold text-foreground">{duration} Days</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Daily Income:</span><span className="font-bold text-secondary">{dailyProfit.toLocaleString()} RWF</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">Est. Income:</span><span className="font-bold text-secondary">{totalProfit.toLocaleString()} RWF</span></div>
         </div>
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between px-4 pb-4">
+      <div className="flex items-center justify-between px-4 pb-4 pt-2 border-t border-primary/10">
         <span className="text-primary font-extrabold text-lg">{investment.toLocaleString()} RWF</span>
         <button
           onClick={() => onInvest(id)}
           disabled={isLoading}
-          className="bg-gradient-to-r from-primary to-secondary text-white font-bold px-6 py-2 rounded-full text-sm shadow-button hover:opacity-90 transition-all disabled:opacity-50"
+          className="bg-gradient-to-r from-primary to-secondary text-primary-foreground font-bold px-6 py-2 rounded-full text-sm shadow-button hover:opacity-90 transition-all disabled:opacity-50"
         >
           {isLoading ? '...' : 'Rent Now'}
         </button>

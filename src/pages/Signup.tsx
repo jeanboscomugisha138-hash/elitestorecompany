@@ -46,17 +46,17 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-[#e9eae4] flex flex-col items-center justify-center px-5 py-8">
-      <div className="w-full max-w-sm bg-white rounded-3xl px-6 py-8 shadow-card">
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 via-background to-secondary/10 flex flex-col items-center justify-center px-5 py-8">
+      <div className="w-full max-w-sm bg-card rounded-3xl px-6 py-8 shadow-card border border-primary/10">
         <div className="flex justify-center mb-5">
-          <div className="bg-primary text-primary-foreground font-bold text-sm tracking-wide px-5 py-2 rounded-md">
+          <div className="bg-gradient-to-r from-primary to-secondary text-primary-foreground font-bold text-sm tracking-wide px-5 py-2 rounded-md">
             ELITESTORE
           </div>
         </div>
 
-        <h1 className="text-4xl font-extrabold text-center text-foreground mb-2">Register</h1>
-        <p className="text-center text-primary font-semibold mb-6">
-          🎁 Get 1,500 RWF welcome bonus!
+        <h1 className="text-4xl font-extrabold text-center bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">Register</h1>
+        <p className="text-center text-secondary font-semibold mb-6">
+          🎁 Get 3,000 RWF welcome bonus!
         </p>
 
         {error && (
@@ -132,7 +132,7 @@ export default function Signup() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-foreground text-background font-semibold py-4 rounded-full hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-60 mt-2"
+            className="w-full bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold py-4 rounded-full hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-60 mt-2 shadow-button"
           >
             {isLoading ? 'Creating account...' : 'Register'}
           </button>
@@ -150,7 +150,7 @@ export default function Signup() {
         isOpen={showWelcomeBonus}
         onClose={() => { setShowWelcomeBonus(false); navigate('/dashboard'); }}
         type="welcome"
-        amount={1500}
+        amount={3000}
       />
     </div>
   );
