@@ -10,7 +10,9 @@ import {
   TrendingUp,
   PiggyBank,
   Sparkles,
+  Loader2,
 } from 'lucide-react';
+import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { BottomNav } from '@/components/BottomNav';
 import { ChannelPopup } from '@/components/ChannelPopup';
@@ -19,13 +21,57 @@ import { CustomerServiceButton } from '@/components/CustomerServiceButton';
 import { ReferralCommissionListener } from '@/components/ReferralCommissionListener';
 import { Link } from 'react-router-dom';
 import { InvestmentNewsCarousel } from '@/components/InvestmentNewsCarousel';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from '@/hooks/use-toast';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
+import { SuccessNotification } from '@/components/SuccessNotification';
 
 export default function Dashboard() {
-  const { profile } = useAuth();
+  const { profile, refreshProfile } = useAuth();
   const balance = profile?.main_balance || 0;
   const totalInvested = profile?.invested_amount || 0;
   const referralBalance = profile?.referral_balance || 0;
   const totalProfit = profile?.total_profit || 0;
+
+  const [giftDialogOpen, setGiftDialogOpen] = useState(false);
+  const [giftCode, setGiftCode] = useState('');
+  const [isRedeeming, setIsRedeeming] = useState(false);
+  const [giftSuccess, setGiftSuccess] = useState<{ show: boolean; amount: number }>({ show: false, amount: 0 });
+
+  const handleRedeemGiftCode = async () => {
+    const code = giftCode.trim();
+    if (!code) {
+      toast({ title: 'Please enter a gift code', variant: 'destructive' });
+      return;
+    }
+    setIsRedeeming(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('redeem-gift-code', {
+        body: { code },
+      });
+
+      if (error || data?.error) {
+        toast({ title: data?.error || 'Failed to redeem code', variant: 'destructive' });
+      } else {
+        setGiftCode('');
+        setGiftDialogOpen(false);
+        await refreshProfile();
+        setGiftSuccess({ show: true, amount: data.amount || 0 });
+      }
+    } catch {
+      toast({ title: 'Something went wrong', variant: 'destructive' });
+    } finally {
+      setIsRedeeming(false);
+    }
+  };
 
   const statBoxes = [
     { label: 'Total Balance', value: balance, icon: Wallet, gradient: 'from-primary to-primary/70' },
@@ -95,30 +141,41 @@ export default function Dashboard() {
 
       {/* Quick app icons */}
       <div className="grid grid-cols-4 gap-3 mb-5 animate-fade-in">
-        {[
-          { icon: Send, label: 'Channel', bg: 'bg-gradient-to-br from-primary/15 to-secondary/15', color: 'text-primary', href: 'https://chat.whatsapp.com/HAWV3a3MW9G8ErOVRRdPSX', external: true },
-          { icon: Gift, label: 'Bonus', bg: 'bg-gradient-to-br from-secondary/20 to-secondary/5', color: 'text-secondary', href: '/settings' },
-          { icon: Users, label: 'Referral', bg: 'bg-gradient-to-br from-primary/20 to-primary/5', color: 'text-primary', href: '/referral' },
-          { icon: Megaphone, label: 'History', bg: 'bg-gradient-to-br from-secondary/15 to-primary/15', color: 'text-secondary', href: '/history' },
-        ].map((item, i) => {
-          const inner = (
-            <>
-              <div className={`w-16 h-16 ${item.bg} rounded-2xl flex items-center justify-center shadow-card`}>
-                <item.icon className={`w-7 h-7 ${item.color}`} />
-              </div>
-              <span className="text-xs font-medium text-foreground mt-2">{item.label}</span>
-            </>
-          );
-          return item.external ? (
-            <a key={i} href={item.href} target="_blank" rel="noopener noreferrer" className="flex flex-col items-center">
-              {inner}
-            </a>
-          ) : (
-            <Link key={i} to={item.href} className="flex flex-col items-center">
-              {inner}
-            </Link>
-          );
-        })}
+        <a
+          href="https://chat.whatsapp.com/HAWV3a3MW9G8ErOVRRdPSX"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex flex-col items-center"
+        >
+          <div className="w-16 h-16 bg-gradient-to-br from-primary/15 to-secondary/15 rounded-2xl flex items-center justify-center shadow-card">
+            <Send className="w-7 h-7 text-primary" />
+          </div>
+          <span className="text-xs font-medium text-foreground mt-2">Channel</span>
+        </a>
+
+        <button
+          onClick={() => setGiftDialogOpen(true)}
+          className="flex flex-col items-center"
+        >
+          <div className="w-16 h-16 bg-gradient-to-br from-secondary/20 to-secondary/5 rounded-2xl flex items-center justify-center shadow-card">
+            <Gift className="w-7 h-7 text-secondary" />
+          </div>
+          <span className="text-xs font-medium text-foreground mt-2">Bonus</span>
+        </button>
+
+        <Link to="/referral" className="flex flex-col items-center">
+          <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl flex items-center justify-center shadow-card">
+            <Users className="w-7 h-7 text-primary" />
+          </div>
+          <span className="text-xs font-medium text-foreground mt-2">Referral</span>
+        </Link>
+
+        <Link to="/history" className="flex flex-col items-center">
+          <div className="w-16 h-16 bg-gradient-to-br from-secondary/15 to-primary/15 rounded-2xl flex items-center justify-center shadow-card">
+            <Megaphone className="w-7 h-7 text-secondary" />
+          </div>
+          <span className="text-xs font-medium text-foreground mt-2">History</span>
+        </Link>
       </div>
 
       {/* Investment news section */}
@@ -135,6 +192,37 @@ export default function Dashboard() {
       </div>
 
       <InvestmentNewsCarousel />
+
+      {/* Gift Code Dialog */}
+      <Dialog open={giftDialogOpen} onOpenChange={setGiftDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Gift className="w-5 h-5 text-primary" /> Redeem Gift Code
+            </DialogTitle>
+            <DialogDescription>Enter your gift code to receive bonus money instantly.</DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-3 mt-2">
+            <Input
+              placeholder="Enter gift code"
+              value={giftCode}
+              onChange={(e) => setGiftCode(e.target.value.toUpperCase())}
+              maxLength={50}
+              className="text-center uppercase tracking-widest font-bold text-lg"
+            />
+            <Button onClick={handleRedeemGiftCode} disabled={isRedeeming || !giftCode.trim()}>
+              {isRedeeming ? <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Redeeming...</> : 'Redeem Code'}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <SuccessNotification
+        isOpen={giftSuccess.show}
+        onClose={() => setGiftSuccess({ show: false, amount: 0 })}
+        type="gift"
+        amount={giftSuccess.amount}
+      />
 
       <CustomerServiceButton />
       <BottomNav />

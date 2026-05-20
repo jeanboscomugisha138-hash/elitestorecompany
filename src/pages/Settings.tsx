@@ -1,70 +1,24 @@
-import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { BottomNav } from '@/components/BottomNav';
 import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/hooks/use-toast';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
 import {
   ArrowDownToLine,
   ArrowUpFromLine,
   Users,
   Lock,
   LogOut,
-  Gift,
   Wallet,
-  Loader2,
 } from 'lucide-react';
-import { SuccessNotification } from '@/components/SuccessNotification';
 
 export default function Settings() {
-  const { profile, user, signOut, refreshProfile } = useAuth();
+  const { profile, user, signOut } = useAuth();
   const navigate = useNavigate();
-  const [giftDialogOpen, setGiftDialogOpen] = useState(false);
-  const [giftCode, setGiftCode] = useState('');
-  const [isRedeeming, setIsRedeeming] = useState(false);
-  const [giftSuccess, setGiftSuccess] = useState<{ show: boolean; amount: number }>({ show: false, amount: 0 });
 
   const formatRWF = (amount: number) => `${amount.toLocaleString()} RWF`;
 
   const handleLogout = async () => {
     await signOut();
     navigate('/login');
-  };
-
-  const handleRedeemGiftCode = async () => {
-    const code = giftCode.trim();
-    if (!code) {
-      toast({ title: 'Please enter a gift code', variant: 'destructive' });
-      return;
-    }
-    setIsRedeeming(true);
-    try {
-      const { data, error } = await supabase.functions.invoke('redeem-gift-code', {
-        body: { code },
-      });
-
-      if (error || data?.error) {
-        toast({ title: data?.error || 'Failed to redeem code', variant: 'destructive' });
-      } else {
-        setGiftCode('');
-        setGiftDialogOpen(false);
-        await refreshProfile();
-        setGiftSuccess({ show: true, amount: data.amount || 0 });
-      }
-    } catch {
-      toast({ title: 'Something went wrong', variant: 'destructive' });
-    } finally {
-      setIsRedeeming(false);
-    }
   };
 
   return (
@@ -91,17 +45,6 @@ export default function Settings() {
           </Link>
         </div>
 
-        {/* Redeem Gift Code */}
-        <button
-          onClick={() => setGiftDialogOpen(true)}
-          className="w-full bg-pink-400 rounded-xl p-4 flex items-center gap-3 hover:bg-pink-500 transition-all text-left"
-        >
-          <Gift className="w-8 h-8 text-primary-foreground" />
-          <div>
-            <p className="font-bold text-primary-foreground text-sm">Redeem Gift Code</p>
-            <p className="text-xs text-primary-foreground/80">Get bonus money instantly</p>
-          </div>
-        </button>
       </div>
 
       {/* History Cards */}
@@ -164,36 +107,6 @@ export default function Settings() {
         </div>
       </div>
 
-      {/* Gift Code Dialog */}
-      <Dialog open={giftDialogOpen} onOpenChange={setGiftDialogOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Gift className="w-5 h-5 text-primary" /> Redeem Gift Code
-            </DialogTitle>
-            <DialogDescription>Enter your gift code to receive bonus money instantly.</DialogDescription>
-          </DialogHeader>
-          <div className="flex flex-col gap-3 mt-2">
-            <Input
-              placeholder="Enter gift code"
-              value={giftCode}
-              onChange={(e) => setGiftCode(e.target.value.toUpperCase())}
-              maxLength={50}
-              className="text-center uppercase tracking-widest font-bold text-lg"
-            />
-            <Button onClick={handleRedeemGiftCode} disabled={isRedeeming || !giftCode.trim()}>
-              {isRedeeming ? <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Redeeming...</> : 'Redeem Code'}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      <SuccessNotification
-        isOpen={giftSuccess.show}
-        onClose={() => setGiftSuccess({ show: false, amount: 0 })}
-        type="gift"
-        amount={giftSuccess.amount}
-      />
 
       <BottomNav />
     </div>
