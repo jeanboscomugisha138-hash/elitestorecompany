@@ -18,7 +18,7 @@ import { AnnouncementPopup } from '@/components/AnnouncementPopup';
 import { CustomerServiceButton } from '@/components/CustomerServiceButton';
 import { ReferralCommissionListener } from '@/components/ReferralCommissionListener';
 import { Link } from 'react-router-dom';
-import investmentLaptop from '@/assets/investment-laptop.jpg';
+import { InvestmentNewsCarousel } from '@/components/InvestmentNewsCarousel';
 
 export default function Dashboard() {
   const { profile } = useAuth();
@@ -134,23 +134,7 @@ export default function Dashboard() {
         </a>
       </div>
 
-      <Link
-        to="/products"
-        className="relative block rounded-3xl overflow-hidden shadow-card mb-5 animate-fade-in aspect-[16/10]"
-      >
-        <img
-          src={investmentLaptop}
-          alt="Premium laptop products"
-          loading="lazy"
-          width={1024}
-          height={640}
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-primary/90 via-primary/50 to-transparent">
-          <h3 className="text-2xl font-extrabold text-primary-foreground">PREMIUM PRODUCTS</h3>
-          <p className="text-sm text-primary-foreground/90">Daily profits guaranteed</p>
-        </div>
-      </Link>
+      <InvestmentNewsCarousel />
 
       <CustomerServiceButton />
       <BottomNav />
