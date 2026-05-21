@@ -163,6 +163,38 @@ export default function Dashboard() {
 
       <InvestmentNewsCarousel />
 
+      {/* Balance Card with Withdraw/Deposit (moved to bottom) */}
+      <div className="bg-card rounded-3xl p-5 shadow-card mt-5 animate-fade-in border border-primary/10">
+        <div className="flex items-start justify-between mb-1">
+          <p className="text-sm text-muted-foreground">Balance</p>
+          <div className="w-11 h-11 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-button">
+            <Wallet className="w-5 h-5 text-primary-foreground" />
+          </div>
+        </div>
+        <div className="flex items-baseline gap-2 mb-5">
+          <span className="text-5xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent tracking-tight">
+            {balance.toLocaleString()}
+          </span>
+          <span className="text-base text-muted-foreground font-medium">RWF</span>
+        </div>
+
+        <div className="flex gap-3">
+          <Link
+            to="/withdraw"
+            className="flex-1 flex items-center justify-center gap-2 border-2 border-foreground/80 text-foreground font-semibold py-3 rounded-full hover:bg-foreground hover:text-background transition-all"
+          >
+            <ArrowDownLeft className="w-4 h-4" /> Withdraw
+          </Link>
+          <Link
+            to="/deposit"
+            className="flex-1 flex items-center justify-center gap-2 bg-foreground text-background font-semibold py-3 rounded-full hover:opacity-90 transition-all"
+          >
+            <ArrowUpRight className="w-4 h-4" /> Deposit
+          </Link>
+        </div>
+      </div>
+
+
       {/* Gift Code Dialog */}
       <Dialog open={giftDialogOpen} onOpenChange={setGiftDialogOpen}>
         <DialogContent className="sm:max-w-md">
