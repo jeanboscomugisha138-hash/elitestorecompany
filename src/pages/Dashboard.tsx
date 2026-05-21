@@ -21,6 +21,7 @@ import { CustomerServiceButton } from '@/components/CustomerServiceButton';
 import { ReferralCommissionListener } from '@/components/ReferralCommissionListener';
 import { Link } from 'react-router-dom';
 import { InvestmentNewsCarousel } from '@/components/InvestmentNewsCarousel';
+import { DownloadAppButton, DownloadAppInfo } from '@/components/DownloadAppButton';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
@@ -111,17 +112,7 @@ export default function Dashboard() {
 
       {/* Quick app icons */}
       <div className="grid grid-cols-4 gap-3 mb-5 animate-fade-in">
-        <a
-          href="https://chat.whatsapp.com/HAWV3a3MW9G8ErOVRRdPSX"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex flex-col items-center"
-        >
-          <div className="w-16 h-16 bg-gradient-to-br from-primary/15 to-secondary/15 rounded-2xl flex items-center justify-center shadow-card">
-            <Send className="w-7 h-7 text-primary" />
-          </div>
-          <span className="text-xs font-medium text-foreground mt-2">Channel</span>
-        </a>
+        <DownloadAppButton />
 
         <button
           onClick={() => setGiftDialogOpen(true)}
@@ -147,6 +138,7 @@ export default function Dashboard() {
           <span className="text-xs font-medium text-foreground mt-2">History</span>
         </Link>
       </div>
+      <DownloadAppInfo />
 
       {/* Investment news section */}
       <div className="flex items-center justify-between mb-3">
