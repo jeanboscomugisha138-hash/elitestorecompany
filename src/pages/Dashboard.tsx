@@ -138,6 +138,7 @@ export default function Dashboard() {
           <span className="text-xs font-medium text-foreground mt-2">History</span>
         </Link>
       </div>
+      <DownloadAppInfo />
 
       {/* Investment news section */}
       <div className="flex items-center justify-between mb-3">
