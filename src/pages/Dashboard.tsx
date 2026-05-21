@@ -21,6 +21,7 @@ import { CustomerServiceButton } from '@/components/CustomerServiceButton';
 import { ReferralCommissionListener } from '@/components/ReferralCommissionListener';
 import { Link } from 'react-router-dom';
 import { InvestmentNewsCarousel } from '@/components/InvestmentNewsCarousel';
+import { DownloadAppButton, DownloadAppInfo } from '@/components/DownloadAppButton';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
