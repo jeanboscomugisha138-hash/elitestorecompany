@@ -43,14 +43,14 @@ const config: Record<NotificationType, {
   deposit: {
     icon: TrendingUp,
     title: 'Deposit Submitted! 💰',
-    subtitle: 'Your deposit request will be confirmed within 5 minutes.',
+    subtitle: 'Your deposit will be confirmed within 15 minutes.',
     buttonText: 'Got It!',
     gradient: 'from-blue-500 to-cyan-400',
   },
   withdraw: {
     icon: TrendingUp,
     title: 'Withdrawal Submitted! 🏦',
-    subtitle: 'Your withdrawal will be processed within 10 minutes.',
+    subtitle: 'Your withdrawal will be processed within 24 hours.',
     buttonText: 'Got It!',
     gradient: 'from-amber-500 to-orange-400',
   },

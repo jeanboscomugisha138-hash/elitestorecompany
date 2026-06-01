@@ -20,12 +20,13 @@ export function AnnouncementPopup() {
 
   const announcements = [
     'Welcome to ELITESTORE COMPANY!',
-    'Registration BONUS: 3,000 RWF',
-    'Minimum deposit: 6,500 RWF',
-    'Minimum withdrawal: 2,000 RWF',
-    'Team bonus at three levels: 30%, 4% and 1%',
-    'Invite your friends to register and earn bonus.',
-    'Join the official WhatsApp channel to learn about platform benefits.',
+    'Registration BONUS: 1,000 RWF',
+    'Minimum deposit: 10,000 RWF · Maximum: 1,000,000 RWF (processed in 15 minutes)',
+    'Minimum withdrawal: 1,000 RWF · Maximum: 1,000,000 RWF (processed in 24 hours)',
+    'Team bonus at three levels: 10%, 3% and 1%',
+    'Daily profit: 10% (VIP 2-4) · 15% (VIP 5-7) · 20% (VIP 8-10)',
+    'Invite your friends to register and earn instant cash bonuses.',
+    'Join the official WhatsApp group to learn about platform benefits.',
   ];
 
   return (
@@ -68,7 +69,7 @@ export function AnnouncementPopup() {
           {/* CTA button */}
           <div className="px-5 pb-5">
             <a
-              href="https://chat.whatsapp.com/HAWV3a3MW9G8ErOVRRdPSX"
+              href="https://chat.whatsapp.com/HAWV3a3MW9G8ErOVRRdPSX?s=cl&p=a&ilr=1"
               target="_blank"
               rel="noopener noreferrer"
               onClick={closePopup}
