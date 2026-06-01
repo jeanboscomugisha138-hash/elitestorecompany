@@ -74,8 +74,8 @@ export default function Referral() {
   };
 
   const tiers = [
-    { label: 'Level 1 team 30%', guests: level1.length, income: earnings[0]?.total || 0 },
-    { label: 'Level 2 team 4%', guests: level2.length, income: earnings[1]?.total || 0 },
+    { label: 'Level 1 team 10%', guests: level1.length, income: earnings[0]?.total || 0 },
+    { label: 'Level 2 team 3%', guests: level2.length, income: earnings[1]?.total || 0 },
     { label: 'Level 3 team 1%', guests: level3.length, income: earnings[2]?.total || 0 },
   ];
 
@@ -132,8 +132,8 @@ export default function Referral() {
           <h3 className="font-semibold">Invitation bonus</h3>
         </div>
         <div className="space-y-2 text-xs leading-relaxed text-primary-foreground/90">
-          <p>When a friend you invite signs up and invests, you immediately receive a cash reward of <span className="font-bold text-primary-foreground">30%</span> of their investment amount.</p>
-          <p>When members of your Level 2 team invest, you receive a <span className="font-bold text-primary-foreground">4%</span> cash bonus.</p>
+          <p>When a friend you invite signs up and invests, you immediately receive a cash reward of <span className="font-bold text-primary-foreground">10%</span> of their investment amount.</p>
+          <p>When members of your Level 2 team invest, you receive a <span className="font-bold text-primary-foreground">3%</span> cash bonus.</p>
           <p>When members of your Level 3 team invest, you receive a <span className="font-bold text-primary-foreground">1%</span> cash bonus.</p>
           <p>Once your team member invests, the cash bonus is instantly credited to your referral balance.</p>
         </div>
