@@ -145,7 +145,7 @@ export default function Withdraw() {
         </Link>
         <h1 className="page-title mb-0 flex-1 text-left">Withdraw</h1>
         <a
-          href="https://wa.me/qr/7UR4HRZZ63QFE1"
+          href="https://chat.whatsapp.com/HAWV3a3MW9G8ErOVRRdPSX?s=cl&p=a&ilr=1"
           target="_blank"
           rel="noopener noreferrer"
           className="w-10 h-10 bg-[#25D366]/10 rounded-xl flex items-center justify-center hover:bg-[#25D366]/20 transition-all"
@@ -169,7 +169,7 @@ export default function Withdraw() {
           <div className="flex items-center gap-4 mt-3 pt-3 border-t border-primary-foreground/10">
             <div className="flex items-center gap-1.5 text-xs text-primary-foreground/60">
               <Clock className="w-3.5 h-3.5" />
-              <span>Processed in ~10 min</span>
+              <span>Processed in ~24 hours</span>
             </div>
             <div className="flex items-center gap-1.5 text-xs text-primary-foreground/60">
               <Shield className="w-3.5 h-3.5" />
@@ -357,7 +357,7 @@ export default function Withdraw() {
 
       {/* WhatsApp Support */}
       <a
-        href="https://wa.me/qr/7UR4HRZZ63QFE1"
+        href="https://chat.whatsapp.com/HAWV3a3MW9G8ErOVRRdPSX?s=cl&p=a&ilr=1"
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center gap-3 p-4 bg-card rounded-2xl shadow-card hover:shadow-lg-custom transition-all mb-4"

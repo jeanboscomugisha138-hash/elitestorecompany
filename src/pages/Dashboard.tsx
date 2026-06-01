@@ -5,7 +5,7 @@ import {
   Send,
   Gift,
   Users,
-  Megaphone,
+  Info,
   Headphones,
   TrendingUp,
   PiggyBank,
@@ -34,6 +34,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { SuccessNotification } from '@/components/SuccessNotification';
+import { LiveActivity, CompanyAchievements } from '@/components/LiveActivity';
 
 export default function Dashboard() {
   const { profile, refreshProfile } = useAuth();
@@ -46,6 +47,7 @@ export default function Dashboard() {
   const [giftCode, setGiftCode] = useState('');
   const [isRedeeming, setIsRedeeming] = useState(false);
   const [giftSuccess, setGiftSuccess] = useState<{ show: boolean; amount: number }>({ show: false, amount: 0 });
+  const [aboutOpen, setAboutOpen] = useState(false);
 
   const handleRedeemGiftCode = async () => {
     const code = giftCode.trim();
@@ -131,12 +133,12 @@ export default function Dashboard() {
           <span className="text-xs font-medium text-foreground mt-2">Referral</span>
         </Link>
 
-        <Link to="/history" className="flex flex-col items-center">
+        <button onClick={() => setAboutOpen(true)} className="flex flex-col items-center">
           <div className="w-16 h-16 bg-gradient-to-br from-secondary/15 to-primary/15 rounded-2xl flex items-center justify-center shadow-card">
-            <Megaphone className="w-7 h-7 text-secondary" />
+            <Info className="w-7 h-7 text-secondary" />
           </div>
-          <span className="text-xs font-medium text-foreground mt-2">History</span>
-        </Link>
+          <span className="text-xs font-medium text-foreground mt-2">About Us</span>
+        </button>
       </div>
       <DownloadAppInfo />
 
@@ -144,7 +146,7 @@ export default function Dashboard() {
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Investment News</h2>
         <a
-          href="https://wa.me/qr/7UR4HRZZ63QFE1"
+          href="https://chat.whatsapp.com/HAWV3a3MW9G8ErOVRRdPSX?s=cl&p=a&ilr=1"
           target="_blank"
           rel="noopener noreferrer"
           className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-button"
@@ -186,6 +188,10 @@ export default function Dashboard() {
         </div>
       </div>
 
+      <CompanyAchievements />
+      <LiveActivity />
+
+
 
       {/* Gift Code Dialog */}
       <Dialog open={giftDialogOpen} onOpenChange={setGiftDialogOpen}>
@@ -210,6 +216,30 @@ export default function Dashboard() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* About Us dialog */}
+      <Dialog open={aboutOpen} onOpenChange={setAboutOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Info className="w-5 h-5 text-primary" /> About ELITESTORE
+            </DialogTitle>
+            <DialogDescription>The trusted way to grow your money in Rwanda.</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-3 text-sm text-foreground">
+            <p>ELITESTORE COMPANY is a leading digital investment platform helping thousands of Rwandans earn daily passive income through smart device-rental plans.</p>
+            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
+              <li><span className="text-foreground font-semibold">128,450+</span> active investors</li>
+              <li><span className="text-foreground font-semibold">4.2B RWF</span> paid out</li>
+              <li>Daily profits credited automatically</li>
+              <li>Withdrawals processed within 24 hours</li>
+              <li>3-level referral commissions: 10% / 3% / 1%</li>
+            </ul>
+            <p className="text-xs text-muted-foreground pt-2 border-t border-border">© ELITESTORE COMPANY · Kigali, Rwanda</p>
+          </div>
+        </DialogContent>
+      </Dialog>
+
 
       <SuccessNotification
         isOpen={giftSuccess.show}

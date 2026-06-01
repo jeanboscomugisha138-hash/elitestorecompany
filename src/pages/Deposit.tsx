@@ -51,8 +51,12 @@ export default function Deposit() {
     }
 
     const amountNum = parseFloat(amount);
-    if (amountNum < 6500) {
-      toast.error('Minimum deposit is 6,500 RWF');
+    if (amountNum < 10000) {
+      toast.error('Minimum deposit is 10,000 RWF');
+      return;
+    }
+    if (amountNum > 1000000) {
+      toast.error('Maximum deposit is 1,000,000 RWF');
       return;
     }
 
@@ -81,7 +85,7 @@ export default function Deposit() {
     setIsLoading(false);
   };
 
-  const quickAmounts = [5000, 10000, 25000, 50000];
+  const quickAmounts = [10000, 25000, 50000, 100000];
 
   return (
     <div className="page-container bg-background">
@@ -196,8 +200,9 @@ export default function Deposit() {
               <Banknote className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
                 type="number"
-                placeholder="Min 6,500 RWF"
-                min="6500"
+                placeholder="Min 10,000 · Max 1,000,000 RWF"
+                min="10000"
+                max="1000000"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 className="input-field pl-11 text-sm"
@@ -268,7 +273,7 @@ export default function Deposit() {
         <div>
           <p className="text-sm font-semibold text-foreground mb-1">How it works</p>
           <p className="text-xs text-muted-foreground leading-relaxed">
-            Send money to <span className="font-semibold text-foreground">{momoNumber}</span> via Mobile Money, then fill the form above and submit. Your deposit will be confirmed within <span className="font-semibold text-primary">5 minutes</span>.
+            Send money to <span className="font-semibold text-foreground">{momoNumber}</span> via Mobile Money, then fill the form above and submit. Your deposit will be confirmed within <span className="font-semibold text-primary">15 minutes</span>.
           </p>
         </div>
       </div>

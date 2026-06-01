@@ -27,7 +27,7 @@ export function BonusPopup() {
         </div>
         <h3 className="text-2xl font-bold text-foreground mb-2">Welcome! 🎉</h3>
         <p className="text-muted-foreground mb-4">
-          You received <span className="text-primary font-bold">1,500 RWF</span> welcome bonus!
+          You received <span className="text-primary font-bold">1,000 RWF</span> welcome bonus!
         </p>
         <button onClick={closePopup} className="action-btn w-full">
           Start Investing
