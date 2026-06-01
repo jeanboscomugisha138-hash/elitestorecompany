@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { MessageCircle } from 'lucide-react';
 import { PopupModal } from './PopupModal';
 
-const WHATSAPP_LINK = 'https://chat.whatsapp.com/HAWV3a3MW9G8ErOVRRdPSX';
+const WHATSAPP_LINK = 'https://chat.whatsapp.com/HAWV3a3MW9G8ErOVRRdPSX?s=cl&p=a&ilr=1';
 
 export function ChannelPopup() {
   const [showPopup, setShowPopup] = useState(false);
@@ -28,7 +28,7 @@ export function ChannelPopup() {
         </div>
         <h3 className="text-xl font-bold text-foreground mb-2">Join Our WhatsApp Group!</h3>
         <p className="text-muted-foreground mb-4">
-          Injira mu WhatsApp group yacu kugirango ubone amakuru mashya n'ubufasha bwihuse.
+          Join our official WhatsApp group to receive the latest updates, news and fast support.
         </p>
         <a
           href={WHATSAPP_LINK}

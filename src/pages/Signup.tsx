@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Phone, Lock, User, Gift, Sparkles } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { SuccessNotification } from '@/components/SuccessNotification';
 
@@ -10,7 +10,6 @@ export default function Signup() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [referralCode, setReferralCode] = useState('');
-  const [agreed, setAgreed] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showWelcomeBonus, setShowWelcomeBonus] = useState(false);
@@ -29,7 +28,6 @@ export default function Signup() {
     e.preventDefault();
     setError('');
 
-    if (!agreed) { setError('Please accept the terms'); return; }
     if (!fullName.trim()) { setError('Please enter your full name'); return; }
     if (phone.length < 10) { setError('Please enter a valid phone number'); return; }
     if (password.length < 6) { setError('Password must be at least 6 characters'); return; }
@@ -37,120 +35,123 @@ export default function Signup() {
 
     setIsLoading(true);
     const { error: signUpError } = await signUp(phone, password, fullName, referralCode || undefined);
-    if (signUpError) {
-      setError(signUpError.message);
-      setIsLoading(false);
-      return;
-    }
+    if (signUpError) { setError(signUpError.message); setIsLoading(false); return; }
     setShowWelcomeBonus(true);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/10 via-background to-secondary/10 flex flex-col items-center justify-center px-5 py-8">
-      <div className="w-full max-w-sm bg-card rounded-3xl px-6 py-8 shadow-card border border-primary/10">
-        <div className="flex justify-center mb-5">
-          <div className="bg-gradient-to-r from-primary to-secondary text-primary-foreground font-bold text-sm tracking-wide px-5 py-2 rounded-md">
-            ELITESTORE
+    <div className="min-h-screen relative flex flex-col items-center justify-center px-5 py-10 overflow-hidden bg-gradient-to-br from-purple-600 via-fuchsia-600 to-pink-500">
+      <div className="absolute -top-20 -left-20 w-72 h-72 bg-purple-400/30 rounded-full blur-3xl" />
+      <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-pink-400/30 rounded-full blur-3xl" />
+
+      <div className="relative w-full max-w-sm animate-fade-in">
+        <div className="text-center mb-5">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20 shadow-lg">
+            <Sparkles className="w-3.5 h-3.5 text-white" />
+            <span className="text-xs font-semibold tracking-widest text-white">ELITESTORE</span>
+          </div>
+          <h1 className="text-4xl font-extrabold text-white mt-5 tracking-tight">Create Account</h1>
+          <div className="inline-flex items-center gap-2 mt-3 px-4 py-1.5 rounded-full bg-yellow-400/20 backdrop-blur-md border border-yellow-300/40">
+            <Gift className="w-4 h-4 text-yellow-100" />
+            <span className="text-xs font-bold text-white">Get 1,000 RWF welcome bonus</span>
           </div>
         </div>
 
-        <h1 className="text-4xl font-extrabold text-center bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">Register</h1>
-        <p className="text-center text-secondary font-semibold mb-6">
-          🎁 Get 3,000 RWF welcome bonus!
-        </p>
+        <div className="bg-white rounded-3xl px-6 py-6 shadow-2xl border border-white/40">
+          {error && (
+            <div className="bg-destructive/10 text-destructive text-sm p-3 rounded-2xl mb-3 text-center border border-destructive/20">
+              {error}
+            </div>
+          )}
 
-        {error && (
-          <div className="bg-destructive/10 text-destructive text-sm p-3 rounded-xl mb-4 text-center">
-            {error}
-          </div>
-        )}
+          <form onSubmit={handleSignup} className="space-y-3">
+            <div className="relative">
+              <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Full name"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="w-full bg-gray-50 rounded-2xl pl-11 pr-4 py-3.5 text-gray-900 placeholder:text-gray-400 border border-gray-200 focus:outline-none focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-500/20 transition-all"
+                required
+              />
+            </div>
+            <div className="relative">
+              <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="tel"
+                placeholder="Phone number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="w-full bg-gray-50 rounded-2xl pl-11 pr-4 py-3.5 text-gray-900 placeholder:text-gray-400 border border-gray-200 focus:outline-none focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-500/20 transition-all"
+                required
+              />
+            </div>
 
-        <form onSubmit={handleSignup} className="space-y-3">
-          <input
-            type="text"
-            placeholder="Full name"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            className="w-full bg-[#f1f1ee] rounded-full px-6 py-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
-            required
-          />
-          <input
-            type="tel"
-            placeholder="Phone"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="w-full bg-[#f1f1ee] rounded-full px-6 py-4 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
-            required
-          />
+            <div className="relative">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full bg-gray-50 rounded-2xl pl-11 pr-12 py-3.5 text-gray-900 placeholder:text-gray-400 border border-gray-200 focus:outline-none focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-500/20 transition-all"
+                required
+              />
+              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
 
-          <div className="relative">
-            <input
-              type={showPassword ? 'text' : 'password'}
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-[#f1f1ee] rounded-full px-6 py-4 pr-12 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
-              required
-            />
-            <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground">
-              {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            <div className="relative">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type={showConfirmPassword ? 'text' : 'password'}
+                placeholder="Confirm password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full bg-gray-50 rounded-2xl pl-11 pr-12 py-3.5 text-gray-900 placeholder:text-gray-400 border border-gray-200 focus:outline-none focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-500/20 transition-all"
+                required
+              />
+              <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
+
+            <div className="relative">
+              <Gift className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Invitation code (optional)"
+                value={referralCode}
+                onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+                className="w-full bg-gray-50 rounded-2xl pl-11 pr-4 py-3.5 text-gray-900 placeholder:text-gray-400 uppercase border border-gray-200 focus:outline-none focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-500/20 transition-all"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold py-4 rounded-2xl hover:opacity-95 hover:scale-[1.01] transition-all active:scale-[0.98] disabled:opacity-60 shadow-lg shadow-pink-500/30 mt-2"
+            >
+              {isLoading ? 'Creating account...' : 'Register'}
             </button>
-          </div>
+          </form>
 
-          <div className="relative">
-            <input
-              type={showConfirmPassword ? 'text' : 'password'}
-              placeholder="Confirm password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full bg-[#f1f1ee] rounded-full px-6 py-4 pr-12 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
-              required
-            />
-            <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground">
-              {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-            </button>
-          </div>
-
-          <input
-            type="text"
-            placeholder="Invitation code (optional)"
-            value={referralCode}
-            onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
-            className="w-full bg-[#f1f1ee] rounded-full px-6 py-4 text-foreground placeholder:text-muted-foreground uppercase focus:outline-none focus:ring-2 focus:ring-primary/40"
-          />
-
-          <label className="flex items-center gap-2 px-2 pt-1 text-sm text-foreground">
-            <input
-              type="checkbox"
-              checked={agreed}
-              onChange={(e) => setAgreed(e.target.checked)}
-              className="w-4 h-4 accent-primary"
-            />
-            Accept terms & conditions
-          </label>
-
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full bg-gradient-to-r from-primary to-secondary text-primary-foreground font-semibold py-4 rounded-full hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-60 mt-2 shadow-button"
-          >
-            {isLoading ? 'Creating account...' : 'Register'}
-          </button>
-        </form>
-
-        <p className="text-center mt-5 text-muted-foreground text-sm">
-          Already have an account?{' '}
-          <Link to="/login" className="text-primary font-semibold">
-            Login
-          </Link>
-        </p>
+          <p className="text-center mt-5 text-gray-500 text-sm">
+            Already have an account?{' '}
+            <Link to="/login" className="text-fuchsia-600 font-bold hover:underline">
+              Login
+            </Link>
+          </p>
+        </div>
       </div>
 
       <SuccessNotification
         isOpen={showWelcomeBonus}
         onClose={() => { setShowWelcomeBonus(false); navigate('/dashboard'); }}
         type="welcome"
-        amount={3000}
+        amount={1000}
       />
     </div>
   );
