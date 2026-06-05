@@ -146,7 +146,7 @@ export default function Dashboard() {
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Investment News</h2>
         <a
-          href="${SETTINGS_WA}"
+          href={settings.whatsapp_group_url}
           target="_blank"
           rel="noopener noreferrer"
           className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-button"

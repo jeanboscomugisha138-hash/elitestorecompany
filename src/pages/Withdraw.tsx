@@ -145,7 +145,7 @@ export default function Withdraw() {
         </Link>
         <h1 className="page-title mb-0 flex-1 text-left">Withdraw</h1>
         <a
-          href="${SETTINGS_WA}"
+          href={settings.whatsapp_group_url}
           target="_blank"
           rel="noopener noreferrer"
           className="w-10 h-10 bg-[#25D366]/10 rounded-xl flex items-center justify-center hover:bg-[#25D366]/20 transition-all"
@@ -357,7 +357,7 @@ export default function Withdraw() {
 
       {/* WhatsApp Support */}
       <a
-        href="${SETTINGS_WA}"
+        href={settings.whatsapp_group_url}
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center gap-3 p-4 bg-card rounded-2xl shadow-card hover:shadow-lg-custom transition-all mb-4"

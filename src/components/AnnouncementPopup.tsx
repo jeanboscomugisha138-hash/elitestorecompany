@@ -69,7 +69,7 @@ export function AnnouncementPopup() {
           {/* CTA button */}
           <div className="px-5 pb-5">
             <a
-              href="${SETTINGS_WA}"
+              href={settings.whatsapp_group_url}
               target="_blank"
               rel="noopener noreferrer"
               onClick={closePopup}
