@@ -611,7 +611,9 @@ export default function AdminDashboard() {
     { id: 'deposits' as TabType, label: 'Deposits', icon: ArrowDownToLine },
     { id: 'withdrawals' as TabType, label: 'Withdrawals', icon: ArrowUpFromLine },
     { id: 'giftcodes' as TabType, label: 'Gift Codes', icon: Gift },
+    { id: 'settings' as TabType, label: 'Settings', icon: SettingsIcon },
   ];
+
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
