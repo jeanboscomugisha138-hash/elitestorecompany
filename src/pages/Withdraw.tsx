@@ -6,8 +6,10 @@ import { BottomNav } from '@/components/BottomNav';
 import { SuccessNotification } from '@/components/SuccessNotification';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 export default function Withdraw() {
+  const { settings } = useSiteSettings();
   const [phone, setPhone] = useState('');
   const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
@@ -145,7 +147,7 @@ export default function Withdraw() {
         </Link>
         <h1 className="page-title mb-0 flex-1 text-left">Withdraw</h1>
         <a
-          href="https://chat.whatsapp.com/HAWV3a3MW9G8ErOVRRdPSX?s=cl&p=a&ilr=1"
+          href={settings.whatsapp_group_url}
           target="_blank"
           rel="noopener noreferrer"
           className="w-10 h-10 bg-[#25D366]/10 rounded-xl flex items-center justify-center hover:bg-[#25D366]/20 transition-all"
@@ -357,7 +359,7 @@ export default function Withdraw() {
 
       {/* WhatsApp Support */}
       <a
-        href="https://chat.whatsapp.com/HAWV3a3MW9G8ErOVRRdPSX?s=cl&p=a&ilr=1"
+        href={settings.whatsapp_group_url}
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center gap-3 p-4 bg-card rounded-2xl shadow-card hover:shadow-lg-custom transition-all mb-4"

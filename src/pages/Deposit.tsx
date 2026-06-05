@@ -6,6 +6,7 @@ import { BottomNav } from '@/components/BottomNav';
 import { SuccessNotification } from '@/components/SuccessNotification';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 export default function Deposit() {
   const [phone, setPhone] = useState('');
@@ -16,9 +17,13 @@ export default function Deposit() {
   const [depositSuccess, setDepositSuccess] = useState<{ show: boolean; amount: number }>({ show: false, amount: 0 });
   const [hasPending, setHasPending] = useState(false);
   const { profile } = useAuth();
+  const { settings } = useSiteSettings();
 
-  const momoNumber = '*182*8*1*1978296#';
-  const momoName = 'Thacienne';
+  const momoNumber = settings.payment_phone;
+  const momoName = settings.payment_name;
+  const minDeposit = parseInt(settings.min_deposit) || 10000;
+  const maxDeposit = parseInt(settings.max_deposit) || 1000000;
+
 
   useEffect(() => {
     const checkPending = async () => {
@@ -51,14 +56,15 @@ export default function Deposit() {
     }
 
     const amountNum = parseFloat(amount);
-    if (amountNum < 10000) {
-      toast.error('Minimum deposit is 10,000 RWF');
+    if (amountNum < minDeposit) {
+      toast.error(`Minimum deposit is ${minDeposit.toLocaleString()} RWF`);
       return;
     }
-    if (amountNum > 1000000) {
-      toast.error('Maximum deposit is 1,000,000 RWF');
+    if (amountNum > maxDeposit) {
+      toast.error(`Maximum deposit is ${maxDeposit.toLocaleString()} RWF`);
       return;
     }
+
 
     setIsLoading(true);
 
@@ -200,9 +206,10 @@ export default function Deposit() {
               <Banknote className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
                 type="number"
-                placeholder="Min 10,000 · Max 1,000,000 RWF"
-                min="10000"
-                max="1000000"
+                placeholder={`Min ${minDeposit.toLocaleString()} · Max ${maxDeposit.toLocaleString()} RWF`}
+                min={minDeposit}
+                max={maxDeposit}
+
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 className="input-field pl-11 text-sm"

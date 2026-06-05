@@ -35,8 +35,10 @@ import {
 } from '@/components/ui/dialog';
 import { SuccessNotification } from '@/components/SuccessNotification';
 import { LiveActivity, CompanyAchievements } from '@/components/LiveActivity';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 export default function Dashboard() {
+  const { settings } = useSiteSettings();
   const { profile, refreshProfile } = useAuth();
   const balance = profile?.main_balance || 0;
   const totalInvested = profile?.invested_amount || 0;
@@ -146,7 +148,7 @@ export default function Dashboard() {
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Investment News</h2>
         <a
-          href="https://chat.whatsapp.com/HAWV3a3MW9G8ErOVRRdPSX?s=cl&p=a&ilr=1"
+          href={settings.whatsapp_group_url}
           target="_blank"
           rel="noopener noreferrer"
           className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-button"

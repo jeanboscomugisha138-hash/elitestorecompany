@@ -22,12 +22,25 @@ import {
   Plus,
   ToggleLeft,
   ToggleRight,
+  Settings as SettingsIcon,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
-type TabType = 'users' | 'products' | 'deposits' | 'withdrawals' | 'giftcodes';
+type TabType = 'users' | 'products' | 'deposits' | 'withdrawals' | 'giftcodes' | 'settings';
+
+const SETTING_FIELDS: { key: string; label: string; placeholder: string; type?: string }[] = [
+  { key: 'payment_phone', label: 'Payment / Recharge number', placeholder: '*182*8*1*1978296#' },
+  { key: 'payment_name', label: 'Receiver name', placeholder: 'Thacienne' },
+  { key: 'whatsapp_group_url', label: 'WhatsApp group link', placeholder: 'https://chat.whatsapp.com/...' },
+  { key: 'customer_service_url', label: 'Customer service link', placeholder: 'https://wa.me/250...' },
+  { key: 'min_deposit', label: 'Min deposit (RWF)', placeholder: '10000', type: 'number' },
+  { key: 'max_deposit', label: 'Max deposit (RWF)', placeholder: '1000000', type: 'number' },
+  { key: 'min_withdraw', label: 'Min withdraw (RWF)', placeholder: '1000', type: 'number' },
+  { key: 'max_withdraw', label: 'Max withdraw (RWF)', placeholder: '1000000', type: 'number' },
+];
+
 
 interface GiftCode {
   id: string;
@@ -118,6 +131,9 @@ export default function AdminDashboard() {
   const { signOut } = useAuth();
   const navigate = useNavigate();
 
+  const [siteSettings, setSiteSettings] = useState<Record<string, string>>({});
+  const [savingSettings, setSavingSettings] = useState(false);
+
   // Filter users based on search query
   const filteredUsers = users.filter(user => 
     user.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -128,6 +144,7 @@ export default function AdminDashboard() {
     fetchStats();
     fetchData();
   }, [activeTab]);
+
 
   const fetchStats = async () => {
     // Fetch total users
@@ -165,10 +182,37 @@ export default function AdminDashboard() {
     } else if (activeTab === 'giftcodes') {
       const { data } = await supabase.from('gift_codes').select('*').order('created_at', { ascending: false });
       setGiftCodes((data as GiftCode[]) || []);
+    } else if (activeTab === 'settings') {
+      const { data } = await supabase.from('site_settings').select('key, value');
+      const map: Record<string, string> = {};
+      (data || []).forEach((r: any) => { map[r.key] = r.value; });
+      // ensure all keys present
+      SETTING_FIELDS.forEach(f => { if (!(f.key in map)) map[f.key] = ''; });
+      setSiteSettings(map);
     }
 
     setIsLoading(false);
   };
+
+  const saveSiteSettings = async () => {
+    setSavingSettings(true);
+    try {
+      const rows = SETTING_FIELDS.map(f => ({
+        key: f.key,
+        value: (siteSettings[f.key] ?? '').toString(),
+        updated_at: new Date().toISOString(),
+      }));
+      const { error } = await supabase.from('site_settings').upsert(rows, { onConflict: 'key' });
+      if (error) {
+        toast.error('Failed to save settings');
+      } else {
+        toast.success('Settings saved successfully');
+      }
+    } finally {
+      setSavingSettings(false);
+    }
+  };
+
 
   const handleLogout = async () => {
     await signOut();
@@ -567,7 +611,9 @@ export default function AdminDashboard() {
     { id: 'deposits' as TabType, label: 'Deposits', icon: ArrowDownToLine },
     { id: 'withdrawals' as TabType, label: 'Withdrawals', icon: ArrowUpFromLine },
     { id: 'giftcodes' as TabType, label: 'Gift Codes', icon: Gift },
+    { id: 'settings' as TabType, label: 'Settings', icon: SettingsIcon },
   ];
+
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -1221,7 +1267,49 @@ export default function AdminDashboard() {
                 </div>
               </div>
             )}
+
+            {activeTab === 'settings' && (
+              <div className="bg-card rounded-2xl shadow-card overflow-hidden">
+                <div className="p-4 border-b border-border flex items-center justify-between">
+                  <div>
+                    <h2 className="font-semibold text-foreground flex items-center gap-2">
+                      <SettingsIcon className="w-5 h-5 text-primary" /> Platform Settings
+                    </h2>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Update payment details, links and limits used across the app. Changes apply instantly.
+                    </p>
+                  </div>
+                </div>
+                <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {SETTING_FIELDS.map((f) => (
+                    <div key={f.key} className="flex flex-col">
+                      <label className="text-xs font-medium text-muted-foreground mb-1">{f.label}</label>
+                      <input
+                        type={f.type || 'text'}
+                        value={siteSettings[f.key] ?? ''}
+                        placeholder={f.placeholder}
+                        onChange={(e) =>
+                          setSiteSettings((prev) => ({ ...prev, [f.key]: e.target.value }))
+                        }
+                        className="w-full px-4 py-2.5 border border-border rounded-xl bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div className="p-4 border-t border-border flex justify-end">
+                  <button
+                    onClick={saveSiteSettings}
+                    disabled={savingSettings}
+                    className="flex items-center gap-2 px-5 py-2.5 bg-primary text-primary-foreground rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+                  >
+                    <Save className="w-4 h-4" />
+                    {savingSettings ? 'Saving...' : 'Save Settings'}
+                  </button>
+                </div>
+              </div>
+            )}
           </>
+
         )}
       </div>
     </div>

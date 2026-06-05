@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Bell, Send, X } from 'lucide-react';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 export function AnnouncementPopup() {
+  const { settings } = useSiteSettings();
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
@@ -69,7 +71,7 @@ export function AnnouncementPopup() {
           {/* CTA button */}
           <div className="px-5 pb-5">
             <a
-              href="https://chat.whatsapp.com/HAWV3a3MW9G8ErOVRRdPSX?s=cl&p=a&ilr=1"
+              href={settings.whatsapp_group_url}
               target="_blank"
               rel="noopener noreferrer"
               onClick={closePopup}
