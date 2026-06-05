@@ -1267,7 +1267,49 @@ export default function AdminDashboard() {
                 </div>
               </div>
             )}
+
+            {activeTab === 'settings' && (
+              <div className="bg-card rounded-2xl shadow-card overflow-hidden">
+                <div className="p-4 border-b border-border flex items-center justify-between">
+                  <div>
+                    <h2 className="font-semibold text-foreground flex items-center gap-2">
+                      <SettingsIcon className="w-5 h-5 text-primary" /> Platform Settings
+                    </h2>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Update payment details, links and limits used across the app. Changes apply instantly.
+                    </p>
+                  </div>
+                </div>
+                <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {SETTING_FIELDS.map((f) => (
+                    <div key={f.key} className="flex flex-col">
+                      <label className="text-xs font-medium text-muted-foreground mb-1">{f.label}</label>
+                      <input
+                        type={f.type || 'text'}
+                        value={siteSettings[f.key] ?? ''}
+                        placeholder={f.placeholder}
+                        onChange={(e) =>
+                          setSiteSettings((prev) => ({ ...prev, [f.key]: e.target.value }))
+                        }
+                        className="w-full px-4 py-2.5 border border-border rounded-xl bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div className="p-4 border-t border-border flex justify-end">
+                  <button
+                    onClick={saveSiteSettings}
+                    disabled={savingSettings}
+                    className="flex items-center gap-2 px-5 py-2.5 bg-primary text-primary-foreground rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
+                  >
+                    <Save className="w-4 h-4" />
+                    {savingSettings ? 'Saving...' : 'Save Settings'}
+                  </button>
+                </div>
+              </div>
+            )}
           </>
+
         )}
       </div>
     </div>
