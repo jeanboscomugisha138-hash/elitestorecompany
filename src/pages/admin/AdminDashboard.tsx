@@ -131,6 +131,9 @@ export default function AdminDashboard() {
   const { signOut } = useAuth();
   const navigate = useNavigate();
 
+  const [siteSettings, setSiteSettings] = useState<Record<string, string>>({});
+  const [savingSettings, setSavingSettings] = useState(false);
+
   // Filter users based on search query
   const filteredUsers = users.filter(user => 
     user.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -141,6 +144,7 @@ export default function AdminDashboard() {
     fetchStats();
     fetchData();
   }, [activeTab]);
+
 
   const fetchStats = async () => {
     // Fetch total users
