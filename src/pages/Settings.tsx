@@ -96,7 +96,7 @@ export default function Settings() {
 
       <div className="grid grid-cols-2 gap-3 mb-4 animate-fade-in">
         <a
-          href="https://chat.whatsapp.com/HAWV3a3MW9G8ErOVRRdPSX?s=cl&p=a&ilr=1"
+          href="${SETTINGS_WA}"
           target="_blank"
           rel="noopener noreferrer"
           className="bg-[#25D366] rounded-xl py-3 flex items-center justify-center gap-2 hover:opacity-90 transition-all"
@@ -155,7 +155,7 @@ export default function Settings() {
             <DialogDescription>Contact our support team on WhatsApp to securely reset your password.</DialogDescription>
           </DialogHeader>
           <a
-            href="https://chat.whatsapp.com/HAWV3a3MW9G8ErOVRRdPSX?s=cl&p=a&ilr=1"
+            href="${SETTINGS_WA}"
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => { setPassOpen(false); toast.success('Opening WhatsApp...'); }}
