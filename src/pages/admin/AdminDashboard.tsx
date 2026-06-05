@@ -182,10 +182,37 @@ export default function AdminDashboard() {
     } else if (activeTab === 'giftcodes') {
       const { data } = await supabase.from('gift_codes').select('*').order('created_at', { ascending: false });
       setGiftCodes((data as GiftCode[]) || []);
+    } else if (activeTab === 'settings') {
+      const { data } = await supabase.from('site_settings').select('key, value');
+      const map: Record<string, string> = {};
+      (data || []).forEach((r: any) => { map[r.key] = r.value; });
+      // ensure all keys present
+      SETTING_FIELDS.forEach(f => { if (!(f.key in map)) map[f.key] = ''; });
+      setSiteSettings(map);
     }
 
     setIsLoading(false);
   };
+
+  const saveSiteSettings = async () => {
+    setSavingSettings(true);
+    try {
+      const rows = SETTING_FIELDS.map(f => ({
+        key: f.key,
+        value: (siteSettings[f.key] ?? '').toString(),
+        updated_at: new Date().toISOString(),
+      }));
+      const { error } = await supabase.from('site_settings').upsert(rows, { onConflict: 'key' });
+      if (error) {
+        toast.error('Failed to save settings');
+      } else {
+        toast.success('Settings saved successfully');
+      }
+    } finally {
+      setSavingSettings(false);
+    }
+  };
+
 
   const handleLogout = async () => {
     await signOut();
