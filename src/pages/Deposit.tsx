@@ -6,6 +6,7 @@ import { BottomNav } from '@/components/BottomNav';
 import { SuccessNotification } from '@/components/SuccessNotification';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 export default function Deposit() {
   const [phone, setPhone] = useState('');
@@ -16,9 +17,13 @@ export default function Deposit() {
   const [depositSuccess, setDepositSuccess] = useState<{ show: boolean; amount: number }>({ show: false, amount: 0 });
   const [hasPending, setHasPending] = useState(false);
   const { profile } = useAuth();
+  const { settings } = useSiteSettings();
 
-  const momoNumber = '*182*8*1*1978296#';
-  const momoName = 'Thacienne';
+  const momoNumber = settings.payment_phone;
+  const momoName = settings.payment_name;
+  const minDeposit = parseInt(settings.min_deposit) || 10000;
+  const maxDeposit = parseInt(settings.max_deposit) || 1000000;
+
 
   useEffect(() => {
     const checkPending = async () => {
