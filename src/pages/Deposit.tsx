@@ -206,9 +206,10 @@ export default function Deposit() {
               <Banknote className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <input
                 type="number"
-                placeholder="Min 10,000 · Max 1,000,000 RWF"
-                min="10000"
-                max="1000000"
+                placeholder={`Min ${minDeposit.toLocaleString()} · Max ${maxDeposit.toLocaleString()} RWF`}
+                min={minDeposit}
+                max={maxDeposit}
+
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 className="input-field pl-11 text-sm"
