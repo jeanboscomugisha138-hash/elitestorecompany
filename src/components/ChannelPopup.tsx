@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { MessageCircle } from 'lucide-react';
 import { PopupModal } from './PopupModal';
-
-const WHATSAPP_LINK = 'https://chat.whatsapp.com/HAWV3a3MW9G8ErOVRRdPSX?s=cl&p=a&ilr=1';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 export function ChannelPopup() {
   const [showPopup, setShowPopup] = useState(false);
+  const { settings } = useSiteSettings();
 
   useEffect(() => {
     const justLoggedIn = sessionStorage.getItem('justLoggedIn');
@@ -31,7 +31,7 @@ export function ChannelPopup() {
           Join our official WhatsApp group to receive the latest updates, news and fast support.
         </p>
         <a
-          href={WHATSAPP_LINK}
+          href={settings.whatsapp_group_url}
           target="_blank"
           rel="noopener noreferrer"
           className="action-btn w-full inline-block text-center"
