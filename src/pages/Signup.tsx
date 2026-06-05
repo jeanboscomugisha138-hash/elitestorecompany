@@ -51,10 +51,6 @@ export default function Signup() {
             <span className="text-xs font-semibold tracking-widest text-white">ELITESTORE</span>
           </div>
           <h1 className="text-4xl font-extrabold text-white mt-5 tracking-tight">Create Account</h1>
-          <div className="inline-flex items-center gap-2 mt-3 px-4 py-1.5 rounded-full bg-yellow-400/20 backdrop-blur-md border border-yellow-300/40">
-            <Gift className="w-4 h-4 text-yellow-100" />
-            <span className="text-xs font-bold text-white">Get 1,000 RWF welcome bonus</span>
-          </div>
         </div>
 
         <div className="bg-white rounded-3xl px-6 py-6 shadow-2xl border border-white/40">
