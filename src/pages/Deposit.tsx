@@ -56,14 +56,15 @@ export default function Deposit() {
     }
 
     const amountNum = parseFloat(amount);
-    if (amountNum < 10000) {
-      toast.error('Minimum deposit is 10,000 RWF');
+    if (amountNum < minDeposit) {
+      toast.error(`Minimum deposit is ${minDeposit.toLocaleString()} RWF`);
       return;
     }
-    if (amountNum > 1000000) {
-      toast.error('Maximum deposit is 1,000,000 RWF');
+    if (amountNum > maxDeposit) {
+      toast.error(`Maximum deposit is ${maxDeposit.toLocaleString()} RWF`);
       return;
     }
+
 
     setIsLoading(true);
 
