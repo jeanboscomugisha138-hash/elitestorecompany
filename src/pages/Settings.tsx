@@ -24,6 +24,7 @@ import { toast } from 'sonner';
 import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 export default function Settings() {
+  const { settings } = useSiteSettings();
   const { profile, user, signOut } = useAuth();
   const navigate = useNavigate();
   const [aboutOpen, setAboutOpen] = useState(false);

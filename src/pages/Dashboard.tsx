@@ -38,6 +38,7 @@ import { LiveActivity, CompanyAchievements } from '@/components/LiveActivity';
 import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 export default function Dashboard() {
+  const { settings } = useSiteSettings();
   const { profile, refreshProfile } = useAuth();
   const balance = profile?.main_balance || 0;
   const totalInvested = profile?.invested_amount || 0;
