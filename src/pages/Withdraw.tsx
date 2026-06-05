@@ -6,6 +6,7 @@ import { BottomNav } from '@/components/BottomNav';
 import { SuccessNotification } from '@/components/SuccessNotification';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 export default function Withdraw() {
   const [phone, setPhone] = useState('');

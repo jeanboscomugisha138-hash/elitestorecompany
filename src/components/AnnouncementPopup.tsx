@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Bell, Send, X } from 'lucide-react';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 export function AnnouncementPopup() {
   const [showPopup, setShowPopup] = useState(false);

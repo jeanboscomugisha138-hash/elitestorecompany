@@ -35,6 +35,7 @@ import {
 } from '@/components/ui/dialog';
 import { SuccessNotification } from '@/components/SuccessNotification';
 import { LiveActivity, CompanyAchievements } from '@/components/LiveActivity';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 export default function Dashboard() {
   const { profile, refreshProfile } = useAuth();

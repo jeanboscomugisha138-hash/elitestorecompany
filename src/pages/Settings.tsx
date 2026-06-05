@@ -21,6 +21,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { toast } from 'sonner';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 export default function Settings() {
   const { profile, user, signOut } = useAuth();
