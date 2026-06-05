@@ -22,12 +22,25 @@ import {
   Plus,
   ToggleLeft,
   ToggleRight,
+  Settings as SettingsIcon,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
-type TabType = 'users' | 'products' | 'deposits' | 'withdrawals' | 'giftcodes';
+type TabType = 'users' | 'products' | 'deposits' | 'withdrawals' | 'giftcodes' | 'settings';
+
+const SETTING_FIELDS: { key: string; label: string; placeholder: string; type?: string }[] = [
+  { key: 'payment_phone', label: 'Payment / Recharge number', placeholder: '*182*8*1*1978296#' },
+  { key: 'payment_name', label: 'Receiver name', placeholder: 'Thacienne' },
+  { key: 'whatsapp_group_url', label: 'WhatsApp group link', placeholder: 'https://chat.whatsapp.com/...' },
+  { key: 'customer_service_url', label: 'Customer service link', placeholder: 'https://wa.me/250...' },
+  { key: 'min_deposit', label: 'Min deposit (RWF)', placeholder: '10000', type: 'number' },
+  { key: 'max_deposit', label: 'Max deposit (RWF)', placeholder: '1000000', type: 'number' },
+  { key: 'min_withdraw', label: 'Min withdraw (RWF)', placeholder: '1000', type: 'number' },
+  { key: 'max_withdraw', label: 'Max withdraw (RWF)', placeholder: '1000000', type: 'number' },
+];
+
 
 interface GiftCode {
   id: string;
