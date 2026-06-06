@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, ArrowDownToLine, ArrowUpFromLine, Package, Gift, Calendar, TrendingUp, Clock, CheckCircle2, XCircle, AlertCircle, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowDownToLine, ArrowUpFromLine, Package, Gift, Calendar, TrendingUp, Clock, CheckCircle2, XCircle, AlertCircle, Sparkles, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { BottomNav } from '@/components/BottomNav';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import { toast } from 'sonner';
 
 type TabType = 'deposits' | 'withdrawals' | 'investments' | 'bonuses';
 
@@ -245,6 +248,50 @@ export default function History() {
     </div>
   );
 
+  const handleDownloadPDF = () => {
+    try {
+      const doc = new jsPDF();
+      const title = `${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} History`;
+      doc.setFontSize(18);
+      doc.text('SAMSUNG WORLD TECHNOLOGY', 14, 18);
+      doc.setFontSize(13);
+      doc.text(title, 14, 27);
+      doc.setFontSize(10);
+      doc.text(`User: ${profile?.full_name || ''}`, 14, 34);
+      doc.text(`Phone: ${profile?.phone || ''}`, 14, 40);
+      doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 46);
+      doc.text(`Total: ${totalAmount.toLocaleString()} RWF  |  Records: ${itemCount}`, 14, 52);
+
+      let head: string[][] = [];
+      let body: (string | number)[][] = [];
+
+      if (activeTab === 'deposits' || activeTab === 'withdrawals') {
+        const rows = activeTab === 'deposits' ? deposits : withdrawals;
+        head = [['Date', 'Time', 'Amount (RWF)', 'Status']];
+        body = rows.map(r => [formatDate(r.created_at), formatTime(r.created_at), r.amount.toLocaleString(), r.status]);
+      } else if (activeTab === 'investments') {
+        head = [['Start', 'End', 'Amount (RWF)', 'Daily Profit', 'Status']];
+        body = investments.map(i => [formatDate(i.start_date), formatDate(i.end_date), i.amount.toLocaleString(), i.daily_profit.toLocaleString(), i.status]);
+      } else {
+        head = [['Date', 'Time', 'Type', 'Amount (RWF)']];
+        body = bonuses.map(b => [formatDate(b.claimed_at), formatTime(b.claimed_at), 'Daily Bonus', b.amount.toLocaleString()]);
+      }
+
+      autoTable(doc, {
+        head,
+        body,
+        startY: 58,
+        styles: { fontSize: 9 },
+        headStyles: { fillColor: [234, 88, 12] },
+      });
+
+      doc.save(`${activeTab}-history-${Date.now()}.pdf`);
+      toast.success('PDF downloaded successfully');
+    } catch (e) {
+      toast.error('Failed to generate PDF');
+    }
+  };
+
   const renderContent = () => {
     if (isLoading) {
       return (
@@ -272,7 +319,7 @@ export default function History() {
   return (
     <div className="page-container bg-background">
       {/* Header */}
-      <div className="flex items-center gap-4 mb-6">
+      <div className="flex items-center gap-3 mb-6">
         <Link
           to="/dashboard"
           className="w-10 h-10 bg-card rounded-xl flex items-center justify-center shadow-card hover:shadow-lg-custom transition-all border border-border/50"
@@ -280,6 +327,14 @@ export default function History() {
           <ArrowLeft className="w-5 h-5 text-foreground" />
         </Link>
         <h1 className="text-2xl font-bold text-foreground flex-1 text-left">History</h1>
+        <button
+          onClick={handleDownloadPDF}
+          disabled={isLoading || itemCount === 0}
+          className="flex items-center gap-2 px-3 h-10 bg-primary text-primary-foreground rounded-xl shadow-card font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <Download className="w-4 h-4" />
+          PDF
+        </button>
       </div>
 
       {/* Summary Card */}
