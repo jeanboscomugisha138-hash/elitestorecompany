@@ -38,64 +38,65 @@ export default function Settings() {
 
   return (
     <div className="page-container bg-background">
+      <section className="samsung-safe-profile-section rounded-3xl mb-4">
       {/* Profile header with avatar */}
-      <div className="bg-gradient-to-br from-purple-600 via-fuchsia-600 to-pink-500 rounded-3xl p-5 mb-4 animate-fade-in text-white relative overflow-hidden shadow-button isolate">
-        <div className="relative flex items-center gap-4 mb-5">
-          <div className="w-16 h-16 rounded-full bg-white/25 flex items-center justify-center font-extrabold text-2xl border-2 border-white/40 shadow-lg">
+      <div className="samsung-profile-balance-card rounded-3xl p-5 mb-4">
+        <div className="flex items-center gap-4 mb-5">
+          <div className="samsung-profile-avatar w-16 h-16 rounded-full flex items-center justify-center font-extrabold text-2xl">
             {initials}
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-lg font-bold truncate">{name}</p>
-            <p className="text-xs text-white/80">{profile?.phone || ''}</p>
+            <p className="text-xs opacity-80">{profile?.phone || ''}</p>
           </div>
         </div>
-        <p className="text-xs text-white/80">Account Balance</p>
+        <p className="text-xs opacity-80">Account Balance</p>
         <p className="text-3xl font-extrabold mb-4">{formatRWF(profile?.main_balance || 0)}</p>
 
         <div className="grid grid-cols-2 gap-3">
-          <Link to="/deposit" className="flex items-center justify-center gap-2 bg-white/20 border border-white/30 rounded-xl py-3 font-semibold text-sm hover:bg-white/30 transition-all">
+          <Link to="/deposit" className="samsung-profile-card-button flex items-center justify-center gap-2 rounded-xl py-3 font-semibold text-sm">
             <Wallet className="w-4 h-4" /> Recharge
           </Link>
-          <Link to="/withdraw" className="flex items-center justify-center gap-2 bg-white/20 border border-white/30 rounded-xl py-3 font-semibold text-sm hover:bg-white/30 transition-all">
+          <Link to="/withdraw" className="samsung-profile-card-button flex items-center justify-center gap-2 rounded-xl py-3 font-semibold text-sm">
             <ArrowUpFromLine className="w-4 h-4" /> Withdraw
           </Link>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 mb-4 animate-fade-in">
-        <Link to="/history" className="gradient-primary rounded-xl p-4 flex items-start gap-2 hover:opacity-90 transition-all">
-          <ArrowDownToLine className="w-5 h-5 text-primary-foreground" />
-          <span className="text-sm font-semibold text-primary-foreground">Recharge History</span>
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        <Link to="/history" className="samsung-action-tile samsung-action-tile-primary rounded-xl p-4 flex items-start gap-2">
+          <ArrowDownToLine className="w-5 h-5" />
+          <span className="text-sm font-semibold">Recharge History</span>
         </Link>
-        <Link to="/history" className="gradient-primary rounded-xl p-4 flex items-start gap-2 hover:opacity-90 transition-all">
-          <ArrowUpFromLine className="w-5 h-5 text-primary-foreground" />
-          <span className="text-sm font-semibold text-primary-foreground">Withdraw History</span>
-        </Link>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3 mb-3 animate-fade-in">
-        <Link to="/referral" className="gradient-primary rounded-xl py-3 flex items-center justify-center gap-2 hover:opacity-90 transition-all">
-          <Users className="w-5 h-5 text-primary-foreground" />
-          <span className="text-sm font-bold text-primary-foreground">Invite Friends</span>
-        </Link>
-        <Link to="/withdraw" className="gradient-primary rounded-xl py-3 flex items-center justify-center gap-2 hover:opacity-90 transition-all">
-          <Wallet className="w-5 h-5 text-primary-foreground" />
-          <span className="text-sm font-bold text-primary-foreground">Withdraw Account</span>
+        <Link to="/history" className="samsung-action-tile samsung-action-tile-secondary rounded-xl p-4 flex items-start gap-2">
+          <ArrowUpFromLine className="w-5 h-5" />
+          <span className="text-sm font-semibold">Withdraw History</span>
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 mb-3 animate-fade-in">
-        <button onClick={() => setPassOpen(true)} className="gradient-primary rounded-xl py-3 flex items-center justify-center gap-2 hover:opacity-90 transition-all">
-          <Lock className="w-5 h-5 text-primary-foreground" />
-          <span className="text-sm font-bold text-primary-foreground">Account Password</span>
+      <div className="grid grid-cols-2 gap-3 mb-3">
+        <Link to="/referral" className="samsung-action-tile rounded-xl py-3 flex items-center justify-center gap-2">
+          <Users className="w-5 h-5 text-primary" />
+          <span className="text-sm font-bold">Invite Friends</span>
+        </Link>
+        <Link to="/withdraw" className="samsung-action-tile rounded-xl py-3 flex items-center justify-center gap-2">
+          <Wallet className="w-5 h-5 text-secondary" />
+          <span className="text-sm font-bold">Withdraw Account</span>
+        </Link>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3 mb-3">
+        <button onClick={() => setPassOpen(true)} className="samsung-action-tile rounded-xl py-3 flex items-center justify-center gap-2">
+          <Lock className="w-5 h-5 text-primary" />
+          <span className="text-sm font-bold">Account Password</span>
         </button>
-        <button onClick={() => setAboutOpen(true)} className="gradient-primary rounded-xl py-3 flex items-center justify-center gap-2 hover:opacity-90 transition-all">
-          <Info className="w-5 h-5 text-primary-foreground" />
-          <span className="text-sm font-bold text-primary-foreground">About Us</span>
+        <button onClick={() => setAboutOpen(true)} className="samsung-action-tile rounded-xl py-3 flex items-center justify-center gap-2">
+          <Info className="w-5 h-5 text-secondary" />
+          <span className="text-sm font-bold">About Us</span>
         </button>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 mb-4 animate-fade-in">
+      <div className="grid grid-cols-2 gap-3 mb-4">
         <a
           href={settings.whatsapp_group_url}
           target="_blank"
@@ -110,6 +111,7 @@ export default function Settings() {
           <span className="text-sm font-bold text-destructive-foreground">Log Out</span>
         </button>
       </div>
+      </section>
 
       {/* Account info */}
       <div className="bg-card rounded-2xl p-4 shadow-card animate-fade-in">
