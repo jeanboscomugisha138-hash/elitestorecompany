@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, ArrowDownToLine, ArrowUpFromLine, Package, Gift, Calendar, TrendingUp, Clock, CheckCircle2, XCircle, AlertCircle, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowDownToLine, ArrowUpFromLine, Package, Gift, Calendar, TrendingUp, Clock, CheckCircle2, XCircle, AlertCircle, Sparkles, Download } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { BottomNav } from '@/components/BottomNav';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import { toast } from 'sonner';
 
 type TabType = 'deposits' | 'withdrawals' | 'investments' | 'bonuses';
 
