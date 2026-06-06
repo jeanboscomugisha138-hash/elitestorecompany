@@ -319,7 +319,7 @@ export default function History() {
   return (
     <div className="page-container bg-background">
       {/* Header */}
-      <div className="flex items-center gap-4 mb-6">
+      <div className="flex items-center gap-3 mb-6">
         <Link
           to="/dashboard"
           className="w-10 h-10 bg-card rounded-xl flex items-center justify-center shadow-card hover:shadow-lg-custom transition-all border border-border/50"
@@ -327,6 +327,14 @@ export default function History() {
           <ArrowLeft className="w-5 h-5 text-foreground" />
         </Link>
         <h1 className="text-2xl font-bold text-foreground flex-1 text-left">History</h1>
+        <button
+          onClick={handleDownloadPDF}
+          disabled={isLoading || itemCount === 0}
+          className="flex items-center gap-2 px-3 h-10 bg-primary text-primary-foreground rounded-xl shadow-card font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <Download className="w-4 h-4" />
+          PDF
+        </button>
       </div>
 
       {/* Summary Card */}
