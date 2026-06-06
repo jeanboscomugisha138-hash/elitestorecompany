@@ -248,6 +248,50 @@ export default function History() {
     </div>
   );
 
+  const handleDownloadPDF = () => {
+    try {
+      const doc = new jsPDF();
+      const title = `${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} History`;
+      doc.setFontSize(18);
+      doc.text('SAMSUNG WORLD TECHNOLOGY', 14, 18);
+      doc.setFontSize(13);
+      doc.text(title, 14, 27);
+      doc.setFontSize(10);
+      doc.text(`User: ${profile?.full_name || ''}`, 14, 34);
+      doc.text(`Phone: ${profile?.phone || ''}`, 14, 40);
+      doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 46);
+      doc.text(`Total: ${totalAmount.toLocaleString()} RWF  |  Records: ${itemCount}`, 14, 52);
+
+      let head: string[][] = [];
+      let body: (string | number)[][] = [];
+
+      if (activeTab === 'deposits' || activeTab === 'withdrawals') {
+        const rows = activeTab === 'deposits' ? deposits : withdrawals;
+        head = [['Date', 'Time', 'Amount (RWF)', 'Status']];
+        body = rows.map(r => [formatDate(r.created_at), formatTime(r.created_at), r.amount.toLocaleString(), r.status]);
+      } else if (activeTab === 'investments') {
+        head = [['Start', 'End', 'Amount (RWF)', 'Daily Profit', 'Status']];
+        body = investments.map(i => [formatDate(i.start_date), formatDate(i.end_date), i.amount.toLocaleString(), i.daily_profit.toLocaleString(), i.status]);
+      } else {
+        head = [['Date', 'Time', 'Type', 'Amount (RWF)']];
+        body = bonuses.map(b => [formatDate(b.claimed_at), formatTime(b.claimed_at), 'Daily Bonus', b.amount.toLocaleString()]);
+      }
+
+      autoTable(doc, {
+        head,
+        body,
+        startY: 58,
+        styles: { fontSize: 9 },
+        headStyles: { fillColor: [234, 88, 12] },
+      });
+
+      doc.save(`${activeTab}-history-${Date.now()}.pdf`);
+      toast.success('PDF downloaded successfully');
+    } catch (e) {
+      toast.error('Failed to generate PDF');
+    }
+  };
+
   const renderContent = () => {
     if (isLoading) {
       return (
