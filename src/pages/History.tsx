@@ -251,27 +251,89 @@ export default function History() {
   const handleDownloadPDF = () => {
     try {
       const doc = new jsPDF();
-      const title = `${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} History`;
-      doc.setFontSize(18);
-      doc.text('SAMSUNG WORLD TECHNOLOGY', 14, 18);
-      doc.setFontSize(13);
-      doc.text(title, 14, 27);
-      doc.setFontSize(10);
-      doc.text(`User: ${profile?.full_name || ''}`, 14, 34);
-      doc.text(`Phone: ${profile?.phone || ''}`, 14, 40);
-      doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 46);
-      doc.text(`Total: ${totalAmount.toLocaleString()} RWF  |  Records: ${itemCount}`, 14, 52);
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const title = `${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} Statement`;
 
+      // ===== Header band =====
+      doc.setFillColor(63, 32, 200); // primary indigo
+      doc.rect(0, 0, pageWidth, 32, 'F');
+      doc.setFillColor(220, 38, 130); // accent pink
+      doc.rect(0, 32, pageWidth, 3, 'F');
+
+      // Brand mark circle
+      doc.setFillColor(255, 255, 255);
+      doc.circle(18, 16, 7, 'F');
+      doc.setTextColor(63, 32, 200);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.text('ES', 18, 19, { align: 'center' });
+
+      // Brand title
+      doc.setTextColor(255, 255, 255);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(16);
+      doc.text('ELITE STORE COMPANY', 30, 15);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.text('Smart Investment Platform · Kigali, Rwanda', 30, 22);
+
+      // ===== Title section =====
+      doc.setTextColor(20, 20, 30);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(18);
+      doc.text(title, 14, 50);
+      doc.setDrawColor(220, 38, 130);
+      doc.setLineWidth(0.8);
+      doc.line(14, 53, 50, 53);
+
+      // ===== User info card =====
+      doc.setFillColor(245, 245, 250);
+      doc.roundedRect(14, 60, pageWidth - 28, 36, 3, 3, 'F');
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.setTextColor(80, 80, 100);
+      doc.text('ACCOUNT HOLDER', 20, 68);
+      doc.text('CONTACT', 20, 82);
+      doc.text('GENERATED', pageWidth / 2 + 5, 68);
+      doc.text('REFERENCE', pageWidth / 2 + 5, 82);
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(11);
+      doc.setTextColor(20, 20, 30);
+      doc.text(profile?.full_name || '—', 20, 74);
+      doc.text(profile?.phone || '—', 20, 88);
+      doc.text(new Date().toLocaleString(), pageWidth / 2 + 5, 74);
+      doc.text(`ES-${Date.now().toString().slice(-8)}`, pageWidth / 2 + 5, 88);
+
+      // ===== Summary pills =====
+      const pillY = 104;
+      doc.setFillColor(63, 32, 200);
+      doc.roundedRect(14, pillY, (pageWidth - 32) / 2, 18, 3, 3, 'F');
+      doc.setFillColor(220, 38, 130);
+      doc.roundedRect(pageWidth / 2 + 2, pillY, (pageWidth - 32) / 2, 18, 3, 3, 'F');
+
+      doc.setTextColor(255, 255, 255);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.text('TOTAL AMOUNT', 20, pillY + 7);
+      doc.text('RECORDS', pageWidth / 2 + 8, pillY + 7);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      doc.text(`${totalAmount.toLocaleString()} RWF`, 20, pillY + 14);
+      doc.text(`${itemCount}`, pageWidth / 2 + 8, pillY + 14);
+
+      // ===== Table =====
       let head: string[][] = [];
       let body: (string | number)[][] = [];
 
       if (activeTab === 'deposits' || activeTab === 'withdrawals') {
         const rows = activeTab === 'deposits' ? deposits : withdrawals;
         head = [['Date', 'Time', 'Amount (RWF)', 'Status']];
-        body = rows.map(r => [formatDate(r.created_at), formatTime(r.created_at), r.amount.toLocaleString(), r.status]);
+        body = rows.map(r => [formatDate(r.created_at), formatTime(r.created_at), r.amount.toLocaleString(), r.status.toUpperCase()]);
       } else if (activeTab === 'investments') {
         head = [['Start', 'End', 'Amount (RWF)', 'Daily Profit', 'Status']];
-        body = investments.map(i => [formatDate(i.start_date), formatDate(i.end_date), i.amount.toLocaleString(), i.daily_profit.toLocaleString(), i.status]);
+        body = investments.map(i => [formatDate(i.start_date), formatDate(i.end_date), i.amount.toLocaleString(), i.daily_profit.toLocaleString(), i.status.toUpperCase()]);
       } else {
         head = [['Date', 'Time', 'Type', 'Amount (RWF)']];
         body = bonuses.map(b => [formatDate(b.claimed_at), formatTime(b.claimed_at), 'Daily Bonus', b.amount.toLocaleString()]);
@@ -280,17 +342,37 @@ export default function History() {
       autoTable(doc, {
         head,
         body,
-        startY: 58,
-        styles: { fontSize: 9 },
-        headStyles: { fillColor: [234, 88, 12] },
+        startY: 130,
+        margin: { left: 14, right: 14 },
+        styles: { fontSize: 9, cellPadding: 3.5, textColor: [35, 35, 50] },
+        headStyles: { fillColor: [63, 32, 200], textColor: [255, 255, 255], fontStyle: 'bold', halign: 'left' },
+        alternateRowStyles: { fillColor: [248, 248, 252] },
+        theme: 'grid',
+        tableLineColor: [225, 225, 235],
+        tableLineWidth: 0.1,
       });
 
-      doc.save(`${activeTab}-history-${Date.now()}.pdf`);
+      // ===== Footer on every page =====
+      const pageCount = (doc as any).internal.getNumberOfPages();
+      for (let p = 1; p <= pageCount; p++) {
+        doc.setPage(p);
+        const ph = doc.internal.pageSize.getHeight();
+        doc.setDrawColor(225, 225, 235);
+        doc.line(14, ph - 18, pageWidth - 14, ph - 18);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        doc.setTextColor(120, 120, 140);
+        doc.text('ELITE STORE COMPANY · Official Statement · Confidential', 14, ph - 11);
+        doc.text(`Page ${p} of ${pageCount}`, pageWidth - 14, ph - 11, { align: 'right' });
+      }
+
+      doc.save(`elite-store-${activeTab}-${Date.now()}.pdf`);
       toast.success('PDF downloaded successfully');
     } catch (e) {
       toast.error('Failed to generate PDF');
     }
   };
+
 
   const renderContent = () => {
     if (isLoading) {

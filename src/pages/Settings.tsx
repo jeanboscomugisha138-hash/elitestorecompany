@@ -38,11 +38,10 @@ export default function Settings() {
 
   return (
     <div className="page-container bg-background">
-      <section className="samsung-safe-profile-section rounded-3xl mb-4">
-      {/* Profile header with avatar */}
-      <div className="samsung-profile-balance-card rounded-3xl p-5 mb-4">
+      {/* Balance card */}
+      <div className="profile-balance-card mb-4">
         <div className="flex items-center gap-4 mb-5">
-          <div className="samsung-profile-avatar w-16 h-16 rounded-full flex items-center justify-center font-extrabold text-2xl">
+          <div className="profile-avatar-circle w-16 h-16 rounded-full flex items-center justify-center font-extrabold text-2xl">
             {initials}
           </div>
           <div className="flex-1 min-w-0">
@@ -54,43 +53,43 @@ export default function Settings() {
         <p className="text-3xl font-extrabold mb-4">{formatRWF(profile?.main_balance || 0)}</p>
 
         <div className="grid grid-cols-2 gap-3">
-          <Link to="/deposit" className="samsung-profile-card-button flex items-center justify-center gap-2 rounded-xl py-3 font-semibold text-sm">
+          <Link to="/deposit" className="profile-card-button flex items-center justify-center gap-2 rounded-xl py-3 font-semibold text-sm">
             <Wallet className="w-4 h-4" /> Recharge
           </Link>
-          <Link to="/withdraw" className="samsung-profile-card-button flex items-center justify-center gap-2 rounded-xl py-3 font-semibold text-sm">
+          <Link to="/withdraw" className="profile-card-button flex items-center justify-center gap-2 rounded-xl py-3 font-semibold text-sm">
             <ArrowUpFromLine className="w-4 h-4" /> Withdraw
           </Link>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 mb-4">
-        <Link to="/history" className="samsung-action-tile samsung-action-tile-primary rounded-xl p-4 flex items-start gap-2">
+      <div className="grid grid-cols-2 gap-3 mb-3">
+        <Link to="/history" className="profile-tile profile-tile-primary rounded-xl p-4 flex items-start gap-2">
           <ArrowDownToLine className="w-5 h-5" />
           <span className="text-sm font-semibold">Recharge History</span>
         </Link>
-        <Link to="/history" className="samsung-action-tile samsung-action-tile-secondary rounded-xl p-4 flex items-start gap-2">
+        <Link to="/history" className="profile-tile profile-tile-secondary rounded-xl p-4 flex items-start gap-2">
           <ArrowUpFromLine className="w-5 h-5" />
           <span className="text-sm font-semibold">Withdraw History</span>
         </Link>
       </div>
 
       <div className="grid grid-cols-2 gap-3 mb-3">
-        <Link to="/referral" className="samsung-action-tile rounded-xl py-3 flex items-center justify-center gap-2">
+        <Link to="/referral" className="profile-tile rounded-xl py-3 flex items-center justify-center gap-2">
           <Users className="w-5 h-5 text-primary" />
           <span className="text-sm font-bold">Invite Friends</span>
         </Link>
-        <Link to="/withdraw" className="samsung-action-tile rounded-xl py-3 flex items-center justify-center gap-2">
+        <Link to="/withdraw" className="profile-tile rounded-xl py-3 flex items-center justify-center gap-2">
           <Wallet className="w-5 h-5 text-secondary" />
           <span className="text-sm font-bold">Withdraw Account</span>
         </Link>
       </div>
 
       <div className="grid grid-cols-2 gap-3 mb-3">
-        <button onClick={() => setPassOpen(true)} className="samsung-action-tile rounded-xl py-3 flex items-center justify-center gap-2">
+        <button onClick={() => setPassOpen(true)} className="profile-tile rounded-xl py-3 flex items-center justify-center gap-2">
           <Lock className="w-5 h-5 text-primary" />
           <span className="text-sm font-bold">Account Password</span>
         </button>
-        <button onClick={() => setAboutOpen(true)} className="samsung-action-tile rounded-xl py-3 flex items-center justify-center gap-2">
+        <button onClick={() => setAboutOpen(true)} className="profile-tile rounded-xl py-3 flex items-center justify-center gap-2">
           <Info className="w-5 h-5 text-secondary" />
           <span className="text-sm font-bold">About Us</span>
         </button>
@@ -101,20 +100,19 @@ export default function Settings() {
           href={settings.whatsapp_group_url}
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-[#25D366] rounded-xl py-3 flex items-center justify-center gap-2 hover:opacity-90 transition-all"
+          className="bg-[#25D366] rounded-xl py-3 flex items-center justify-center gap-2"
         >
           <MessageCircle className="w-5 h-5 text-white" />
           <span className="text-sm font-bold text-white">WhatsApp</span>
         </a>
-        <button onClick={handleLogout} className="bg-destructive rounded-xl py-3 flex items-center justify-center gap-2 hover:opacity-90 transition-all">
+        <button onClick={handleLogout} className="bg-destructive rounded-xl py-3 flex items-center justify-center gap-2">
           <LogOut className="w-5 h-5 text-destructive-foreground" />
           <span className="text-sm font-bold text-destructive-foreground">Log Out</span>
         </button>
       </div>
-      </section>
 
       {/* Account info */}
-      <div className="bg-card rounded-2xl p-4 shadow-card animate-fade-in">
+      <div className="bg-card rounded-2xl p-4 border border-border">
         <h3 className="font-bold text-foreground mb-3">Account Info</h3>
         <div className="space-y-2">
           <div className="flex justify-between text-sm"><span className="text-muted-foreground">Name</span><span className="font-medium text-foreground">{name}</span></div>
@@ -135,11 +133,11 @@ export default function Settings() {
       <Dialog open={aboutOpen} onOpenChange={setAboutOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2"><Info className="w-5 h-5 text-primary" /> About ELITESTORE</DialogTitle>
+            <DialogTitle className="flex items-center gap-2"><Info className="w-5 h-5 text-primary" /> About ELITE STORE COMPANY</DialogTitle>
             <DialogDescription>The trusted way to grow your money in Rwanda.</DialogDescription>
           </DialogHeader>
           <div className="space-y-3 text-sm text-foreground">
-            <p>ELITESTORE COMPANY is a leading digital investment platform helping thousands of Rwandans earn daily passive income through smart device-rental plans.</p>
+            <p>ELITE STORE COMPANY is a leading digital investment platform helping thousands of Rwandans earn daily passive income through smart device-rental plans.</p>
             <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
               <li><span className="text-foreground font-semibold">128,450+</span> active investors</li>
               <li><span className="text-foreground font-semibold">4.2B RWF</span> paid out</li>

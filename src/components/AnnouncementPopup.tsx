@@ -21,7 +21,7 @@ export function AnnouncementPopup() {
   if (!showPopup) return null;
 
   const announcements = [
-    'Welcome to ELITESTORE COMPANY!',
+    'Welcome to ELITE STORE COMPANY!',
     'Registration BONUS: 1,000 RWF',
     'Minimum deposit: 10,000 RWF · Maximum: 1,000,000 RWF (processed in 15 minutes)',
     'Minimum withdrawal: 1,000 RWF · Maximum: 1,000,000 RWF (processed in 24 hours)',
@@ -55,7 +55,7 @@ export function AnnouncementPopup() {
               <X className="w-4 h-4 text-primary-foreground" />
             </button>
             <h3 className="text-xl font-bold text-primary-foreground text-center">
-              Welcome to ELITESTORE
+              Welcome to ELITE STORE
             </h3>
           </div>
 
