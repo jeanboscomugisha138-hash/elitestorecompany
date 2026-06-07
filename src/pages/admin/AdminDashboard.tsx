@@ -637,7 +637,7 @@ export default function AdminDashboard() {
             </div>
             <div>
               <h1 className="font-bold text-foreground">Admin Panel</h1>
-              <p className="text-xs text-muted-foreground">ELITESTORE COMPANY</p>
+              <p className="text-xs text-muted-foreground">ELITE STORE COMPANY</p>
             </div>
           </div>
           <button

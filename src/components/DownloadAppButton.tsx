@@ -15,7 +15,7 @@ export function DownloadAppButton() {
   const startDownload = () => {
     setFailed(false);
     setDownloading(true);
-    toast('Download Starting...', { description: `Samsung World App ${APK_VERSION} • ${APK_SIZE}` });
+    toast('Download Starting...', { description: `ELITE STORE App ${APK_VERSION} • ${APK_SIZE}` });
 
     try {
       const a = document.createElement('a');
@@ -91,7 +91,7 @@ export function DownloadAppButton() {
               'Open the downloaded app.apk file',
               'Allow "Install from unknown sources" if prompted',
               'Tap Install and wait a few seconds',
-              'Open Samsung World and login',
+              'Open ELITE STORE and login',
             ].map((step, i) => (
               <div key={i} className="flex gap-3 items-start bg-muted rounded-xl p-3">
                 <span className="w-6 h-6 shrink-0 rounded-full bg-gradient-to-br from-primary to-secondary text-white text-xs font-bold flex items-center justify-center">{i + 1}</span>

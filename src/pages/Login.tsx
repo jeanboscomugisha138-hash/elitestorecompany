@@ -40,7 +40,7 @@ export default function Login() {
         <div className="text-center mb-6">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20 shadow-lg">
             <Sparkles className="w-3.5 h-3.5 text-white" />
-            <span className="text-xs font-semibold tracking-widest text-white">ELITESTORE</span>
+            <span className="text-xs font-semibold tracking-widest text-white">ELITE STORE</span>
           </div>
           <h1 className="text-4xl font-extrabold text-white mt-5 tracking-tight">Welcome Back</h1>
           <p className="text-white/80 text-sm mt-1.5">Sign in to continue earning</p>

@@ -93,73 +93,41 @@
     @apply min-h-screen pb-24 px-4 pt-6 max-w-md mx-auto;
   }
 
-  .samsung-safe-profile-section {
-    background: hsl(var(--background));
-    isolation: isolate;
-    position: relative;
-    z-index: 0;
-    contain: paint;
-  }
-
-  .samsung-safe-profile-section,
-  .samsung-safe-profile-section *,
-  .samsung-safe-profile-section::before,
-  .samsung-safe-profile-section::after,
-  .samsung-safe-profile-section *::before,
-  .samsung-safe-profile-section *::after {
-    animation: none !important;
-    transform: none !important;
-    filter: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    mix-blend-mode: normal !important;
-    mask-image: none !important;
-    -webkit-mask-image: none !important;
-    will-change: auto !important;
-  }
-
-  .samsung-safe-profile-section::before,
-  .samsung-safe-profile-section::after,
-  .samsung-safe-profile-section *::before,
-  .samsung-safe-profile-section *::after {
-    content: none !important;
-    display: none !important;
-  }
-
-  .samsung-profile-balance-card {
-    background: hsl(var(--primary));
+  .profile-balance-card {
+    background-color: hsl(var(--primary));
     color: hsl(var(--primary-foreground));
-    border: 1px solid hsl(var(--primary-foreground) / 0.18);
-    box-shadow: none;
-    overflow: visible;
+    border-radius: 1.25rem;
+    padding: 1.25rem;
   }
 
-  .samsung-profile-avatar,
-  .samsung-profile-card-button {
-    background: hsl(var(--primary-foreground) / 0.16);
+  .profile-avatar-circle {
+    background-color: hsl(0 0% 100% / 0.18);
     color: hsl(var(--primary-foreground));
-    border: 1px solid hsl(var(--primary-foreground) / 0.28);
-    box-shadow: none;
+    border: 1px solid hsl(0 0% 100% / 0.32);
   }
 
-  .samsung-action-tile {
-    background: hsl(var(--card));
+  .profile-card-button {
+    background-color: hsl(0 0% 100% / 0.16);
+    color: hsl(var(--primary-foreground));
+    border: 1px solid hsl(0 0% 100% / 0.28);
+  }
+
+  .profile-tile {
+    background-color: hsl(var(--card));
     color: hsl(var(--foreground));
     border: 1px solid hsl(var(--border));
-    box-shadow: none;
   }
 
-  .samsung-action-tile-primary {
-    background: hsl(var(--primary));
+  .profile-tile-primary {
+    background-color: hsl(var(--primary));
     color: hsl(var(--primary-foreground));
-    border-color: hsl(var(--primary) / 0.22);
   }
 
-  .samsung-action-tile-secondary {
-    background: hsl(var(--secondary));
+  .profile-tile-secondary {
+    background-color: hsl(var(--secondary));
     color: hsl(var(--secondary-foreground));
-    border-color: hsl(var(--secondary) / 0.22);
   }
+
 
   .page-title {
     @apply text-2xl font-bold text-secondary text-center mb-6;
