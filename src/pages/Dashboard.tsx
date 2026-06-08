@@ -148,12 +148,13 @@ export default function Dashboard() {
       <div className="flex items-center justify-between mb-3">
         <h2 className="text-xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Investment News</h2>
         <a
-          href={settings.whatsapp_group_url}
+          href="https://t.me/+12052657574"
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="Telegram Online Services"
           className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-button"
         >
-          <Headphones className="w-5 h-5 text-primary-foreground" />
+          <Send className="w-5 h-5 text-primary-foreground" />
         </a>
       </div>
 
