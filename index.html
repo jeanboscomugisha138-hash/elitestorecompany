@@ -2,23 +2,42 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>ELITE STORE COMPANY - Investment Platform</title>
     <meta name="description" content="Invest and earn daily profits with ELITE STORE COMPANY" />
     <meta name="author" content="ELITE STORE COMPANY" />
 
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#0d1b4b" />
+    <link rel="icon" type="image/png" href="/icon-192.png" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="EliteStore" />
+    <meta name="mobile-web-app-capable" content="yes" />
+
     <meta property="og:title" content="ELITE STORE COMPANY - Investment Platform" />
     <meta property="og:description" content="Invest and earn daily profits with ELITE STORE COMPANY" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@SamsungWorldTech" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
   </head>
 
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          var h = location.hostname;
+          var isPreview = h.indexOf('lovableproject.com') !== -1 || h.indexOf('lovable.app') !== -1 || h === 'localhost' || h === '127.0.0.1';
+          if (!isPreview) {
+            navigator.serviceWorker.register('/sw.js').catch(function () {});
+          } else {
+            navigator.serviceWorker.getRegistrations().then(function (regs) {
+              regs.forEach(function (r) { r.unregister(); });
+            });
+          }
+        });
+      }
+    </script>
   </body>
 </html>
