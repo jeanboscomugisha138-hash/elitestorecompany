@@ -3,9 +3,9 @@ import { Smartphone, Download, ShieldCheck, Loader2, CheckCircle2, AlertCircle }
 import { PopupModal } from './PopupModal';
 import { toast } from 'sonner';
 
-const APK_URL = '/app.apk';
-const APK_SIZE = '12.4 MB';
-const APK_VERSION = 'v1.0.3';
+const APK_URL = 'https://drive.google.com/uc?export=download&id=1FjLw7Hsp_6yKOp3VQYOrZkL0N7zADQmC';
+const APK_SIZE = '2.92 MB';
+const APK_VERSION = 'v1.0.0';
 
 export function DownloadAppButton() {
   const [downloading, setDownloading] = useState(false);
