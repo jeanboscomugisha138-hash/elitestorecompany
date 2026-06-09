@@ -65,10 +65,10 @@ export function ProductCard({ id, investment, dailyProfit, duration, onInvest, i
           <img src={image} alt={name} loading="lazy" width={256} height={256} className="w-full h-full object-cover" />
         </div>
         <div className="flex-1 space-y-1 text-[13px] text-foreground">
-          <div className="flex justify-between"><span className="text-muted-foreground">Rental Amount:</span><span className="font-bold text-primary">{investment.toLocaleString()} RWF</span></div>
-          <div className="flex justify-between"><span className="text-muted-foreground">Income Cycle:</span><span className="font-bold text-foreground">{duration} Days</span></div>
-          <div className="flex justify-between"><span className="text-muted-foreground">Daily Income:</span><span className="font-bold text-secondary">{dailyProfit.toLocaleString()} RWF</span></div>
-          <div className="flex justify-between"><span className="text-muted-foreground">Total Profit:</span><span className="font-bold text-secondary">{totalProfit.toLocaleString()} RWF</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">{t('products.rentalAmount')}</span><span className="font-bold text-primary">{investment.toLocaleString()} RWF</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">{t('products.incomeCycle')}</span><span className="font-bold text-foreground">{duration} {t('products.days')}</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">{t('products.dailyIncome')}</span><span className="font-bold text-secondary">{dailyProfit.toLocaleString()} RWF</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">{t('products.totalProfit')}</span><span className="font-bold text-secondary">{totalProfit.toLocaleString()} RWF</span></div>
         </div>
       </div>
 
