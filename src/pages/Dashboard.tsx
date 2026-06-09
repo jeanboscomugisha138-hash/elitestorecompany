@@ -95,7 +95,7 @@ export default function Dashboard() {
 
       {/* Investment news section */}
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Investment News</h2>
+        <h2 className="text-xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('dashboard.investmentNews')}</h2>
         <a
           href="https://t.me/+12052657574"
           target="_blank"
