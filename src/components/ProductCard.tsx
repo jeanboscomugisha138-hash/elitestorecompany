@@ -13,7 +13,7 @@ import productTvSmart from '@/assets/product-tv-smart.png';
 import productTvNeo from '@/assets/product-tv-neo.png';
 
 const productImages: Record<string, { image: string; name: string; tier: string }> = {
-  '3500':    { image: productBuds,       name: 'Elite Buds',     tier: 'VIP 1' },
+  '3500':    { image: productWatch,      name: 'Elite Watch',    tier: 'VIP 1' },
   '10000':   { image: productSpeaker,    name: 'Elite Speaker',  tier: 'VIP 2' },
   '20000':   { image: productPhoneA15,   name: 'Elite Phone A',  tier: 'VIP 3' },
   '30000':   { image: productCharger,    name: 'Wireless Duo',   tier: 'VIP 4' },
