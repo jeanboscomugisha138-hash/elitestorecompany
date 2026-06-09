@@ -144,7 +144,7 @@ export default function Products() {
         <Link to="/dashboard" className="w-10 h-10 bg-card rounded-xl flex items-center justify-center shadow-card hover:shadow-lg-custom transition-all">
           <ArrowLeft className="w-5 h-5 text-foreground" />
         </Link>
-        <h1 className="page-title mb-0 flex-1 text-left">Investment Products</h1>
+        <h1 className="page-title mb-0 flex-1 text-left">{t('products.title')}</h1>
       </div>
 
       <div className="grid grid-cols-1 gap-3">
