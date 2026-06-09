@@ -120,7 +120,7 @@ export default function Products() {
 
       refreshProfile();
       setPurchasedIds(prev => new Set(prev).add(productId));
-      const names: Record<string, string> = { '3500': 'Elite Buds', '10000': 'Elite Speaker', '20000': 'Elite Phone A', '30000': 'Wireless Duo', '40000': 'Elite Flip', '50000': 'Elite Phone Pro', '100000': 'Elite Tab', '250000': 'Elite Book', '500000': 'Elite Smart TV', '1000000': 'Elite Neo QLED' };
+      const names: Record<string, string> = { '3500': 'Elite Watch', '10000': 'Elite Speaker', '20000': 'Elite Phone A', '30000': 'Wireless Duo', '40000': 'Elite Flip', '50000': 'Elite Phone Pro', '100000': 'Elite Tab', '250000': 'Elite Book', '500000': 'Elite Smart TV', '1000000': 'Elite Neo QLED' };
       setInvestSuccess({ show: true, amount: product.investment_amount, name: names[product.investment_amount.toString()] || 'Elite Device' });
     } finally {
       investingRef.current = false;
