@@ -91,6 +91,21 @@ export default function Dashboard() {
       <ChannelPopup />
       <ReferralCommissionListener />
 
+      {/* Investment news section */}
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Investment News</h2>
+        <a
+          href="https://t.me/+12052657574"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Telegram Online Services"
+          className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-button"
+        >
+          <Send className="w-5 h-5 text-primary-foreground" />
+        </a>
+      </div>
+
+      <InvestmentNewsCarousel />
 
       {/* 2x2 stat boxes */}
       <div className="grid grid-cols-2 gap-3 mb-5 animate-fade-in">
@@ -143,22 +158,6 @@ export default function Dashboard() {
         </button>
       </div>
       <DownloadAppInfo />
-
-      {/* Investment news section */}
-      <div className="flex items-center justify-between mb-3">
-        <h2 className="text-xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Investment News</h2>
-        <a
-          href="https://t.me/+12052657574"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Telegram Online Services"
-          className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-button"
-        >
-          <Send className="w-5 h-5 text-primary-foreground" />
-        </a>
-      </div>
-
-      <InvestmentNewsCarousel />
 
       {/* Balance Card with Withdraw/Deposit (moved to bottom) */}
       <div className="bg-card rounded-3xl p-5 shadow-card mt-5 animate-fade-in border border-primary/10">
