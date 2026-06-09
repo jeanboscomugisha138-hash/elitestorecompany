@@ -1,4 +1,5 @@
 import { CheckCircle2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import productBuds from '@/assets/product-buds.png';
 import productWatch from '@/assets/product-watch.png';
 import productPhoneA15 from '@/assets/product-phone-a15.png';
@@ -13,7 +14,7 @@ import productTvSmart from '@/assets/product-tv-smart.png';
 import productTvNeo from '@/assets/product-tv-neo.png';
 
 const productImages: Record<string, { image: string; name: string; tier: string }> = {
-  '3500':    { image: productBuds,       name: 'Elite Buds',     tier: 'VIP 1' },
+  '3500':    { image: productWatch,      name: 'Elite Watch',    tier: 'VIP 1' },
   '10000':   { image: productSpeaker,    name: 'Elite Speaker',  tier: 'VIP 2' },
   '20000':   { image: productPhoneA15,   name: 'Elite Phone A',  tier: 'VIP 3' },
   '30000':   { image: productCharger,    name: 'Wireless Duo',   tier: 'VIP 4' },
@@ -42,6 +43,7 @@ interface ProductCardProps {
 export function ProductCard({ id, investment, dailyProfit, duration, onInvest, isLoading, purchased }: ProductCardProps) {
   const totalProfit = dailyProfit * duration;
   const { image, name, tier } = getProductInfo(investment);
+  const { t } = useTranslation();
 
   return (
     <div className={`rounded-2xl overflow-hidden shadow-card animate-slide-up bg-card border-2 ${purchased ? 'border-emerald-500/40' : 'border-primary/30'}`}>
@@ -50,7 +52,7 @@ export function ProductCard({ id, investment, dailyProfit, duration, onInvest, i
         <span className="text-primary-foreground font-extrabold text-base tracking-wide">{tier}</span>
         {purchased ? (
           <span className="text-xs font-bold bg-emerald-500 text-white px-3 py-1 rounded-full flex items-center gap-1">
-            <CheckCircle2 className="w-3 h-3" /> Purchased
+            <CheckCircle2 className="w-3 h-3" /> {t('products.purchased')}
           </span>
         ) : (
           <span className="text-xs font-semibold bg-primary-foreground/25 text-primary-foreground px-3 py-1 rounded-full backdrop-blur-sm">{name}</span>
@@ -63,10 +65,10 @@ export function ProductCard({ id, investment, dailyProfit, duration, onInvest, i
           <img src={image} alt={name} loading="lazy" width={256} height={256} className="w-full h-full object-cover" />
         </div>
         <div className="flex-1 space-y-1 text-[13px] text-foreground">
-          <div className="flex justify-between"><span className="text-muted-foreground">Rental Amount:</span><span className="font-bold text-primary">{investment.toLocaleString()} RWF</span></div>
-          <div className="flex justify-between"><span className="text-muted-foreground">Income Cycle:</span><span className="font-bold text-foreground">{duration} Days</span></div>
-          <div className="flex justify-between"><span className="text-muted-foreground">Daily Income:</span><span className="font-bold text-secondary">{dailyProfit.toLocaleString()} RWF</span></div>
-          <div className="flex justify-between"><span className="text-muted-foreground">Total Profit:</span><span className="font-bold text-secondary">{totalProfit.toLocaleString()} RWF</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">{t('products.rentalAmount')}</span><span className="font-bold text-primary">{investment.toLocaleString()} RWF</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">{t('products.incomeCycle')}</span><span className="font-bold text-foreground">{duration} {t('products.days')}</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">{t('products.dailyIncome')}</span><span className="font-bold text-secondary">{dailyProfit.toLocaleString()} RWF</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">{t('products.totalProfit')}</span><span className="font-bold text-secondary">{totalProfit.toLocaleString()} RWF</span></div>
         </div>
       </div>
 
@@ -82,7 +84,7 @@ export function ProductCard({ id, investment, dailyProfit, duration, onInvest, i
               : 'bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:opacity-90'
           }`}
         >
-          {purchased ? '✓ Owned' : isLoading ? '...' : 'Purchase Now'}
+          {purchased ? t('products.owned') : isLoading ? '...' : t('products.purchaseNow')}
         </button>
       </div>
     </div>

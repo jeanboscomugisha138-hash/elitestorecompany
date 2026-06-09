@@ -1,15 +1,17 @@
 import { Home, Package, Clock, User } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-
-const navItems = [
-  { icon: Home, label: 'Home', path: '/dashboard' },
-  { icon: Package, label: 'Products', path: '/products' },
-  { icon: Clock, label: 'History', path: '/history' },
-  { icon: User, label: 'Profile', path: '/settings' },
-];
+import { useTranslation } from 'react-i18next';
 
 export function BottomNav() {
   const location = useLocation();
+  const { t } = useTranslation();
+
+  const navItems = [
+    { icon: Home, label: t('nav.home'), path: '/dashboard' },
+    { icon: Package, label: t('nav.products'), path: '/products' },
+    { icon: Clock, label: t('nav.history'), path: '/history' },
+    { icon: User, label: t('nav.profile'), path: '/settings' },
+  ];
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border shadow-lg z-50">

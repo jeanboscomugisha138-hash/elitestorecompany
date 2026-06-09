@@ -5,7 +5,6 @@ import {
   Send,
   Gift,
   Users,
-  Info,
   Headphones,
   TrendingUp,
   PiggyBank,
@@ -13,6 +12,7 @@ import {
   Loader2,
 } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { BottomNav } from '@/components/BottomNav';
 import { ChannelPopup } from '@/components/ChannelPopup';
@@ -22,6 +22,7 @@ import { ReferralCommissionListener } from '@/components/ReferralCommissionListe
 import { Link } from 'react-router-dom';
 import { InvestmentNewsCarousel } from '@/components/InvestmentNewsCarousel';
 import { DownloadAppButton, DownloadAppInfo } from '@/components/DownloadAppButton';
+import { OnlineServiceDialog } from '@/components/OnlineServiceDialog';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
@@ -38,6 +39,7 @@ import { LiveActivity, CompanyAchievements } from '@/components/LiveActivity';
 import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 export default function Dashboard() {
+  const { t } = useTranslation();
   const { settings } = useSiteSettings();
   const { profile, refreshProfile } = useAuth();
   const balance = profile?.main_balance || 0;
@@ -79,10 +81,10 @@ export default function Dashboard() {
   };
 
   const statBoxes = [
-    { label: 'Total Balance', value: balance, icon: Wallet, gradient: 'from-primary to-primary/70' },
-    { label: 'Daily Income', value: totalProfit, icon: TrendingUp, gradient: 'from-secondary to-secondary/70' },
-    { label: 'Referral Balance', value: referralBalance, icon: Sparkles, gradient: 'from-primary via-secondary to-secondary' },
-    { label: 'Total Invested', value: totalInvested, icon: PiggyBank, gradient: 'from-secondary via-primary to-primary' },
+    { label: t('dashboard.totalBalance'), value: balance, icon: Wallet, gradient: 'from-primary to-primary/70' },
+    { label: t('dashboard.dailyIncome'), value: totalProfit, icon: TrendingUp, gradient: 'from-secondary to-secondary/70' },
+    { label: t('dashboard.referralBalance'), value: referralBalance, icon: Sparkles, gradient: 'from-primary via-secondary to-secondary' },
+    { label: t('dashboard.totalInvested'), value: totalInvested, icon: PiggyBank, gradient: 'from-secondary via-primary to-primary' },
   ];
 
   return (
@@ -93,7 +95,7 @@ export default function Dashboard() {
 
       {/* Investment news section */}
       <div className="flex items-center justify-between mb-3">
-        <h2 className="text-xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Investment News</h2>
+        <h2 className="text-xl font-extrabold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">{t('dashboard.investmentNews')}</h2>
         <a
           href="https://t.me/+12052657574"
           target="_blank"
@@ -140,21 +142,21 @@ export default function Dashboard() {
           <div className="w-16 h-16 bg-gradient-to-br from-secondary/20 to-secondary/5 rounded-2xl flex items-center justify-center shadow-card">
             <Gift className="w-7 h-7 text-secondary" />
           </div>
-          <span className="text-xs font-medium text-foreground mt-2">Bonus</span>
+          <span className="text-xs font-medium text-foreground mt-2">{t('dashboard.bonus')}</span>
         </button>
 
         <Link to="/referral" className="flex flex-col items-center">
           <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl flex items-center justify-center shadow-card">
             <Users className="w-7 h-7 text-primary" />
           </div>
-          <span className="text-xs font-medium text-foreground mt-2">Referral</span>
+          <span className="text-xs font-medium text-foreground mt-2">{t('dashboard.referral')}</span>
         </Link>
 
         <button onClick={() => setAboutOpen(true)} className="flex flex-col items-center">
           <div className="w-16 h-16 bg-gradient-to-br from-secondary/15 to-primary/15 rounded-2xl flex items-center justify-center shadow-card">
-            <Info className="w-7 h-7 text-secondary" />
+            <Headphones className="w-7 h-7 text-secondary" />
           </div>
-          <span className="text-xs font-medium text-foreground mt-2">About Us</span>
+          <span className="text-xs font-medium text-foreground mt-2">{t('dashboard.onlineService')}</span>
         </button>
       </div>
       <DownloadAppInfo />
@@ -219,28 +221,8 @@ export default function Dashboard() {
         </DialogContent>
       </Dialog>
 
-      {/* About Us dialog */}
-      <Dialog open={aboutOpen} onOpenChange={setAboutOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Info className="w-5 h-5 text-primary" /> About ELITE STORE
-            </DialogTitle>
-            <DialogDescription>The trusted way to grow your money in Rwanda.</DialogDescription>
-          </DialogHeader>
-          <div className="space-y-3 text-sm text-foreground">
-            <p>ELITE STORE COMPANY is a leading digital investment platform helping thousands of Rwandans earn daily passive income through smart device-rental plans.</p>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li><span className="text-foreground font-semibold">128,450+</span> active investors</li>
-              <li><span className="text-foreground font-semibold">4.2B RWF</span> paid out</li>
-              <li>Daily profits credited automatically</li>
-              <li>Withdrawals processed within 24 hours</li>
-              <li>3-level referral commissions: 10% / 3% / 1%</li>
-            </ul>
-            <p className="text-xs text-muted-foreground pt-2 border-t border-border">© ELITE STORE COMPANY · Kigali, Rwanda</p>
-          </div>
-        </DialogContent>
-      </Dialog>
+      {/* Online Service dialog */}
+      <OnlineServiceDialog open={aboutOpen} onOpenChange={setAboutOpen} />
 
 
       <SuccessNotification

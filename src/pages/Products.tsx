@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { ProductCard } from '@/components/ProductCard';
 import { BottomNav } from '@/components/BottomNav';
 import { supabase } from '@/integrations/supabase/client';
@@ -16,6 +17,7 @@ interface Product {
 }
 
 export default function Products() {
+  const { t } = useTranslation();
   const [products, setProducts] = useState<Product[]>([]);
   const [purchasedIds, setPurchasedIds] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(true);
@@ -120,7 +122,7 @@ export default function Products() {
 
       refreshProfile();
       setPurchasedIds(prev => new Set(prev).add(productId));
-      const names: Record<string, string> = { '3500': 'Elite Buds', '10000': 'Elite Speaker', '20000': 'Elite Phone A', '30000': 'Wireless Duo', '40000': 'Elite Flip', '50000': 'Elite Phone Pro', '100000': 'Elite Tab', '250000': 'Elite Book', '500000': 'Elite Smart TV', '1000000': 'Elite Neo QLED' };
+      const names: Record<string, string> = { '3500': 'Elite Watch', '10000': 'Elite Speaker', '20000': 'Elite Phone A', '30000': 'Wireless Duo', '40000': 'Elite Flip', '50000': 'Elite Phone Pro', '100000': 'Elite Tab', '250000': 'Elite Book', '500000': 'Elite Smart TV', '1000000': 'Elite Neo QLED' };
       setInvestSuccess({ show: true, amount: product.investment_amount, name: names[product.investment_amount.toString()] || 'Elite Device' });
     } finally {
       investingRef.current = false;
@@ -142,7 +144,7 @@ export default function Products() {
         <Link to="/dashboard" className="w-10 h-10 bg-card rounded-xl flex items-center justify-center shadow-card hover:shadow-lg-custom transition-all">
           <ArrowLeft className="w-5 h-5 text-foreground" />
         </Link>
-        <h1 className="page-title mb-0 flex-1 text-left">Investment Products</h1>
+        <h1 className="page-title mb-0 flex-1 text-left">{t('products.title')}</h1>
       </div>
 
       <div className="grid grid-cols-1 gap-3">

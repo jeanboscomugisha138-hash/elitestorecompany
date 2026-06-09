@@ -1,4 +1,5 @@
 import { useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { BottomNav } from '@/components/BottomNav';
 import { useAuth } from '@/hooks/useAuth';
 import {
@@ -8,8 +9,9 @@ import {
   Lock,
   LogOut,
   Wallet,
-  Info,
+  Headphones,
   MessageCircle,
+  Languages,
 } from 'lucide-react';
 import { LiveActivity, CompanyAchievements } from '@/components/LiveActivity';
 import { useState } from 'react';
@@ -22,13 +24,22 @@ import {
 } from '@/components/ui/dialog';
 import { toast } from 'sonner';
 import { useSiteSettings } from '@/hooks/useSiteSettings';
+import { OnlineServiceDialog } from '@/components/OnlineServiceDialog';
 
 export default function Settings() {
+  const { t, i18n } = useTranslation();
   const { settings } = useSiteSettings();
   const { profile, user, signOut } = useAuth();
   const navigate = useNavigate();
-  const [aboutOpen, setAboutOpen] = useState(false);
+  const [serviceOpen, setServiceOpen] = useState(false);
   const [passOpen, setPassOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
+
+  const changeLang = (lng: 'rw' | 'en') => {
+    i18n.changeLanguage(lng);
+    localStorage.setItem('app_lang', lng);
+    setLangOpen(false);
+  };
 
   const formatRWF = (amount: number) => `${amount.toLocaleString()} RWF`;
   const handleLogout = async () => { await signOut(); navigate('/login'); };
@@ -49,15 +60,15 @@ export default function Settings() {
             <p className="text-xs opacity-80">{profile?.phone || ''}</p>
           </div>
         </div>
-        <p className="text-xs opacity-80">Account Balance</p>
+        <p className="text-xs opacity-80">{t('settings.accountBalance')}</p>
         <p className="text-3xl font-extrabold mb-4">{formatRWF(profile?.main_balance || 0)}</p>
 
         <div className="grid grid-cols-2 gap-3">
           <Link to="/deposit" className="profile-card-button flex items-center justify-center gap-2 rounded-xl py-3 font-semibold text-sm">
-            <Wallet className="w-4 h-4" /> Recharge
+            <Wallet className="w-4 h-4" /> {t('settings.recharge')}
           </Link>
           <Link to="/withdraw" className="profile-card-button flex items-center justify-center gap-2 rounded-xl py-3 font-semibold text-sm">
-            <ArrowUpFromLine className="w-4 h-4" /> Withdraw
+            <ArrowUpFromLine className="w-4 h-4" /> {t('dashboard.withdraw')}
           </Link>
         </div>
       </div>
@@ -65,37 +76,41 @@ export default function Settings() {
       <div className="grid grid-cols-2 gap-3 mb-3">
         <Link to="/history" className="profile-tile profile-tile-primary rounded-xl p-4 flex items-start gap-2">
           <ArrowDownToLine className="w-5 h-5" />
-          <span className="text-sm font-semibold">Recharge History</span>
+          <span className="text-sm font-semibold">{t('settings.rechargeHistory')}</span>
         </Link>
         <Link to="/history" className="profile-tile profile-tile-secondary rounded-xl p-4 flex items-start gap-2">
           <ArrowUpFromLine className="w-5 h-5" />
-          <span className="text-sm font-semibold">Withdraw History</span>
+          <span className="text-sm font-semibold">{t('settings.withdrawHistory')}</span>
         </Link>
       </div>
 
       <div className="grid grid-cols-2 gap-3 mb-3">
         <Link to="/referral" className="profile-tile rounded-xl py-3 flex items-center justify-center gap-2">
           <Users className="w-5 h-5 text-primary" />
-          <span className="text-sm font-bold">Invite Friends</span>
+          <span className="text-sm font-bold">{t('settings.inviteFriends')}</span>
         </Link>
         <Link to="/withdraw" className="profile-tile rounded-xl py-3 flex items-center justify-center gap-2">
           <Wallet className="w-5 h-5 text-secondary" />
-          <span className="text-sm font-bold">Withdraw Account</span>
+          <span className="text-sm font-bold">{t('settings.withdrawAccount')}</span>
         </Link>
       </div>
 
       <div className="grid grid-cols-2 gap-3 mb-3">
         <button onClick={() => setPassOpen(true)} className="profile-tile rounded-xl py-3 flex items-center justify-center gap-2">
           <Lock className="w-5 h-5 text-primary" />
-          <span className="text-sm font-bold">Account Password</span>
+          <span className="text-sm font-bold">{t('settings.accountPassword')}</span>
         </button>
-        <button onClick={() => setAboutOpen(true)} className="profile-tile rounded-xl py-3 flex items-center justify-center gap-2">
-          <Info className="w-5 h-5 text-secondary" />
-          <span className="text-sm font-bold">About Us</span>
+        <button onClick={() => setServiceOpen(true)} className="profile-tile rounded-xl py-3 flex items-center justify-center gap-2">
+          <Headphones className="w-5 h-5 text-secondary" />
+          <span className="text-sm font-bold">{t('settings.onlineService')}</span>
         </button>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 mb-4">
+      <div className="grid grid-cols-2 gap-3 mb-3">
+        <button onClick={() => setLangOpen(true)} className="profile-tile rounded-xl py-3 flex items-center justify-center gap-2">
+          <Languages className="w-5 h-5 text-primary" />
+          <span className="text-sm font-bold">{t('settings.language')}</span>
+        </button>
         <a
           href={settings.whatsapp_group_url}
           target="_blank"
@@ -103,25 +118,28 @@ export default function Settings() {
           className="bg-[#25D366] rounded-xl py-3 flex items-center justify-center gap-2"
         >
           <MessageCircle className="w-5 h-5 text-white" />
-          <span className="text-sm font-bold text-white">WhatsApp</span>
+          <span className="text-sm font-bold text-white">{t('settings.whatsapp')}</span>
         </a>
+      </div>
+
+      <div className="grid grid-cols-1 gap-3 mb-4">
         <button onClick={handleLogout} className="bg-destructive rounded-xl py-3 flex items-center justify-center gap-2">
           <LogOut className="w-5 h-5 text-destructive-foreground" />
-          <span className="text-sm font-bold text-destructive-foreground">Log Out</span>
+          <span className="text-sm font-bold text-destructive-foreground">{t('settings.logout')}</span>
         </button>
       </div>
 
       {/* Account info */}
       <div className="bg-card rounded-2xl p-4 border border-border">
-        <h3 className="font-bold text-foreground mb-3">Account Info</h3>
+        <h3 className="font-bold text-foreground mb-3">{t('settings.accountInfo')}</h3>
         <div className="space-y-2">
-          <div className="flex justify-between text-sm"><span className="text-muted-foreground">Name</span><span className="font-medium text-foreground">{name}</span></div>
-          <div className="flex justify-between text-sm"><span className="text-muted-foreground">Phone</span><span className="font-medium text-foreground">{profile?.phone || 'N/A'}</span></div>
-          <div className="flex justify-between text-sm"><span className="text-muted-foreground">Referral Code</span><span className="font-medium text-primary">{profile?.referral_code || 'N/A'}</span></div>
+          <div className="flex justify-between text-sm"><span className="text-muted-foreground">{t('settings.name')}</span><span className="font-medium text-foreground">{name}</span></div>
+          <div className="flex justify-between text-sm"><span className="text-muted-foreground">{t('settings.phone')}</span><span className="font-medium text-foreground">{profile?.phone || 'N/A'}</span></div>
+          <div className="flex justify-between text-sm"><span className="text-muted-foreground">{t('settings.referralCode')}</span><span className="font-medium text-primary">{profile?.referral_code || 'N/A'}</span></div>
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Member Since</span>
+            <span className="text-muted-foreground">{t('settings.memberSince')}</span>
             <span className="font-medium text-foreground">
-              {user?.created_at ? new Date(user.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A'}
+              {user?.created_at ? new Date(user.created_at).toLocaleDateString(i18n.language === 'rw' ? 'rw-RW' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A'}
             </span>
           </div>
         </div>
@@ -130,21 +148,28 @@ export default function Settings() {
       <CompanyAchievements />
       <LiveActivity />
 
-      <Dialog open={aboutOpen} onOpenChange={setAboutOpen}>
+      <OnlineServiceDialog open={serviceOpen} onOpenChange={setServiceOpen} />
+
+      {/* Language switcher */}
+      <Dialog open={langOpen} onOpenChange={setLangOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2"><Info className="w-5 h-5 text-primary" /> About ELITE STORE COMPANY</DialogTitle>
-            <DialogDescription>The trusted way to grow your money in Rwanda.</DialogDescription>
+            <DialogTitle className="flex items-center gap-2"><Languages className="w-5 h-5 text-primary" /> {t('settings.language')}</DialogTitle>
+            <DialogDescription>{t('settings.languageDesc')}</DialogDescription>
           </DialogHeader>
-          <div className="space-y-3 text-sm text-foreground">
-            <p>ELITE STORE COMPANY is a leading digital investment platform helping thousands of Rwandans earn daily passive income through smart device-rental plans.</p>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li><span className="text-foreground font-semibold">128,450+</span> active investors</li>
-              <li><span className="text-foreground font-semibold">4.2B RWF</span> paid out</li>
-              <li>Daily profits credited automatically</li>
-              <li>Withdrawals processed within 24 hours</li>
-              <li>3-level referral commissions: 10% / 3% / 1%</li>
-            </ul>
+          <div className="flex flex-col gap-3 mt-2">
+            <button
+              onClick={() => changeLang('rw')}
+              className={`rounded-xl py-3 font-bold border-2 ${i18n.language === 'rw' ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground'}`}
+            >
+              🇷🇼 {t('settings.kinyarwanda')}
+            </button>
+            <button
+              onClick={() => changeLang('en')}
+              className={`rounded-xl py-3 font-bold border-2 ${i18n.language === 'en' ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground'}`}
+            >
+              🇬🇧 {t('settings.english')}
+            </button>
           </div>
         </DialogContent>
       </Dialog>
