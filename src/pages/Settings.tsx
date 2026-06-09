@@ -60,15 +60,15 @@ export default function Settings() {
             <p className="text-xs opacity-80">{profile?.phone || ''}</p>
           </div>
         </div>
-        <p className="text-xs opacity-80">Account Balance</p>
+        <p className="text-xs opacity-80">{t('settings.accountBalance')}</p>
         <p className="text-3xl font-extrabold mb-4">{formatRWF(profile?.main_balance || 0)}</p>
 
         <div className="grid grid-cols-2 gap-3">
           <Link to="/deposit" className="profile-card-button flex items-center justify-center gap-2 rounded-xl py-3 font-semibold text-sm">
-            <Wallet className="w-4 h-4" /> Recharge
+            <Wallet className="w-4 h-4" /> {t('settings.recharge')}
           </Link>
           <Link to="/withdraw" className="profile-card-button flex items-center justify-center gap-2 rounded-xl py-3 font-semibold text-sm">
-            <ArrowUpFromLine className="w-4 h-4" /> Withdraw
+            <ArrowUpFromLine className="w-4 h-4" /> {t('dashboard.withdraw')}
           </Link>
         </div>
       </div>
@@ -76,11 +76,11 @@ export default function Settings() {
       <div className="grid grid-cols-2 gap-3 mb-3">
         <Link to="/history" className="profile-tile profile-tile-primary rounded-xl p-4 flex items-start gap-2">
           <ArrowDownToLine className="w-5 h-5" />
-          <span className="text-sm font-semibold">Recharge History</span>
+          <span className="text-sm font-semibold">{t('settings.rechargeHistory')}</span>
         </Link>
         <Link to="/history" className="profile-tile profile-tile-secondary rounded-xl p-4 flex items-start gap-2">
           <ArrowUpFromLine className="w-5 h-5" />
-          <span className="text-sm font-semibold">Withdraw History</span>
+          <span className="text-sm font-semibold">{t('settings.withdrawHistory')}</span>
         </Link>
       </div>
 
