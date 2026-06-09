@@ -5,7 +5,6 @@ import {
   Send,
   Gift,
   Users,
-  Info,
   Headphones,
   TrendingUp,
   PiggyBank,
@@ -13,6 +12,7 @@ import {
   Loader2,
 } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { BottomNav } from '@/components/BottomNav';
 import { ChannelPopup } from '@/components/ChannelPopup';
@@ -22,6 +22,7 @@ import { ReferralCommissionListener } from '@/components/ReferralCommissionListe
 import { Link } from 'react-router-dom';
 import { InvestmentNewsCarousel } from '@/components/InvestmentNewsCarousel';
 import { DownloadAppButton, DownloadAppInfo } from '@/components/DownloadAppButton';
+import { OnlineServiceDialog } from '@/components/OnlineServiceDialog';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
