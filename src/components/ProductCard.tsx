@@ -84,7 +84,7 @@ export function ProductCard({ id, investment, dailyProfit, duration, onInvest, i
               : 'bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:opacity-90'
           }`}
         >
-          {purchased ? '✓ Owned' : isLoading ? '...' : 'Purchase Now'}
+          {purchased ? t('products.owned') : isLoading ? '...' : t('products.purchaseNow')}
         </button>
       </div>
     </div>
