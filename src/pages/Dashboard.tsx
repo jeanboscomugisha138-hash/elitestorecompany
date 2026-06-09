@@ -81,10 +81,10 @@ export default function Dashboard() {
   };
 
   const statBoxes = [
-    { label: 'Total Balance', value: balance, icon: Wallet, gradient: 'from-primary to-primary/70' },
-    { label: 'Daily Income', value: totalProfit, icon: TrendingUp, gradient: 'from-secondary to-secondary/70' },
-    { label: 'Referral Balance', value: referralBalance, icon: Sparkles, gradient: 'from-primary via-secondary to-secondary' },
-    { label: 'Total Invested', value: totalInvested, icon: PiggyBank, gradient: 'from-secondary via-primary to-primary' },
+    { label: t('dashboard.totalBalance'), value: balance, icon: Wallet, gradient: 'from-primary to-primary/70' },
+    { label: t('dashboard.dailyIncome'), value: totalProfit, icon: TrendingUp, gradient: 'from-secondary to-secondary/70' },
+    { label: t('dashboard.referralBalance'), value: referralBalance, icon: Sparkles, gradient: 'from-primary via-secondary to-secondary' },
+    { label: t('dashboard.totalInvested'), value: totalInvested, icon: PiggyBank, gradient: 'from-secondary via-primary to-primary' },
   ];
 
   return (
