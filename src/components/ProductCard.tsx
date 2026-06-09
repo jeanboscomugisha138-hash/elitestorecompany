@@ -1,4 +1,5 @@
 import { CheckCircle2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import productBuds from '@/assets/product-buds.png';
 import productWatch from '@/assets/product-watch.png';
 import productPhoneA15 from '@/assets/product-phone-a15.png';
