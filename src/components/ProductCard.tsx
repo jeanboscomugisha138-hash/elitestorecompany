@@ -52,7 +52,7 @@ export function ProductCard({ id, investment, dailyProfit, duration, onInvest, i
         <span className="text-primary-foreground font-extrabold text-base tracking-wide">{tier}</span>
         {purchased ? (
           <span className="text-xs font-bold bg-emerald-500 text-white px-3 py-1 rounded-full flex items-center gap-1">
-            <CheckCircle2 className="w-3 h-3" /> Purchased
+            <CheckCircle2 className="w-3 h-3" /> {t('products.purchased')}
           </span>
         ) : (
           <span className="text-xs font-semibold bg-primary-foreground/25 text-primary-foreground px-3 py-1 rounded-full backdrop-blur-sm">{name}</span>
