@@ -131,15 +131,15 @@ export default function Settings() {
 
       {/* Account info */}
       <div className="bg-card rounded-2xl p-4 border border-border">
-        <h3 className="font-bold text-foreground mb-3">Account Info</h3>
+        <h3 className="font-bold text-foreground mb-3">{t('settings.accountInfo')}</h3>
         <div className="space-y-2">
-          <div className="flex justify-between text-sm"><span className="text-muted-foreground">Name</span><span className="font-medium text-foreground">{name}</span></div>
-          <div className="flex justify-between text-sm"><span className="text-muted-foreground">Phone</span><span className="font-medium text-foreground">{profile?.phone || 'N/A'}</span></div>
-          <div className="flex justify-between text-sm"><span className="text-muted-foreground">Referral Code</span><span className="font-medium text-primary">{profile?.referral_code || 'N/A'}</span></div>
+          <div className="flex justify-between text-sm"><span className="text-muted-foreground">{t('settings.name')}</span><span className="font-medium text-foreground">{name}</span></div>
+          <div className="flex justify-between text-sm"><span className="text-muted-foreground">{t('settings.phone')}</span><span className="font-medium text-foreground">{profile?.phone || 'N/A'}</span></div>
+          <div className="flex justify-between text-sm"><span className="text-muted-foreground">{t('settings.referralCode')}</span><span className="font-medium text-primary">{profile?.referral_code || 'N/A'}</span></div>
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Member Since</span>
+            <span className="text-muted-foreground">{t('settings.memberSince')}</span>
             <span className="font-medium text-foreground">
-              {user?.created_at ? new Date(user.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A'}
+              {user?.created_at ? new Date(user.created_at).toLocaleDateString(i18n.language === 'rw' ? 'rw-RW' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A'}
             </span>
           </div>
         </div>
@@ -148,21 +148,28 @@ export default function Settings() {
       <CompanyAchievements />
       <LiveActivity />
 
-      <Dialog open={aboutOpen} onOpenChange={setAboutOpen}>
+      <OnlineServiceDialog open={serviceOpen} onOpenChange={setServiceOpen} />
+
+      {/* Language switcher */}
+      <Dialog open={langOpen} onOpenChange={setLangOpen}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2"><Info className="w-5 h-5 text-primary" /> About ELITE STORE COMPANY</DialogTitle>
-            <DialogDescription>The trusted way to grow your money in Rwanda.</DialogDescription>
+            <DialogTitle className="flex items-center gap-2"><Languages className="w-5 h-5 text-primary" /> {t('settings.language')}</DialogTitle>
+            <DialogDescription>{t('settings.languageDesc')}</DialogDescription>
           </DialogHeader>
-          <div className="space-y-3 text-sm text-foreground">
-            <p>ELITE STORE COMPANY is a leading digital investment platform helping thousands of Rwandans earn daily passive income through smart device-rental plans.</p>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li><span className="text-foreground font-semibold">128,450+</span> active investors</li>
-              <li><span className="text-foreground font-semibold">4.2B RWF</span> paid out</li>
-              <li>Daily profits credited automatically</li>
-              <li>Withdrawals processed within 24 hours</li>
-              <li>3-level referral commissions: 10% / 3% / 1%</li>
-            </ul>
+          <div className="flex flex-col gap-3 mt-2">
+            <button
+              onClick={() => changeLang('rw')}
+              className={`rounded-xl py-3 font-bold border-2 ${i18n.language === 'rw' ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground'}`}
+            >
+              🇷🇼 {t('settings.kinyarwanda')}
+            </button>
+            <button
+              onClick={() => changeLang('en')}
+              className={`rounded-xl py-3 font-bold border-2 ${i18n.language === 'en' ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground'}`}
+            >
+              🇬🇧 {t('settings.english')}
+            </button>
           </div>
         </DialogContent>
       </Dialog>
