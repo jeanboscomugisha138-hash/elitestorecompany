@@ -221,28 +221,8 @@ export default function Dashboard() {
         </DialogContent>
       </Dialog>
 
-      {/* About Us dialog */}
-      <Dialog open={aboutOpen} onOpenChange={setAboutOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Info className="w-5 h-5 text-primary" /> About ELITE STORE
-            </DialogTitle>
-            <DialogDescription>The trusted way to grow your money in Rwanda.</DialogDescription>
-          </DialogHeader>
-          <div className="space-y-3 text-sm text-foreground">
-            <p>ELITE STORE COMPANY is a leading digital investment platform helping thousands of Rwandans earn daily passive income through smart device-rental plans.</p>
-            <ul className="space-y-1.5 list-disc list-inside text-muted-foreground">
-              <li><span className="text-foreground font-semibold">128,450+</span> active investors</li>
-              <li><span className="text-foreground font-semibold">4.2B RWF</span> paid out</li>
-              <li>Daily profits credited automatically</li>
-              <li>Withdrawals processed within 24 hours</li>
-              <li>3-level referral commissions: 10% / 3% / 1%</li>
-            </ul>
-            <p className="text-xs text-muted-foreground pt-2 border-t border-border">© ELITE STORE COMPANY · Kigali, Rwanda</p>
-          </div>
-        </DialogContent>
-      </Dialog>
+      {/* Online Service dialog */}
+      <OnlineServiceDialog open={aboutOpen} onOpenChange={setAboutOpen} />
 
 
       <SuccessNotification
