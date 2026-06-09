@@ -87,26 +87,30 @@ export default function Settings() {
       <div className="grid grid-cols-2 gap-3 mb-3">
         <Link to="/referral" className="profile-tile rounded-xl py-3 flex items-center justify-center gap-2">
           <Users className="w-5 h-5 text-primary" />
-          <span className="text-sm font-bold">Invite Friends</span>
+          <span className="text-sm font-bold">{t('settings.inviteFriends')}</span>
         </Link>
         <Link to="/withdraw" className="profile-tile rounded-xl py-3 flex items-center justify-center gap-2">
           <Wallet className="w-5 h-5 text-secondary" />
-          <span className="text-sm font-bold">Withdraw Account</span>
+          <span className="text-sm font-bold">{t('settings.withdrawAccount')}</span>
         </Link>
       </div>
 
       <div className="grid grid-cols-2 gap-3 mb-3">
         <button onClick={() => setPassOpen(true)} className="profile-tile rounded-xl py-3 flex items-center justify-center gap-2">
           <Lock className="w-5 h-5 text-primary" />
-          <span className="text-sm font-bold">Account Password</span>
+          <span className="text-sm font-bold">{t('settings.accountPassword')}</span>
         </button>
-        <button onClick={() => setAboutOpen(true)} className="profile-tile rounded-xl py-3 flex items-center justify-center gap-2">
-          <Info className="w-5 h-5 text-secondary" />
-          <span className="text-sm font-bold">About Us</span>
+        <button onClick={() => setServiceOpen(true)} className="profile-tile rounded-xl py-3 flex items-center justify-center gap-2">
+          <Headphones className="w-5 h-5 text-secondary" />
+          <span className="text-sm font-bold">{t('settings.onlineService')}</span>
         </button>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 mb-4">
+      <div className="grid grid-cols-2 gap-3 mb-3">
+        <button onClick={() => setLangOpen(true)} className="profile-tile rounded-xl py-3 flex items-center justify-center gap-2">
+          <Languages className="w-5 h-5 text-primary" />
+          <span className="text-sm font-bold">{t('settings.language')}</span>
+        </button>
         <a
           href={settings.whatsapp_group_url}
           target="_blank"
@@ -114,11 +118,14 @@ export default function Settings() {
           className="bg-[#25D366] rounded-xl py-3 flex items-center justify-center gap-2"
         >
           <MessageCircle className="w-5 h-5 text-white" />
-          <span className="text-sm font-bold text-white">WhatsApp</span>
+          <span className="text-sm font-bold text-white">{t('settings.whatsapp')}</span>
         </a>
+      </div>
+
+      <div className="grid grid-cols-1 gap-3 mb-4">
         <button onClick={handleLogout} className="bg-destructive rounded-xl py-3 flex items-center justify-center gap-2">
           <LogOut className="w-5 h-5 text-destructive-foreground" />
-          <span className="text-sm font-bold text-destructive-foreground">Log Out</span>
+          <span className="text-sm font-bold text-destructive-foreground">{t('settings.logout')}</span>
         </button>
       </div>
 
