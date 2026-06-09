@@ -142,21 +142,21 @@ export default function Dashboard() {
           <div className="w-16 h-16 bg-gradient-to-br from-secondary/20 to-secondary/5 rounded-2xl flex items-center justify-center shadow-card">
             <Gift className="w-7 h-7 text-secondary" />
           </div>
-          <span className="text-xs font-medium text-foreground mt-2">Bonus</span>
+          <span className="text-xs font-medium text-foreground mt-2">{t('dashboard.bonus')}</span>
         </button>
 
         <Link to="/referral" className="flex flex-col items-center">
           <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/5 rounded-2xl flex items-center justify-center shadow-card">
             <Users className="w-7 h-7 text-primary" />
           </div>
-          <span className="text-xs font-medium text-foreground mt-2">Referral</span>
+          <span className="text-xs font-medium text-foreground mt-2">{t('dashboard.referral')}</span>
         </Link>
 
         <button onClick={() => setAboutOpen(true)} className="flex flex-col items-center">
           <div className="w-16 h-16 bg-gradient-to-br from-secondary/15 to-primary/15 rounded-2xl flex items-center justify-center shadow-card">
-            <Info className="w-7 h-7 text-secondary" />
+            <Headphones className="w-7 h-7 text-secondary" />
           </div>
-          <span className="text-xs font-medium text-foreground mt-2">About Us</span>
+          <span className="text-xs font-medium text-foreground mt-2">{t('dashboard.onlineService')}</span>
         </button>
       </div>
       <DownloadAppInfo />
