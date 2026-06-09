@@ -43,6 +43,7 @@ interface ProductCardProps {
 export function ProductCard({ id, investment, dailyProfit, duration, onInvest, isLoading, purchased }: ProductCardProps) {
   const totalProfit = dailyProfit * duration;
   const { image, name, tier } = getProductInfo(investment);
+  const { t } = useTranslation();
 
   return (
     <div className={`rounded-2xl overflow-hidden shadow-card animate-slide-up bg-card border-2 ${purchased ? 'border-emerald-500/40' : 'border-primary/30'}`}>
