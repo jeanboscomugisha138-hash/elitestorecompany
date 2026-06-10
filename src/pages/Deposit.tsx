@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ArrowLeft, Banknote, Info, Copy, Check, Phone, User, Wallet, Shield, Clock, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 import { BottomNav } from '@/components/BottomNav';
 import { SuccessNotification } from '@/components/SuccessNotification';
 import { useAuth } from '@/hooks/useAuth';
@@ -9,6 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 export default function Deposit() {
+  const { t } = useTranslation();
   const [phone, setPhone] = useState('');
   const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
@@ -23,7 +25,6 @@ export default function Deposit() {
   const momoName = settings.payment_name;
   const minDeposit = parseInt(settings.min_deposit) || 10000;
   const maxDeposit = parseInt(settings.max_deposit) || 1000000;
-
 
   useEffect(() => {
     const checkPending = async () => {
@@ -42,7 +43,7 @@ export default function Deposit() {
   const handleCopy = async () => {
     await navigator.clipboard.writeText(momoNumber);
     setCopied(true);
-    toast.success('Number copied!');
+    toast.success(t('deposit.copied'));
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -50,44 +51,22 @@ export default function Deposit() {
     e.preventDefault();
     if (!phone || !name || !amount) return;
     if (isLoading) return;
-    if (hasPending) {
-      toast.error('You already have a pending deposit. Please wait for it to be processed.');
-      return;
-    }
+    if (hasPending) { toast.error(t('deposit.pendingError')); return; }
 
     const amountNum = parseFloat(amount);
-    if (amountNum < minDeposit) {
-      toast.error(`Minimum deposit is ${minDeposit.toLocaleString()} RWF`);
-      return;
-    }
-    if (amountNum > maxDeposit) {
-      toast.error(`Maximum deposit is ${maxDeposit.toLocaleString()} RWF`);
-      return;
-    }
-
+    if (amountNum < minDeposit) { toast.error(t('deposit.minError', { min: minDeposit.toLocaleString() })); return; }
+    if (amountNum > maxDeposit) { toast.error(t('deposit.maxError', { max: maxDeposit.toLocaleString() })); return; }
 
     setIsLoading(true);
 
     const { error } = await supabase
       .from('deposit_transactions')
-      .insert({
-        user_id: profile?.user_id,
-        phone,
-        full_name: name,
-        amount: amountNum,
-        status: 'pending'
-      });
+      .insert({ user_id: profile?.user_id, phone, full_name: name, amount: amountNum, status: 'pending' });
 
-    if (error) {
-      toast.error('Failed to submit deposit request');
-      setIsLoading(false);
-      return;
-    }
+    if (error) { toast.error(t('deposit.failed')); setIsLoading(false); return; }
 
     setDepositSuccess({ show: true, amount: amountNum });
-    setPhone('');
-    setName('');
-    setAmount('');
+    setPhone(''); setName(''); setAmount('');
     setIsLoading(false);
   };
 
@@ -95,63 +74,46 @@ export default function Deposit() {
 
   return (
     <div className="page-container bg-background">
-      {/* Header */}
       <div className="flex items-center gap-4 mb-6">
-        <Link
-          to="/dashboard"
-          className="w-10 h-10 bg-card rounded-xl flex items-center justify-center shadow-card hover:shadow-lg-custom transition-all"
-        >
+        <Link to="/dashboard" className="w-10 h-10 bg-card rounded-xl flex items-center justify-center shadow-card hover:shadow-lg-custom transition-all">
           <ArrowLeft className="w-5 h-5 text-foreground" />
         </Link>
-        <h1 className="page-title mb-0 flex-1 text-left">Deposit</h1>
+        <h1 className="page-title mb-0 flex-1 text-left">{t('deposit.title')}</h1>
       </div>
 
-      {/* Mobile Money Info Card */}
       <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary/90 to-secondary rounded-3xl p-5 mb-5 shadow-button">
         <div className="absolute top-0 right-0 w-32 h-32 bg-primary-foreground/10 rounded-full -translate-y-10 translate-x-10" />
         <div className="absolute bottom-0 left-0 w-20 h-20 bg-primary-foreground/5 rounded-full translate-y-8 -translate-x-8" />
-        
+
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-3">
             <div className="w-8 h-8 rounded-lg bg-primary-foreground/20 flex items-center justify-center">
               <Wallet className="w-4 h-4 text-primary-foreground" />
             </div>
-            <span className="text-sm font-semibold text-primary-foreground/80 uppercase tracking-wider">Send Money To</span>
+            <span className="text-sm font-semibold text-primary-foreground/80 uppercase tracking-wider">{t('deposit.sendMoneyTo')}</span>
           </div>
 
           <p className="text-3xl font-extrabold text-primary-foreground mb-3 tracking-wide">{momoName}</p>
-          
-          <button
-            type="button"
-            onClick={handleCopy}
-            className="w-full mt-3 bg-primary-foreground/15 backdrop-blur-sm rounded-xl px-4 py-4 flex items-center justify-between gap-2 active:scale-[0.98] transition-all"
-          >
+
+          <button type="button" onClick={handleCopy} className="w-full mt-3 bg-primary-foreground/15 backdrop-blur-sm rounded-xl px-4 py-4 flex items-center justify-between gap-2 active:scale-[0.98] transition-all">
             <p className="text-base sm:text-lg font-extrabold text-primary-foreground tracking-wider select-all break-all">{momoNumber}</p>
             <div className="w-12 h-12 rounded-lg bg-primary-foreground/20 flex items-center justify-center flex-shrink-0">
-              {copied ? (
-                <Check className="w-6 h-6 text-primary-foreground" />
-              ) : (
-                <Copy className="w-6 h-6 text-primary-foreground" />
-              )}
+              {copied ? <Check className="w-6 h-6 text-primary-foreground" /> : <Copy className="w-6 h-6 text-primary-foreground" />}
             </div>
           </button>
 
-          <a
-            href={`tel:${encodeURIComponent(momoNumber)}`}
-            className="mt-3 w-full bg-primary-foreground text-primary font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all shadow-button"
-          >
+          <a href={`tel:${encodeURIComponent(momoNumber)}`} className="mt-3 w-full bg-primary-foreground text-primary font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all shadow-button">
             <Phone className="w-5 h-5" />
-            Call to Pay
+            {t('deposit.callToPay')}
           </a>
         </div>
       </div>
 
-      {/* Steps */}
       <div className="flex items-center gap-3 mb-5 px-1">
         {[
-          { step: '1', label: 'Send money' },
-          { step: '2', label: 'Fill form' },
-          { step: '3', label: 'Get confirmed' },
+          { step: '1', label: t('deposit.step1') },
+          { step: '2', label: t('deposit.step2') },
+          { step: '3', label: t('deposit.step3') },
         ].map((s, i) => (
           <div key={i} className="flex items-center gap-2 flex-1">
             <div className="w-6 h-6 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0">
@@ -162,75 +124,40 @@ export default function Deposit() {
         ))}
       </div>
 
-      {/* Form Card */}
       <div className="bg-card rounded-3xl p-5 shadow-card animate-slide-up mb-5">
         <div className="flex items-center gap-2 mb-4">
           <Shield className="w-4 h-4 text-primary" />
-          <span className="text-sm font-semibold text-foreground">Payment Details</span>
+          <span className="text-sm font-semibold text-foreground">{t('deposit.paymentDetails')}</span>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-3">
           <div>
-            <label className="text-xs font-medium text-muted-foreground mb-1 block ml-1">Phone Number</label>
+            <label className="text-xs font-medium text-muted-foreground mb-1 block ml-1">{t('deposit.phoneNumber')}</label>
             <div className="relative">
               <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input
-                type="tel"
-                placeholder="Phone used for payment"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                className="input-field pl-11 text-sm"
-                required
-              />
+              <input type="tel" placeholder={t('deposit.phoneUsed')} value={phone} onChange={(e) => setPhone(e.target.value)} className="input-field pl-11 text-sm" required />
             </div>
           </div>
 
           <div>
-            <label className="text-xs font-medium text-muted-foreground mb-1 block ml-1">Full Name</label>
+            <label className="text-xs font-medium text-muted-foreground mb-1 block ml-1">{t('deposit.fullName')}</label>
             <div className="relative">
               <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Name used for payment"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="input-field pl-11 text-sm"
-                required
-              />
+              <input type="text" placeholder={t('deposit.nameUsed')} value={name} onChange={(e) => setName(e.target.value)} className="input-field pl-11 text-sm" required />
             </div>
           </div>
 
           <div>
-            <label className="text-xs font-medium text-muted-foreground mb-1 block ml-1">Amount (RWF)</label>
+            <label className="text-xs font-medium text-muted-foreground mb-1 block ml-1">{t('deposit.amount')}</label>
             <div className="relative">
               <Banknote className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input
-                type="number"
-                placeholder={`Min ${minDeposit.toLocaleString()} · Max ${maxDeposit.toLocaleString()} RWF`}
-                min={minDeposit}
-                max={maxDeposit}
-
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                className="input-field pl-11 text-sm"
-                required
-              />
+              <input type="number" placeholder={t('deposit.minMax', { min: minDeposit.toLocaleString(), max: maxDeposit.toLocaleString() })} min={minDeposit} max={maxDeposit} value={amount} onChange={(e) => setAmount(e.target.value)} className="input-field pl-11 text-sm" required />
             </div>
           </div>
 
-          {/* Quick Amount Buttons */}
           <div className="flex gap-2 flex-wrap">
             {quickAmounts.map((q) => (
-              <button
-                key={q}
-                type="button"
-                onClick={() => setAmount(String(q))}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                  amount === String(q)
-                    ? 'bg-primary text-primary-foreground shadow-button'
-                    : 'bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary'
-                }`}
-              >
+              <button key={q} type="button" onClick={() => setAmount(String(q))} className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${amount === String(q) ? 'bg-primary text-primary-foreground shadow-button' : 'bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary'}`}>
                 {q.toLocaleString()}
               </button>
             ))}
@@ -244,10 +171,8 @@ export default function Deposit() {
                   <Clock className="w-5 h-5 text-primary-foreground" />
                 </div>
                 <div className="flex-1">
-                  <h4 className="text-sm font-bold text-foreground">Pending Deposit</h4>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    Please wait for your current deposit to be processed.
-                  </p>
+                  <h4 className="text-sm font-bold text-foreground">{t('deposit.pendingDeposit')}</h4>
+                  <p className="text-xs text-muted-foreground mt-0.5">{t('deposit.pendingDepositDesc')}</p>
                 </div>
               </div>
             </div>
@@ -255,43 +180,27 @@ export default function Deposit() {
 
           <button type="submit" className="action-btn w-full flex items-center justify-center gap-2" disabled={isLoading || hasPending}>
             {isLoading ? (
-              <>
-                <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                Submitting...
-              </>
+              <><div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />{t('deposit.submitting')}</>
             ) : hasPending ? (
-              <>
-                <Clock className="w-4 h-4" />
-                Pending Deposit in Progress
-              </>
+              <><Clock className="w-4 h-4" />{t('deposit.pendingInProgress')}</>
             ) : (
-              <>
-                <CheckCircle2 className="w-4 h-4" />
-                Submit Deposit
-              </>
+              <><CheckCircle2 className="w-4 h-4" />{t('deposit.submitDeposit')}</>
             )}
           </button>
         </form>
       </div>
 
-      {/* Info Footer */}
       <div className="flex items-start gap-3 p-4 bg-card rounded-2xl shadow-card">
         <Info className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
         <div>
-          <p className="text-sm font-semibold text-foreground mb-1">How it works</p>
+          <p className="text-sm font-semibold text-foreground mb-1">{t('deposit.howItWorks')}</p>
           <p className="text-xs text-muted-foreground leading-relaxed">
-            Send money to <span className="font-semibold text-foreground">{momoNumber}</span> via Mobile Money, then fill the form above and submit. Your deposit will be confirmed within <span className="font-semibold text-primary">15 minutes</span>.
+            {t('deposit.howItWorksDesc', { number: momoNumber, minutes: 15 })}
           </p>
         </div>
       </div>
 
-      <SuccessNotification
-        isOpen={depositSuccess.show}
-        onClose={() => setDepositSuccess({ show: false, amount: 0 })}
-        type="deposit"
-        amount={depositSuccess.amount}
-      />
-
+      <SuccessNotification isOpen={depositSuccess.show} onClose={() => setDepositSuccess({ show: false, amount: 0 })} type="deposit" amount={depositSuccess.amount} />
       <BottomNav />
     </div>
   );

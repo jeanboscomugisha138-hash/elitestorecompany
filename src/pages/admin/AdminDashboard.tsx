@@ -30,7 +30,7 @@ import { toast } from 'sonner';
 
 type TabType = 'users' | 'products' | 'deposits' | 'withdrawals' | 'giftcodes' | 'settings';
 
-const SETTING_FIELDS: { key: string; label: string; placeholder: string; type?: string }[] = [
+const SETTING_FIELDS: { key: string; label: string; placeholder: string; type?: string; multiline?: boolean; full?: boolean }[] = [
   { key: 'payment_phone', label: 'Payment / Recharge number', placeholder: '*182*8*1*1978296#' },
   { key: 'payment_name', label: 'Receiver name', placeholder: 'Thacienne' },
   { key: 'whatsapp_group_url', label: 'WhatsApp group link', placeholder: 'https://chat.whatsapp.com/...' },
@@ -39,6 +39,9 @@ const SETTING_FIELDS: { key: string; label: string; placeholder: string; type?: 
   { key: 'max_deposit', label: 'Max deposit (RWF)', placeholder: '1000000', type: 'number' },
   { key: 'min_withdraw', label: 'Min withdraw (RWF)', placeholder: '1000', type: 'number' },
   { key: 'max_withdraw', label: 'Max withdraw (RWF)', placeholder: '1000000', type: 'number' },
+  { key: 'withdraw_start_hour', label: 'Withdraw start hour (0-23)', placeholder: '7', type: 'number' },
+  { key: 'withdraw_end_hour', label: 'Withdraw end hour (0-23)', placeholder: '22', type: 'number' },
+  { key: 'announcements', label: 'Notification / Announcements (one per line)', placeholder: 'Welcome message...', multiline: true, full: true },
 ];
 
 
@@ -1282,17 +1285,29 @@ export default function AdminDashboard() {
                 </div>
                 <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                   {SETTING_FIELDS.map((f) => (
-                    <div key={f.key} className="flex flex-col">
+                    <div key={f.key} className={`flex flex-col ${f.full ? 'md:col-span-2' : ''}`}>
                       <label className="text-xs font-medium text-muted-foreground mb-1">{f.label}</label>
-                      <input
-                        type={f.type || 'text'}
-                        value={siteSettings[f.key] ?? ''}
-                        placeholder={f.placeholder}
-                        onChange={(e) =>
-                          setSiteSettings((prev) => ({ ...prev, [f.key]: e.target.value }))
-                        }
-                        className="w-full px-4 py-2.5 border border-border rounded-xl bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
-                      />
+                      {f.multiline ? (
+                        <textarea
+                          value={siteSettings[f.key] ?? ''}
+                          placeholder={f.placeholder}
+                          rows={8}
+                          onChange={(e) =>
+                            setSiteSettings((prev) => ({ ...prev, [f.key]: e.target.value }))
+                          }
+                          className="w-full px-4 py-2.5 border border-border rounded-xl bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                        />
+                      ) : (
+                        <input
+                          type={f.type || 'text'}
+                          value={siteSettings[f.key] ?? ''}
+                          placeholder={f.placeholder}
+                          onChange={(e) =>
+                            setSiteSettings((prev) => ({ ...prev, [f.key]: e.target.value }))
+                          }
+                          className="w-full px-4 py-2.5 border border-border rounded-xl bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                        />
+                      )}
                     </div>
                   ))}
                 </div>
