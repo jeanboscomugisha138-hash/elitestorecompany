@@ -20,16 +20,10 @@ export function AnnouncementPopup() {
 
   if (!showPopup) return null;
 
-  const announcements = [
-    'Welcome to ELITE STORE COMPANY!',
-    'Registration BONUS: 1,000 RWF',
-    'Minimum deposit: 10,000 RWF · Maximum: 1,000,000 RWF (processed in 15 minutes)',
-    'Minimum withdrawal: 1,000 RWF · Maximum: 1,000,000 RWF (processed in 24 hours)',
-    'Team bonus at three levels: 10%, 3% and 1%',
-    'Daily profit: 10% (VIP 2-4) · 15% (VIP 5-7) · 20% (VIP 8-10)',
-    'Invite your friends to register and earn instant cash bonuses.',
-    'Join the official WhatsApp group to learn about platform benefits.',
-  ];
+  const announcements = (settings.announcements || '')
+    .split('\n')
+    .map((s) => s.trim())
+    .filter(Boolean);
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
@@ -38,7 +32,6 @@ export function AnnouncementPopup() {
         onClick={closePopup}
       />
       <div className="relative w-full max-w-sm animate-scale-in">
-        {/* Bell icon floating on top */}
         <div className="absolute left-1/2 -translate-x-1/2 -top-8 z-10">
           <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg-custom border-4 border-background">
             <Bell className="w-8 h-8 text-primary-foreground" />
@@ -46,7 +39,6 @@ export function AnnouncementPopup() {
         </div>
 
         <div className="bg-card rounded-3xl overflow-hidden shadow-lg-custom">
-          {/* Yellow header */}
           <div className="bg-gradient-to-br from-primary to-secondary pt-12 pb-5 px-6 relative">
             <button
               onClick={closePopup}
@@ -59,7 +51,6 @@ export function AnnouncementPopup() {
             </h3>
           </div>
 
-          {/* Announcements list */}
           <div className="px-6 py-5 space-y-3 max-h-[50vh] overflow-y-auto">
             {announcements.map((item, i) => (
               <p key={i} className="text-sm text-foreground leading-relaxed">
@@ -68,7 +59,6 @@ export function AnnouncementPopup() {
             ))}
           </div>
 
-          {/* CTA button */}
           <div className="px-5 pb-5">
             <a
               href={settings.whatsapp_group_url}

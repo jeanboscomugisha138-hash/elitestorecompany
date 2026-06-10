@@ -1,5 +1,4 @@
 export const en = {
-  // Common
   rwf: 'RWF',
   loading: 'Loading...',
   close: 'Close',
@@ -8,7 +7,6 @@ export const en = {
   save: 'Save',
   back: 'Back',
 
-  // Bottom nav
   nav: {
     home: 'Home',
     products: 'Products',
@@ -16,7 +14,6 @@ export const en = {
     profile: 'Profile',
   },
 
-  // Dashboard
   dashboard: {
     investmentNews: 'Investment News',
     totalBalance: 'Total Balance',
@@ -37,7 +34,6 @@ export const en = {
     redeemCode: 'Redeem Code',
   },
 
-  // Online service dialog
   onlineService: {
     title: 'Online Service',
     description: 'Reach our customer support on WhatsApp or Telegram.',
@@ -45,7 +41,96 @@ export const en = {
     joinTelegram: 'Join Telegram Channel',
   },
 
-  // Settings
+  auth: {
+    welcomeBack: 'Welcome Back',
+    signInContinue: 'Sign in to continue earning',
+    createAccount: 'Create Account',
+    phone: 'Phone',
+    phonePlaceholder: '07XX XXX XXX',
+    password: 'Password',
+    passwordPlaceholder: 'Enter your password',
+    confirmPassword: 'Confirm password',
+    fullName: 'Full name',
+    invitationCode: 'Invitation code (optional)',
+    login: 'Login',
+    register: 'Register',
+    signingIn: 'Signing in...',
+    creatingAccount: 'Creating account...',
+    newHere: 'New here?',
+    haveAccount: 'Already have an account?',
+    invalidPhone: 'Please enter a valid phone number',
+    passwordTooShort: 'Password must be at least 6 characters',
+    passwordsDoNotMatch: 'Passwords do not match',
+    enterName: 'Please enter your full name',
+    welcomeBackToast: 'Welcome back!',
+    adminPanel: 'Admin Panel',
+  },
+
+  deposit: {
+    title: 'Deposit',
+    sendMoneyTo: 'Send Money To',
+    callToPay: 'Call to Pay',
+    paymentDetails: 'Payment Details',
+    phoneNumber: 'Phone Number',
+    phoneUsed: 'Phone used for payment',
+    fullName: 'Full Name',
+    nameUsed: 'Name used for payment',
+    amount: 'Amount (RWF)',
+    minMax: 'Min {min} · Max {max} RWF',
+    submitDeposit: 'Submit Deposit',
+    submitting: 'Submitting...',
+    pendingDeposit: 'Pending Deposit',
+    pendingDepositDesc: 'Please wait for your current deposit to be processed.',
+    pendingInProgress: 'Pending Deposit in Progress',
+    howItWorks: 'How it works',
+    howItWorksDesc: 'Send money to {number} via Mobile Money, then fill the form above. Your deposit will be confirmed within {minutes} minutes.',
+    step1: 'Send money',
+    step2: 'Fill form',
+    step3: 'Get confirmed',
+    minError: 'Minimum deposit is {min} RWF',
+    maxError: 'Maximum deposit is {max} RWF',
+    failed: 'Failed to submit deposit request',
+    pendingError: 'You already have a pending deposit. Please wait for it to be processed.',
+    copied: 'Number copied!',
+  },
+
+  withdraw: {
+    title: 'Withdraw',
+    availableBalance: 'Available Balance',
+    processed24h: 'Processed in ~24 hours',
+    secureTransfer: 'Secure transfer',
+    mobileMoneyAccount: 'Mobile Money Account',
+    change: 'Change',
+    linked: 'LINKED',
+    linkAccountInfo: 'Link your Mobile Money account to enable withdrawals. This will be saved for future use.',
+    phonePlaceholder: 'Phone number (e.g. 078...)',
+    namePlaceholder: 'Full name (as on MoMo)',
+    keepCurrent: '← Keep current account',
+    withdrawalAmount: 'Withdrawal Amount',
+    enterAmount: 'Enter amount',
+    amount: 'Amount',
+    serviceFee: 'Service fee (10%)',
+    youReceive: 'You receive',
+    investmentRequired: 'Investment Required',
+    investmentRequiredDesc: 'You need an active investment to withdraw funds.',
+    pendingWithdrawal: 'Pending Withdrawal',
+    pendingWithdrawalDesc: 'Please wait for your current request to be processed.',
+    withdrawNow: 'Withdraw Now',
+    processing: 'Processing...',
+    pendingButton: '⏳ Pending Withdrawal',
+    needHelp: 'Need Help?',
+    chatSupport: 'Chat with support on WhatsApp',
+    supportNotice: 'If you have any problem, please contact our online customer service.',
+    hoursNotice: 'Withdrawals are processed only between {start}h and {end}h.',
+    onlyOnce: 'You can only withdraw once per day. Try again tomorrow.',
+    onlyInvestors: 'Only investors can withdraw. Please invest first.',
+    minWithdraw: 'Minimum withdrawal is 1,000 RWF',
+    maxWithdraw: 'Maximum withdrawal is 1,000,000 RWF',
+    insufficient: 'Insufficient balance',
+    failedSubmit: 'Failed to submit withdrawal request',
+    outsideHours: 'Withdrawals are open from {start}h to {end}h. Please come back during that window.',
+  },
+
   settings: {
     accountBalance: 'Account Balance',
     recharge: 'Recharge',
@@ -68,7 +153,6 @@ export const en = {
     english: 'English',
   },
 
-  // Products
   products: {
     title: 'Investment Products',
     purchased: 'Purchased',
