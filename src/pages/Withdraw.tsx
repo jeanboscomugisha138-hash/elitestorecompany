@@ -77,7 +77,7 @@ export default function Withdraw() {
     }
 
     if (hasPending) {
-      toast.error(t('withdraw.pendingError' as any, t('withdraw.pendingWithdrawalDesc')));
+      toast.error(t('withdraw.pendingWithdrawalDesc'));
       return;
     }
 
