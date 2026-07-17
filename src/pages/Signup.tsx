@@ -48,22 +48,23 @@ export default function Signup() {
 
 
   return (
-    <div className="auth-safe-page">
-      <header className="auth-safe-header px-5 pt-4 pb-4">
-        <div className="max-w-sm mx-auto w-full flex items-center gap-3">
-          <div className="auth-safe-logo-box w-11 h-11 flex items-center justify-center shrink-0">
-            <img src={petaneLogo} alt="Petane Shipping" className="h-8 w-auto object-contain" />
+    <div className="auth-safe-page flex flex-col">
+      <header className="auth-safe-header px-5 pt-6 pb-2">
+        <div className="max-w-sm mx-auto w-full flex items-center justify-center gap-3">
+          <div className="auth-safe-logo-box w-12 h-12 flex items-center justify-center shrink-0 border-border">
+            <img src={petaneLogo} alt="Petane Shipping" className="h-9 w-auto object-contain" />
           </div>
-          <div className="min-w-0">
-            <p className="text-[10px] font-black uppercase tracking-widest text-primary-foreground/80">PETANE SHIPPING</p>
-            <h1 className="text-primary-foreground text-lg font-black leading-tight truncate">{t('auth.createAccount')}</h1>
+          <div className="min-w-0 text-left">
+            <p className="text-[10px] font-black uppercase tracking-widest text-primary">PETANE SHIPPING</p>
+            <h1 className="text-foreground text-lg font-black leading-tight truncate">{t('auth.createAccount')}</h1>
           </div>
         </div>
       </header>
 
-      <main className="px-4 pt-3 pb-6">
+      <main className="flex-1 flex items-center px-4 py-4">
         <div className="max-w-sm mx-auto w-full">
-          <section className="auth-safe-panel px-4 py-4">
+          <section className="auth-safe-panel px-5 py-5">
+
             <div className="flex items-center justify-between mb-4">
               <div>
                 <p className="text-[10px] font-black tracking-widest text-primary uppercase">Iyandikishe</p>
