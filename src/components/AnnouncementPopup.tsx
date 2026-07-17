@@ -23,13 +23,16 @@ export function AnnouncementPopup() {
     .filter(Boolean);
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
       <div
-        className="absolute inset-0 bg-slate-900/50 animate-fade-in"
+        className="absolute inset-0 bg-slate-900/60 animate-fade-in"
         onClick={closePopup}
+        style={{ backdropFilter: 'blur(2px)' }}
       />
-      <div className="relative w-full max-w-sm bg-card rounded-t-3xl sm:rounded-3xl overflow-hidden shadow-2xl animate-slide-in-right sm:animate-scale-in">
-        <div className="h-1.5 w-full bg-primary" />
+      <div className="relative w-full max-w-[320px] animate-scale-in">
+        <div className="absolute -inset-1 bg-primary/20 rounded-3xl blur-xl opacity-70 pointer-events-none" />
+        <div className="relative bg-card rounded-3xl overflow-hidden shadow-2xl border border-border/50">
+        <div className="h-1.5 w-full bg-gradient-to-r from-primary via-primary to-primary/70" />
 
         <button
           onClick={closePopup}
