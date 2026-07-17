@@ -132,14 +132,14 @@ export default function Products() {
 
   if (isLoading) {
     return (
-      <div className="page-container bg-background flex items-center justify-center">
+      <div className="page-container bg-[hsl(226_78%_90%)] flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
   }
 
   return (
-    <div className="page-container bg-background">
+    <div className="page-container bg-[hsl(226_78%_90%)]">
       <div className="flex items-center gap-4 mb-6">
         <Link to="/dashboard" className="w-10 h-10 bg-card rounded-xl flex items-center justify-center shadow-card hover:shadow-lg-custom transition-all">
           <ArrowLeft className="w-5 h-5 text-foreground" />
