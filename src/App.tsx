@@ -83,6 +83,8 @@ function AppRoutes() {
       <Route path="/referral" element={<ProtectedRoute><Referral /></ProtectedRoute>} />
       <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
       <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+      <Route path="/my-investments" element={<ProtectedRoute><MyInvestments /></ProtectedRoute>} />
+      <Route path="/withdrawal-account" element={<ProtectedRoute><WithdrawalAccount /></ProtectedRoute>} />
 
       {/* Admin Routes */}
       <Route path="/admin" element={<AdminLogin />} />
