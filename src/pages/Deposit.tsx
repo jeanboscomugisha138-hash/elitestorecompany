@@ -50,19 +50,46 @@ export default function Deposit() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const showError = (message: string, title?: string) => {
+    setErrorPopup({ show: true, title, message });
+  };
+
   const canContinue = phone.trim() && name.trim() && amount && !hasPending;
 
   const validateAmount = () => {
     const amountNum = parseFloat(amount);
-    if (!amount || isNaN(amountNum)) return false;
-    if (amountNum < minDeposit) { toast.error(t('deposit.minError', { min: minDeposit.toLocaleString() })); return false; }
-    if (amountNum > maxDeposit) { toast.error(t('deposit.maxError', { max: maxDeposit.toLocaleString() })); return false; }
+    if (!amount || isNaN(amountNum)) {
+      showError('Andikamo amafaranga ushaka gushyira kuri konti.', 'Amafaranga ntayo');
+      return false;
+    }
+    if (amountNum < minDeposit) {
+      showError(`Amafaranga make ushobora gushyira ni ${minDeposit.toLocaleString()} RWF. Ongera amafaranga.`, 'Amafaranga ni make');
+      return false;
+    }
+    if (amountNum > maxDeposit) {
+      showError(`Amafaranga menshi ushobora gushyira ni ${maxDeposit.toLocaleString()} RWF. Gabanya amafaranga.`, 'Amafaranga ni menshi');
+      return false;
+    }
+    return true;
+  };
+
+  const validatePhone = () => {
+    const digits = phone.replace(/\D/g, '');
+    if (!phone.trim()) {
+      showError('Andika nimero ya telefoni ugiye gukoresha wishyura.', 'Nimero irabura');
+      return false;
+    }
+    if (digits.length < 10) {
+      showError('Nimero ya telefoni igomba kugira imibare 10. Ongera uyandike neza.', 'Nimero si nziza');
+      return false;
+    }
     return true;
   };
 
   const handleContinue = () => {
-    if (!phone.trim() || !name.trim()) {
-      toast.error(t('deposit.enterDetails'));
+    if (!validatePhone()) return;
+    if (!name.trim()) {
+      showError('Andika amazina yawe yombi uko yanditse kuri konti ya MoMo.', 'Amazina arabura');
       return;
     }
     if (!validateAmount()) return;
