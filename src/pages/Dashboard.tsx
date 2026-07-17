@@ -38,6 +38,7 @@ import {
 } from '@/components/ui/dialog';
 import { SuccessNotification } from '@/components/SuccessNotification';
 import { LiveActivity } from '@/components/LiveActivity';
+import petaneLogo from '@/assets/petane-logo.png';
 
 export default function Dashboard() {
   const { t } = useTranslation();
