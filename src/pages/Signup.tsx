@@ -36,14 +36,16 @@ export default function Signup() {
     e.preventDefault();
     setError('');
     if (!fullName.trim()) { setError(t('auth.enterName')); return; }
-    if (phone.length < 10) { setError(t('auth.invalidPhone')); return; }
+    if (phone.length !== 10) { setError(t('auth.invalidPhone')); return; }
     if (password.length < 6) { setError(t('auth.passwordTooShort')); return; }
+    if (password.length > 12) { setError('Ijambobanga rigomba kuba rifite inyuguti 12 cyangwa munsi'); return; }
     if (password !== confirmPassword) { setError(t('auth.passwordsDoNotMatch')); return; }
     setIsLoading(true);
     const { error: signUpError } = await signUp(phone, password, fullName, referralCode || undefined);
     if (signUpError) { setError(signUpError.message); setIsLoading(false); return; }
     setShowWelcomeBonus(true);
   };
+
 
   return (
     <div className="auth-safe-page">
