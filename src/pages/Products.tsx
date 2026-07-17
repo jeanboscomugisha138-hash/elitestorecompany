@@ -139,13 +139,26 @@ export default function Products() {
   }
 
   return (
-    <div className="page-container bg-background">
-      <div className="flex items-center gap-4 mb-6">
-        <Link to="/dashboard" className="w-10 h-10 bg-card rounded-xl flex items-center justify-center shadow-card hover:shadow-lg-custom transition-all">
-          <ArrowLeft className="w-5 h-5 text-foreground" />
-        </Link>
-        <h1 className="page-title mb-0 flex-1 text-left">{t('products.title')}</h1>
+    <div className="min-h-screen pb-24 bg-background">
+      {/* Header */}
+      <div className="bg-gradient-to-br from-primary to-[hsl(226_83%_33%)] text-primary-foreground px-4 pt-6 pb-8 rounded-b-3xl shadow-lg-custom">
+        <div className="flex items-center gap-3 mb-4 max-w-md mx-auto">
+          <Link to="/dashboard" className="w-10 h-10 bg-white/15 rounded-xl flex items-center justify-center backdrop-blur-sm">
+            <ArrowLeft className="w-5 h-5 text-white" />
+          </Link>
+          <div className="flex-1">
+            <h1 className="text-xl font-extrabold">Imishinga ya Petane</h1>
+            <p className="text-xs text-white/80">Hitamo umushinga ushoremo</p>
+          </div>
+        </div>
+        <div className="max-w-md mx-auto bg-white/10 backdrop-blur-sm rounded-2xl p-3 text-xs">
+          <p className="font-semibold">💡 Inyungu ya buri munsi: VIP 1 = 7.14% · VIP 2–4 = 7% · VIP 5–7 = 7.5% · VIP 8–10 = 8%</p>
+        </div>
       </div>
+
+      <div className="max-w-md mx-auto px-4 -mt-4">
+
+
 
       <div className="grid grid-cols-1 gap-3">
         {products.map((product, index) => (
@@ -162,6 +175,7 @@ export default function Products() {
           </div>
         ))}
       </div>
+      </div>
 
       <SuccessNotification
         isOpen={investSuccess.show}
@@ -173,5 +187,6 @@ export default function Products() {
 
       <BottomNav />
     </div>
+
   );
 }
