@@ -124,10 +124,11 @@ export default function Signup() {
                 <label className="text-[10px] font-black text-muted-foreground ml-1 mb-1 block uppercase tracking-wider">
                   {t('auth.invitationCode')} <span className="text-muted-foreground/60 lowercase font-normal normal-case">(Bitegetswe)</span>
                 </label>
-                <div className="auth-safe-field flex items-center gap-2.5 px-3 py-2.5">
+                <div className={`auth-safe-field flex items-center gap-2.5 px-3 py-2.5 ${refLocked ? 'opacity-70' : ''}`}>
                   <Gift className="w-4 h-4 text-muted-foreground shrink-0" />
-                  <input type="text" placeholder={t('auth.invitationCode')} value={referralCode} onChange={(e) => setReferralCode(e.target.value.toUpperCase())} className="auth-safe-input text-sm uppercase tracking-widest" />
+                  <input type="text" placeholder={t('auth.invitationCode')} value={referralCode} onChange={(e) => !refLocked && setReferralCode(e.target.value.toUpperCase())} readOnly={refLocked} className="auth-safe-input text-sm uppercase tracking-widest" />
                 </div>
+
               </div>
 
               <button type="submit" disabled={isLoading} className="auth-safe-button w-full font-black text-sm py-3 active:opacity-90 disabled:opacity-60 flex items-center justify-center gap-2 mt-1">
