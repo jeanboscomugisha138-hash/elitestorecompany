@@ -25,18 +25,7 @@ import { ReferralCommissionListener } from '@/components/ReferralCommissionListe
 import { Link } from 'react-router-dom';
 import { DownloadAppInfo } from '@/components/DownloadAppButton';
 import { OnlineServiceDialog } from '@/components/OnlineServiceDialog';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/hooks/use-toast';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
-import { SuccessNotification } from '@/components/SuccessNotification';
+import { GiftCodeDialog } from '@/components/GiftCodeDialog';
 import { LiveActivity } from '@/components/LiveActivity';
 import petaneLogo from '@/assets/petane-logo.png';
 
