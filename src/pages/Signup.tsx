@@ -94,7 +94,7 @@ export default function Signup() {
                 <label className="text-[10px] font-black text-muted-foreground ml-1 mb-1 block uppercase tracking-wider">{t('auth.phone')}</label>
                 <div className="auth-safe-field flex items-center gap-2.5 px-3 py-2.5">
                   <Phone className="w-4 h-4 text-muted-foreground shrink-0" />
-                  <input type="tel" placeholder={t('auth.phone')} value={phone} onChange={(e) => setPhone(e.target.value)} className="auth-safe-input text-sm" required />
+                  <input type="tel" inputMode="numeric" pattern="[0-9]*" maxLength={10} placeholder={t('auth.phone')} value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))} className="auth-safe-input text-sm" required />
                 </div>
               </div>
 
