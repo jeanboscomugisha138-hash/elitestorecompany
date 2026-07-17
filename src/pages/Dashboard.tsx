@@ -125,71 +125,81 @@ export default function Dashboard() {
 
       {/* Overlapping account card */}
       <div className="px-3 -mt-14 space-y-3">
-        <div className="bg-card rounded-2xl shadow-card p-4">
-          <div className="flex items-start justify-between mb-3">
-            <div>
-              <div className="font-bold text-foreground text-base leading-tight">{profile?.full_name || 'User'}</div>
-              <div className="text-xs text-muted-foreground mt-0.5">
-                Konti - <span className="text-foreground font-semibold">{profile?.phone || '---'}</span>
-              </div>
+        <div className="bg-card rounded-2xl shadow-card p-4 border border-border/40">
+          {/* Header row */}
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex-1 min-w-0">
+              <h2 className="text-[17px] font-extrabold text-foreground leading-tight tracking-tight truncate">
+                {profile?.full_name || 'Umukiriya'}
+              </h2>
+              <p className="text-xs text-muted-foreground mt-1 font-medium">
+                Konti - <span className="text-foreground font-bold">{profile?.phone || '---'}</span>
+              </p>
             </div>
-            <Link to="/settings" className="text-primary text-sm font-semibold">Genzura Konti</Link>
+            <Link
+              to="/settings"
+              className="text-primary text-xs font-extrabold whitespace-nowrap ml-3 hover:underline"
+            >
+              Genzura Konti
+            </Link>
           </div>
 
-          <div className="grid grid-cols-3 border-t border-border pt-3 gap-2">
-            <div>
-              <div className="text-lg font-extrabold text-foreground leading-none">{mask(balance)}</div>
-              <div className="text-primary text-xs font-bold mt-1">RWF</div>
-              <div className="text-[11px] text-muted-foreground mt-0.5">Amafaranga Yose</div>
+          {/* Balance columns */}
+          <div className="grid grid-cols-3 border-t border-border pt-4 gap-1">
+            <div className="pr-1">
+              <div className="text-[22px] font-black text-foreground leading-none tracking-tight">{mask(balance)}</div>
+              <div className="text-primary text-[11px] font-extrabold mt-1.5 uppercase tracking-wide">RWF</div>
+              <div className="text-[11px] text-muted-foreground mt-1 font-semibold leading-tight">Amafaranga Yose</div>
             </div>
-            <div className="border-l border-border pl-2">
-              <div className="text-lg font-extrabold text-foreground leading-none">{mask(totalProfit)}</div>
-              <div className="text-primary text-xs font-bold mt-1">RWF</div>
-              <div className="text-[11px] text-muted-foreground mt-0.5">Inyungu ya Buri Munsi</div>
+            <div className="border-l border-border pl-3 pr-1">
+              <div className="text-[22px] font-black text-foreground leading-none tracking-tight">{mask(totalProfit)}</div>
+              <div className="text-primary text-[11px] font-extrabold mt-1.5 uppercase tracking-wide">RWF</div>
+              <div className="text-[11px] text-muted-foreground mt-1 font-semibold leading-tight">Inyungu ya Buri Munsi</div>
             </div>
-            <div className="border-l border-border pl-2">
-              <div className="text-lg font-extrabold text-foreground leading-none">{mask(referralBalance)}</div>
-              <div className="text-primary text-xs font-bold mt-1">RWF</div>
-              <div className="text-[11px] text-muted-foreground mt-0.5">Amafaranga y'Abaguzi</div>
+            <div className="border-l border-border pl-3">
+              <div className="text-[22px] font-black text-foreground leading-none tracking-tight">{mask(referralBalance)}</div>
+              <div className="text-primary text-[11px] font-extrabold mt-1.5 uppercase tracking-wide">RWF</div>
+              <div className="text-[11px] text-muted-foreground mt-1 font-semibold leading-tight">Amafaranga y'Abaguzi</div>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 mt-4">
+          {/* Action buttons */}
+          <div className="grid grid-cols-2 gap-3 mt-5">
             <Link
               to="/products"
-              className="flex items-center justify-center gap-2 bg-primary text-primary-foreground font-bold py-2.5 rounded-xl active:scale-[0.98] transition shadow-[0_6px_14px_-4px_hsl(var(--primary)/0.55)]"
+              className="flex items-center justify-center gap-2 bg-primary text-primary-foreground font-extrabold text-sm py-3 rounded-xl active:scale-[0.98] transition shadow-[0_6px_16px_-4px_hsl(var(--primary)/0.55)]"
             >
               <PiggyBank className="w-4 h-4" /> Gura VIP
             </Link>
             <Link
               to="/deposit"
-              className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-bold py-2.5 rounded-xl active:scale-[0.98] transition border border-primary/20"
+              className="flex items-center justify-center gap-2 bg-primary/8 text-primary font-extrabold text-sm py-3 rounded-xl active:scale-[0.98] transition border-2 border-primary/15 hover:bg-primary/12"
             >
               <ArrowUpRight className="w-4 h-4" /> Ishyura Ubwawe
             </Link>
           </div>
         </div>
 
-        {/* Invested / wallet card */}
-        <div className="bg-card rounded-2xl shadow-card p-4 flex items-center justify-between">
+        {/* Invested / wallet card - Airtel Money style */}
+        <div className="bg-card rounded-2xl shadow-card p-4 flex items-center justify-between border border-border/40">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-              <Wallet className="w-5 h-5 text-primary" />
+            <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
+              <Wallet className="w-5 h-5 text-primary" strokeWidth={2.5} />
             </div>
             <div>
-              <div className="text-primary font-extrabold text-sm">{t('dashboard.totalInvested')}</div>
-              <div className="text-foreground font-bold text-lg leading-tight">
-                <span className="text-primary text-sm font-bold mr-1">RWF</span>
+              <div className="text-primary text-sm font-extrabold tracking-tight">{t('dashboard.totalInvested')}</div>
+              <div className="text-foreground text-xl font-black leading-tight mt-0.5">
+                <span className="text-primary text-xs font-extrabold mr-1">RWF</span>
                 {mask(totalInvested)}
               </div>
             </div>
           </div>
           <button
             onClick={() => setBalanceVisible(v => !v)}
-            className="w-10 h-10 rounded-full bg-primary flex items-center justify-center"
+            className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shadow-[0_4px_12px_-3px_hsl(var(--primary)/0.5)] active:scale-95 transition"
             aria-label="Toggle balance"
           >
-            <Eye className="w-5 h-5 text-primary-foreground" />
+            <Eye className="w-5 h-5 text-primary-foreground" strokeWidth={2.5} />
           </button>
         </div>
       </div>
