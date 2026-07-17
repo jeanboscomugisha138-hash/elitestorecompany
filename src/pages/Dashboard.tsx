@@ -219,38 +219,9 @@ export default function Dashboard() {
         <LiveActivity />
       </div>
 
-      {/* Gift Code Dialog */}
-      <Dialog open={giftDialogOpen} onOpenChange={setGiftDialogOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Gift className="w-5 h-5 text-primary" /> Redeem Gift Code
-            </DialogTitle>
-            <DialogDescription>Enter your gift code to receive bonus money instantly.</DialogDescription>
-          </DialogHeader>
-          <div className="flex flex-col gap-3 mt-2">
-            <Input
-              placeholder="Enter gift code"
-              value={giftCode}
-              onChange={(e) => setGiftCode(e.target.value.toUpperCase())}
-              maxLength={50}
-              className="text-center uppercase tracking-widest font-bold text-lg"
-            />
-            <Button onClick={handleRedeemGiftCode} disabled={isRedeeming || !giftCode.trim()}>
-              {isRedeeming ? <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Redeeming...</> : 'Redeem Code'}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
+      <GiftCodeDialog open={giftDialogOpen} onOpenChange={setGiftDialogOpen} onRedeemed={refreshProfile} />
       <OnlineServiceDialog open={aboutOpen} onOpenChange={setAboutOpen} />
 
-      <SuccessNotification
-        isOpen={giftSuccess.show}
-        onClose={() => setGiftSuccess({ show: false, amount: 0 })}
-        type="gift"
-        amount={giftSuccess.amount}
-      />
 
       <CustomerServiceButton />
       <BottomNav />
