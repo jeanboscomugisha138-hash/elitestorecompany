@@ -168,12 +168,14 @@ export default function Dashboard() {
               to="/products"
               className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-black text-[13px] py-2.5 rounded-xl active:scale-[0.98] transition"
             >
+              <span aria-hidden>👑</span>
               <PiggyBank className="w-4 h-4" strokeWidth={2.5} /> Gura VIP
             </Link>
             <Link
               to="/deposit"
               className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-black text-[13px] py-2.5 rounded-xl active:scale-[0.98] transition"
             >
+              <span aria-hidden>💸</span>
               <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} /> Ishyura
             </Link>
           </div>
