@@ -4,7 +4,6 @@ import { BottomNav } from '@/components/BottomNav';
 import { useAuth } from '@/hooks/useAuth';
 import {
   ArrowDownToLine,
-  ArrowUpFromLine,
   Users,
   Lock,
   LogOut,
@@ -14,7 +13,6 @@ import {
   ChevronRight,
   Bell,
   ScanLine,
-  Shield,
   Copy,
   Gift,
   Package,
