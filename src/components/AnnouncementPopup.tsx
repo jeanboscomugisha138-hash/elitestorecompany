@@ -79,6 +79,7 @@ export function AnnouncementPopup() {
             Injira mu Itsinda
           </a>
         </div>
+        </div>
       </div>
     </div>
   );
