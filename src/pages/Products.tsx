@@ -175,6 +175,7 @@ export default function Products() {
           </div>
         ))}
       </div>
+      </div>
 
       <SuccessNotification
         isOpen={investSuccess.show}
@@ -186,5 +187,6 @@ export default function Products() {
 
       <BottomNav />
     </div>
+
   );
 }
