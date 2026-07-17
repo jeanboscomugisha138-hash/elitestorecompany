@@ -13,6 +13,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [adminTaps, setAdminTaps] = useState(0);
   const navigate = useNavigate();
   const { signIn } = useAuth();
 
