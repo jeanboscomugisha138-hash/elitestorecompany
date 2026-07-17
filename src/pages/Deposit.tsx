@@ -221,7 +221,6 @@ export default function Deposit() {
                 </div>
               </div>
             </div>
-            </div>
 
             {hasPending && (
               <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 mb-4">
