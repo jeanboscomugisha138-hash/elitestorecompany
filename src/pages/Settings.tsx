@@ -58,27 +58,13 @@ export default function Settings() {
 
   const menuGroups = [
     {
-      title: 'AMAFARANGA',
+      title: 'IMENYEREZO',
       items: [
-        { icon: ArrowDownToLine, label: 'Amateka y\'Ishyura', to: '/history', tint: 'bg-primary/10 text-primary' },
-        { icon: ArrowUpFromLine, label: 'Amateka yo Kwakira', to: '/history', tint: 'bg-emerald-500/10 text-emerald-600' },
-        { icon: Wallet, label: 'Konti yo Kwakira', to: '/withdraw', tint: 'bg-blue-500/10 text-blue-600' },
         { icon: Package, label: 'Imishinga Yanjye', to: '/products', tint: 'bg-amber-500/10 text-amber-600' },
-      ],
-    },
-    {
-      title: 'KONTI',
-      items: [
-        { icon: Users, label: 'Tumira Inshuti', to: '/referral', tint: 'bg-primary/10 text-primary' },
-        { icon: Lock, label: 'Ijambobanga', onClick: () => setPassOpen(true), tint: 'bg-slate-500/10 text-slate-600' },
-        { icon: Shield, label: 'Umutekano wa Konti', onClick: () => setPassOpen(true), tint: 'bg-purple-500/10 text-purple-600' },
-      ],
-    },
-    {
-      title: 'UBUFASHA',
-      items: [
-        { icon: Headphones, label: 'Serivisi ku Ntandaro', onClick: () => setServiceOpen(true), tint: 'bg-primary/10 text-primary' },
-        { icon: MessageCircle, label: 'Itsinda rya WhatsApp', href: settings.whatsapp_group_url, tint: 'bg-emerald-500/10 text-emerald-600' },
+        { icon: ArrowDownToLine, label: 'Amateka y\'Ishyura', to: '/history', tint: 'bg-primary/10 text-primary' },
+        { icon: Wallet, label: 'Konti yo Kwakira', to: '/withdraw', tint: 'bg-blue-500/10 text-blue-600' },
+        { icon: Users, label: 'Tumira Inshuti', to: '/referral', tint: 'bg-emerald-500/10 text-emerald-600' },
+        { icon: Headphones, label: 'Serivisi ku Ntandaro', onClick: () => setServiceOpen(true), tint: 'bg-purple-500/10 text-purple-600' },
       ],
     },
   ];
