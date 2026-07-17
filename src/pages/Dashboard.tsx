@@ -83,14 +83,14 @@ export default function Dashboard() {
   const mask = (v: number) => (balanceVisible ? v.toLocaleString() : 'XXXXXX');
 
   const quickActions = [
-    { label: t('dashboard.deposit'), icon: ArrowUpRight, to: '/deposit' },
-    { label: t('dashboard.withdraw'), icon: ArrowDownLeft, to: '/withdraw' },
-    { label: t('nav.products') || 'Products', icon: Package, to: '/products' },
-    { label: t('dashboard.referral'), icon: Users, to: '/referral' },
-    { label: t('dashboard.bonus'), icon: Gift, onClick: () => setGiftDialogOpen(true) },
-    { label: t('nav.history') || 'History', icon: HistoryIcon, to: '/history' },
-    { label: t('dashboard.onlineService'), icon: Headphones, onClick: () => setAboutOpen(true) },
-    { label: 'App', icon: Download, href: 'https://drive.google.com/uc?export=download&id=1FjLw7Hsp_6yKOp3VQYOrZkL0N7zADQmC' },
+    { label: 'Ishyura', icon: ArrowUpRight, to: '/deposit', variant: 'solid' as const },
+    { label: 'Kwakira', icon: Download, to: '/withdraw', variant: 'soft' as const },
+    { label: 'Amateka', icon: HistoryIcon, to: '/history', variant: 'soft' as const },
+    { label: 'Bonus', icon: Gift, onClick: () => setGiftDialogOpen(true), variant: 'solid' as const },
+    { label: 'Abo turi bo', icon: Users, to: '/referral', variant: 'soft' as const },
+    { label: 'Ubufasha', icon: Headphones, onClick: () => setAboutOpen(true), variant: 'soft' as const },
+    { label: 'Imirimo', icon: Package, to: '/products', variant: 'solid' as const },
+    { label: 'Imishinga', icon: Wallet, to: '/products', variant: 'soft' as const },
   ];
 
   return (
