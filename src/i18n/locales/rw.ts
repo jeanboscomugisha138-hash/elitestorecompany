@@ -99,6 +99,13 @@ export const rw = {
     failed: 'Ntibyashobotse kohereza ubwishyu',
     pendingError: 'Usanzwe ufite ubwishyu butegereje. Tegereza ko bwemezwa.',
     copied: 'Nimero yakoporowe!',
+    continue: 'Gukomeza',
+    stepIndicator: 'Intambwe {{current}} / {{total}}',
+    reviewTitle: 'Subiramo Amakuru',
+    edit: 'Hindura',
+    confirmDeposit: 'Emeza Ubwishyu',
+    enterDetails: 'Andika Amakuru',
+    reviewDetails: 'Subiramo no Kwemeza',
   },
 
   products: {
