@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { PopupModal } from './PopupModal';
-import { Users, CheckCircle, Sparkles } from 'lucide-react';
+import { Users, CheckCircle2 } from 'lucide-react';
 
 interface CommissionData {
   amount: number;
@@ -15,7 +15,6 @@ export function ReferralCommissionListener() {
 
   useEffect(() => {
     if (!user) return;
-
     const channel = supabase
       .channel('referral-commissions')
       .on(
@@ -33,60 +32,57 @@ export function ReferralCommissionListener() {
         }
       )
       .subscribe();
-
     return () => {
       supabase.removeChannel(channel);
     };
   }, [user]);
 
   const levelLabels: Record<number, string> = {
-    1: 'Level 1 (15%)',
-    2: 'Level 2 (4%)',
-    3: 'Level 3 (1%)',
+    1: 'Urwego rwa 1 (10%)',
+    2: 'Urwego rwa 2 (3%)',
+    3: 'Urwego rwa 3 (1%)',
   };
 
   return (
-    <PopupModal isOpen={!!commission} onClose={() => setCommission(null)}>
+    <PopupModal isOpen={!!commission} onClose={() => setCommission(null)} accent="success">
       {commission && (
-        <div className="text-center py-2">
-          {/* Animated icon */}
-          <div className="relative w-20 h-20 mx-auto mb-5">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-red-500 to-red-400 flex items-center justify-center shadow-lg animate-scale-in">
-              <Users className="w-10 h-10 text-white" />
+        <>
+          <div className="flex items-start gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center shrink-0">
+              <Users className="w-7 h-7" strokeWidth={2.2} />
             </div>
-            <div className="absolute -top-1 -right-1 w-8 h-8 rounded-full bg-gradient-to-br from-amber-400 to-yellow-300 flex items-center justify-center shadow-md animate-bounce">
-              <Sparkles className="w-4 h-4 text-white" />
+            <div className="flex-1 min-w-0 pt-1">
+              <div className="flex items-center gap-1.5 text-emerald-600 mb-1">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                <span className="text-[10px] font-bold uppercase tracking-wider">Komisiyo Nshya</span>
+              </div>
+              <h3 className="text-lg font-black text-foreground leading-tight">Wabonye Komisiyo</h3>
             </div>
           </div>
 
-          {/* Success badge */}
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <CheckCircle className="w-5 h-5 text-green-500" />
-            <span className="text-sm font-semibold text-green-500 uppercase tracking-wide">Commission Earned</span>
+          <div className="mt-5 rounded-2xl bg-muted/60 px-4 py-3">
+            <div className="flex items-baseline justify-between">
+              <span className="text-xs font-semibold text-muted-foreground">Amafaranga wakiriye</span>
+              <span className="text-xl font-black text-foreground tabular-nums">
+                +{commission.amount.toLocaleString()} <span className="text-xs font-bold text-primary">RWF</span>
+              </span>
+            </div>
+            <div className="mt-1.5 text-[11px] font-bold text-emerald-600 text-right">
+              {levelLabels[commission.level] || `Urwego rwa ${commission.level}`}
+            </div>
           </div>
 
-          {/* Title */}
-          <h3 className="text-2xl font-bold text-foreground mb-1">Referral Bonus! 💰</h3>
-
-          {/* Amount */}
-          <div className="my-4 py-3 px-4 bg-gradient-to-r from-red-500/10 to-red-400/10 rounded-2xl border border-red-200/30">
-            <p className="text-sm text-muted-foreground mb-1">Commission Received</p>
-            <p className="text-3xl font-extrabold text-primary">
-              +{commission.amount.toLocaleString()} <span className="text-lg">RWF</span>
-            </p>
-            <p className="text-xs font-medium text-red-600 mt-1">
-              {levelLabels[commission.level] || `Level ${commission.level}`}
-            </p>
-          </div>
-
-          <p className="text-sm text-muted-foreground mb-5">
-            Your team member just invested and you earned a commission! Keep sharing to earn more.
+          <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
+            Umuntu mwatumiye yashoye amafaranga — wabonye komisiyo. Komeza gutumira ubone n'ibindi.
           </p>
 
-          <button onClick={() => setCommission(null)} className="action-btn w-full text-base py-3">
-            Awesome! 🎉
+          <button
+            onClick={() => setCommission(null)}
+            className="mt-5 w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm py-3.5 rounded-2xl transition active:scale-[0.98]"
+          >
+            Byumvikanye
           </button>
-        </div>
+        </>
       )}
     </PopupModal>
   );

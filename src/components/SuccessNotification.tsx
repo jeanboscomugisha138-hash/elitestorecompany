@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import { PopupModal } from './PopupModal';
-import { Gift, CheckCircle, TrendingUp, PartyPopper } from 'lucide-react';
+import { Gift, CheckCircle2, TrendingUp, PartyPopper, ArrowDownToLine, ArrowUpFromLine } from 'lucide-react';
 
 type NotificationType = 'welcome' | 'gift' | 'investment' | 'deposit' | 'withdraw';
 
@@ -17,42 +16,48 @@ const config: Record<NotificationType, {
   title: string;
   subtitle: string;
   buttonText: string;
-  gradient: string;
+  accent: 'primary' | 'success' | 'warning' | 'info';
+  amountLabel: string;
 }> = {
   welcome: {
     icon: PartyPopper,
-    title: 'Welcome Bonus! 🎉',
-    subtitle: 'Your signup bonus has been credited to your account.',
-    buttonText: 'Start Investing',
-    gradient: 'from-primary to-primary/70',
+    title: 'Murakaza neza!',
+    subtitle: 'Konti yawe yashyizweho neza kandi bonus yawe yakiriwe.',
+    buttonText: 'Tangira Gushora',
+    accent: 'primary',
+    amountLabel: 'Bonus wakiriye',
   },
   gift: {
     icon: Gift,
-    title: 'Gift Redeemed! 🎁',
-    subtitle: 'Gift code bonus added to your balance.',
-    buttonText: 'Awesome!',
-    gradient: 'from-red-500 to-red-400',
+    title: 'Kode Yemejwe',
+    subtitle: 'Bonus yakuye muri kode yongewe kuri konti yawe.',
+    buttonText: 'Murakoze',
+    accent: 'success',
+    amountLabel: 'Amafaranga wakiriye',
   },
   investment: {
     icon: TrendingUp,
-    title: 'Investment Active! 📈',
-    subtitle: 'Your investment is now earning daily profits.',
-    buttonText: 'View Dashboard',
-    gradient: 'from-emerald-500 to-green-400',
+    title: 'Umushinga Watangiye',
+    subtitle: 'Umushinga wawe utangiye gukora — inyungu buri munsi ziratangira.',
+    buttonText: 'Reba Dashboard',
+    accent: 'success',
+    amountLabel: 'Amafaranga washoye',
   },
   deposit: {
-    icon: TrendingUp,
-    title: 'Deposit Submitted! 💰',
-    subtitle: 'Your deposit will be confirmed within 15 minutes.',
-    buttonText: 'Got It!',
-    gradient: 'from-blue-500 to-cyan-400',
+    icon: ArrowDownToLine,
+    title: 'Ishyura Ryoherejwe',
+    subtitle: 'Ishyura ryawe rizemezwa mu minota 15 gusa.',
+    buttonText: 'Byumvikanye',
+    accent: 'info',
+    amountLabel: 'Amafaranga wishyuye',
   },
   withdraw: {
-    icon: TrendingUp,
-    title: 'Withdrawal Submitted! 🏦',
-    subtitle: 'Your withdrawal will be processed within 24 hours.',
-    buttonText: 'Got It!',
-    gradient: 'from-amber-500 to-orange-400',
+    icon: ArrowUpFromLine,
+    title: 'Kwakira Byoherejwe',
+    subtitle: 'Igikorwa cyawe cyo kwakira kizakorwa mu masaha 24.',
+    buttonText: 'Byumvikanye',
+    accent: 'warning',
+    amountLabel: 'Amafaranga wakiriye',
   },
 };
 
@@ -60,42 +65,54 @@ export function SuccessNotification({ isOpen, onClose, type, amount, productName
   const c = config[type];
   const Icon = c.icon;
 
+  const iconBg = {
+    primary: 'bg-primary/10 text-primary',
+    success: 'bg-emerald-500/10 text-emerald-600',
+    warning: 'bg-amber-500/10 text-amber-600',
+    info: 'bg-sky-500/10 text-sky-600',
+  }[c.accent];
+
+  const btnBg = {
+    primary: 'bg-primary hover:bg-primary/90',
+    success: 'bg-emerald-500 hover:bg-emerald-600',
+    warning: 'bg-amber-500 hover:bg-amber-600',
+    info: 'bg-sky-500 hover:bg-sky-600',
+  }[c.accent];
+
   return (
-    <PopupModal isOpen={isOpen} onClose={onClose}>
-      <div className="text-center py-2">
-        {/* Animated icon */}
-        <div className={`w-20 h-20 rounded-full bg-gradient-to-br ${c.gradient} flex items-center justify-center mx-auto mb-5 shadow-lg animate-scale-in`}>
-          <Icon className="w-10 h-10 text-white" />
+    <PopupModal isOpen={isOpen} onClose={onClose} accent={c.accent}>
+      <div className="flex items-start gap-4">
+        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 ${iconBg}`}>
+          <Icon className="w-7 h-7" strokeWidth={2.2} />
         </div>
-
-        {/* Success check */}
-        <div className="flex items-center justify-center gap-2 mb-2">
-          <CheckCircle className="w-5 h-5 text-green-500" />
-          <span className="text-sm font-semibold text-green-500 uppercase tracking-wide">Success</span>
+        <div className="flex-1 min-w-0 pt-1">
+          <div className="flex items-center gap-1.5 text-emerald-600 mb-1">
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span className="text-[10px] font-bold uppercase tracking-wider">Byakunze</span>
+          </div>
+          <h3 className="text-lg font-black text-foreground leading-tight">{c.title}</h3>
         </div>
-
-        {/* Title */}
-        <h3 className="text-2xl font-bold text-foreground mb-1">{c.title}</h3>
-
-        {/* Amount */}
-        <div className="my-4 py-3 px-4 bg-muted rounded-2xl">
-          <p className="text-sm text-muted-foreground mb-1">
-            {type === 'investment' ? 'Amount Invested' : 'Amount Received'}
-          </p>
-          <p className="text-3xl font-extrabold text-primary">
-            {amount.toLocaleString()} <span className="text-lg">RWF</span>
-          </p>
-          {productName && (
-            <p className="text-xs text-muted-foreground mt-1">{productName}</p>
-          )}
-        </div>
-
-        <p className="text-sm text-muted-foreground mb-5">{c.subtitle}</p>
-
-        <button onClick={onClose} className="action-btn w-full text-base py-3">
-          {c.buttonText}
-        </button>
       </div>
+
+      <div className="mt-5 rounded-2xl bg-muted/60 px-4 py-3 flex items-baseline justify-between">
+        <span className="text-xs font-semibold text-muted-foreground">{c.amountLabel}</span>
+        <span className="text-xl font-black text-foreground tabular-nums">
+          {amount.toLocaleString()} <span className="text-xs font-bold text-primary">RWF</span>
+        </span>
+      </div>
+
+      {productName && (
+        <p className="mt-2 text-xs text-muted-foreground text-right font-medium">{productName}</p>
+      )}
+
+      <p className="mt-4 text-sm text-muted-foreground leading-relaxed">{c.subtitle}</p>
+
+      <button
+        onClick={onClose}
+        className={`mt-5 w-full ${btnBg} text-white font-bold text-sm py-3.5 rounded-2xl transition active:scale-[0.98] shadow-lg-custom`}
+      >
+        {c.buttonText}
+      </button>
     </PopupModal>
   );
 }
