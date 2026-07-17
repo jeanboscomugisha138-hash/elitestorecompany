@@ -48,7 +48,7 @@ export function ProductCard({ id, investment, dailyProfit, duration, onInvest, i
   return (
     <div className={`rounded-2xl overflow-hidden shadow-card animate-slide-up bg-card border-2 ${purchased ? 'border-emerald-500/40' : 'border-primary/30'}`}>
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-gradient-to-r from-primary to-secondary">
+      <div className="flex items-center justify-between px-4 py-2.5 bg-primary">
         <span className="text-primary-foreground font-extrabold text-base tracking-wide">{tier}</span>
         {purchased ? (
           <span className="text-xs font-bold bg-emerald-500 text-white px-3 py-1 rounded-full flex items-center gap-1">
