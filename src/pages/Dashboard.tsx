@@ -128,7 +128,7 @@ export default function Dashboard() {
 
       {/* Overlapping compact account card - Airtel style */}
       <div className="px-3 -mt-14 space-y-3 relative z-10">
-        <div className="bg-card rounded-2xl shadow-card px-4 pt-4 pb-4 border border-border/40">
+        <div className="dashboard-card px-4 pt-4 pb-4">
 
           {/* Header row: name + account number */}
           <div className="flex items-start justify-between mb-3">
@@ -136,26 +136,26 @@ export default function Dashboard() {
               <h2 className="text-[16px] font-black text-foreground leading-tight tracking-tight truncate">
                 {profile?.full_name || 'Umukiriya'}
               </h2>
-              <p className="text-[13px] text-foreground mt-0.5 font-bold">
+              <p className="text-[13px] text-muted-foreground mt-0.5 font-bold">
                 Konti - {profile?.phone || '---'}
               </p>
             </div>
             <Link
               to="/settings"
-              className="text-[#1a73e8] text-[13px] font-bold whitespace-nowrap ml-3 hover:underline"
+              className="text-primary text-[13px] font-bold whitespace-nowrap ml-3 hover:underline"
             >
               Genzura Konti
             </Link>
           </div>
 
           {/* Balance columns - compact */}
-          <div className="grid grid-cols-2 border-t border-border pt-3 gap-1">
+          <div className="grid grid-cols-2 border-t border-border/60 pt-3 gap-1">
             <div className="pr-1">
               <div className="text-[22px] font-black text-foreground leading-none tracking-tight">{mask(balance)}</div>
               <div className="text-primary text-[13px] font-black mt-1">RWF</div>
               <div className="text-[11px] text-muted-foreground mt-1 font-medium leading-tight">Ayo ufiteho</div>
             </div>
-            <div className="border-l border-border pl-3">
+            <div className="border-l border-border/60 pl-3">
               <div className="text-[22px] font-black text-foreground leading-none tracking-tight">{mask(totalProfit)}</div>
               <div className="text-primary text-[13px] font-black mt-1">RWF</div>
               <div className="text-[11px] text-muted-foreground mt-1 font-medium leading-tight">Inyungu zose</div>
@@ -163,7 +163,7 @@ export default function Dashboard() {
           </div>
 
           {/* Action buttons - compact pills */}
-          <div className="grid grid-cols-2 gap-2.5 mt-3 pt-3 border-t border-border">
+          <div className="grid grid-cols-2 gap-2.5 mt-3 pt-3 border-t border-border/60">
             <Link
               to="/products"
               className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-black text-[13px] py-2.5 rounded-xl active:scale-[0.98] transition"
@@ -183,7 +183,7 @@ export default function Dashboard() {
 
 
         {/* Invested / wallet card - Airtel Money style */}
-        <div className="bg-card rounded-2xl shadow-card p-4 flex items-center justify-between border border-border/40">
+        <div className="dashboard-card p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
               <Wallet className="w-5 h-5 text-primary" strokeWidth={2.5} />
@@ -198,7 +198,7 @@ export default function Dashboard() {
           </div>
           <button
             onClick={() => setBalanceVisible(v => !v)}
-            className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shadow-[0_4px_12px_-3px_hsl(var(--primary)/0.5)] active:scale-95 transition"
+            className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shadow-button active:scale-95 transition"
             aria-label="Toggle balance"
           >
             <Eye className="w-5 h-5 text-primary-foreground" strokeWidth={2.5} />
@@ -207,20 +207,20 @@ export default function Dashboard() {
       </div>
 
       {/* Quick actions grid */}
-      <div className="px-3 mt-6">
-        <div className="text-xs font-extrabold tracking-[0.15em] text-muted-foreground mb-3">
+      <div className="px-3 mt-5">
+        <div className="text-xs font-extrabold tracking-[0.12em] text-muted-foreground mb-2.5">
           IBIKORWA
         </div>
 
-        <div className="bg-card rounded-2xl shadow-card p-4 border border-border/60">
-          <div className="grid grid-cols-4 gap-y-5 gap-x-2">
+        <div className="dashboard-card p-4">
+          <div className="grid grid-cols-4 gap-y-4 gap-x-2">
             {quickActions.map((a, i) => {
               const inner = (
                 <>
-                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center transition active:scale-95 bg-primary/10 text-primary">
-                    <span aria-hidden className="text-3xl leading-none">{a.emoji}</span>
+                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center transition active:scale-95 bg-primary/10 text-primary">
+                    <span aria-hidden className="text-2xl leading-none">{a.emoji}</span>
                   </div>
-                  <span className="text-[11px] font-semibold text-foreground mt-2 text-center leading-tight">{a.label}</span>
+                  <span className="text-[11px] font-semibold text-foreground mt-1.5 text-center leading-tight">{a.label}</span>
                 </>
               );
               const cls = 'flex flex-col items-center';
@@ -233,7 +233,7 @@ export default function Dashboard() {
         {/* Promo banner */}
         <Link
           to="/products"
-          className="mt-4 flex items-center gap-3 bg-primary/5 border border-primary/20 rounded-2xl p-3 active:scale-[0.99] transition"
+          className="mt-3 flex items-center gap-3 bg-card border border-border/60 rounded-2xl p-3 shadow-card active:scale-[0.99] transition"
         >
           <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center shrink-0">
             <PiggyBank className="w-6 h-6 text-primary-foreground" />
@@ -246,12 +246,12 @@ export default function Dashboard() {
               Imishinga ya Petane Shipping
             </div>
           </div>
-          <span className="text-xs font-bold bg-primary text-primary-foreground px-3 py-1.5 rounded-full">
+          <span className="text-xs font-bold bg-primary/10 text-primary px-3 py-1.5 rounded-full">
             Reba
           </span>
         </Link>
 
-        <div className="mt-4">
+        <div className="mt-3">
           <DownloadAppInfo />
         </div>
       </div>
