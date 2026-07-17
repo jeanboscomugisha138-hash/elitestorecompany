@@ -19,6 +19,7 @@ export default function Deposit() {
   const [isLoading, setIsLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [depositSuccess, setDepositSuccess] = useState<{ show: boolean; amount: number }>({ show: false, amount: 0 });
+  const [errorPopup, setErrorPopup] = useState<{ show: boolean; title?: string; message: string }>({ show: false, message: '' });
   const [hasPending, setHasPending] = useState(false);
   const { profile } = useAuth();
   const { settings } = useSiteSettings();
