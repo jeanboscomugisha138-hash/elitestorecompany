@@ -55,7 +55,16 @@ export default function Settings() {
     }
   };
 
-  const menuGroups = [
+  interface MenuItem {
+    icon: React.ElementType;
+    label: string;
+    tint: string;
+    to?: string;
+    href?: string;
+    onClick?: () => void;
+  }
+
+  const menuGroups: { title: string; items: MenuItem[] }[] = [
     {
       title: 'IMENYEREZO',
       items: [
