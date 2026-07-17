@@ -34,41 +34,11 @@ export default function Dashboard() {
   const { profile, refreshProfile } = useAuth();
   const balance = profile?.main_balance || 0;
   const totalInvested = profile?.invested_amount || 0;
-  const referralBalance = profile?.referral_balance || 0;
   const totalProfit = profile?.total_profit || 0;
 
   const [giftDialogOpen, setGiftDialogOpen] = useState(false);
-  const [giftCode, setGiftCode] = useState('');
-  const [isRedeeming, setIsRedeeming] = useState(false);
-  const [giftSuccess, setGiftSuccess] = useState<{ show: boolean; amount: number }>({ show: false, amount: 0 });
   const [aboutOpen, setAboutOpen] = useState(false);
   const [balanceVisible, setBalanceVisible] = useState(true);
-
-  const handleRedeemGiftCode = async () => {
-    const code = giftCode.trim();
-    if (!code) {
-      toast({ title: 'Please enter a gift code', variant: 'destructive' });
-      return;
-    }
-    setIsRedeeming(true);
-    try {
-      const { data, error } = await supabase.functions.invoke('redeem-gift-code', {
-        body: { code },
-      });
-      if (error || data?.error) {
-        toast({ title: data?.error || 'Failed to redeem code', variant: 'destructive' });
-      } else {
-        setGiftCode('');
-        setGiftDialogOpen(false);
-        await refreshProfile();
-        setGiftSuccess({ show: true, amount: data.amount || 0 });
-      }
-    } catch {
-      toast({ title: 'Something went wrong', variant: 'destructive' });
-    } finally {
-      setIsRedeeming(false);
-    }
-  };
 
   const mask = (v: number) => (balanceVisible ? v.toLocaleString() : 'XXXXXX');
 
@@ -80,7 +50,7 @@ export default function Dashboard() {
     { label: 'Abo turi bo', emoji: '👥', to: '/referral' },
     { label: 'Ubufasha', emoji: '🎧', onClick: () => setAboutOpen(true) },
     { label: 'Imirimo', emoji: '📦', to: '/products' },
-    { label: 'Imishinga', emoji: '💼', to: '/products' },
+    { label: 'Imishinga', emoji: '💼', to: '/my-investments' },
   ];
 
   return (
