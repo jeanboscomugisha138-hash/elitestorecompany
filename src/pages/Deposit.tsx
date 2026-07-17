@@ -176,12 +176,12 @@ export default function Deposit() {
               <div className="relative mb-3">
                 <input
                   type="number"
-                  placeholder="0"
+                  placeholder="Andikamo amafaranga"
                   min={minDeposit}
                   max={maxDeposit}
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  className="w-full h-16 text-2xl font-extrabold text-center rounded-2xl border-2 border-primary/20 bg-primary/5 focus:border-primary focus:bg-white focus:outline-none transition-colors placeholder:text-muted-foreground/40"
+                  className="w-full h-16 text-xl font-extrabold text-center rounded-2xl border-2 border-primary/20 bg-primary/5 focus:border-primary focus:bg-white focus:outline-none transition-colors placeholder:text-muted-foreground/50 placeholder:text-sm placeholder:font-semibold"
                   required
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-primary">RWF</span>
@@ -193,16 +193,6 @@ export default function Deposit() {
               </div>
             </div>
 
-            {/* Notice card */}
-            <div className="rounded-2xl border border-primary/15 bg-primary/5 p-4 mb-4 flex items-start gap-3">
-              <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <Clock className="w-4 h-4 text-primary" />
-              </div>
-              <p className="text-xs text-foreground leading-relaxed">
-                Amafaranga yawe agera muri konti mu <span className="font-bold text-primary">gihe kitarenze iminota 20</span>. Bitinze, vugana na{' '}
-                <span className="font-bold text-primary">Serivisi kuri Murandasi</span> kugira ngo ugufashwe ako kanya.
-              </p>
-            </div>
 
             {/* Personal Details Card */}
             <div className="bg-card rounded-3xl p-5 shadow-elevated border border-border/40 mb-4">
