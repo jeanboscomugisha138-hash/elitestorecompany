@@ -68,9 +68,9 @@ export default function Settings() {
     {
       title: 'IMENYEREZO',
       items: [
-        { icon: Package, label: 'Imishinga Yanjye', to: '/products', tint: 'bg-amber-500/10 text-amber-600' },
+        { icon: Package, label: 'Imishinga Yanjye', to: '/my-investments', tint: 'bg-amber-500/10 text-amber-600' },
         { icon: ArrowDownToLine, label: 'Amateka y\'Ishyura', to: '/history', tint: 'bg-primary/10 text-primary' },
-        { icon: Wallet, label: 'Konti yo Kwakira', to: '/withdraw', tint: 'bg-blue-500/10 text-blue-600' },
+        { icon: Wallet, label: 'Konti yo Kwakira', to: '/withdrawal-account', tint: 'bg-blue-500/10 text-blue-600' },
         { icon: Users, label: 'Tumira Inshuti', to: '/referral', tint: 'bg-emerald-500/10 text-emerald-600' },
         { icon: Headphones, label: 'Serivisi ku Ntandaro', onClick: () => setServiceOpen(true), tint: 'bg-purple-500/10 text-purple-600' },
       ],
