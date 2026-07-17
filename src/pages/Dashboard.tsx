@@ -83,14 +83,14 @@ export default function Dashboard() {
   const mask = (v: number) => (balanceVisible ? v.toLocaleString() : 'XXXXXX');
 
   const quickActions = [
-    { label: t('dashboard.deposit'), icon: ArrowUpRight, to: '/deposit' },
-    { label: t('dashboard.withdraw'), icon: ArrowDownLeft, to: '/withdraw' },
-    { label: t('nav.products') || 'Products', icon: Package, to: '/products' },
-    { label: t('dashboard.referral'), icon: Users, to: '/referral' },
-    { label: t('dashboard.bonus'), icon: Gift, onClick: () => setGiftDialogOpen(true) },
-    { label: t('nav.history') || 'History', icon: HistoryIcon, to: '/history' },
-    { label: t('dashboard.onlineService'), icon: Headphones, onClick: () => setAboutOpen(true) },
-    { label: 'App', icon: Download, href: 'https://drive.google.com/uc?export=download&id=1FjLw7Hsp_6yKOp3VQYOrZkL0N7zADQmC' },
+    { label: 'Ishyura', icon: ArrowUpRight, to: '/deposit', variant: 'solid' as const },
+    { label: 'Kwakira', icon: Download, to: '/withdraw', variant: 'soft' as const },
+    { label: 'Amateka', icon: HistoryIcon, to: '/history', variant: 'soft' as const },
+    { label: 'Bonus', icon: Gift, onClick: () => setGiftDialogOpen(true), variant: 'solid' as const },
+    { label: 'Abo turi bo', icon: Users, to: '/referral', variant: 'soft' as const },
+    { label: 'Ubufasha', icon: Headphones, onClick: () => setAboutOpen(true), variant: 'soft' as const },
+    { label: 'Imirimo', icon: Package, to: '/products', variant: 'solid' as const },
+    { label: 'Imishinga', icon: Wallet, to: '/products', variant: 'soft' as const },
   ];
 
   return (
@@ -130,42 +130,42 @@ export default function Dashboard() {
             <div>
               <div className="font-bold text-foreground text-base leading-tight">{profile?.full_name || 'User'}</div>
               <div className="text-xs text-muted-foreground mt-0.5">
-                Prepaid - <span className="text-foreground font-semibold">{profile?.phone || '---'}</span>
+                Konti - <span className="text-foreground font-semibold">{profile?.phone || '---'}</span>
               </div>
             </div>
-            <Link to="/settings" className="text-primary text-sm font-semibold">Manage Account</Link>
+            <Link to="/settings" className="text-primary text-sm font-semibold">Genzura Konti</Link>
           </div>
 
           <div className="grid grid-cols-3 border-t border-border pt-3 gap-2">
             <div>
               <div className="text-lg font-extrabold text-foreground leading-none">{mask(balance)}</div>
               <div className="text-primary text-xs font-bold mt-1">RWF</div>
-              <div className="text-[11px] text-muted-foreground mt-0.5">{t('dashboard.totalBalance')}</div>
+              <div className="text-[11px] text-muted-foreground mt-0.5">Amafaranga Yose</div>
             </div>
             <div className="border-l border-border pl-2">
               <div className="text-lg font-extrabold text-foreground leading-none">{mask(totalProfit)}</div>
               <div className="text-primary text-xs font-bold mt-1">RWF</div>
-              <div className="text-[11px] text-muted-foreground mt-0.5">{t('dashboard.dailyIncome')}</div>
+              <div className="text-[11px] text-muted-foreground mt-0.5">Inyungu ya Buri Munsi</div>
             </div>
             <div className="border-l border-border pl-2">
               <div className="text-lg font-extrabold text-foreground leading-none">{mask(referralBalance)}</div>
               <div className="text-primary text-xs font-bold mt-1">RWF</div>
-              <div className="text-[11px] text-muted-foreground mt-0.5">{t('dashboard.referralBalance')}</div>
+              <div className="text-[11px] text-muted-foreground mt-0.5">Amafaranga y'Abaguzi</div>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3 mt-4">
             <Link
               to="/products"
-              className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-bold py-2.5 rounded-xl active:scale-[0.98] transition"
+              className="flex items-center justify-center gap-2 bg-primary text-primary-foreground font-bold py-2.5 rounded-xl active:scale-[0.98] transition shadow-[0_6px_14px_-4px_hsl(var(--primary)/0.55)]"
             >
-              <PiggyBank className="w-4 h-4" /> Buy VIP
+              <PiggyBank className="w-4 h-4" /> Gura VIP
             </Link>
             <Link
               to="/deposit"
-              className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-bold py-2.5 rounded-xl active:scale-[0.98] transition"
+              className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-bold py-2.5 rounded-xl active:scale-[0.98] transition border border-primary/20"
             >
-              <ArrowUpRight className="w-4 h-4" /> Self Recharge
+              <ArrowUpRight className="w-4 h-4" /> Ishyura Ubwawe
             </Link>
           </div>
         </div>
@@ -195,29 +195,57 @@ export default function Dashboard() {
       </div>
 
       {/* Quick actions grid */}
-      <div className="px-3 mt-5">
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-base font-bold text-secondary">Quick Actions</h2>
-          <Link to="/products" className="text-primary text-sm font-semibold">View All</Link>
+      <div className="px-3 mt-6">
+        <div className="text-xs font-extrabold tracking-[0.15em] text-muted-foreground mb-3">
+          IBIKORWA
         </div>
 
-        <div className="grid grid-cols-4 gap-3">
-          {quickActions.map((a, i) => {
-            const inner = (
-              <>
-                <div className="w-14 h-14 rounded-xl bg-card flex items-center justify-center shadow-card border border-border">
-                  <a.icon className="w-6 h-6 text-primary" strokeWidth={2} />
-                </div>
-                <span className="text-[11px] font-semibold text-foreground mt-2 text-center leading-tight">{a.label}</span>
-              </>
-            );
-            const cls = 'flex flex-col items-center';
-            if (a.to) return <Link key={i} to={a.to} className={cls}>{inner}</Link>;
-            if (a.href) return <a key={i} href={a.href} target="_blank" rel="noopener noreferrer" className={cls}>{inner}</a>;
-            return <button key={i} onClick={a.onClick} className={cls}>{inner}</button>;
-          })}
+        <div className="bg-card rounded-2xl shadow-card p-4 border border-border/60">
+          <div className="grid grid-cols-4 gap-y-5 gap-x-2">
+            {quickActions.map((a, i) => {
+              const isSolid = a.variant === 'solid';
+              const iconWrap = isSolid
+                ? 'bg-primary text-primary-foreground shadow-[0_6px_14px_-4px_hsl(var(--primary)/0.55)]'
+                : 'bg-primary/10 text-primary';
+              const inner = (
+                <>
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition active:scale-95 ${iconWrap}`}>
+                    <a.icon className="w-6 h-6" strokeWidth={2.2} />
+                  </div>
+                  <span className="text-[11px] font-semibold text-foreground mt-2 text-center leading-tight">{a.label}</span>
+                </>
+              );
+              const cls = 'flex flex-col items-center';
+              if (a.to) return <Link key={i} to={a.to} className={cls}>{inner}</Link>;
+              return <button key={i} onClick={a.onClick} className={cls}>{inner}</button>;
+            })}
+          </div>
         </div>
-        <DownloadAppInfo />
+
+        {/* Promo banner */}
+        <Link
+          to="/products"
+          className="mt-4 flex items-center gap-3 bg-primary/5 border border-primary/20 rounded-2xl p-3 active:scale-[0.99] transition"
+        >
+          <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center shrink-0">
+            <PiggyBank className="w-6 h-6 text-primary-foreground" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="text-sm font-bold text-foreground leading-tight">
+              Shora ubone inyungu buri munsi!
+            </div>
+            <div className="text-[11px] text-muted-foreground mt-0.5">
+              Imishinga ya Petane Shipping
+            </div>
+          </div>
+          <span className="text-xs font-bold bg-primary text-primary-foreground px-3 py-1.5 rounded-full">
+            Reba
+          </span>
+        </Link>
+
+        <div className="mt-4">
+          <DownloadAppInfo />
+        </div>
       </div>
 
       <div className="px-3 mt-5 space-y-4">
