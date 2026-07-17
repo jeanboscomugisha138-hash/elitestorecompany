@@ -94,11 +94,6 @@ export default function Deposit() {
     setIsLoading(false);
   };
 
-  const steps = [
-    { icon: Phone, label: t('deposit.step1'), desc: t('deposit.step1Desc', 'Ohereza kuri MoMo') },
-    { icon: Banknote, label: t('deposit.step2'), desc: t('deposit.step2Desc', 'Uzuza amakuru') },
-    { icon: CheckCircle2, label: t('deposit.step3'), desc: t('deposit.step3Desc', 'Tegereza ubufasha') },
-  ];
 
   return (
     <div className="min-h-screen bg-[hsl(226_78%_90%)] pb-28">
