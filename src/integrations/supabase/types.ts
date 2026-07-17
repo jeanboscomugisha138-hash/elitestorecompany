@@ -175,6 +175,8 @@ export type Database = {
           total_profit: number
           updated_at: string
           user_id: string
+          withdraw_password: string | null
+          withdraw_phone: string | null
         }
         Insert: {
           created_at?: string
@@ -190,6 +192,8 @@ export type Database = {
           total_profit?: number
           updated_at?: string
           user_id: string
+          withdraw_password?: string | null
+          withdraw_phone?: string | null
         }
         Update: {
           created_at?: string
@@ -205,6 +209,8 @@ export type Database = {
           total_profit?: number
           updated_at?: string
           user_id?: string
+          withdraw_password?: string | null
+          withdraw_phone?: string | null
         }
         Relationships: []
       }
