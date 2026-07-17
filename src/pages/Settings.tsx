@@ -106,11 +106,7 @@ export default function Settings() {
         </button>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 mb-3">
-        <button onClick={() => setLangOpen(true)} className="profile-tile rounded-xl py-3 flex items-center justify-center gap-2">
-          <Languages className="w-5 h-5 text-primary" />
-          <span className="text-sm font-bold">{t('settings.language')}</span>
-        </button>
+      <div className="grid grid-cols-1 gap-3 mb-3">
         <a
           href={settings.whatsapp_group_url}
           target="_blank"
@@ -121,6 +117,7 @@ export default function Settings() {
           <span className="text-sm font-bold text-white">{t('settings.whatsapp')}</span>
         </a>
       </div>
+
 
       <div className="grid grid-cols-1 gap-3 mb-4">
         <button onClick={handleLogout} className="bg-destructive rounded-xl py-3 flex items-center justify-center gap-2">
