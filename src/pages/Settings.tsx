@@ -4,6 +4,7 @@ import { BottomNav } from '@/components/BottomNav';
 import { useAuth } from '@/hooks/useAuth';
 import {
   ArrowDownToLine,
+  ArrowUpFromLine,
   Users,
   Lock,
   LogOut,
