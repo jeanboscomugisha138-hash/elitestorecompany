@@ -130,42 +130,42 @@ export default function Dashboard() {
             <div>
               <div className="font-bold text-foreground text-base leading-tight">{profile?.full_name || 'User'}</div>
               <div className="text-xs text-muted-foreground mt-0.5">
-                Prepaid - <span className="text-foreground font-semibold">{profile?.phone || '---'}</span>
+                Konti - <span className="text-foreground font-semibold">{profile?.phone || '---'}</span>
               </div>
             </div>
-            <Link to="/settings" className="text-primary text-sm font-semibold">Manage Account</Link>
+            <Link to="/settings" className="text-primary text-sm font-semibold">Genzura Konti</Link>
           </div>
 
           <div className="grid grid-cols-3 border-t border-border pt-3 gap-2">
             <div>
               <div className="text-lg font-extrabold text-foreground leading-none">{mask(balance)}</div>
               <div className="text-primary text-xs font-bold mt-1">RWF</div>
-              <div className="text-[11px] text-muted-foreground mt-0.5">{t('dashboard.totalBalance')}</div>
+              <div className="text-[11px] text-muted-foreground mt-0.5">Amafaranga Yose</div>
             </div>
             <div className="border-l border-border pl-2">
               <div className="text-lg font-extrabold text-foreground leading-none">{mask(totalProfit)}</div>
               <div className="text-primary text-xs font-bold mt-1">RWF</div>
-              <div className="text-[11px] text-muted-foreground mt-0.5">{t('dashboard.dailyIncome')}</div>
+              <div className="text-[11px] text-muted-foreground mt-0.5">Inyungu ya Buri Munsi</div>
             </div>
             <div className="border-l border-border pl-2">
               <div className="text-lg font-extrabold text-foreground leading-none">{mask(referralBalance)}</div>
               <div className="text-primary text-xs font-bold mt-1">RWF</div>
-              <div className="text-[11px] text-muted-foreground mt-0.5">{t('dashboard.referralBalance')}</div>
+              <div className="text-[11px] text-muted-foreground mt-0.5">Amafaranga y'Abaguzi</div>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3 mt-4">
             <Link
               to="/products"
-              className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-bold py-2.5 rounded-xl active:scale-[0.98] transition"
+              className="flex items-center justify-center gap-2 bg-primary text-primary-foreground font-bold py-2.5 rounded-xl active:scale-[0.98] transition shadow-[0_6px_14px_-4px_hsl(var(--primary)/0.55)]"
             >
-              <PiggyBank className="w-4 h-4" /> Buy VIP
+              <PiggyBank className="w-4 h-4" /> Gura VIP
             </Link>
             <Link
               to="/deposit"
-              className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-bold py-2.5 rounded-xl active:scale-[0.98] transition"
+              className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-bold py-2.5 rounded-xl active:scale-[0.98] transition border border-primary/20"
             >
-              <ArrowUpRight className="w-4 h-4" /> Self Recharge
+              <ArrowUpRight className="w-4 h-4" /> Ishyura Ubwawe
             </Link>
           </div>
         </div>
