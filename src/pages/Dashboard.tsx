@@ -101,7 +101,7 @@ export default function Dashboard() {
       <ReferralCommissionListener />
 
       {/* Red top header - compact, card overlaps into red band */}
-      <div className="bg-primary px-4 pt-4 pb-16 relative">
+      <div className="bg-primary px-4 pt-4 pb-20 relative">
         <div className="flex items-center justify-between">
           <img
             src={petaneLogo}
@@ -127,9 +127,9 @@ export default function Dashboard() {
       </div>
 
       {/* Overlapping compact account card - Airtel style */}
-      <div className="px-3 -mt-12 space-y-3">
+      <div className="px-3 -mt-14 space-y-3 relative z-10">
+        <div className="bg-card rounded-2xl shadow-card px-4 pt-4 pb-4 border border-border/40">
 
-        <div className="bg-card rounded-2xl shadow-card p-4 border border-border/40">
           {/* Header row: name + account number */}
           <div className="flex items-start justify-between mb-3">
             <div className="flex-1 min-w-0">
