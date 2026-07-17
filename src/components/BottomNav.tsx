@@ -1,16 +1,14 @@
-import { Home, Package, Clock, User } from 'lucide-react';
+import { Home, Package, Users, User } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 
 export function BottomNav() {
   const location = useLocation();
-  const { t } = useTranslation();
 
   const navItems = [
-    { icon: Home, label: t('nav.home'), path: '/dashboard' },
-    { icon: Package, label: t('nav.products'), path: '/products' },
-    { icon: Clock, label: t('nav.history'), path: '/history' },
-    { icon: User, label: t('nav.profile'), path: '/settings' },
+    { icon: Home, label: 'Ahabanza', path: '/dashboard' },
+    { icon: Package, label: 'Imirimo', path: '/products' },
+    { icon: Users, label: 'Tumira', path: '/referral' },
+    { icon: User, label: 'Konti', path: '/settings' },
   ];
 
   return (
