@@ -11,7 +11,7 @@ import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 export default function Deposit() {
   const { t } = useTranslation();
-  const [step, setStep] = useState<1 | 2>(1);
+  const [step, setStep] = useState<1 | 2>(2);
   const [phone, setPhone] = useState('');
   const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
