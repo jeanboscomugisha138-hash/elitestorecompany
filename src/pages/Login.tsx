@@ -30,20 +30,20 @@ export default function Login() {
   };
 
   return (
-    <div className="auth-safe-page">
-      <header className="auth-safe-header px-5 pt-4 pb-4">
-        <div className="max-w-sm mx-auto w-full flex items-center gap-3">
-          <div className="auth-safe-logo-box w-11 h-11 flex items-center justify-center shrink-0">
-            <img src={petaneLogo} alt="Petane Shipping" className="h-8 w-auto object-contain" />
+    <div className="auth-safe-page min-h-screen flex flex-col justify-center">
+      <header className="px-5 pt-4 pb-3">
+        <div className="max-w-sm mx-auto w-full flex items-center gap-2.5">
+          <div className="auth-safe-logo-box w-10 h-10 flex items-center justify-center shrink-0 bg-white rounded-xl">
+            <img src={petaneLogo} alt="Petane Shipping" className="h-7 w-auto object-contain" />
           </div>
           <div className="min-w-0">
-            <p className="text-[10px] font-black uppercase tracking-widest text-primary-foreground/80">PETANE SHIPPING</p>
-            <h1 className="text-primary-foreground text-lg font-black leading-tight truncate">{t('auth.welcomeBack')}</h1>
+            <p className="text-[10px] font-black uppercase tracking-widest text-primary">PETANE SHIPPING</p>
+            <h1 className="text-foreground text-base font-black leading-tight truncate">{t('auth.welcomeBack')}</h1>
           </div>
         </div>
       </header>
 
-      <main className="px-4 pt-3 pb-6">
+      <main className="px-4 pb-4">
         <div className="max-w-sm mx-auto w-full">
           <section className="auth-safe-panel px-4 py-4">
             <div className="flex items-center justify-between mb-4">
