@@ -17,6 +17,8 @@ import History from "./pages/History";
 import Settings from "./pages/Settings";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import MyInvestments from "./pages/MyInvestments";
+import WithdrawalAccount from "./pages/WithdrawalAccount";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
