@@ -106,7 +106,7 @@ export default function Deposit() {
     e.preventDefault();
     if (!phone || !name || !amount) return;
     if (isLoading) return;
-    if (hasPending) { toast.error(t('deposit.pendingError')); return; }
+    if (hasPending) { showError('Ufite ubwishyu bwaheruka bugitegereje kwemezwa. Tegereza bwemezwe mbere yo gushyira ubundi.', 'Hari ubwishyu butegereje'); return; }
     if (!validateAmount()) return;
 
     setIsLoading(true);
@@ -115,7 +115,7 @@ export default function Deposit() {
       .from('deposit_transactions')
       .insert({ user_id: profile?.user_id, phone, full_name: name, amount: parseFloat(amount), status: 'pending' });
 
-    if (error) { toast.error(t('deposit.failed')); setIsLoading(false); return; }
+    if (error) { showError('Ntibyakunze kohereza ubwishyu bwawe. Gerageza nanone cyangwa vugana na serivisi.', 'Ubwishyu ntibwohererejwe'); setIsLoading(false); return; }
 
     setDepositSuccess({ show: true, amount: parseFloat(amount) });
     setPhone(''); setName(''); setAmount('');
