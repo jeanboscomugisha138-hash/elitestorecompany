@@ -15,33 +15,33 @@
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 15%;
 
-    --primary: 243 75% 55%;
+    --primary: 0 100% 45%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 322 85% 55%;
+    --secondary: 0 0% 13%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 250 30% 94%;
-    --muted-foreground: 250 10% 40%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 40%;
 
-    --accent: 322 80% 95%;
-    --accent-foreground: 243 75% 40%;
+    --accent: 0 100% 96%;
+    --accent-foreground: 0 100% 40%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 250 20% 88%;
-    --input: 250 20% 88%;
-    --ring: 243 75% 55%;
+    --border: 0 0% 88%;
+    --input: 0 0% 88%;
+    --ring: 0 100% 45%;
 
     --radius: 1rem;
 
-    /* Custom tokens */
-    --gradient-primary: linear-gradient(135deg, hsl(243, 75%, 55%) 0%, hsl(322, 85%, 55%) 100%);
-    --gradient-hover: linear-gradient(135deg, hsl(243, 75%, 48%) 0%, hsl(322, 85%, 48%) 100%);
-    --shadow-card: 0 4px 20px -4px hsl(243 50% 20% / 0.12);
-    --shadow-button: 0 8px 24px -8px hsl(322 85% 55% / 0.4);
-    --shadow-lg: 0 12px 40px -12px hsl(243 50% 20% / 0.18);
+    /* Custom tokens - Airtel-inspired red */
+    --gradient-primary: linear-gradient(135deg, hsl(0, 100%, 45%) 0%, hsl(0, 100%, 35%) 100%);
+    --gradient-hover: linear-gradient(135deg, hsl(0, 100%, 40%) 0%, hsl(0, 100%, 30%) 100%);
+    --shadow-card: 0 4px 20px -4px hsl(0 60% 20% / 0.12);
+    --shadow-button: 0 8px 24px -8px hsl(0 100% 45% / 0.4);
+    --shadow-lg: 0 12px 40px -12px hsl(0 60% 20% / 0.18);
   }
 }
 
