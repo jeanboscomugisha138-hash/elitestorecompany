@@ -1,30 +1,30 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Phone, User, Banknote, Info, AlertCircle, CheckCircle2, Shield, MessageCircle, Wallet, Clock, ChevronRight, Headphones } from 'lucide-react';
+import { ArrowLeft, Phone, User, Banknote, CheckCircle2, Shield, Wallet, Clock, Edit3, Headphones } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { toast } from 'sonner';
-import { useTranslation } from 'react-i18next';
 import { BottomNav } from '@/components/BottomNav';
 import { SuccessNotification } from '@/components/SuccessNotification';
+import { ErrorNotification } from '@/components/ErrorNotification';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useSiteSettings } from '@/hooks/useSiteSettings';
 
 export default function Withdraw() {
-  const { t } = useTranslation();
   const { settings } = useSiteSettings();
   const [phone, setPhone] = useState('');
   const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [withdrawSuccess, setWithdrawSuccess] = useState<{ show: boolean; amount: number }>({ show: false, amount: 0 });
+  const [errorPopup, setErrorPopup] = useState<{ show: boolean; title?: string; message: string }>({ show: false, message: '' });
   const [hasPending, setHasPending] = useState(false);
   const [savedAccount, setSavedAccount] = useState<{ phone: string; name: string } | null>(null);
   const [showBindForm, setShowBindForm] = useState(false);
-  const [isLoadingSaved, setIsLoadingSaved] = useState(true);
   const { profile } = useAuth();
 
   const startHour = parseInt(settings.withdraw_start_hour || '7');
   const endHour = parseInt(settings.withdraw_end_hour || '22');
+  const minWithdraw = 1000;
+  const maxWithdraw = 1000000;
 
   useEffect(() => {
     const loadSavedAccount = async () => {
@@ -35,7 +35,6 @@ export default function Withdraw() {
         .eq('user_id', profile.user_id)
         .order('created_at', { ascending: false })
         .limit(1);
-
       if (data && data.length > 0) {
         setSavedAccount({ phone: data[0].phone, name: data[0].full_name });
         setPhone(data[0].phone);
@@ -43,7 +42,6 @@ export default function Withdraw() {
       } else {
         setShowBindForm(true);
       }
-      setIsLoadingSaved(false);
     };
     loadSavedAccount();
   }, [profile?.user_id]);
@@ -64,7 +62,8 @@ export default function Withdraw() {
 
   const fee = amount ? Math.round(parseFloat(amount) * 0.1) : 0;
   const amountToReceive = amount ? parseFloat(amount) - fee : 0;
-  const quickAmounts = [1000, 5000, 10000, 50000];
+
+  const showError = (message: string, title?: string) => setErrorPopup({ show: true, title, message });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -72,20 +71,19 @@ export default function Withdraw() {
 
     const hour = new Date().getHours();
     if (hour < startHour || hour >= endHour) {
-      toast.error(t('withdraw.outsideHours', { start: startHour, end: endHour }));
+      showError(`Ubwikuze bwemewe hagati ya saa ${startHour}:00 na ${endHour}:00 gusa. Ongera ugerageze mu masaha akora.`, 'Ntabwo ari amasaha akora');
       return;
     }
-
-    if (hasPending) {
-      toast.error(t('withdraw.pendingWithdrawalDesc'));
-      return;
-    }
+    if (hasPending) { showError('Ufite ubwikuze bwaheruka bugitegereje kwemezwa. Tegereza bwemezwe mbere yo gukora ubundi.', 'Hari ubwikuze butegereje'); return; }
+    if (!phone.trim() || phone.replace(/\D/g,'').length < 10) { showError('Andika nimero ya telefoni y\'imibare 10 uzakoresha ubwikuze.', 'Nimero si nziza'); return; }
+    if (!name.trim()) { showError('Andika amazina uko yanditse kuri konti ya MoMo.', 'Amazina arabura'); return; }
 
     const amountNum = parseInt(amount);
-    if ((profile?.invested_amount || 0) <= 0) { toast.error(t('withdraw.onlyInvestors')); return; }
-    if (amountNum < 1000) { toast.error(t('withdraw.minWithdraw')); return; }
-    if (amountNum > 1000000) { toast.error(t('withdraw.maxWithdraw')); return; }
-    if (amountNum > (profile?.main_balance || 0)) { toast.error(t('withdraw.insufficient')); return; }
+    if (!amount || isNaN(amountNum)) { showError('Andikamo amafaranga ushaka kwikuza.', 'Amafaranga ntayo'); return; }
+    if ((profile?.invested_amount || 0) <= 0) { showError('Kugira ngo wikuze amafaranga, ugomba kubanza kugura umushinga.', 'Ntabwo ushobora kwikuza'); return; }
+    if (amountNum < minWithdraw) { showError(`Amafaranga make ushobora kwikuza ni ${minWithdraw.toLocaleString()} RWF.`, 'Amafaranga ni make'); return; }
+    if (amountNum > maxWithdraw) { showError(`Amafaranga menshi ushobora kwikuza ni ${maxWithdraw.toLocaleString()} RWF.`, 'Amafaranga ni menshi'); return; }
+    if (amountNum > (profile?.main_balance || 0)) { showError('Ntufite amafaranga ahagije kuri konti yawe. Reba balance yawe.', 'Balance ntihagije'); return; }
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -97,18 +95,16 @@ export default function Withdraw() {
       .limit(1);
 
     if (todayWithdrawals && todayWithdrawals.length > 0) {
-      toast.error(t('withdraw.onlyOnce'));
+      showError('Wemerewe kwikuza rimwe ku munsi gusa. Garuka ejo.', 'Wamaze kwikuza uyu munsi');
       return;
     }
 
-    if (!phone || !name || !amount) return;
     setIsLoading(true);
-
     const { error } = await supabase
       .from('withdrawal_transactions')
       .insert({ user_id: profile?.user_id, phone, full_name: name, amount: amountNum, status: 'pending' });
 
-    if (error) { toast.error(t('withdraw.failedSubmit')); setIsLoading(false); return; }
+    if (error) { showError('Ntibyakunze kohereza ubwikuze bwawe. Gerageza nanone.', 'Ubwikuze ntibwohererejwe'); setIsLoading(false); return; }
 
     setSavedAccount({ phone, name });
     setShowBindForm(false);
@@ -118,193 +114,165 @@ export default function Withdraw() {
   };
 
   return (
-    <div className="page-container bg-background pb-28">
-      <div className="flex items-center gap-4 mb-6">
-        <Link to="/dashboard" className="w-10 h-10 bg-card rounded-xl flex items-center justify-center shadow-card hover:shadow-lg-custom transition-all">
-          <ArrowLeft className="w-5 h-5 text-foreground" />
-        </Link>
-        <h1 className="page-title mb-0 flex-1 text-left">{t('withdraw.title')}</h1>
-        <a href={settings.whatsapp_group_url} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-[#25D366]/10 rounded-xl flex items-center justify-center hover:bg-[#25D366]/20 transition-all">
-          <MessageCircle className="w-5 h-5 text-[#25D366]" />
-        </a>
-      </div>
-
-      {/* Balance */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-primary via-primary/90 to-secondary rounded-2xl p-5 mb-4 shadow-lg">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-primary-foreground/5 rounded-full -translate-y-10 translate-x-10" />
-        <div className="relative z-10">
-          <div className="flex items-center gap-2 mb-1">
-            <Wallet className="w-4 h-4 text-primary-foreground/70" />
-            <p className="text-sm text-primary-foreground/70 font-medium">{t('withdraw.availableBalance')}</p>
+    <div className="min-h-screen bg-[hsl(226_78%_90%)] pb-28">
+      {/* Header */}
+      <div className="bg-primary text-primary-foreground px-4 pt-6 pb-10 rounded-b-[2rem] shadow-lg-custom">
+        <div className="max-w-md mx-auto flex items-center gap-3">
+          <Link to="/dashboard" className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center active:scale-95 transition-transform">
+            <ArrowLeft className="w-5 h-5" />
+          </Link>
+          <div className="flex-1">
+            <h1 className="text-lg font-bold">Kwikuza Amafaranga</h1>
+            <p className="text-xs text-primary-foreground/75">Ohereza amafaranga kuri MoMo yawe</p>
           </div>
-          <p className="text-3xl font-bold text-primary-foreground tracking-tight">
-            {(profile?.main_balance || 0).toLocaleString()} <span className="text-lg font-normal text-primary-foreground/70">RWF</span>
-          </p>
-          <div className="flex items-center gap-4 mt-3 pt-3 border-t border-primary-foreground/10">
-            <div className="flex items-center gap-1.5 text-xs text-primary-foreground/70">
-              <Clock className="w-3.5 h-3.5" />
-              <span>{startHour}:00 - {endHour}:00</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-xs text-primary-foreground/70">
-              <Shield className="w-3.5 h-3.5" />
-              <span>{t('withdraw.secureTransfer')}</span>
-            </div>
+          <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center">
+            <Shield className="w-5 h-5" />
           </div>
         </div>
       </div>
 
-      {/* Hours notice */}
-      <div className="flex items-start gap-3 p-3 mb-4 bg-primary/10 rounded-2xl border border-primary/20">
-        <Clock className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-        <p className="text-xs text-foreground leading-relaxed">{t('withdraw.hoursNotice', { start: startHour, end: endHour })}</p>
-      </div>
+      <div className="max-w-md mx-auto px-4 -mt-6">
+        {/* Balance card */}
+        <div className="bg-card rounded-3xl p-5 shadow-elevated border border-border/40 mb-4">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
+              <Wallet className="w-4 h-4 text-primary" />
+            </div>
+            <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wide">Balance ihari</p>
+          </div>
+          <p className="text-3xl font-extrabold text-foreground tracking-tight">
+            {(profile?.main_balance || 0).toLocaleString()} <span className="text-sm font-bold text-primary">RWF</span>
+          </p>
+          <div className="flex items-center gap-1.5 mt-3 pt-3 border-t border-border/40 text-[11px] font-semibold text-muted-foreground">
+            <Clock className="w-3.5 h-3.5 text-primary" />
+            <span>Amasaha yo kwikuza: <span className="text-primary">{startHour}:00 - {endHour}:00</span></span>
+          </div>
+        </div>
 
-      {/* Linked Account */}
-      {!isLoadingSaved && (
-        <div className="bg-card rounded-2xl p-4 shadow-card mb-5 animate-slide-up">
-          <div className="flex items-center justify-between mb-3">
+        {/* Amount */}
+        <div className="bg-card rounded-3xl p-5 shadow-elevated border border-border/40 mb-4">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
+              <Banknote className="w-4 h-4 text-primary" />
+            </div>
+            <p className="text-base font-bold text-foreground">Amafaranga wikuza</p>
+          </div>
+
+          <div className="relative mb-3">
+            <input
+              type="number"
+              placeholder="Andikamo amafaranga"
+              min={minWithdraw}
+              max={maxWithdraw}
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="w-full h-16 text-xl font-extrabold text-center rounded-2xl border-2 border-primary/20 bg-primary/5 focus:border-primary focus:bg-white focus:outline-none transition-colors placeholder:text-muted-foreground/50 placeholder:text-sm placeholder:font-semibold"
+            />
+            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-primary">RWF</span>
+          </div>
+
+          <div className="flex items-center justify-between px-1 text-[11px] font-semibold text-muted-foreground">
+            <span>Bito: <span className="text-primary">{minWithdraw.toLocaleString()} RWF</span></span>
+            <span>Byinshi: <span className="text-primary">{maxWithdraw.toLocaleString()} RWF</span></span>
+          </div>
+
+          {amount && parseFloat(amount) > 0 && (
+            <div className="mt-4 rounded-2xl bg-muted p-3 space-y-2">
+              <div className="flex justify-between text-xs">
+                <span className="text-muted-foreground">Amafaranga</span>
+                <span className="font-bold text-foreground">{parseFloat(amount).toLocaleString()} RWF</span>
+              </div>
+              <div className="flex justify-between text-xs">
+                <span className="text-muted-foreground">Amafaranga ya serivisi (10%)</span>
+                <span className="font-bold text-destructive">-{fee.toLocaleString()} RWF</span>
+              </div>
+              <div className="flex justify-between pt-2 border-t border-border/60">
+                <span className="text-xs font-semibold text-foreground">Uzahabwa</span>
+                <span className="text-base font-extrabold text-primary">{amountToReceive.toLocaleString()} RWF</span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* MoMo account */}
+        <div className="bg-card rounded-3xl p-5 shadow-elevated border border-border/40 mb-4">
+          <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
                 <User className="w-4 h-4 text-primary" />
               </div>
-              <h3 className="text-sm font-semibold text-foreground">{t('withdraw.mobileMoneyAccount')}</h3>
+              <p className="text-base font-bold text-foreground">Konti ya MoMo</p>
             </div>
             {savedAccount && !showBindForm && (
-              <button onClick={() => setShowBindForm(true)} className="text-xs text-primary font-medium hover:underline">{t('withdraw.change')}</button>
+              <button onClick={() => setShowBindForm(true)} className="text-xs font-bold text-primary flex items-center gap-1 px-2 py-1 rounded-lg bg-primary/10 active:scale-95 transition-transform">
+                <Edit3 className="w-3 h-3" />
+                Hindura
+              </button>
             )}
           </div>
 
           {savedAccount && !showBindForm ? (
-            <div className="flex items-center gap-3 p-3 bg-accent/50 rounded-xl">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <CheckCircle2 className="w-5 h-5 text-primary" />
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-muted">
+                <span className="text-xs text-muted-foreground font-medium">Nimero</span>
+                <span className="text-sm font-bold text-foreground">{savedAccount.phone}</span>
               </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-foreground truncate">{savedAccount.name}</p>
-                <p className="text-xs text-muted-foreground">{savedAccount.phone}</p>
+              <div className="flex items-center justify-between p-3 rounded-2xl bg-muted">
+                <span className="text-xs text-muted-foreground font-medium">Amazina</span>
+                <span className="text-sm font-bold text-foreground">{savedAccount.name}</span>
               </div>
-              <div className="px-2 py-1 bg-primary/10 rounded-full">
-                <span className="text-[10px] font-bold text-primary uppercase tracking-wider">{t('withdraw.linked')}</span>
+              <div className="flex items-center gap-1.5 text-[11px] font-semibold text-primary">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                <span>Konti yemejwe</span>
               </div>
             </div>
           ) : (
-            <div className="space-y-3">
-              {!savedAccount && (
-                <div className="flex items-start gap-2 p-3 bg-accent/50 rounded-xl mb-1">
-                  <Info className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                  <p className="text-xs text-muted-foreground">{t('withdraw.linkAccountInfo')}</p>
+            <div className="space-y-4">
+              <div>
+                <label className="text-xs font-semibold text-foreground mb-1.5 block ml-1">Nimero ya telefoni</label>
+                <div className="relative">
+                  <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <input type="tel" placeholder="Nimero uzakoresha wikuza" value={phone} onChange={(e) => setPhone(e.target.value)} className="input-field pl-11 text-sm" />
                 </div>
-              )}
-              <div className="relative">
-                <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <input type="tel" placeholder={t('withdraw.phonePlaceholder')} value={phone} onChange={(e) => setPhone(e.target.value)} className="input-field pl-10 text-sm h-11" required />
               </div>
-              <div className="relative">
-                <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <input type="text" placeholder={t('withdraw.namePlaceholder')} value={name} onChange={(e) => setName(e.target.value)} className="input-field pl-10 text-sm h-11" required />
+              <div>
+                <label className="text-xs font-semibold text-foreground mb-1.5 block ml-1">Amazina yombi</label>
+                <div className="relative">
+                  <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <input type="text" placeholder="Amazina yanditse kuri MoMo" value={name} onChange={(e) => setName(e.target.value)} className="input-field pl-11 text-sm" />
+                </div>
               </div>
-              {savedAccount && (
-                <button onClick={() => { setPhone(savedAccount.phone); setName(savedAccount.name); setShowBindForm(false); }} className="text-xs text-muted-foreground hover:text-foreground transition-colors">
-                  {t('withdraw.keepCurrent')}
-                </button>
-              )}
             </div>
           )}
         </div>
-      )}
 
-      {/* Amount */}
-      <div className="bg-card rounded-2xl p-5 shadow-card mb-5 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-        <h3 className="text-sm font-semibold text-foreground mb-3">{t('withdraw.withdrawalAmount')}</h3>
-        <div className="relative mb-4">
-          <Banknote className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-          <input type="number" placeholder={t('withdraw.enterAmount')} value={amount} onChange={(e) => setAmount(e.target.value)} className="input-field pl-11 text-lg font-semibold h-14" min="1000" max="1000000" required />
-          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-muted-foreground font-medium">RWF</span>
-        </div>
+        <button
+          onClick={handleSubmit}
+          disabled={isLoading || hasPending}
+          className="w-full bg-primary text-primary-foreground font-bold py-4 px-4 rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-transform shadow-button disabled:opacity-60 disabled:active:scale-100 mb-3"
+        >
+          {isLoading ? (
+            <><div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />Birimo gukorwa...</>
+          ) : hasPending ? (
+            <><Clock className="w-4 h-4" />Hari ubwikuze butegereje</>
+          ) : (
+            <><CheckCircle2 className="w-5 h-5" />Emeza Ubwikuze</>
+          )}
+        </button>
 
-        <div className="grid grid-cols-4 gap-2 mb-4">
-          {quickAmounts.map((qa) => (
-            <button key={qa} onClick={() => setAmount(qa.toString())} className={`py-2.5 rounded-xl text-xs font-bold transition-all ${amount === qa.toString() ? 'bg-primary text-primary-foreground shadow-md scale-[1.02]' : 'bg-accent/50 text-foreground hover:bg-accent'}`}>
-              {qa >= 1000 ? `${qa / 1000}K` : qa}
-            </button>
-          ))}
-        </div>
-
-        {amount && parseFloat(amount) > 0 && (
-          <div className="bg-muted/30 rounded-xl p-4 space-y-2.5 border border-border/50">
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">{t('withdraw.amount')}</span>
-              <span className="text-foreground font-medium">{parseFloat(amount).toLocaleString()} RWF</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">{t('withdraw.serviceFee')}</span>
-              <span className="text-destructive font-medium">-{fee.toLocaleString()} RWF</span>
-            </div>
-            <div className="border-t border-border/50 pt-2.5 flex justify-between">
-              <span className="text-sm font-semibold text-foreground">{t('withdraw.youReceive')}</span>
-              <span className="text-lg font-bold text-primary">{amountToReceive.toLocaleString()} RWF</span>
-            </div>
+        <a href={settings.customer_service_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3.5 bg-card rounded-2xl shadow-card border border-border/40 active:scale-[0.99] transition-transform">
+          <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+            <Headphones className="w-4 h-4 text-primary" />
           </div>
-        )}
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-bold text-foreground">Ukeneye ubufasha?</p>
+            <p className="text-[11px] text-muted-foreground">Vugana na serivisi z'abakiriya</p>
+          </div>
+        </a>
       </div>
-
-      <div className="space-y-3 mb-5">
-        {(profile?.invested_amount || 0) <= 0 && (
-          <div className="flex items-center gap-3 p-4 bg-destructive/10 rounded-2xl border border-destructive/20">
-            <div className="w-10 h-10 rounded-full bg-destructive/10 flex items-center justify-center flex-shrink-0">
-              <AlertCircle className="w-5 h-5 text-destructive" />
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-foreground">{t('withdraw.investmentRequired')}</p>
-              <p className="text-xs text-muted-foreground">{t('withdraw.investmentRequiredDesc')}</p>
-            </div>
-          </div>
-        )}
-
-        {hasPending && (
-          <div className="relative overflow-hidden rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 p-4">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-400 via-orange-400 to-amber-400 animate-pulse" />
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-500 to-orange-400 flex items-center justify-center flex-shrink-0 shadow-lg">
-                <span className="text-xl">⏳</span>
-              </div>
-              <div className="flex-1">
-                <p className="text-sm font-bold text-foreground">{t('withdraw.pendingWithdrawal')}</p>
-                <p className="text-xs text-muted-foreground mt-0.5">{t('withdraw.pendingWithdrawalDesc')}</p>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-
-      <button onClick={handleSubmit} className="action-btn w-full mb-4 h-14 text-base font-bold rounded-2xl" disabled={isLoading || hasPending || !amount || !phone || !name}>
-        {isLoading ? t('withdraw.processing') : hasPending ? t('withdraw.pendingButton') : t('withdraw.withdrawNow')}
-      </button>
-
-      {/* Support notice */}
-      <a href={settings.customer_service_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl border border-primary/20 mb-4 hover:shadow-card transition-all">
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center flex-shrink-0">
-          <Headphones className="w-5 h-5 text-primary-foreground" />
-        </div>
-        <div className="flex-1">
-          <p className="text-sm font-semibold text-foreground">{t('withdraw.needHelp')}</p>
-          <p className="text-xs text-muted-foreground">{t('withdraw.supportNotice')}</p>
-        </div>
-        <ChevronRight className="w-4 h-4 text-muted-foreground" />
-      </a>
-
-      <a href={settings.whatsapp_group_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 bg-card rounded-2xl shadow-card hover:shadow-lg-custom transition-all mb-4">
-        <div className="w-10 h-10 rounded-full bg-[#25D366]/10 flex items-center justify-center flex-shrink-0">
-          <MessageCircle className="w-5 h-5 text-[#25D366]" />
-        </div>
-        <div className="flex-1">
-          <p className="text-sm font-semibold text-foreground">{t('withdraw.needHelp')}</p>
-          <p className="text-xs text-muted-foreground">{t('withdraw.chatSupport')}</p>
-        </div>
-        <ChevronRight className="w-4 h-4 text-muted-foreground" />
-      </a>
 
       <SuccessNotification isOpen={withdrawSuccess.show} onClose={() => setWithdrawSuccess({ show: false, amount: 0 })} type="withdraw" amount={withdrawSuccess.amount} />
+      <ErrorNotification isOpen={errorPopup.show} onClose={() => setErrorPopup({ show: false, message: '' })} title={errorPopup.title} message={errorPopup.message} />
       <BottomNav />
     </div>
   );
