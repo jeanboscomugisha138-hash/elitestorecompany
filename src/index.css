@@ -103,10 +103,10 @@
   }
 
   .auth-safe-header {
-    background: linear-gradient(180deg, hsl(var(--primary)) 0%, hsl(226 83% 33%) 100%);
-    color: hsl(var(--primary-foreground));
-    border-bottom-left-radius: 2rem;
-    border-bottom-right-radius: 2rem;
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
     box-shadow: none;
     filter: none;
     -webkit-filter: none;
@@ -119,6 +119,7 @@
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
   }
+
 
   .auth-safe-panel {
     background: hsl(var(--card));
