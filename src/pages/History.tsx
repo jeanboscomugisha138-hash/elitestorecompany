@@ -366,7 +366,7 @@ export default function History() {
         doc.text(`Page ${p} of ${pageCount}`, pageWidth - 14, ph - 11, { align: 'right' });
       }
 
-      doc.save(`elite-store-${activeTab}-${Date.now()}.pdf`);
+      doc.save(`petane-shipping-${activeTab}-${Date.now()}.pdf`);
       toast.success('PDF downloaded successfully');
     } catch (e) {
       toast.error('Failed to generate PDF');

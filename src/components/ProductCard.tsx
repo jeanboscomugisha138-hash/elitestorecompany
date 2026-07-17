@@ -14,20 +14,20 @@ import productTvSmart from '@/assets/product-tv-smart.png';
 import productTvNeo from '@/assets/product-tv-neo.png';
 
 const productImages: Record<string, { image: string; name: string; tier: string }> = {
-  '3500':    { image: productWatch,      name: 'Elite Watch',    tier: 'VIP 1' },
-  '10000':   { image: productSpeaker,    name: 'Elite Speaker',  tier: 'VIP 2' },
-  '20000':   { image: productPhoneA15,   name: 'Elite Phone A',  tier: 'VIP 3' },
+  '3500':    { image: productWatch,      name: 'Petane Peteroli Mbisi',    tier: 'VIP 1' },
+  '10000':   { image: productSpeaker,    name: 'Petane Mazutu',  tier: 'VIP 2' },
+  '20000':   { image: productPhoneA15,   name: 'Petane Essence',  tier: 'VIP 3' },
   '30000':   { image: productCharger,    name: 'Wireless Duo',   tier: 'VIP 4' },
-  '40000':   { image: productFlip,       name: 'Elite Flip',     tier: 'VIP 5' },
-  '50000':   { image: productPhoneA35,   name: 'Elite Phone Pro',tier: 'VIP 6' },
-  '100000':  { image: productTabA9,      name: 'Elite Tab',      tier: 'VIP 7' },
-  '250000':  { image: productLaptopBook, name: 'Elite Book',     tier: 'VIP 8' },
-  '500000':  { image: productTvSmart,    name: 'Elite Smart TV', tier: 'VIP 9' },
-  '1000000': { image: productTvNeo,      name: 'Elite Neo QLED', tier: 'VIP 10' },
+  '40000':   { image: productFlip,       name: 'Petane LPG',     tier: 'VIP 5' },
+  '50000':   { image: productPhoneA35,   name: 'Petane Cargo',tier: 'VIP 6' },
+  '100000':  { image: productTabA9,      name: 'Petane Marine',      tier: 'VIP 7' },
+  '250000':  { image: productLaptopBook, name: 'Petane Tanker',     tier: 'VIP 8' },
+  '500000':  { image: productTvSmart,    name: 'Petane Fleet', tier: 'VIP 9' },
+  '1000000': { image: productTvNeo,      name: 'Petane Global Energy', tier: 'VIP 10' },
 };
 
 function getProductInfo(investment: number) {
-  return productImages[investment.toString()] || { image: productFold, name: 'Elite Device', tier: 'VIP' };
+  return productImages[investment.toString()] || { image: productFold, name: 'Petane Shipping', tier: 'VIP' };
 }
 
 interface ProductCardProps {
