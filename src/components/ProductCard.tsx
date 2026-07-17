@@ -48,7 +48,7 @@ export function ProductCard({ id, investment, dailyProfit, duration, onInvest, i
   return (
     <div className={`rounded-2xl overflow-hidden shadow-card animate-slide-up bg-card border-2 ${purchased ? 'border-emerald-500/40' : 'border-primary/30'}`}>
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-gradient-to-r from-primary to-secondary">
+      <div className="flex items-center justify-between px-4 py-2.5 bg-primary">
         <span className="text-primary-foreground font-extrabold text-base tracking-wide">{tier}</span>
         {purchased ? (
           <span className="text-xs font-bold bg-emerald-500 text-white px-3 py-1 rounded-full flex items-center gap-1">
@@ -61,14 +61,14 @@ export function ProductCard({ id, investment, dailyProfit, duration, onInvest, i
 
       {/* Body */}
       <div className="p-4 flex gap-3">
-        <div className="w-24 h-24 shrink-0 rounded-xl overflow-hidden bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center">
+        <div className="w-24 h-24 shrink-0 rounded-xl overflow-hidden bg-primary/10 flex items-center justify-center">
           <img src={image} alt={name} loading="lazy" width={256} height={256} className="w-full h-full object-cover" />
         </div>
         <div className="flex-1 space-y-1 text-[13px] text-foreground">
           <div className="flex justify-between"><span className="text-muted-foreground">{t('products.rentalAmount')}</span><span className="font-bold text-primary">{investment.toLocaleString()} RWF</span></div>
           <div className="flex justify-between"><span className="text-muted-foreground">{t('products.incomeCycle')}</span><span className="font-bold text-foreground">{duration} {t('products.days')}</span></div>
-          <div className="flex justify-between"><span className="text-muted-foreground">{t('products.dailyIncome')}</span><span className="font-bold text-secondary">{dailyProfit.toLocaleString()} RWF</span></div>
-          <div className="flex justify-between"><span className="text-muted-foreground">{t('products.totalProfit')}</span><span className="font-bold text-secondary">{totalProfit.toLocaleString()} RWF</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">{t('products.dailyIncome')}</span><span className="font-bold text-foreground">{dailyProfit.toLocaleString()} RWF</span></div>
+          <div className="flex justify-between"><span className="text-muted-foreground">{t('products.totalProfit')}</span><span className="font-bold text-foreground">{totalProfit.toLocaleString()} RWF</span></div>
         </div>
       </div>
 
@@ -81,7 +81,7 @@ export function ProductCard({ id, investment, dailyProfit, duration, onInvest, i
           className={`font-bold px-6 py-2 rounded-full text-sm shadow-button transition-all disabled:opacity-70 ${
             purchased
               ? 'bg-emerald-500 text-white cursor-not-allowed'
-              : 'bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:opacity-90'
+              : 'bg-primary text-primary-foreground hover:opacity-90'
           }`}
         >
           {purchased ? t('products.owned') : isLoading ? '...' : t('products.purchaseNow')}
