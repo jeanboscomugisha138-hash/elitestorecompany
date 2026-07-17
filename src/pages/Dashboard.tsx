@@ -100,34 +100,35 @@ export default function Dashboard() {
       <ChannelPopup />
       <ReferralCommissionListener />
 
-      {/* Red top header - taller, wraps card sides */}
-      <div className="bg-primary px-4 pt-5 pb-24 relative">
+      {/* Red top header - compact, card overlaps into red band */}
+      <div className="bg-primary px-4 pt-4 pb-16 relative">
         <div className="flex items-center justify-between">
           <img
             src={petaneLogo}
             alt="Petane Shipping"
-            className="h-12 w-auto brightness-0 invert"
+            className="h-14 w-auto brightness-0 invert"
           />
           <div className="flex items-center gap-3">
-            <button className="w-9 h-9 rounded-lg border border-primary-foreground/40 flex items-center justify-center">
+            <button className="w-10 h-10 rounded-lg border-2 border-primary-foreground/50 flex items-center justify-center">
               <ScanLine className="w-5 h-5 text-primary-foreground" />
             </button>
             <a
               href="https://t.me/+12052657574"
               target="_blank"
               rel="noopener noreferrer"
-              className="relative w-9 h-9 rounded-lg flex items-center justify-center"
+              className="relative w-10 h-10 rounded-lg flex items-center justify-center"
               aria-label="Notifications"
             >
-              <Bell className="w-6 h-6 text-primary-foreground" />
-              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-emerald-500 text-[10px] text-white font-bold flex items-center justify-center">1</span>
+              <Bell className="w-7 h-7 text-primary-foreground" strokeWidth={2} />
+              <span className="absolute top-0 right-0 w-4 h-4 rounded-full bg-emerald-500 text-[10px] text-white font-bold flex items-center justify-center">1</span>
             </a>
           </div>
         </div>
       </div>
 
       {/* Overlapping compact account card - Airtel style */}
-      <div className="px-4 -mt-16 space-y-3">
+      <div className="px-3 -mt-12 space-y-3">
+
         <div className="bg-card rounded-2xl shadow-card p-4 border border-border/40">
           {/* Header row: name + account number */}
           <div className="flex items-start justify-between mb-3">
