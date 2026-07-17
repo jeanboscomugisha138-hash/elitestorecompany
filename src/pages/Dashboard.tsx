@@ -166,14 +166,14 @@ export default function Dashboard() {
           <div className="grid grid-cols-2 gap-2.5 mt-3 pt-3 border-t border-border/60">
             <Link
               to="/products"
-              className="flex items-center justify-center gap-2 bg-primary/8 text-primary font-black text-[13px] py-2.5 rounded-xl active:scale-[0.98] transition"
+              className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-black text-[13px] py-2.5 rounded-xl active:scale-[0.98] transition"
             >
               <span aria-hidden>👑</span>
               <PiggyBank className="w-4 h-4" strokeWidth={2.5} /> Gura VIP
             </Link>
             <Link
               to="/deposit"
-              className="flex items-center justify-center gap-2 bg-primary/8 text-primary font-black text-[13px] py-2.5 rounded-xl active:scale-[0.98] transition"
+              className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-black text-[13px] py-2.5 rounded-xl active:scale-[0.98] transition"
             >
               <span aria-hidden>💸</span>
               <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} /> Ishyura
@@ -217,7 +217,7 @@ export default function Dashboard() {
             {quickActions.map((a, i) => {
               const inner = (
                 <>
-                  <div className="w-13 h-13 rounded-2xl flex items-center justify-center transition active:scale-95 bg-primary/8 text-primary">
+                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center transition active:scale-95 bg-primary/10 text-primary">
                     <span aria-hidden className="text-2xl leading-none">{a.emoji}</span>
                   </div>
                   <span className="text-[11px] font-semibold text-foreground mt-1.5 text-center leading-tight">{a.label}</span>
