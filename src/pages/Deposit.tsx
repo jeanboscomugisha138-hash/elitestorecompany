@@ -94,8 +94,6 @@ export default function Deposit() {
     setIsLoading(false);
   };
 
-  const quickAmounts = [10000, 25000, 50000, 100000, 250000, 500000];
-
   const steps = [
     { icon: Phone, label: t('deposit.step1'), desc: t('deposit.step1Desc', 'Ohereza kuri MoMo') },
     { icon: Banknote, label: t('deposit.step2'), desc: t('deposit.step2Desc', 'Uzuza amakuru') },
