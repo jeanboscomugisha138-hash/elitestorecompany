@@ -3,6 +3,7 @@ import {
   ArrowUpRight,
   Wallet,
   Gift,
+  Users,
   Headphones,
   PiggyBank,
   Bell,
