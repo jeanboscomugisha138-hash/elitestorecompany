@@ -183,9 +183,8 @@ export default function WithdrawalAccount() {
         onClose={() => setSuccess(false)}
         type="gift"
         amount={0}
-        customTitle="Konti Yabitswe!"
-        customMessage="Konti yawe yo kwakira yabitswe neza. Ubu ushobora gukora ubwikuze."
       />
+
       <ErrorNotification isOpen={err.show} onClose={() => setErr({ show: false, message: '' })} title={err.title} message={err.message} />
       <BottomNav />
     </div>
