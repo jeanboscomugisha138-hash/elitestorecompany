@@ -125,6 +125,26 @@ export default function AdminDashboard() {
   const [showNewGiftForm, setShowNewGiftForm] = useState(false);
   const [cancellingInvestmentId, setCancellingInvestmentId] = useState<string | null>(null);
   const [processingTxId, setProcessingTxId] = useState<string | null>(null);
+  const [wipingAll, setWipingAll] = useState(false);
+
+  const handleDeleteAllData = async () => {
+    if (wipingAll) return;
+    const c1 = window.prompt('DANGER: This will DELETE ALL non-admin accounts and reset all balances & transactions.\n\nType DELETE ALL to confirm:');
+    if (c1 !== 'DELETE ALL') return;
+    setWipingAll(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const res = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/delete-all-users`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session?.access_token}` },
+      });
+      const result = await res.json();
+      if (!res.ok) { toast.error(result.error || 'Failed to wipe data'); return; }
+      toast.success(`Deleted ${result.deleted || 0} accounts and cleared all data`);
+      fetchData(); fetchStats();
+    } catch (e) { toast.error('Failed to wipe data'); }
+    finally { setWipingAll(false); }
+  };
   const [editProductData, setEditProductData] = useState({
     investment_amount: '',
     daily_profit_rate: '',
@@ -762,6 +782,14 @@ export default function AdminDashboard() {
                       <span className="text-sm text-muted-foreground whitespace-nowrap">
                         {filteredUsers.length} of {users.length} users
                       </span>
+                      <button
+                        onClick={handleDeleteAllData}
+                        disabled={wipingAll}
+                        className="flex items-center gap-2 px-3 py-2 bg-destructive text-destructive-foreground rounded-xl text-sm font-medium hover:opacity-90 disabled:opacity-50 whitespace-nowrap"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                        {wipingAll ? 'Deleting...' : 'Delete All Data'}
+                      </button>
                     </div>
                   </div>
                 </div>
