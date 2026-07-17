@@ -195,29 +195,57 @@ export default function Dashboard() {
       </div>
 
       {/* Quick actions grid */}
-      <div className="px-3 mt-5">
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-base font-bold text-secondary">Quick Actions</h2>
-          <Link to="/products" className="text-primary text-sm font-semibold">View All</Link>
+      <div className="px-3 mt-6">
+        <div className="text-xs font-extrabold tracking-[0.15em] text-muted-foreground mb-3">
+          IBIKORWA
         </div>
 
-        <div className="grid grid-cols-4 gap-3">
-          {quickActions.map((a, i) => {
-            const inner = (
-              <>
-                <div className="w-14 h-14 rounded-xl bg-card flex items-center justify-center shadow-card border border-border">
-                  <a.icon className="w-6 h-6 text-primary" strokeWidth={2} />
-                </div>
-                <span className="text-[11px] font-semibold text-foreground mt-2 text-center leading-tight">{a.label}</span>
-              </>
-            );
-            const cls = 'flex flex-col items-center';
-            if (a.to) return <Link key={i} to={a.to} className={cls}>{inner}</Link>;
-            if (a.href) return <a key={i} href={a.href} target="_blank" rel="noopener noreferrer" className={cls}>{inner}</a>;
-            return <button key={i} onClick={a.onClick} className={cls}>{inner}</button>;
-          })}
+        <div className="bg-card rounded-2xl shadow-card p-4 border border-border/60">
+          <div className="grid grid-cols-4 gap-y-5 gap-x-2">
+            {quickActions.map((a, i) => {
+              const isSolid = a.variant === 'solid';
+              const iconWrap = isSolid
+                ? 'bg-primary text-primary-foreground shadow-[0_6px_14px_-4px_hsl(var(--primary)/0.55)]'
+                : 'bg-primary/10 text-primary';
+              const inner = (
+                <>
+                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition active:scale-95 ${iconWrap}`}>
+                    <a.icon className="w-6 h-6" strokeWidth={2.2} />
+                  </div>
+                  <span className="text-[11px] font-semibold text-foreground mt-2 text-center leading-tight">{a.label}</span>
+                </>
+              );
+              const cls = 'flex flex-col items-center';
+              if (a.to) return <Link key={i} to={a.to} className={cls}>{inner}</Link>;
+              return <button key={i} onClick={a.onClick} className={cls}>{inner}</button>;
+            })}
+          </div>
         </div>
-        <DownloadAppInfo />
+
+        {/* Promo banner */}
+        <Link
+          to="/products"
+          className="mt-4 flex items-center gap-3 bg-primary/5 border border-primary/20 rounded-2xl p-3 active:scale-[0.99] transition"
+        >
+          <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center shrink-0">
+            <PiggyBank className="w-6 h-6 text-primary-foreground" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="text-sm font-bold text-foreground leading-tight">
+              Shora ubone inyungu buri munsi!
+            </div>
+            <div className="text-[11px] text-muted-foreground mt-0.5">
+              Imishinga ya Petane Shipping
+            </div>
+          </div>
+          <span className="text-xs font-bold bg-primary text-primary-foreground px-3 py-1.5 rounded-full">
+            Reba
+          </span>
+        </Link>
+
+        <div className="mt-4">
+          <DownloadAppInfo />
+        </div>
       </div>
 
       <div className="px-3 mt-5 space-y-4">
