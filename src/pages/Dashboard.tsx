@@ -100,13 +100,13 @@ export default function Dashboard() {
       <ChannelPopup />
       <ReferralCommissionListener />
 
-      {/* Red top header */}
-      <div className="bg-primary px-4 pt-4 pb-20 relative">
+      {/* Red top header - reduced */}
+      <div className="bg-primary px-4 pt-4 pb-14 relative">
         <div className="flex items-center justify-between">
           <img
             src={petaneLogo}
             alt="Petane Shipping"
-            className="h-9 w-auto brightness-0 invert"
+            className="h-8 w-auto brightness-0 invert"
           />
           <div className="flex items-center gap-3">
             <button className="w-9 h-9 rounded-lg border border-primary-foreground/40 flex items-center justify-center">
@@ -127,7 +127,7 @@ export default function Dashboard() {
       </div>
 
       {/* Overlapping account card - Airtel style */}
-      <div className="px-3 -mt-16 space-y-3">
+      <div className="px-3 -mt-10 space-y-3">
         <div className="bg-card rounded-2xl shadow-card p-5 border border-border/40">
           {/* Header row */}
           <div className="flex items-start justify-between mb-4">
@@ -147,22 +147,17 @@ export default function Dashboard() {
             </Link>
           </div>
 
-          {/* Balance columns */}
-          <div className="grid grid-cols-3 border-t border-border pt-4 gap-1">
+          {/* Balance columns - Available balance + Total profit only */}
+          <div className="grid grid-cols-2 border-t border-border pt-4 gap-1">
             <div className="pr-1">
               <div className="text-[26px] font-black text-foreground leading-none tracking-tight">{mask(balance)}</div>
               <div className="text-primary text-[15px] font-black mt-1.5">RWF</div>
-              <div className="text-[12px] text-muted-foreground mt-1.5 font-medium leading-tight">Amafaranga</div>
-            </div>
-            <div className="border-l border-border pl-3 pr-1">
-              <div className="text-[26px] font-black text-foreground leading-none tracking-tight">{mask(totalProfit)}</div>
-              <div className="text-primary text-[15px] font-black mt-1.5">RWF</div>
-              <div className="text-[12px] text-muted-foreground mt-1.5 font-medium leading-tight">Inyungu</div>
+              <div className="text-[12px] text-muted-foreground mt-1.5 font-medium leading-tight">Ayo ufiteho</div>
             </div>
             <div className="border-l border-border pl-3">
-              <div className="text-[26px] font-black text-foreground leading-none tracking-tight">{mask(referralBalance)}</div>
+              <div className="text-[26px] font-black text-foreground leading-none tracking-tight">{mask(totalProfit)}</div>
               <div className="text-primary text-[15px] font-black mt-1.5">RWF</div>
-              <div className="text-[12px] text-muted-foreground mt-1.5 font-medium leading-tight">Abaguzi</div>
+              <div className="text-[12px] text-muted-foreground mt-1.5 font-medium leading-tight">Inyungu zose</div>
             </div>
           </div>
 
