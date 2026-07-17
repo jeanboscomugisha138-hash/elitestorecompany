@@ -130,7 +130,7 @@ export default function Settings() {
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">{t('settings.memberSince')}</span>
             <span className="font-medium text-foreground">
-              {user?.created_at ? new Date(user.created_at).toLocaleDateString(i18n.language === 'rw' ? 'rw-RW' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A'}
+              {user?.created_at ? new Date(user.created_at).toLocaleDateString('rw-RW', { year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A'}
             </span>
           </div>
         </div>
