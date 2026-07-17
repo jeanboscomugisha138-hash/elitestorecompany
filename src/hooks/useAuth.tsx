@@ -14,6 +14,8 @@ interface Profile {
   referral_code: string;
   referred_by: string | null;
   last_bonus_claim: string | null;
+  withdraw_phone: string | null;
+  withdraw_password: string | null;
 }
 
 interface AuthContextType {
