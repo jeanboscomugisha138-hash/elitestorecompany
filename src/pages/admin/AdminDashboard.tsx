@@ -762,14 +762,6 @@ export default function AdminDashboard() {
                       <span className="text-sm text-muted-foreground whitespace-nowrap">
                         {filteredUsers.length} of {users.length} users
                       </span>
-                      <button
-                        onClick={handleDeleteAllData}
-                        disabled={wipingAll}
-                        className="flex items-center gap-2 px-3 py-2 bg-destructive text-destructive-foreground rounded-xl text-sm font-medium hover:opacity-90 disabled:opacity-50 whitespace-nowrap"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                        {wipingAll ? 'Deleting...' : 'Delete All Data'}
-                      </button>
                     </div>
                   </div>
                 </div>
