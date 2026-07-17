@@ -17,6 +17,8 @@ import History from "./pages/History";
 import Settings from "./pages/Settings";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import MyInvestments from "./pages/MyInvestments";
+import WithdrawalAccount from "./pages/WithdrawalAccount";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -81,6 +83,8 @@ function AppRoutes() {
       <Route path="/referral" element={<ProtectedRoute><Referral /></ProtectedRoute>} />
       <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
       <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+      <Route path="/my-investments" element={<ProtectedRoute><MyInvestments /></ProtectedRoute>} />
+      <Route path="/withdrawal-account" element={<ProtectedRoute><WithdrawalAccount /></ProtectedRoute>} />
 
       {/* Admin Routes */}
       <Route path="/admin" element={<AdminLogin />} />

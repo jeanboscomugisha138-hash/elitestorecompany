@@ -1,18 +1,10 @@
 import {
-  ArrowDownLeft,
   ArrowUpRight,
   Wallet,
-  Gift,
-  Users,
-  Headphones,
   PiggyBank,
   Bell,
   ScanLine,
   Eye,
-  Download,
-  Loader2,
-  Package,
-  History as HistoryIcon,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -25,18 +17,7 @@ import { ReferralCommissionListener } from '@/components/ReferralCommissionListe
 import { Link } from 'react-router-dom';
 import { DownloadAppInfo } from '@/components/DownloadAppButton';
 import { OnlineServiceDialog } from '@/components/OnlineServiceDialog';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from '@/hooks/use-toast';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
-import { SuccessNotification } from '@/components/SuccessNotification';
+import { GiftCodeDialog } from '@/components/GiftCodeDialog';
 import { LiveActivity } from '@/components/LiveActivity';
 import petaneLogo from '@/assets/petane-logo.png';
 
@@ -45,41 +26,11 @@ export default function Dashboard() {
   const { profile, refreshProfile } = useAuth();
   const balance = profile?.main_balance || 0;
   const totalInvested = profile?.invested_amount || 0;
-  const referralBalance = profile?.referral_balance || 0;
   const totalProfit = profile?.total_profit || 0;
 
   const [giftDialogOpen, setGiftDialogOpen] = useState(false);
-  const [giftCode, setGiftCode] = useState('');
-  const [isRedeeming, setIsRedeeming] = useState(false);
-  const [giftSuccess, setGiftSuccess] = useState<{ show: boolean; amount: number }>({ show: false, amount: 0 });
   const [aboutOpen, setAboutOpen] = useState(false);
   const [balanceVisible, setBalanceVisible] = useState(true);
-
-  const handleRedeemGiftCode = async () => {
-    const code = giftCode.trim();
-    if (!code) {
-      toast({ title: 'Please enter a gift code', variant: 'destructive' });
-      return;
-    }
-    setIsRedeeming(true);
-    try {
-      const { data, error } = await supabase.functions.invoke('redeem-gift-code', {
-        body: { code },
-      });
-      if (error || data?.error) {
-        toast({ title: data?.error || 'Failed to redeem code', variant: 'destructive' });
-      } else {
-        setGiftCode('');
-        setGiftDialogOpen(false);
-        await refreshProfile();
-        setGiftSuccess({ show: true, amount: data.amount || 0 });
-      }
-    } catch {
-      toast({ title: 'Something went wrong', variant: 'destructive' });
-    } finally {
-      setIsRedeeming(false);
-    }
-  };
 
   const mask = (v: number) => (balanceVisible ? v.toLocaleString() : 'XXXXXX');
 
@@ -91,7 +42,7 @@ export default function Dashboard() {
     { label: 'Abo turi bo', emoji: '👥', to: '/referral' },
     { label: 'Ubufasha', emoji: '🎧', onClick: () => setAboutOpen(true) },
     { label: 'Imirimo', emoji: '📦', to: '/products' },
-    { label: 'Imishinga', emoji: '💼', to: '/products' },
+    { label: 'Imishinga', emoji: '💼', to: '/my-investments' },
   ];
 
   return (
@@ -260,38 +211,9 @@ export default function Dashboard() {
         <LiveActivity />
       </div>
 
-      {/* Gift Code Dialog */}
-      <Dialog open={giftDialogOpen} onOpenChange={setGiftDialogOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Gift className="w-5 h-5 text-primary" /> Redeem Gift Code
-            </DialogTitle>
-            <DialogDescription>Enter your gift code to receive bonus money instantly.</DialogDescription>
-          </DialogHeader>
-          <div className="flex flex-col gap-3 mt-2">
-            <Input
-              placeholder="Enter gift code"
-              value={giftCode}
-              onChange={(e) => setGiftCode(e.target.value.toUpperCase())}
-              maxLength={50}
-              className="text-center uppercase tracking-widest font-bold text-lg"
-            />
-            <Button onClick={handleRedeemGiftCode} disabled={isRedeeming || !giftCode.trim()}>
-              {isRedeeming ? <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Redeeming...</> : 'Redeem Code'}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-
+      <GiftCodeDialog open={giftDialogOpen} onOpenChange={setGiftDialogOpen} onRedeemed={refreshProfile} />
       <OnlineServiceDialog open={aboutOpen} onOpenChange={setAboutOpen} />
 
-      <SuccessNotification
-        isOpen={giftSuccess.show}
-        onClose={() => setGiftSuccess({ show: false, amount: 0 })}
-        type="gift"
-        amount={giftSuccess.amount}
-      />
 
       <CustomerServiceButton />
       <BottomNav />
