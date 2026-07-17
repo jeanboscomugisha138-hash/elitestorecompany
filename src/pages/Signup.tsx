@@ -18,21 +18,27 @@ export default function Signup() {
   const [showWelcomeBonus, setShowWelcomeBonus] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [refLocked, setRefLocked] = useState(false);
   const navigate = useNavigate();
   const { signUp } = useAuth();
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
     const ref = searchParams.get('ref');
-    if (ref) setReferralCode(ref.toUpperCase());
+    if (ref) {
+      setReferralCode(ref.toUpperCase());
+      setRefLocked(true);
+    }
   }, [searchParams]);
+
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     if (!fullName.trim()) { setError(t('auth.enterName')); return; }
-    if (phone.length < 10) { setError(t('auth.invalidPhone')); return; }
+    if (phone.length !== 10) { setError(t('auth.invalidPhone')); return; }
     if (password.length < 6) { setError(t('auth.passwordTooShort')); return; }
+    if (password.length > 12) { setError('Ijambobanga rigomba kuba rifite inyuguti 12 cyangwa munsi'); return; }
     if (password !== confirmPassword) { setError(t('auth.passwordsDoNotMatch')); return; }
     setIsLoading(true);
     const { error: signUpError } = await signUp(phone, password, fullName, referralCode || undefined);
@@ -40,23 +46,25 @@ export default function Signup() {
     setShowWelcomeBonus(true);
   };
 
+
   return (
-    <div className="auth-safe-page">
-      <header className="auth-safe-header px-5 pt-4 pb-4">
-        <div className="max-w-sm mx-auto w-full flex items-center gap-3">
-          <div className="auth-safe-logo-box w-11 h-11 flex items-center justify-center shrink-0">
-            <img src={petaneLogo} alt="Petane Shipping" className="h-8 w-auto object-contain" />
+    <div className="auth-safe-page flex flex-col">
+      <header className="auth-safe-header px-5 pt-6 pb-2">
+        <div className="max-w-sm mx-auto w-full flex items-center justify-center gap-3">
+          <div className="auth-safe-logo-box w-12 h-12 flex items-center justify-center shrink-0 border-border">
+            <img src={petaneLogo} alt="Petane Shipping" className="h-9 w-auto object-contain" />
           </div>
-          <div className="min-w-0">
-            <p className="text-[10px] font-black uppercase tracking-widest text-primary-foreground/80">PETANE SHIPPING</p>
-            <h1 className="text-primary-foreground text-lg font-black leading-tight truncate">{t('auth.createAccount')}</h1>
+          <div className="min-w-0 text-left">
+            <p className="text-[10px] font-black uppercase tracking-widest text-primary">PETANE SHIPPING</p>
+            <h1 className="text-foreground text-lg font-black leading-tight truncate">{t('auth.createAccount')}</h1>
           </div>
         </div>
       </header>
 
-      <main className="px-4 pt-3 pb-6">
+      <main className="flex-1 flex items-center px-4 py-4">
         <div className="max-w-sm mx-auto w-full">
-          <section className="auth-safe-panel px-4 py-4">
+          <section className="auth-safe-panel px-5 py-5">
+
             <div className="flex items-center justify-between mb-4">
               <div>
                 <p className="text-[10px] font-black tracking-widest text-primary uppercase">Iyandikishe</p>
@@ -86,7 +94,7 @@ export default function Signup() {
                 <label className="text-[10px] font-black text-muted-foreground ml-1 mb-1 block uppercase tracking-wider">{t('auth.phone')}</label>
                 <div className="auth-safe-field flex items-center gap-2.5 px-3 py-2.5">
                   <Phone className="w-4 h-4 text-muted-foreground shrink-0" />
-                  <input type="tel" placeholder={t('auth.phone')} value={phone} onChange={(e) => setPhone(e.target.value)} className="auth-safe-input text-sm" required />
+                  <input type="tel" inputMode="numeric" pattern="[0-9]*" maxLength={10} placeholder={t('auth.phone')} value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))} className="auth-safe-input text-sm" required />
                 </div>
               </div>
 
@@ -94,7 +102,7 @@ export default function Signup() {
                 <label className="text-[10px] font-black text-muted-foreground ml-1 mb-1 block uppercase tracking-wider">{t('auth.password')}</label>
                 <div className="auth-safe-field flex items-center gap-2.5 px-3 py-2.5">
                   <Lock className="w-4 h-4 text-muted-foreground shrink-0" />
-                  <input type={showPassword ? 'text' : 'password'} placeholder={t('auth.password')} value={password} onChange={(e) => setPassword(e.target.value)} className="auth-safe-input text-sm" required />
+                  <input type={showPassword ? 'text' : 'password'} maxLength={12} placeholder={t('auth.password')} value={password} onChange={(e) => setPassword(e.target.value.slice(0, 12))} className="auth-safe-input text-sm" required />
                   <button type="button" onClick={() => setShowPassword(!showPassword)} className="text-muted-foreground shrink-0 p-1" aria-label="toggle">
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -105,7 +113,7 @@ export default function Signup() {
                 <label className="text-[10px] font-black text-muted-foreground ml-1 mb-1 block uppercase tracking-wider">{t('auth.confirmPassword')}</label>
                 <div className="auth-safe-field flex items-center gap-2.5 px-3 py-2.5">
                   <Lock className="w-4 h-4 text-muted-foreground shrink-0" />
-                  <input type={showConfirmPassword ? 'text' : 'password'} placeholder={t('auth.confirmPassword')} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="auth-safe-input text-sm" required />
+                  <input type={showConfirmPassword ? 'text' : 'password'} maxLength={12} placeholder={t('auth.confirmPassword')} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value.slice(0, 12))} className="auth-safe-input text-sm" required />
                   <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="text-muted-foreground shrink-0 p-1" aria-label="toggle">
                     {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -116,10 +124,11 @@ export default function Signup() {
                 <label className="text-[10px] font-black text-muted-foreground ml-1 mb-1 block uppercase tracking-wider">
                   {t('auth.invitationCode')} <span className="text-muted-foreground/60 lowercase font-normal normal-case">(Bitegetswe)</span>
                 </label>
-                <div className="auth-safe-field flex items-center gap-2.5 px-3 py-2.5">
+                <div className={`auth-safe-field flex items-center gap-2.5 px-3 py-2.5 ${refLocked ? 'opacity-70' : ''}`}>
                   <Gift className="w-4 h-4 text-muted-foreground shrink-0" />
-                  <input type="text" placeholder={t('auth.invitationCode')} value={referralCode} onChange={(e) => setReferralCode(e.target.value.toUpperCase())} className="auth-safe-input text-sm uppercase tracking-widest" />
+                  <input type="text" placeholder={t('auth.invitationCode')} value={referralCode} onChange={(e) => !refLocked && setReferralCode(e.target.value.toUpperCase())} readOnly={refLocked} className="auth-safe-input text-sm uppercase tracking-widest" />
                 </div>
+
               </div>
 
               <button type="submit" disabled={isLoading} className="auth-safe-button w-full font-black text-sm py-3 active:opacity-90 disabled:opacity-60 flex items-center justify-center gap-2 mt-1">
