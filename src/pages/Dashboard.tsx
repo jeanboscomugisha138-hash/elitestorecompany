@@ -84,14 +84,14 @@ export default function Dashboard() {
   const mask = (v: number) => (balanceVisible ? v.toLocaleString() : 'XXXXXX');
 
   const quickActions = [
-    { label: 'Ishyura', icon: ArrowUpRight, to: '/deposit', variant: 'solid' as const },
-    { label: 'Kwakira', icon: Download, to: '/withdraw', variant: 'soft' as const },
-    { label: 'Amateka', icon: HistoryIcon, to: '/history', variant: 'soft' as const },
-    { label: 'Bonus', icon: Gift, onClick: () => setGiftDialogOpen(true), variant: 'solid' as const },
-    { label: 'Abo turi bo', icon: Users, to: '/referral', variant: 'soft' as const },
-    { label: 'Ubufasha', icon: Headphones, onClick: () => setAboutOpen(true), variant: 'soft' as const },
-    { label: 'Imirimo', icon: Package, to: '/products', variant: 'solid' as const },
-    { label: 'Imishinga', icon: Wallet, to: '/products', variant: 'soft' as const },
+    { label: 'Ishyura', emoji: '💸', icon: ArrowUpRight, to: '/deposit', variant: 'solid' as const },
+    { label: 'Kwakira', emoji: '⬇️', icon: Download, to: '/withdraw', variant: 'soft' as const },
+    { label: 'Amateka', emoji: '🕐', icon: HistoryIcon, to: '/history', variant: 'soft' as const },
+    { label: 'Bonus', emoji: '🎁', icon: Gift, onClick: () => setGiftDialogOpen(true), variant: 'solid' as const },
+    { label: 'Abo turi bo', emoji: '👥', icon: Users, to: '/referral', variant: 'soft' as const },
+    { label: 'Ubufasha', emoji: '🎧', icon: Headphones, onClick: () => setAboutOpen(true), variant: 'soft' as const },
+    { label: 'Imirimo', emoji: '📦', icon: Package, to: '/products', variant: 'solid' as const },
+    { label: 'Imishinga', emoji: '💼', icon: Wallet, to: '/products', variant: 'soft' as const },
   ];
 
   return (
