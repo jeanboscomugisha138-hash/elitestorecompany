@@ -101,7 +101,7 @@ export default function Dashboard() {
       <ReferralCommissionListener />
 
       {/* Red top header - compact, card overlaps into red band */}
-      <div className="bg-primary px-4 pt-4 pb-20 relative">
+      <div className="gradient-primary px-4 pt-4 pb-20 relative">
         <div className="flex items-center justify-between">
           <img
             src={petaneLogo}
