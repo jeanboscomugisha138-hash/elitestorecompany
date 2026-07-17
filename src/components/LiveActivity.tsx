@@ -28,7 +28,7 @@ const ACTIONS = [
   { t: 'invested in VIP', amounts: [10000, 20000, 30000, 40000, 50000, 100000, 250000, 500000], icon: TrendingUp, color: 'from-primary to-secondary' },
   { t: 'withdrew', amounts: [5000, 12000, 25000, 40000, 80000, 150000, 300000], icon: Wallet, color: 'from-emerald-500 to-green-500' },
   { t: 'earned daily profit', amounts: [1500, 3000, 6000, 10000, 25000, 50000], icon: Trophy, color: 'from-amber-500 to-orange-500' },
-  { t: 'joined', amounts: [0], icon: Users, color: 'from-fuchsia-500 to-pink-500' },
+  { t: 'joined', amounts: [0], icon: Users, color: 'from-red-500 to-red-500' },
 ];
 
 function randomActivity() {
@@ -88,7 +88,7 @@ export function CompanyAchievements() {
     { label: 'Success Rate', value: '99.8%' },
   ];
   return (
-    <div className="mt-4 rounded-2xl bg-gradient-to-br from-primary via-fuchsia-500 to-secondary p-4 text-primary-foreground shadow-button">
+    <div className="mt-4 rounded-2xl bg-gradient-to-br from-primary via-red-500 to-secondary p-4 text-primary-foreground shadow-button">
       <h3 className="text-sm font-bold mb-3 flex items-center gap-2">
         <Trophy className="w-4 h-4" /> Our Achievements
       </h3>
