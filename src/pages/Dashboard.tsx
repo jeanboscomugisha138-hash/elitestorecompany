@@ -1,18 +1,10 @@
 import {
-  ArrowDownLeft,
   ArrowUpRight,
   Wallet,
-  Gift,
-  Users,
-  Headphones,
   PiggyBank,
   Bell,
   ScanLine,
   Eye,
-  Download,
-  Loader2,
-  Package,
-  History as HistoryIcon,
 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
