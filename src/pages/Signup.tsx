@@ -18,14 +18,19 @@ export default function Signup() {
   const [showWelcomeBonus, setShowWelcomeBonus] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [refLocked, setRefLocked] = useState(false);
   const navigate = useNavigate();
   const { signUp } = useAuth();
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
     const ref = searchParams.get('ref');
-    if (ref) setReferralCode(ref.toUpperCase());
+    if (ref) {
+      setReferralCode(ref.toUpperCase());
+      setRefLocked(true);
+    }
   }, [searchParams]);
+
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
