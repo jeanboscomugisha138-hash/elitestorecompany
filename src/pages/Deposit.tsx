@@ -219,12 +219,8 @@ export default function Deposit() {
                     <input type="text" placeholder="Amazina ugiye gukoresha wishyura" value={name} onChange={(e) => setName(e.target.value)} className="input-field pl-11 text-sm" required />
                   </div>
                 </div>
-                  <div className="relative">
-                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <input type="text" placeholder={t('deposit.nameUsed')} value={name} onChange={(e) => setName(e.target.value)} className="input-field pl-11 text-sm" required />
-                  </div>
-                </div>
               </div>
+            </div>
             </div>
 
             {hasPending && (
