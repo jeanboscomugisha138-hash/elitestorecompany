@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
 import { BottomNav } from '@/components/BottomNav';
 import { SuccessNotification } from '@/components/SuccessNotification';
+import { ErrorNotification } from '@/components/ErrorNotification';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { useSiteSettings } from '@/hooks/useSiteSettings';
@@ -18,6 +19,7 @@ export default function Deposit() {
   const [isLoading, setIsLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [depositSuccess, setDepositSuccess] = useState<{ show: boolean; amount: number }>({ show: false, amount: 0 });
+  const [errorPopup, setErrorPopup] = useState<{ show: boolean; title?: string; message: string }>({ show: false, message: '' });
   const [hasPending, setHasPending] = useState(false);
   const { profile } = useAuth();
   const { settings } = useSiteSettings();
@@ -48,19 +50,46 @@ export default function Deposit() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const showError = (message: string, title?: string) => {
+    setErrorPopup({ show: true, title, message });
+  };
+
   const canContinue = phone.trim() && name.trim() && amount && !hasPending;
 
   const validateAmount = () => {
     const amountNum = parseFloat(amount);
-    if (!amount || isNaN(amountNum)) return false;
-    if (amountNum < minDeposit) { toast.error(t('deposit.minError', { min: minDeposit.toLocaleString() })); return false; }
-    if (amountNum > maxDeposit) { toast.error(t('deposit.maxError', { max: maxDeposit.toLocaleString() })); return false; }
+    if (!amount || isNaN(amountNum)) {
+      showError('Andikamo amafaranga ushaka gushyira kuri konti.', 'Amafaranga ntayo');
+      return false;
+    }
+    if (amountNum < minDeposit) {
+      showError(`Amafaranga make ushobora gushyira ni ${minDeposit.toLocaleString()} RWF. Ongera amafaranga.`, 'Amafaranga ni make');
+      return false;
+    }
+    if (amountNum > maxDeposit) {
+      showError(`Amafaranga menshi ushobora gushyira ni ${maxDeposit.toLocaleString()} RWF. Gabanya amafaranga.`, 'Amafaranga ni menshi');
+      return false;
+    }
+    return true;
+  };
+
+  const validatePhone = () => {
+    const digits = phone.replace(/\D/g, '');
+    if (!phone.trim()) {
+      showError('Andika nimero ya telefoni ugiye gukoresha wishyura.', 'Nimero irabura');
+      return false;
+    }
+    if (digits.length < 10) {
+      showError('Nimero ya telefoni igomba kugira imibare 10. Ongera uyandike neza.', 'Nimero si nziza');
+      return false;
+    }
     return true;
   };
 
   const handleContinue = () => {
-    if (!phone.trim() || !name.trim()) {
-      toast.error(t('deposit.enterDetails'));
+    if (!validatePhone()) return;
+    if (!name.trim()) {
+      showError('Andika amazina yawe yombi uko yanditse kuri konti ya MoMo.', 'Amazina arabura');
       return;
     }
     if (!validateAmount()) return;
@@ -77,7 +106,7 @@ export default function Deposit() {
     e.preventDefault();
     if (!phone || !name || !amount) return;
     if (isLoading) return;
-    if (hasPending) { toast.error(t('deposit.pendingError')); return; }
+    if (hasPending) { showError('Ufite ubwishyu bwaheruka bugitegereje kwemezwa. Tegereza bwemezwe mbere yo gushyira ubundi.', 'Hari ubwishyu butegereje'); return; }
     if (!validateAmount()) return;
 
     setIsLoading(true);
@@ -86,7 +115,7 @@ export default function Deposit() {
       .from('deposit_transactions')
       .insert({ user_id: profile?.user_id, phone, full_name: name, amount: parseFloat(amount), status: 'pending' });
 
-    if (error) { toast.error(t('deposit.failed')); setIsLoading(false); return; }
+    if (error) { showError('Ntibyakunze kohereza ubwishyu bwawe. Gerageza nanone cyangwa vugana na serivisi.', 'Ubwishyu ntibwohererejwe'); setIsLoading(false); return; }
 
     setDepositSuccess({ show: true, amount: parseFloat(amount) });
     setPhone(''); setName(''); setAmount('');
@@ -147,12 +176,12 @@ export default function Deposit() {
               <div className="relative mb-3">
                 <input
                   type="number"
-                  placeholder="0"
+                  placeholder="Andikamo amafaranga"
                   min={minDeposit}
                   max={maxDeposit}
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  className="w-full h-16 text-2xl font-extrabold text-center rounded-2xl border-2 border-primary/20 bg-primary/5 focus:border-primary focus:bg-white focus:outline-none transition-colors placeholder:text-muted-foreground/40"
+                  className="w-full h-16 text-xl font-extrabold text-center rounded-2xl border-2 border-primary/20 bg-primary/5 focus:border-primary focus:bg-white focus:outline-none transition-colors placeholder:text-muted-foreground/50 placeholder:text-sm placeholder:font-semibold"
                   required
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-primary">RWF</span>
@@ -164,16 +193,6 @@ export default function Deposit() {
               </div>
             </div>
 
-            {/* Notice card */}
-            <div className="rounded-2xl border border-primary/15 bg-primary/5 p-4 mb-4 flex items-start gap-3">
-              <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <Clock className="w-4 h-4 text-primary" />
-              </div>
-              <p className="text-xs text-foreground leading-relaxed">
-                Amafaranga yawe agera muri konti mu <span className="font-bold text-primary">gihe kitarenze iminota 20</span>. Bitinze, vugana na{' '}
-                <span className="font-bold text-primary">Serivisi kuri Murandasi</span> kugira ngo ugufashwe ako kanya.
-              </p>
-            </div>
 
             {/* Personal Details Card */}
             <div className="bg-card rounded-3xl p-5 shadow-elevated border border-border/40 mb-4">
@@ -189,7 +208,7 @@ export default function Deposit() {
                   <label className="text-xs font-semibold text-foreground mb-1.5 block ml-1">{t('deposit.phoneNumber')}</label>
                   <div className="relative">
                     <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <input type="tel" placeholder={t('deposit.phoneUsed')} value={phone} onChange={(e) => setPhone(e.target.value)} className="input-field pl-11 text-sm" required />
+                    <input type="tel" placeholder="Nimero ugiye gukoresha wishyura" value={phone} onChange={(e) => setPhone(e.target.value)} className="input-field pl-11 text-sm" required />
                   </div>
                 </div>
 
@@ -197,7 +216,7 @@ export default function Deposit() {
                   <label className="text-xs font-semibold text-foreground mb-1.5 block ml-1">{t('deposit.fullName')}</label>
                   <div className="relative">
                     <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <input type="text" placeholder={t('deposit.nameUsed')} value={name} onChange={(e) => setName(e.target.value)} className="input-field pl-11 text-sm" required />
+                    <input type="text" placeholder="Amazina ugiye gukoresha wishyura" value={name} onChange={(e) => setName(e.target.value)} className="input-field pl-11 text-sm" required />
                   </div>
                 </div>
               </div>
@@ -326,6 +345,7 @@ export default function Deposit() {
       </div>
 
       <SuccessNotification isOpen={depositSuccess.show} onClose={() => setDepositSuccess({ show: false, amount: 0 })} type="deposit" amount={depositSuccess.amount} />
+      <ErrorNotification isOpen={errorPopup.show} onClose={() => setErrorPopup({ show: false, message: '' })} title={errorPopup.title} message={errorPopup.message} />
       <BottomNav />
     </div>
   );
