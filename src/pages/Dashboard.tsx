@@ -2,11 +2,8 @@ import {
   ArrowDownLeft,
   ArrowUpRight,
   Wallet,
-  Send,
   Gift,
-  Users,
   Headphones,
-  TrendingUp,
   PiggyBank,
   Bell,
   ScanLine,
@@ -25,7 +22,6 @@ import { AnnouncementPopup } from '@/components/AnnouncementPopup';
 import { CustomerServiceButton } from '@/components/CustomerServiceButton';
 import { ReferralCommissionListener } from '@/components/ReferralCommissionListener';
 import { Link } from 'react-router-dom';
-import { InvestmentNewsCarousel } from '@/components/InvestmentNewsCarousel';
 import { DownloadAppInfo } from '@/components/DownloadAppButton';
 import { OnlineServiceDialog } from '@/components/OnlineServiceDialog';
 import { supabase } from '@/integrations/supabase/client';
@@ -40,7 +36,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { SuccessNotification } from '@/components/SuccessNotification';
-import { LiveActivity, CompanyAchievements } from '@/components/LiveActivity';
+import { LiveActivity } from '@/components/LiveActivity';
 
 export default function Dashboard() {
   const { t } = useTranslation();
