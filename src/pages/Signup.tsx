@@ -70,7 +70,7 @@ export default function Signup() {
       {/* Overlapping form card */}
       <div className="relative flex-1 px-4 -mt-16 pb-8">
         <div className="max-w-sm mx-auto w-full">
-          <div className="bg-card rounded-3xl px-6 pt-6 pb-6 shadow-2xl border border-border/40">
+          <div className="bg-card rounded-3xl px-6 pt-6 pb-6 shadow-lg border border-border/40">
             <div className="flex items-center justify-between mb-5">
               <div>
                 <p className="text-[10px] font-bold tracking-[0.2em] text-primary uppercase">
@@ -194,7 +194,7 @@ export default function Signup() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-primary text-primary-foreground font-black text-sm py-4 rounded-xl active:scale-[0.98] transition-all disabled:opacity-60 shadow-button flex items-center justify-center gap-2 mt-2"
+                className="w-full bg-primary text-primary-foreground font-black text-sm py-4 rounded-xl active:opacity-90 disabled:opacity-60 flex items-center justify-center gap-2 mt-2"
               >
                 {isLoading ? t('auth.creatingAccount') : t('auth.register')}
                 {!isLoading && <ArrowRight className="w-4 h-4" strokeWidth={2.5} />}
