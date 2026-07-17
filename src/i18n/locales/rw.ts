@@ -100,7 +100,7 @@ export const rw = {
     pendingError: 'Usanzwe ufite ubwishyu butegereje. Tegereza ko bwemezwa.',
     copied: 'Nimero yakoporowe!',
     continue: 'Gukomeza',
-    stepIndicator: 'Intambwe {current} / {total}',
+    stepIndicator: 'Intambwe {{current}} / {{total}}',
     reviewTitle: 'Subiramo Amakuru',
     edit: 'Hindura',
     confirmDeposit: 'Emeza Ubwishyu',
