@@ -31,7 +31,7 @@ const config: Record<NotificationType, {
     title: 'Gift Redeemed! 🎁',
     subtitle: 'Gift code bonus added to your balance.',
     buttonText: 'Awesome!',
-    gradient: 'from-pink-500 to-rose-400',
+    gradient: 'from-red-500 to-red-400',
   },
   investment: {
     icon: TrendingUp,

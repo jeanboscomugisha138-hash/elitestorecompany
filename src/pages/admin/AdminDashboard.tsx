@@ -640,7 +640,7 @@ export default function AdminDashboard() {
             </div>
             <div>
               <h1 className="font-bold text-foreground">Admin Panel</h1>
-              <p className="text-xs text-muted-foreground">ELITE STORE COMPANY</p>
+              <p className="text-xs text-muted-foreground">PETANE SHIPPING</p>
             </div>
           </div>
           <button
@@ -691,8 +691,8 @@ export default function AdminDashboard() {
           </div>
           <div className="bg-card rounded-xl p-4 shadow-card">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-purple-500/10 rounded-xl flex items-center justify-center">
-                <PiggyBank className="w-5 h-5 text-purple-500" />
+              <div className="w-10 h-10 bg-red-500/10 rounded-xl flex items-center justify-center">
+                <PiggyBank className="w-5 h-5 text-red-500" />
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">Total Invested</p>
@@ -833,7 +833,7 @@ export default function AdminDashboard() {
                                 <button onClick={() => startEditUser(user)} className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Edit balance">
                                   <Edit className="w-4 h-4" />
                                 </button>
-                                <button onClick={() => startEditInvested(user)} className="p-2 text-purple-500 hover:bg-purple-500/10 rounded-lg transition-colors" title="Edit invested amount">
+                                <button onClick={() => startEditInvested(user)} className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors" title="Edit invested amount">
                                   <PiggyBank className="w-4 h-4" />
                                 </button>
                                 <button onClick={() => viewUserInvestments(user)} className="p-2 text-secondary hover:bg-secondary/10 rounded-lg transition-colors" title="View investments">

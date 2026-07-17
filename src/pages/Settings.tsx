@@ -11,7 +11,6 @@ import {
   Wallet,
   Headphones,
   MessageCircle,
-  Languages,
 } from 'lucide-react';
 import { LiveActivity, CompanyAchievements } from '@/components/LiveActivity';
 import { useState } from 'react';
@@ -27,19 +26,14 @@ import { useSiteSettings } from '@/hooks/useSiteSettings';
 import { OnlineServiceDialog } from '@/components/OnlineServiceDialog';
 
 export default function Settings() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { settings } = useSiteSettings();
   const { profile, user, signOut } = useAuth();
   const navigate = useNavigate();
   const [serviceOpen, setServiceOpen] = useState(false);
   const [passOpen, setPassOpen] = useState(false);
-  const [langOpen, setLangOpen] = useState(false);
 
-  const changeLang = (lng: 'rw' | 'en') => {
-    i18n.changeLanguage(lng);
-    localStorage.setItem('app_lang', lng);
-    setLangOpen(false);
-  };
+
 
   const formatRWF = (amount: number) => `${amount.toLocaleString()} RWF`;
   const handleLogout = async () => { await signOut(); navigate('/login'); };
@@ -106,11 +100,7 @@ export default function Settings() {
         </button>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 mb-3">
-        <button onClick={() => setLangOpen(true)} className="profile-tile rounded-xl py-3 flex items-center justify-center gap-2">
-          <Languages className="w-5 h-5 text-primary" />
-          <span className="text-sm font-bold">{t('settings.language')}</span>
-        </button>
+      <div className="grid grid-cols-1 gap-3 mb-3">
         <a
           href={settings.whatsapp_group_url}
           target="_blank"
@@ -121,6 +111,7 @@ export default function Settings() {
           <span className="text-sm font-bold text-white">{t('settings.whatsapp')}</span>
         </a>
       </div>
+
 
       <div className="grid grid-cols-1 gap-3 mb-4">
         <button onClick={handleLogout} className="bg-destructive rounded-xl py-3 flex items-center justify-center gap-2">
@@ -139,7 +130,7 @@ export default function Settings() {
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">{t('settings.memberSince')}</span>
             <span className="font-medium text-foreground">
-              {user?.created_at ? new Date(user.created_at).toLocaleDateString(i18n.language === 'rw' ? 'rw-RW' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A'}
+              {user?.created_at ? new Date(user.created_at).toLocaleDateString('rw-RW', { year: 'numeric', month: 'short', day: 'numeric' }) : 'N/A'}
             </span>
           </div>
         </div>
@@ -150,29 +141,6 @@ export default function Settings() {
 
       <OnlineServiceDialog open={serviceOpen} onOpenChange={setServiceOpen} />
 
-      {/* Language switcher */}
-      <Dialog open={langOpen} onOpenChange={setLangOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2"><Languages className="w-5 h-5 text-primary" /> {t('settings.language')}</DialogTitle>
-            <DialogDescription>{t('settings.languageDesc')}</DialogDescription>
-          </DialogHeader>
-          <div className="flex flex-col gap-3 mt-2">
-            <button
-              onClick={() => changeLang('rw')}
-              className={`rounded-xl py-3 font-bold border-2 ${i18n.language === 'rw' ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground'}`}
-            >
-              🇷🇼 {t('settings.kinyarwanda')}
-            </button>
-            <button
-              onClick={() => changeLang('en')}
-              className={`rounded-xl py-3 font-bold border-2 ${i18n.language === 'en' ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground'}`}
-            >
-              🇬🇧 {t('settings.english')}
-            </button>
-          </div>
-        </DialogContent>
-      </Dialog>
 
       <Dialog open={passOpen} onOpenChange={setPassOpen}>
         <DialogContent className="sm:max-w-md">

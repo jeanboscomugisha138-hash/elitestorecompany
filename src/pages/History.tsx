@@ -272,7 +272,7 @@ export default function History() {
       doc.setTextColor(255, 255, 255);
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(16);
-      doc.text('ELITE STORE COMPANY', 30, 15);
+      doc.text('PETANE SHIPPING', 30, 15);
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(9);
       doc.text('Smart Investment Platform · Kigali, Rwanda', 30, 22);
@@ -362,11 +362,11 @@ export default function History() {
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(8);
         doc.setTextColor(120, 120, 140);
-        doc.text('ELITE STORE COMPANY · Official Statement · Confidential', 14, ph - 11);
+        doc.text('PETANE SHIPPING · Official Statement · Confidential', 14, ph - 11);
         doc.text(`Page ${p} of ${pageCount}`, pageWidth - 14, ph - 11, { align: 'right' });
       }
 
-      doc.save(`elite-store-${activeTab}-${Date.now()}.pdf`);
+      doc.save(`petane-shipping-${activeTab}-${Date.now()}.pdf`);
       toast.success('PDF downloaded successfully');
     } catch (e) {
       toast.error('Failed to generate PDF');
