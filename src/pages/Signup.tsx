@@ -113,7 +113,7 @@ export default function Signup() {
                 <label className="text-[10px] font-black text-muted-foreground ml-1 mb-1 block uppercase tracking-wider">{t('auth.confirmPassword')}</label>
                 <div className="auth-safe-field flex items-center gap-2.5 px-3 py-2.5">
                   <Lock className="w-4 h-4 text-muted-foreground shrink-0" />
-                  <input type={showConfirmPassword ? 'text' : 'password'} placeholder={t('auth.confirmPassword')} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} className="auth-safe-input text-sm" required />
+                  <input type={showConfirmPassword ? 'text' : 'password'} maxLength={12} placeholder={t('auth.confirmPassword')} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value.slice(0, 12))} className="auth-safe-input text-sm" required />
                   <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="text-muted-foreground shrink-0 p-1" aria-label="toggle">
                     {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
