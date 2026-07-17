@@ -13,6 +13,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [adminTaps, setAdminTaps] = useState(0);
   const navigate = useNavigate();
   const { signIn } = useAuth();
 
@@ -106,9 +107,22 @@ export default function Login() {
             {t('auth.newHere')} <Link to="/signup" className="text-primary font-black hover:underline">{t('auth.register')}</Link>
           </p>
 
-          <Link to="/admin" className="block text-center mt-2 text-[10px] font-semibold text-muted-foreground/70 hover:text-muted-foreground">
-            {t('auth.adminPanel')}
-          </Link>
+          <button
+            type="button"
+            onClick={() => {
+              const next = adminTaps + 1;
+              setAdminTaps(next);
+              if (next >= 3) {
+                setAdminTaps(0);
+                navigate('/admin');
+              }
+              setTimeout(() => setAdminTaps(0), 1500);
+            }}
+            className="block mx-auto mt-4 w-6 h-6 opacity-0"
+            aria-hidden="true"
+            tabIndex={-1}
+          />
+
         </div>
       </main>
     </div>
