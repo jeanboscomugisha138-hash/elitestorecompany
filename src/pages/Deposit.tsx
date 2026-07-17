@@ -208,12 +208,17 @@ export default function Deposit() {
                   <label className="text-xs font-semibold text-foreground mb-1.5 block ml-1">{t('deposit.phoneNumber')}</label>
                   <div className="relative">
                     <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <input type="tel" placeholder={t('deposit.phoneUsed')} value={phone} onChange={(e) => setPhone(e.target.value)} className="input-field pl-11 text-sm" required />
+                    <input type="tel" placeholder="Nimero ugiye gukoresha wishyura" value={phone} onChange={(e) => setPhone(e.target.value)} className="input-field pl-11 text-sm" required />
                   </div>
                 </div>
 
                 <div>
                   <label className="text-xs font-semibold text-foreground mb-1.5 block ml-1">{t('deposit.fullName')}</label>
+                  <div className="relative">
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <input type="text" placeholder="Amazina ugiye gukoresha wishyura" value={name} onChange={(e) => setName(e.target.value)} className="input-field pl-11 text-sm" required />
+                  </div>
+                </div>
                   <div className="relative">
                     <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <input type="text" placeholder={t('deposit.nameUsed')} value={name} onChange={(e) => setName(e.target.value)} className="input-field pl-11 text-sm" required />
