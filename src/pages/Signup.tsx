@@ -44,15 +44,12 @@ export default function Signup() {
     'w-full bg-muted/60 rounded-xl pl-11 pr-4 py-3.5 text-foreground text-sm font-semibold placeholder:text-muted-foreground/70 placeholder:font-normal border-2 border-transparent focus:outline-none focus:border-primary focus:bg-card transition-all';
 
   return (
-    <div className="min-h-screen relative flex flex-col bg-[hsl(0_0%_96%)] overflow-hidden">
+    <div className="min-h-screen relative flex flex-col bg-[hsl(0_0%_96%)]">
       {/* Brand header band */}
-      <div className="gradient-primary relative pt-10 pb-24 px-6">
-        <div className="absolute -top-24 -right-16 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
-        <div className="absolute -bottom-24 -left-16 w-56 h-56 bg-white/10 rounded-full blur-3xl" />
-
+      <div className="relative pt-10 pb-24 px-6" style={{ background: 'linear-gradient(135deg, hsl(226 78% 48%) 0%, hsl(228 84% 33%) 100%)', transform: 'translateZ(0)', WebkitTransform: 'translateZ(0)', backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', isolation: 'isolate' }}>
         <div className="relative max-w-sm mx-auto w-full">
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-11 h-11 rounded-2xl bg-white/15 backdrop-blur border border-white/25 flex items-center justify-center">
+            <div className="w-11 h-11 rounded-2xl bg-white/20 border border-white/25 flex items-center justify-center">
               <img src={petaneLogo} alt="Petane" className="h-7 w-auto brightness-0 invert" />
             </div>
             <div className="text-primary-foreground">
