@@ -147,29 +147,6 @@ export default function Settings() {
 
       <OnlineServiceDialog open={serviceOpen} onOpenChange={setServiceOpen} />
 
-      {/* Language switcher */}
-      <Dialog open={langOpen} onOpenChange={setLangOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2"><Languages className="w-5 h-5 text-primary" /> {t('settings.language')}</DialogTitle>
-            <DialogDescription>{t('settings.languageDesc')}</DialogDescription>
-          </DialogHeader>
-          <div className="flex flex-col gap-3 mt-2">
-            <button
-              onClick={() => changeLang('rw')}
-              className={`rounded-xl py-3 font-bold border-2 ${i18n.language === 'rw' ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground'}`}
-            >
-              🇷🇼 {t('settings.kinyarwanda')}
-            </button>
-            <button
-              onClick={() => changeLang('en')}
-              className={`rounded-xl py-3 font-bold border-2 ${i18n.language === 'en' ? 'border-primary bg-primary/10 text-primary' : 'border-border text-foreground'}`}
-            >
-              🇬🇧 {t('settings.english')}
-            </button>
-          </div>
-        </DialogContent>
-      </Dialog>
 
       <Dialog open={passOpen} onOpenChange={setPassOpen}>
         <DialogContent className="sm:max-w-md">
