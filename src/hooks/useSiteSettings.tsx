@@ -27,7 +27,7 @@ const DEFAULTS: SiteSettings = {
   withdraw_start_hour: '7',
   withdraw_end_hour: '22',
   announcements: [
-    'Welcome to ELITE STORE COMPANY!',
+    'Welcome to PETANE SHIPPING!',
     'Registration BONUS: 1,000 RWF',
     'Withdrawal hours: 07:00 - 22:00 daily',
     'Daily profit: 7.14% VIP 1 (30 days) · 7% VIP 2-4 (50 days) · 7.5% VIP 5-7 (90 days) · 8% VIP 8-10 (365 days)',

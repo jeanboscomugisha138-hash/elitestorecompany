@@ -47,7 +47,7 @@ export function AnnouncementPopup() {
               <X className="w-4 h-4 text-primary-foreground" />
             </button>
             <h3 className="text-xl font-bold text-primary-foreground text-center">
-              Welcome to ELITE STORE
+              Welcome to PETANE SHIPPING
             </h3>
           </div>
 
