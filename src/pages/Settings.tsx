@@ -11,7 +11,6 @@ import {
   Wallet,
   Headphones,
   MessageCircle,
-  Languages,
 } from 'lucide-react';
 import { LiveActivity, CompanyAchievements } from '@/components/LiveActivity';
 import { useState } from 'react';
@@ -27,19 +26,14 @@ import { useSiteSettings } from '@/hooks/useSiteSettings';
 import { OnlineServiceDialog } from '@/components/OnlineServiceDialog';
 
 export default function Settings() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { settings } = useSiteSettings();
   const { profile, user, signOut } = useAuth();
   const navigate = useNavigate();
   const [serviceOpen, setServiceOpen] = useState(false);
   const [passOpen, setPassOpen] = useState(false);
-  const [langOpen, setLangOpen] = useState(false);
 
-  const changeLang = (lng: 'rw' | 'en') => {
-    i18n.changeLanguage(lng);
-    localStorage.setItem('app_lang', lng);
-    setLangOpen(false);
-  };
+
 
   const formatRWF = (amount: number) => `${amount.toLocaleString()} RWF`;
   const handleLogout = async () => { await signOut(); navigate('/login'); };
