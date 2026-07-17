@@ -215,15 +215,10 @@ export default function Dashboard() {
         <div className="bg-card rounded-2xl shadow-card p-4 border border-border/60">
           <div className="grid grid-cols-4 gap-y-5 gap-x-2">
             {quickActions.map((a, i) => {
-              const isSolid = a.variant === 'solid';
-              const iconWrap = isSolid
-                ? 'bg-primary text-primary-foreground shadow-[0_6px_14px_-4px_hsl(var(--primary)/0.55)]'
-                : 'bg-primary/10 text-primary';
               const inner = (
                 <>
-                  <div className={`relative w-14 h-14 rounded-2xl flex items-center justify-center transition active:scale-95 ${iconWrap}`}>
-                    <a.icon className="w-6 h-6" strokeWidth={2.2} />
-                    <span aria-hidden className="absolute -top-1 -right-1 text-base drop-shadow">{(a as any).emoji}</span>
+                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center transition active:scale-95 bg-primary/10 text-primary">
+                    <span aria-hidden className="text-3xl leading-none">{a.emoji}</span>
                   </div>
                   <span className="text-[11px] font-semibold text-foreground mt-2 text-center leading-tight">{a.label}</span>
                 </>
