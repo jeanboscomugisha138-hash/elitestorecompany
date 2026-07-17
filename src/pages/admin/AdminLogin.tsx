@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Lock, Phone, ArrowRight, Shield, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 export default function AdminLogin() {
@@ -13,35 +14,44 @@ export default function AdminLogin() {
   const navigate = useNavigate();
   const { signIn } = useAuth();
 
-  const ADMIN_PHONE = '0736644205';
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
-    // Only allow the designated admin phone number
-    const cleanPhone = phone.replace(/\s+/g, '');
-    if (cleanPhone !== ADMIN_PHONE) {
-      setError('Access denied. This phone number is not authorized for admin access.');
-      setIsLoading(false);
-      return;
-    }
-
     const { error: signInError } = await signIn(phone, password);
-
     if (signInError) {
       setError(signInError.message);
       setIsLoading(false);
       return;
     }
 
-    // Wait a bit for the auth state to update
+    // Verify admin role via database
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      setError('Kwinjira byanze. Ongera ugerageze.');
+      setIsLoading(false);
+      return;
+    }
+
+    const { data: isAdmin } = await supabase.rpc('has_role', {
+      _user_id: user.id,
+      _role: 'admin',
+    });
+
+    if (!isAdmin) {
+      await supabase.auth.signOut();
+      setError('Access denied. This phone number is not authorized for admin access.');
+      setIsLoading(false);
+      return;
+    }
+
     setTimeout(() => {
       navigate('/admin/dashboard');
       toast.success('Welcome, Admin!');
-    }, 500);
+    }, 300);
   };
+
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">
