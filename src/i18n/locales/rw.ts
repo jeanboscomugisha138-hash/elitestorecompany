@@ -94,6 +94,18 @@ export const rw = {
     copied: 'Nimero yakoporowe!',
   },
 
+  products: {
+    title: 'Ibicuruzwa by\'Ishoramari',
+    purchased: 'Byaraguzwe',
+    owned: '✓ Bifitwe',
+    purchaseNow: 'Gura Ubu',
+    rentalAmount: 'Amafaranga:',
+    incomeCycle: 'Igihe cy\'inyungu:',
+    dailyIncome: 'Inyungu ku munsi:',
+    totalProfit: 'Inyungu Yose:',
+    days: 'Iminsi',
+  },
+
   withdraw: {
     title: 'Bikuza Amafaranga',
     availableBalance: 'Amafaranga Aboneka',
