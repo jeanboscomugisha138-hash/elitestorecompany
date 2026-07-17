@@ -345,6 +345,7 @@ export default function Deposit() {
       </div>
 
       <SuccessNotification isOpen={depositSuccess.show} onClose={() => setDepositSuccess({ show: false, amount: 0 })} type="deposit" amount={depositSuccess.amount} />
+      <ErrorNotification isOpen={errorPopup.show} onClose={() => setErrorPopup({ show: false, message: '' })} title={errorPopup.title} message={errorPopup.message} />
       <BottomNav />
     </div>
   );
