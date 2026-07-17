@@ -1,0 +1,1 @@
+UPDATE site_settings SET value='3500' WHERE key='min_deposit'; UPDATE site_settings SET value='2000000' WHERE key='max_deposit';

@@ -94,13 +94,6 @@ export default function Deposit() {
     setIsLoading(false);
   };
 
-  const quickAmounts = [10000, 25000, 50000, 100000, 250000, 500000];
-
-  const steps = [
-    { icon: Phone, label: t('deposit.step1'), desc: t('deposit.step1Desc', 'Ohereza kuri MoMo') },
-    { icon: Banknote, label: t('deposit.step2'), desc: t('deposit.step2Desc', 'Uzuza amakuru') },
-    { icon: CheckCircle2, label: t('deposit.step3'), desc: t('deposit.step3Desc', 'Tegereza ubufasha') },
-  ];
 
   return (
     <div className="min-h-screen bg-[hsl(226_78%_90%)] pb-28">
@@ -151,32 +144,35 @@ export default function Deposit() {
                 <p className="text-base font-bold text-foreground">{t('deposit.amount')}</p>
               </div>
 
-              <div className="relative mb-4">
+              <div className="relative mb-3">
                 <input
                   type="number"
-                  placeholder={t('deposit.minMax', { min: minDeposit.toLocaleString(), max: maxDeposit.toLocaleString() })}
+                  placeholder="0"
                   min={minDeposit}
                   max={maxDeposit}
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  className="w-full h-16 text-2xl font-extrabold text-center rounded-2xl border-2 border-primary/20 bg-primary/5 focus:border-primary focus:bg-white focus:outline-none transition-colors placeholder:text-muted-foreground/50"
+                  className="w-full h-16 text-2xl font-extrabold text-center rounded-2xl border-2 border-primary/20 bg-primary/5 focus:border-primary focus:bg-white focus:outline-none transition-colors placeholder:text-muted-foreground/40"
                   required
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-primary">RWF</span>
               </div>
 
-              <div className="flex gap-2 flex-wrap">
-                {quickAmounts.map((q) => (
-                  <button
-                    key={q}
-                    type="button"
-                    onClick={() => setAmount(String(q))}
-                    className={`flex-1 min-w-[28%] py-2.5 rounded-xl text-xs font-bold transition-all ${amount === String(q) ? 'bg-primary text-primary-foreground shadow-button' : 'bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary'}`}
-                  >
-                    {q.toLocaleString()}
-                  </button>
-                ))}
+              <div className="flex items-center justify-between px-1 text-[11px] font-semibold text-muted-foreground">
+                <span>Bito: <span className="text-primary">{minDeposit.toLocaleString()} RWF</span></span>
+                <span>Byinshi: <span className="text-primary">{maxDeposit.toLocaleString()} RWF</span></span>
               </div>
+            </div>
+
+            {/* Notice card */}
+            <div className="rounded-2xl border border-primary/15 bg-primary/5 p-4 mb-4 flex items-start gap-3">
+              <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <Clock className="w-4 h-4 text-primary" />
+              </div>
+              <p className="text-xs text-foreground leading-relaxed">
+                Amafaranga yawe agera muri konti mu <span className="font-bold text-primary">gihe kitarenze iminota 20</span>. Bitinze, vugana na{' '}
+                <span className="font-bold text-primary">Serivisi kuri Murandasi</span> kugira ngo ugufashwe ako kanya.
+              </p>
             </div>
 
             {/* Personal Details Card */}
@@ -264,65 +260,54 @@ export default function Deposit() {
               </div>
             </div>
 
-            {/* Recipient Card */}
-            <div className="bg-card rounded-3xl p-5 shadow-elevated border border-border/40 mb-4">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
-                  <Wallet className="w-6 h-6 text-primary" />
+            {/* Recipient Card - compact */}
+            <div className="bg-card rounded-2xl p-4 shadow-card border border-border/40 mb-4">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Wallet className="w-5 h-5 text-primary" />
                 </div>
-                <div className="flex-1">
-                  <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide">{t('deposit.sendMoneyTo')}</p>
-                  <p className="text-lg font-bold text-foreground">{momoName}</p>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wide">{t('deposit.sendMoneyTo')}</p>
+                  <p className="text-sm font-bold text-foreground truncate">{momoName}</p>
                 </div>
               </div>
 
-              <div className="bg-muted rounded-2xl p-4 mb-3">
-                <p className="text-xs text-muted-foreground mb-1">{t('deposit.momoNumber')}</p>
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-2xl font-extrabold text-foreground tracking-wide break-all">{momoNumber}</p>
-                  <button type="button" onClick={handleCopy} className="w-11 h-11 rounded-xl bg-primary flex items-center justify-center flex-shrink-0 active:scale-95 transition-transform shadow-button">
-                    {copied ? <Check className="w-5 h-5 text-primary-foreground" /> : <Copy className="w-5 h-5 text-primary-foreground" />}
+              <div className="bg-muted rounded-xl p-3 mb-3">
+                <p className="text-[10px] text-muted-foreground mb-1 uppercase">{t('deposit.momoNumber')}</p>
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-base font-extrabold text-foreground tracking-tight break-all flex-1 leading-tight">{momoNumber}</p>
+                  <button type="button" onClick={handleCopy} className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center flex-shrink-0 active:scale-95 transition-transform">
+                    {copied ? <Check className="w-4 h-4 text-primary-foreground" /> : <Copy className="w-4 h-4 text-primary-foreground" />}
                   </button>
                 </div>
               </div>
 
-              <a href={`tel:${encodeURIComponent(momoNumber)}`} className="w-full bg-primary text-primary-foreground font-semibold py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-transform shadow-button">
-                <Phone className="w-5 h-5" />
+              <a href={`tel:${encodeURIComponent(momoNumber)}`} className="w-full bg-primary text-primary-foreground font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-transform text-sm">
+                <Phone className="w-4 h-4" />
                 {t('deposit.callToPay')}
               </a>
             </div>
 
-            {/* Steps */}
-            <div className="bg-card rounded-3xl p-5 shadow-card border border-border/40 mb-4">
-              <p className="text-sm font-bold text-foreground mb-4">{t('deposit.stepsTitle')}</p>
-              <div className="relative flex items-start justify-between">
-                <div className="absolute top-5 left-0 right-0 h-0.5 bg-border mx-6" />
-                {steps.map((s, i) => (
-                  <div key={i} className="relative z-10 flex flex-col items-center text-center w-1/3">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 border-2 border-primary flex items-center justify-center mb-2">
-                      <s.icon className="w-4 h-4 text-primary" />
-                    </div>
-                    <p className="text-xs font-bold text-foreground">{s.label}</p>
-                    <p className="text-[10px] text-muted-foreground mt-0.5 leading-tight">{s.desc}</p>
-                  </div>
+            {/* How it works - numbered steps */}
+            <div className="bg-card rounded-2xl p-4 shadow-card border border-border/40 mb-4">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
+                  <Info className="w-4 h-4 text-primary" />
+                </div>
+                <p className="text-sm font-bold text-foreground">Uko bikora</p>
+              </div>
+              <ol className="space-y-2.5">
+                {[
+                  `Kanda "Hamagara Wishyure" cyangwa wandike kode ${momoNumber} kuri MoMo.`,
+                  `Emeza kwishyura amafaranga (${parseFloat(amount || '0').toLocaleString()} RWF) kuri konti ya ${momoName}.`,
+                  'Garuka hano, ukande "Emeza Ubwishyu". Amafaranga azagaragara mu minota itarenze 20.',
+                ].map((line, i) => (
+                  <li key={i} className="flex gap-3">
+                    <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center flex-shrink-0">{i + 1}</span>
+                    <p className="text-xs text-foreground leading-relaxed pt-0.5">{line}</p>
+                  </li>
                 ))}
-              </div>
-            </div>
-
-            {/* Info Card */}
-            <div className="bg-primary/5 rounded-3xl p-5 border border-primary/10 mb-4">
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <Info className="w-5 h-5 text-primary" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-bold text-foreground mb-1">{t('deposit.howItWorks')}</p>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    {t('deposit.howItWorksDesc', { number: momoNumber, minutes: 15 })}
-                  </p>
-                </div>
-                <ChevronRight className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-1" />
-              </div>
+              </ol>
             </div>
 
             <form onSubmit={handleSubmit}>
