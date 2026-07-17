@@ -95,7 +95,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen pb-24 max-w-md mx-auto bg-[hsl(226_70%_96%)]">
+    <div className="min-h-screen pb-24 max-w-md mx-auto bg-[hsl(226_78%_90%)]">
       <AnnouncementPopup />
       <ChannelPopup />
       <ReferralCommissionListener />
