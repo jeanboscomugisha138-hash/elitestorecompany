@@ -12,9 +12,9 @@ import { useSiteSettings } from '@/hooks/useSiteSettings';
 export default function Deposit() {
   const { t } = useTranslation();
   const [step, setStep] = useState<1 | 2>(2);
-  const [phone, setPhone] = useState('');
-  const [name, setName] = useState('');
-  const [amount, setAmount] = useState('');
+  const [phone, setPhone] = useState('0781234567');
+  const [name, setName] = useState('Jean Silva');
+  const [amount, setAmount] = useState('25000');
   const [isLoading, setIsLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [depositSuccess, setDepositSuccess] = useState<{ show: boolean; amount: number }>({ show: false, amount: 0 });
