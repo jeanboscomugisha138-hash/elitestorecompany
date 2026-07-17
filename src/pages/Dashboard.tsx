@@ -2,11 +2,9 @@ import {
   ArrowDownLeft,
   ArrowUpRight,
   Wallet,
-  Send,
   Gift,
   Users,
   Headphones,
-  TrendingUp,
   PiggyBank,
   Bell,
   ScanLine,
@@ -25,7 +23,6 @@ import { AnnouncementPopup } from '@/components/AnnouncementPopup';
 import { CustomerServiceButton } from '@/components/CustomerServiceButton';
 import { ReferralCommissionListener } from '@/components/ReferralCommissionListener';
 import { Link } from 'react-router-dom';
-import { InvestmentNewsCarousel } from '@/components/InvestmentNewsCarousel';
 import { DownloadAppInfo } from '@/components/DownloadAppButton';
 import { OnlineServiceDialog } from '@/components/OnlineServiceDialog';
 import { supabase } from '@/integrations/supabase/client';
@@ -40,7 +37,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { SuccessNotification } from '@/components/SuccessNotification';
-import { LiveActivity, CompanyAchievements } from '@/components/LiveActivity';
+import { LiveActivity } from '@/components/LiveActivity';
 
 export default function Dashboard() {
   const { t } = useTranslation();
@@ -223,38 +220,7 @@ export default function Dashboard() {
         <DownloadAppInfo />
       </div>
 
-      {/* Promo carousel */}
-      <div className="px-3 mt-5">
-        <InvestmentNewsCarousel />
-      </div>
-
-      {/* Best Offers */}
-      <div className="px-3 mt-5">
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-base font-extrabold text-primary uppercase tracking-wide">Best Offers</h2>
-          <Link to="/products" className="text-primary text-sm font-semibold">All Offers</Link>
-        </div>
-
-        <div className="grid grid-cols-2 gap-3">
-          <Link to="/products" className="bg-card rounded-2xl p-4 shadow-card border border-border">
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-2">
-              <TrendingUp className="w-5 h-5 text-primary" />
-            </div>
-            <div className="font-bold text-foreground text-sm">VIP Investment</div>
-            <div className="text-xs text-muted-foreground mt-0.5">Daily profit up to 8%</div>
-          </Link>
-          <Link to="/referral" className="bg-card rounded-2xl p-4 shadow-card border border-border">
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-2">
-              <Users className="w-5 h-5 text-primary" />
-            </div>
-            <div className="font-bold text-foreground text-sm">Refer & Earn</div>
-            <div className="text-xs text-muted-foreground mt-0.5">10% / 3% / 1% commission</div>
-          </Link>
-        </div>
-      </div>
-
       <div className="px-3 mt-5 space-y-4">
-        <CompanyAchievements />
         <LiveActivity />
       </div>
 
