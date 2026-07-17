@@ -100,13 +100,13 @@ export default function Dashboard() {
       <ChannelPopup />
       <ReferralCommissionListener />
 
-      {/* Red top header - reduced */}
-      <div className="bg-primary px-4 pt-4 pb-14 relative">
+      {/* Red top header - taller, wraps card sides */}
+      <div className="bg-primary px-4 pt-5 pb-24 relative">
         <div className="flex items-center justify-between">
           <img
             src={petaneLogo}
             alt="Petane Shipping"
-            className="h-8 w-auto brightness-0 invert"
+            className="h-12 w-auto brightness-0 invert"
           />
           <div className="flex items-center gap-3">
             <button className="w-9 h-9 rounded-lg border border-primary-foreground/40 flex items-center justify-center">
@@ -126,16 +126,16 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Overlapping account card - Airtel style */}
-      <div className="px-3 -mt-10 space-y-3">
-        <div className="bg-card rounded-2xl shadow-card p-5 border border-border/40">
-          {/* Header row */}
-          <div className="flex items-start justify-between mb-4">
+      {/* Overlapping compact account card - Airtel style */}
+      <div className="px-4 -mt-16 space-y-3">
+        <div className="bg-card rounded-2xl shadow-card p-4 border border-border/40">
+          {/* Header row: name + account number */}
+          <div className="flex items-start justify-between mb-3">
             <div className="flex-1 min-w-0">
-              <h2 className="text-[18px] font-black text-foreground leading-tight tracking-tight truncate">
+              <h2 className="text-[16px] font-black text-foreground leading-tight tracking-tight truncate">
                 {profile?.full_name || 'Umukiriya'}
               </h2>
-              <p className="text-[13px] text-foreground mt-1 font-bold">
+              <p className="text-[13px] text-foreground mt-0.5 font-bold">
                 Konti - {profile?.phone || '---'}
               </p>
             </div>
@@ -147,36 +147,37 @@ export default function Dashboard() {
             </Link>
           </div>
 
-          {/* Balance columns - Available balance + Total profit only */}
-          <div className="grid grid-cols-2 border-t border-border pt-4 gap-1">
+          {/* Balance columns - compact */}
+          <div className="grid grid-cols-2 border-t border-border pt-3 gap-1">
             <div className="pr-1">
-              <div className="text-[26px] font-black text-foreground leading-none tracking-tight">{mask(balance)}</div>
-              <div className="text-primary text-[15px] font-black mt-1.5">RWF</div>
-              <div className="text-[12px] text-muted-foreground mt-1.5 font-medium leading-tight">Ayo ufiteho</div>
+              <div className="text-[22px] font-black text-foreground leading-none tracking-tight">{mask(balance)}</div>
+              <div className="text-primary text-[13px] font-black mt-1">RWF</div>
+              <div className="text-[11px] text-muted-foreground mt-1 font-medium leading-tight">Ayo ufiteho</div>
             </div>
             <div className="border-l border-border pl-3">
-              <div className="text-[26px] font-black text-foreground leading-none tracking-tight">{mask(totalProfit)}</div>
-              <div className="text-primary text-[15px] font-black mt-1.5">RWF</div>
-              <div className="text-[12px] text-muted-foreground mt-1.5 font-medium leading-tight">Inyungu zose</div>
+              <div className="text-[22px] font-black text-foreground leading-none tracking-tight">{mask(totalProfit)}</div>
+              <div className="text-primary text-[13px] font-black mt-1">RWF</div>
+              <div className="text-[11px] text-muted-foreground mt-1 font-medium leading-tight">Inyungu zose</div>
             </div>
           </div>
 
-          {/* Action buttons - Airtel light red pill style */}
-          <div className="grid grid-cols-2 gap-3 mt-5 pt-4 border-t border-border">
+          {/* Action buttons - compact pills */}
+          <div className="grid grid-cols-2 gap-2.5 mt-3 pt-3 border-t border-border">
             <Link
               to="/products"
-              className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-black text-[15px] py-3 rounded-xl active:scale-[0.98] transition"
+              className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-black text-[13px] py-2.5 rounded-xl active:scale-[0.98] transition"
             >
-              <PiggyBank className="w-5 h-5" strokeWidth={2.5} /> Gura VIP
+              <PiggyBank className="w-4 h-4" strokeWidth={2.5} /> Gura VIP
             </Link>
             <Link
               to="/deposit"
-              className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-black text-[15px] py-3 rounded-xl active:scale-[0.98] transition"
+              className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-black text-[13px] py-2.5 rounded-xl active:scale-[0.98] transition"
             >
-              <ArrowUpRight className="w-5 h-5" strokeWidth={2.5} /> Ishyura
+              <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} /> Ishyura
             </Link>
           </div>
         </div>
+
 
         {/* Invested / wallet card - Airtel Money style */}
         <div className="bg-card rounded-2xl shadow-card p-4 flex items-center justify-between border border-border/40">
