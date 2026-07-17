@@ -149,32 +149,35 @@ export default function Deposit() {
                 <p className="text-base font-bold text-foreground">{t('deposit.amount')}</p>
               </div>
 
-              <div className="relative mb-4">
+              <div className="relative mb-3">
                 <input
                   type="number"
-                  placeholder={t('deposit.minMax', { min: minDeposit.toLocaleString(), max: maxDeposit.toLocaleString() })}
+                  placeholder="0"
                   min={minDeposit}
                   max={maxDeposit}
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  className="w-full h-16 text-2xl font-extrabold text-center rounded-2xl border-2 border-primary/20 bg-primary/5 focus:border-primary focus:bg-white focus:outline-none transition-colors placeholder:text-muted-foreground/50"
+                  className="w-full h-16 text-2xl font-extrabold text-center rounded-2xl border-2 border-primary/20 bg-primary/5 focus:border-primary focus:bg-white focus:outline-none transition-colors placeholder:text-muted-foreground/40"
                   required
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-primary">RWF</span>
               </div>
 
-              <div className="flex gap-2 flex-wrap">
-                {quickAmounts.map((q) => (
-                  <button
-                    key={q}
-                    type="button"
-                    onClick={() => setAmount(String(q))}
-                    className={`flex-1 min-w-[28%] py-2.5 rounded-xl text-xs font-bold transition-all ${amount === String(q) ? 'bg-primary text-primary-foreground shadow-button' : 'bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary'}`}
-                  >
-                    {q.toLocaleString()}
-                  </button>
-                ))}
+              <div className="flex items-center justify-between px-1 text-[11px] font-semibold text-muted-foreground">
+                <span>Bito: <span className="text-primary">{minDeposit.toLocaleString()} RWF</span></span>
+                <span>Byinshi: <span className="text-primary">{maxDeposit.toLocaleString()} RWF</span></span>
               </div>
+            </div>
+
+            {/* Notice card */}
+            <div className="rounded-2xl border border-primary/15 bg-primary/5 p-4 mb-4 flex items-start gap-3">
+              <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <Clock className="w-4 h-4 text-primary" />
+              </div>
+              <p className="text-xs text-foreground leading-relaxed">
+                Amafaranga yawe agera muri konti mu <span className="font-bold text-primary">gihe kitarenze iminota 20</span>. Bitinze, vugana na{' '}
+                <span className="font-bold text-primary">Serivisi kuri Murandasi</span> kugira ngo ugufashwe ako kanya.
+              </p>
             </div>
 
             {/* Personal Details Card */}
