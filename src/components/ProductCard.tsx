@@ -81,7 +81,7 @@ export function ProductCard({ id, investment, dailyProfit, duration, onInvest, i
           className={`font-bold px-6 py-2 rounded-full text-sm shadow-button transition-all disabled:opacity-70 ${
             purchased
               ? 'bg-emerald-500 text-white cursor-not-allowed'
-              : 'bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:opacity-90'
+              : 'bg-primary text-primary-foreground hover:opacity-90'
           }`}
         >
           {purchased ? t('products.owned') : isLoading ? '...' : t('products.purchaseNow')}
