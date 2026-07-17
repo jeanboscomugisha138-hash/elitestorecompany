@@ -221,8 +221,9 @@ export default function Dashboard() {
                 : 'bg-primary/10 text-primary';
               const inner = (
                 <>
-                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition active:scale-95 ${iconWrap}`}>
+                  <div className={`relative w-14 h-14 rounded-2xl flex items-center justify-center transition active:scale-95 ${iconWrap}`}>
                     <a.icon className="w-6 h-6" strokeWidth={2.2} />
+                    <span aria-hidden className="absolute -top-1 -right-1 text-base drop-shadow">{(a as any).emoji}</span>
                   </div>
                   <span className="text-[11px] font-semibold text-foreground mt-2 text-center leading-tight">{a.label}</span>
                 </>
