@@ -89,6 +89,108 @@
     @apply w-full px-4 py-3 rounded-xl border border-input bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-200;
   }
 
+  .auth-safe-page {
+    min-height: 100vh;
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+    overflow-x: hidden;
+    isolation: isolate;
+  }
+
+  .auth-safe-header {
+    background: linear-gradient(180deg, hsl(var(--primary)) 0%, hsl(226 83% 33%) 100%);
+    color: hsl(var(--primary-foreground));
+    border-bottom-left-radius: 2rem;
+    border-bottom-right-radius: 2rem;
+    box-shadow: none;
+    filter: none;
+    -webkit-filter: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    animation: none;
+    transition: none;
+    transform: none;
+    -webkit-transform: none;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .auth-safe-panel {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: 1.5rem;
+    box-shadow: 0 1px 2px hsl(226 50% 20% / 0.08);
+    filter: none;
+    -webkit-filter: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    animation: none;
+    transition: none;
+    transform: none;
+    -webkit-transform: none;
+    overflow: visible;
+  }
+
+  .auth-safe-logo-box {
+    background: hsl(var(--primary-foreground));
+    border: 1px solid hsl(var(--primary-foreground) / 0.35);
+    border-radius: 1.25rem;
+    box-shadow: none;
+    filter: none;
+    -webkit-filter: none;
+  }
+
+  .auth-safe-field {
+    background: hsl(var(--muted));
+    border: 1px solid hsl(var(--border));
+    border-radius: 1rem;
+    color: hsl(var(--foreground));
+    transition: none;
+    box-shadow: none;
+  }
+
+  .auth-safe-field:focus-within {
+    border-color: hsl(var(--primary));
+    background: hsl(var(--card));
+  }
+
+  .auth-safe-input {
+    width: 100%;
+    background: transparent;
+    color: hsl(var(--foreground));
+    font-weight: 700;
+    outline: none;
+    border: 0;
+    min-width: 0;
+  }
+
+  .auth-safe-input::placeholder {
+    color: hsl(var(--muted-foreground) / 0.7);
+    font-weight: 500;
+  }
+
+  .auth-safe-button {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border: 0;
+    border-radius: 1rem;
+    box-shadow: none;
+    transition: none;
+    transform: none;
+    -webkit-transform: none;
+  }
+
+  .auth-safe-trust {
+    background: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
+    border: 1px solid hsl(var(--primary) / 0.12);
+    border-radius: 1rem;
+    box-shadow: none;
+    transition: none;
+    transform: none;
+    -webkit-transform: none;
+  }
+
   .page-container {
     @apply min-h-screen pb-24 px-4 pt-6 max-w-md mx-auto;
   }
