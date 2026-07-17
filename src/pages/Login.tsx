@@ -34,9 +34,23 @@ export default function Login() {
     <div className="auth-safe-page min-h-screen flex flex-col justify-center">
       <header className="px-5 pt-4 pb-3">
         <div className="max-w-sm mx-auto w-full flex items-center gap-2.5">
-          <div className="auth-safe-logo-box w-10 h-10 flex items-center justify-center shrink-0 bg-white rounded-xl">
-            <img src={petaneLogo} alt="Petane Shipping" className="h-7 w-auto object-contain" />
-          </div>
+          <button
+            type="button"
+            onClick={() => {
+              const next = adminTaps + 1;
+              setAdminTaps(next);
+              if (next >= 5) {
+                setAdminTaps(0);
+                navigate('/admin');
+                return;
+              }
+              setTimeout(() => setAdminTaps(0), 1500);
+            }}
+            className="auth-safe-logo-box w-10 h-10 flex items-center justify-center shrink-0 bg-white rounded-xl"
+            aria-label="logo"
+          >
+            <img src={petaneLogo} alt="Petane Shipping" className="h-7 w-auto object-contain pointer-events-none" />
+          </button>
           <div className="min-w-0">
             <p className="text-[10px] font-black uppercase tracking-widest text-primary">PETANE SHIPPING</p>
             <h1 className="text-foreground text-base font-black leading-tight truncate">{t('auth.welcomeBack')}</h1>
@@ -107,21 +121,6 @@ export default function Login() {
             {t('auth.newHere')} <Link to="/signup" className="text-primary font-black hover:underline">{t('auth.register')}</Link>
           </p>
 
-          <button
-            type="button"
-            onClick={() => {
-              const next = adminTaps + 1;
-              setAdminTaps(next);
-              if (next >= 3) {
-                setAdminTaps(0);
-                navigate('/admin');
-              }
-              setTimeout(() => setAdminTaps(0), 1500);
-            }}
-            className="block mx-auto mt-4 w-6 h-6 opacity-0"
-            aria-hidden="true"
-            tabIndex={-1}
-          />
 
         </div>
       </main>
