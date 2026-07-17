@@ -84,14 +84,14 @@ export default function Dashboard() {
   const mask = (v: number) => (balanceVisible ? v.toLocaleString() : 'XXXXXX');
 
   const quickActions = [
-    { label: 'Ishyura', icon: ArrowUpRight, to: '/deposit', variant: 'solid' as const },
-    { label: 'Kwakira', icon: Download, to: '/withdraw', variant: 'soft' as const },
-    { label: 'Amateka', icon: HistoryIcon, to: '/history', variant: 'soft' as const },
-    { label: 'Bonus', icon: Gift, onClick: () => setGiftDialogOpen(true), variant: 'solid' as const },
-    { label: 'Abo turi bo', icon: Users, to: '/referral', variant: 'soft' as const },
-    { label: 'Ubufasha', icon: Headphones, onClick: () => setAboutOpen(true), variant: 'soft' as const },
-    { label: 'Imirimo', icon: Package, to: '/products', variant: 'solid' as const },
-    { label: 'Imishinga', icon: Wallet, to: '/products', variant: 'soft' as const },
+    { label: 'Ishyura', emoji: '💸', icon: ArrowUpRight, to: '/deposit', variant: 'solid' as const },
+    { label: 'Kwakira', emoji: '⬇️', icon: Download, to: '/withdraw', variant: 'soft' as const },
+    { label: 'Amateka', emoji: '🕐', icon: HistoryIcon, to: '/history', variant: 'soft' as const },
+    { label: 'Bonus', emoji: '🎁', icon: Gift, onClick: () => setGiftDialogOpen(true), variant: 'solid' as const },
+    { label: 'Abo turi bo', emoji: '👥', icon: Users, to: '/referral', variant: 'soft' as const },
+    { label: 'Ubufasha', emoji: '🎧', icon: Headphones, onClick: () => setAboutOpen(true), variant: 'soft' as const },
+    { label: 'Imirimo', emoji: '📦', icon: Package, to: '/products', variant: 'solid' as const },
+    { label: 'Imishinga', emoji: '💼', icon: Wallet, to: '/products', variant: 'soft' as const },
   ];
 
   return (
@@ -101,7 +101,7 @@ export default function Dashboard() {
       <ReferralCommissionListener />
 
       {/* Red top header - compact, card overlaps into red band */}
-      <div className="bg-primary px-4 pt-4 pb-20 relative">
+      <div className="gradient-primary px-4 pt-4 pb-20 relative">
         <div className="flex items-center justify-between">
           <img
             src={petaneLogo}
@@ -168,12 +168,14 @@ export default function Dashboard() {
               to="/products"
               className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-black text-[13px] py-2.5 rounded-xl active:scale-[0.98] transition"
             >
+              <span aria-hidden>👑</span>
               <PiggyBank className="w-4 h-4" strokeWidth={2.5} /> Gura VIP
             </Link>
             <Link
               to="/deposit"
               className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-black text-[13px] py-2.5 rounded-xl active:scale-[0.98] transition"
             >
+              <span aria-hidden>💸</span>
               <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} /> Ishyura
             </Link>
           </div>
@@ -219,8 +221,9 @@ export default function Dashboard() {
                 : 'bg-primary/10 text-primary';
               const inner = (
                 <>
-                  <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition active:scale-95 ${iconWrap}`}>
+                  <div className={`relative w-14 h-14 rounded-2xl flex items-center justify-center transition active:scale-95 ${iconWrap}`}>
                     <a.icon className="w-6 h-6" strokeWidth={2.2} />
+                    <span aria-hidden className="absolute -top-1 -right-1 text-base drop-shadow">{(a as any).emoji}</span>
                   </div>
                   <span className="text-[11px] font-semibold text-foreground mt-2 text-center leading-tight">{a.label}</span>
                 </>
