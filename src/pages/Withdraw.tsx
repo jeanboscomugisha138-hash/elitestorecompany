@@ -233,31 +233,6 @@ export default function Withdraw() {
           )}
         </div>
 
-        {/* Password */}
-        {bound && (
-          <div className="dashboard-card p-5 mb-3">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
-                <Lock className="w-4 h-4 text-primary" />
-              </div>
-              <p className="text-base font-black text-foreground">Ijambobanga ryo Kwakira</p>
-            </div>
-            <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input
-                type={showPw ? 'text' : 'password'}
-                placeholder="Andika ijambobanga ryawe"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="input-field pl-11 pr-11 text-sm"
-              />
-              <button type="button" onClick={() => setShowPw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground p-1">
-                {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
-            </div>
-          </div>
-        )}
-
         <button
           onClick={handleSubmit}
           disabled={isLoading || hasPending || !bound}
@@ -266,9 +241,9 @@ export default function Withdraw() {
           {isLoading ? (
             <><div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />Birimo gukorwa...</>
           ) : hasPending ? (
-            <><Clock className="w-4 h-4" />Hari ubwikuze butegereje</>
+            <><Clock className="w-4 h-4" />Hari ibikuza bitegereje</>
           ) : (
-            <><CheckCircle2 className="w-5 h-5" />Emeza Ubwikuze</>
+            <><CheckCircle2 className="w-5 h-5" />Emeza Ibikuza</>
           )}
         </button>
 
