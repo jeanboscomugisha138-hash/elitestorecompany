@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { MessageCircle } from 'lucide-react';
+import { Send } from 'lucide-react';
 import { PopupModal } from './PopupModal';
-import { useSiteSettings } from '@/hooks/useSiteSettings';
+
+const TELEGRAM_URL = 'https://t.me/+12052657574';
 
 export function ChannelPopup() {
   const [showPopup, setShowPopup] = useState(false);
-  const { settings } = useSiteSettings();
 
   useEffect(() => {
     const justLoggedIn = sessionStorage.getItem('justLoggedIn');
@@ -13,7 +13,7 @@ export function ChannelPopup() {
       const timer = setTimeout(() => {
         setShowPopup(true);
         sessionStorage.removeItem('justLoggedIn');
-      }, 1500);
+      }, 1200);
       return () => clearTimeout(timer);
     }
   }, []);
@@ -21,25 +21,28 @@ export function ChannelPopup() {
   const closePopup = () => setShowPopup(false);
 
   return (
-    <PopupModal isOpen={showPopup} onClose={closePopup}>
-      <div className="text-center">
-        <div className="w-20 h-20 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mx-auto mb-4 shadow-button">
-          <MessageCircle className="w-10 h-10 text-primary-foreground" />
+    <PopupModal isOpen={showPopup} onClose={closePopup} accent="info">
+      <div className="flex items-start gap-3 mb-4">
+        <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+          <Send className="w-6 h-6 text-primary" />
         </div>
-        <h3 className="text-xl font-bold text-foreground mb-2">Join Our WhatsApp Group!</h3>
-        <p className="text-muted-foreground mb-4">
-          Join our official WhatsApp group to receive the latest updates, news and fast support.
-        </p>
-        <a
-          href={settings.whatsapp_group_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="action-btn w-full inline-block text-center"
-          onClick={closePopup}
-        >
-          Join WhatsApp Group
-        </a>
+        <div className="flex-1 min-w-0 pt-1">
+          <h3 className="text-lg font-black text-foreground leading-tight">Injira muri Telegram Group</h3>
+          <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
+            Injira mu itsinda ryacu rya Telegram uhabwe amakuru mashya, amatangazo n'ubufasha bwihuse.
+          </p>
+        </div>
       </div>
+
+      <a
+        href={TELEGRAM_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={closePopup}
+        className="w-full bg-[#229ED9] text-white font-black text-sm py-3.5 rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition shadow-lg-custom"
+      >
+        <Send className="w-5 h-5" /> INJIRA MURI TELEGRAM GROUP
+      </a>
     </PopupModal>
   );
 }
