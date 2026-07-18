@@ -121,7 +121,7 @@ export default function Withdraw() {
             <ArrowLeft className="w-5 h-5 text-primary-foreground" />
           </Link>
           <div className="flex-1">
-            <h1 className="text-lg font-black text-primary-foreground">Kwikuza Amafaranga</h1>
+            <h1 className="text-lg font-black text-primary-foreground">Bikuza Amafaranga</h1>
             <p className="text-xs text-primary-foreground/80">Ohereza amafaranga kuri MoMo yawe</p>
           </div>
           <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center">
