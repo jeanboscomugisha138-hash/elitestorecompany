@@ -195,7 +195,7 @@ export default function Withdraw() {
             <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
               <Banknote className="w-4 h-4 text-primary" />
             </div>
-            <p className="text-base font-black text-foreground">Amafaranga wikuza</p>
+            <p className="text-base font-black text-foreground">Amafaranga ubikuza</p>
           </div>
 
           <div className="relative mb-3">
