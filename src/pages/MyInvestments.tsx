@@ -135,7 +135,7 @@ export default function MyInvestments() {
                         <Package className="w-5 h-5 text-primary" />
                       </div>
                       <div className="min-w-0">
-                        <p className="text-sm font-black text-foreground leading-tight truncate">{it.investment_products?.name || 'Umushinga'}</p>
+                        <p className="text-sm font-black text-foreground leading-tight truncate">{PRODUCT_NAMES[String(Number(it.amount))] || 'Umushinga'}</p>
                         <p className="text-[11px] text-muted-foreground font-semibold mt-0.5">
                           {Number(it.amount).toLocaleString()} RWF
                         </p>
