@@ -22,7 +22,7 @@ export default function MyInvestments() {
 
   useEffect(() => {
     (async () => {
-      if (!profile?.user_id) return;
+      if (!profile?.user_id) { setLoading(false); return; }
       const { data } = await supabase
         .from('user_investments')
         .select('id, amount, daily_profit, start_date, end_date, status, investment_products(name)')
@@ -35,48 +35,67 @@ export default function MyInvestments() {
 
   const activeCount = items.filter(i => i.status === 'active').length;
   const totalInvested = items.reduce((s, i) => s + Number(i.amount), 0);
+  const totalDaily = items.filter(i => i.status === 'active').reduce((s, i) => s + Number(i.daily_profit), 0);
 
   return (
-    <div className="min-h-screen bg-[hsl(226_78%_90%)] pb-28">
-      <div className="gradient-primary px-4 pt-6 pb-14 rounded-b-[2rem] shadow-lg-custom">
+    <div
+      className="min-h-screen bg-[hsl(226_78%_96%)] pb-28"
+      style={{ transform: 'translateZ(0)', WebkitTransform: 'translateZ(0)', backfaceVisibility: 'hidden', isolation: 'isolate' }}
+    >
+      {/* Flat header — no gradient, no overlap, avoids Samsung/Chrome banding artifacts */}
+      <header className="bg-primary px-4 pt-5 pb-5">
         <div className="max-w-md mx-auto flex items-center gap-3">
           <Link to="/dashboard" className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center active:scale-95 transition">
             <ArrowLeft className="w-5 h-5 text-primary-foreground" />
           </Link>
-          <div className="flex-1">
-            <h1 className="text-lg font-black text-primary-foreground">Imishinga Yanjye</h1>
+          <div className="flex-1 min-w-0">
+            <h1 className="text-lg font-black text-primary-foreground leading-tight">Imishinga Yanjye</h1>
             <p className="text-xs text-primary-foreground/80">Imishinga yose waguze</p>
           </div>
           <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center">
             <Package className="w-5 h-5 text-primary-foreground" />
           </div>
         </div>
-      </div>
+      </header>
 
-      <div className="max-w-md mx-auto px-3 -mt-10">
-        <div className="grid grid-cols-2 gap-3 mb-4">
-          <div className="dashboard-card p-4">
-            <div className="flex items-center gap-2 mb-1.5">
-              <TrendingUp className="w-4 h-4 text-primary" />
-              <p className="text-[11px] text-muted-foreground font-bold uppercase tracking-wide">Ikora</p>
+      <div className="max-w-md mx-auto px-3 pt-4">
+        {/* Stats row */}
+        <div className="grid grid-cols-3 gap-2 mb-4">
+          <div className="bg-white rounded-2xl p-3 border border-border">
+            <div className="flex items-center gap-1.5 mb-1">
+              <TrendingUp className="w-3.5 h-3.5 text-primary" />
+              <p className="text-[10px] text-muted-foreground font-bold uppercase">Ikora</p>
             </div>
-            <p className="text-2xl font-black text-foreground">{activeCount}</p>
+            <p className="text-xl font-black text-foreground leading-none">{activeCount}</p>
           </div>
-          <div className="dashboard-card p-4">
-            <div className="flex items-center gap-2 mb-1.5">
-              <Wallet className="w-4 h-4 text-primary" />
-              <p className="text-[11px] text-muted-foreground font-bold uppercase tracking-wide">Yashowe</p>
+          <div className="bg-white rounded-2xl p-3 border border-border">
+            <div className="flex items-center gap-1.5 mb-1">
+              <Wallet className="w-3.5 h-3.5 text-primary" />
+              <p className="text-[10px] text-muted-foreground font-bold uppercase">Yashowe</p>
             </div>
-            <p className="text-lg font-black text-foreground">
-              {totalInvested.toLocaleString()} <span className="text-xs text-primary">RWF</span>
+            <p className="text-sm font-black text-foreground leading-none">
+              {totalInvested.toLocaleString()}
+              <span className="text-[10px] text-primary ml-1">RWF</span>
+            </p>
+          </div>
+          <div className="bg-white rounded-2xl p-3 border border-border">
+            <div className="flex items-center gap-1.5 mb-1">
+              <Calendar className="w-3.5 h-3.5 text-primary" />
+              <p className="text-[10px] text-muted-foreground font-bold uppercase">Buri Munsi</p>
+            </div>
+            <p className="text-sm font-black text-primary leading-none">
+              {totalDaily.toLocaleString()}
+              <span className="text-[10px] ml-1">RWF</span>
             </p>
           </div>
         </div>
 
         {loading ? (
-          <div className="dashboard-card p-8 text-center text-sm text-muted-foreground">Turi gukura amakuru...</div>
+          <div className="bg-white rounded-2xl p-8 text-center text-sm text-muted-foreground border border-border">
+            Turi gukura amakuru...
+          </div>
         ) : items.length === 0 ? (
-          <div className="dashboard-card p-8 text-center">
+          <div className="bg-white rounded-2xl p-8 text-center border border-border">
             <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
               <Package className="w-8 h-8 text-primary" />
             </div>
@@ -91,42 +110,42 @@ export default function MyInvestments() {
             {items.map((it) => {
               const start = new Date(it.start_date);
               const end = new Date(it.end_date);
-              const totalDays = Math.max(1, Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)));
-              const daysPassed = Math.min(totalDays, Math.max(0, Math.round((Date.now() - start.getTime()) / (1000 * 60 * 60 * 24))));
+              const totalDays = Math.max(1, Math.round((end.getTime() - start.getTime()) / 86400000));
+              const daysPassed = Math.min(totalDays, Math.max(0, Math.round((Date.now() - start.getTime()) / 86400000)));
               const progress = Math.min(100, Math.round((daysPassed / totalDays) * 100));
               const isActive = it.status === 'active';
               return (
-                <div key={it.id} className="dashboard-card p-4">
+                <div key={it.id} className="bg-white rounded-2xl p-4 border border-border">
                   <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                         <Package className="w-5 h-5 text-primary" />
                       </div>
-                      <div>
-                        <p className="text-sm font-black text-foreground leading-tight">{it.investment_products?.name || 'Umushinga'}</p>
+                      <div className="min-w-0">
+                        <p className="text-sm font-black text-foreground leading-tight truncate">{it.investment_products?.name || 'Umushinga'}</p>
                         <p className="text-[11px] text-muted-foreground font-semibold mt-0.5">
                           {Number(it.amount).toLocaleString()} RWF
                         </p>
                       </div>
                     </div>
-                    <span className={`inline-flex items-center gap-1 text-[10px] font-black px-2 py-1 rounded-full ${isActive ? 'bg-emerald-500/10 text-emerald-600' : 'bg-muted text-muted-foreground'}`}>
+                    <span className={`inline-flex items-center gap-1 text-[10px] font-black px-2 py-1 rounded-full shrink-0 ${isActive ? 'bg-emerald-500/10 text-emerald-600' : 'bg-muted text-muted-foreground'}`}>
                       {isActive ? <><Clock className="w-3 h-3" /> IKORA</> : <><CheckCircle2 className="w-3 h-3" /> YARANGIYE</>}
                     </span>
                   </div>
 
                   <div className="grid grid-cols-2 gap-2 mb-3">
-                    <div className="bg-muted/60 rounded-xl p-2.5">
+                    <div className="bg-muted/50 rounded-xl p-2.5">
                       <p className="text-[10px] text-muted-foreground font-bold uppercase">Inyungu/Umunsi</p>
                       <p className="text-sm font-black text-primary">{Number(it.daily_profit).toLocaleString()} RWF</p>
                     </div>
-                    <div className="bg-muted/60 rounded-xl p-2.5">
+                    <div className="bg-muted/50 rounded-xl p-2.5">
                       <p className="text-[10px] text-muted-foreground font-bold uppercase">Iminsi</p>
                       <p className="text-sm font-black text-foreground">{daysPassed}/{totalDays}</p>
                     </div>
                   </div>
 
                   <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-                    <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${progress}%` }} />
+                    <div className="h-full bg-primary rounded-full" style={{ width: `${progress}%` }} />
                   </div>
                   <div className="flex items-center justify-between mt-2 text-[10px] text-muted-foreground font-semibold">
                     <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {start.toLocaleDateString('rw-RW')}</span>
