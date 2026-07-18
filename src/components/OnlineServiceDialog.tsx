@@ -24,7 +24,7 @@ export function OnlineServiceDialog({ open, onOpenChange }: { open: boolean; onO
         rel="noopener noreferrer"
         className="bg-[#229ED9] text-white font-black text-sm py-3.5 rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition shadow-lg-custom"
       >
-        <Send className="w-5 h-5" /> Injira mu Itsinda rya Telegram
+        <Send className="w-5 h-5" /> Telegram Online services
       </a>
     </PopupModal>
   );
