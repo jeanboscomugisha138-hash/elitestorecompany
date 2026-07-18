@@ -12,8 +12,21 @@ interface Investment {
   start_date: string;
   end_date: string;
   status: string;
-  investment_products: { name: string } | null;
+  product_id: string;
 }
+
+const PRODUCT_NAMES: Record<string, string> = {
+  '3500': 'Petane Peteroli Mbisi',
+  '10000': 'Petane Mazutu',
+  '20000': 'Petane Essence',
+  '30000': 'Wireless Duo',
+  '40000': 'Petane LPG',
+  '50000': 'Petane Cargo',
+  '100000': 'Petane Marine',
+  '250000': 'Petane Tanker',
+  '500000': 'Petane Fleet',
+  '1000000': 'Petane Global Energy',
+};
 
 export default function MyInvestments() {
   const { profile } = useAuth();
@@ -25,7 +38,7 @@ export default function MyInvestments() {
       if (!profile?.user_id) { setLoading(false); return; }
       const { data } = await supabase
         .from('user_investments')
-        .select('id, amount, daily_profit, start_date, end_date, status, investment_products(name)')
+        .select('id, amount, daily_profit, start_date, end_date, status, product_id')
         .eq('user_id', profile.user_id)
         .order('created_at', { ascending: false });
       setItems((data as unknown as Investment[]) || []);
