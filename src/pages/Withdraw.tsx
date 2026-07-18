@@ -64,26 +64,23 @@ export default function Withdraw() {
     if (isLoading) return;
 
     if (!bound) {
-      showError('Ubanze wandike konti yo kwakira mbere yo gukora ubwikuze bwa mbere.', 'Konti ntiragenwa');
+      showError('Ubanze wandike konti yo kwakira mbere yo gukora ibikuza bwa mbere.', 'Konti ntiragenwa');
       return;
     }
 
     const hour = new Date().getHours();
     if (hour < startHour || hour >= endHour) {
-      showError(`Ubwikuze bwemewe hagati ya saa ${startHour}:00 na ${endHour}:00 gusa.`, 'Ntabwo ari amasaha akora');
+      showError(`Ibikuza byemewe hagati ya saa ${startHour}:00 na ${endHour}:00 gusa.`, 'Ntabwo ari amasaha akora');
       return;
     }
-    if (hasPending) { showError('Ufite ubwikuze bwaheruka bugitegereje kwemezwa. Tegereza bwemezwe.', 'Hari ubwikuze butegereje'); return; }
+    if (hasPending) { showError('Ufite ibikuza byaheruka bigitegereje kwemezwa. Tegereza byemezwe.', 'Hari ibikuza bitegereje'); return; }
 
     const amountNum = parseInt(amount);
-    if (!amount || isNaN(amountNum)) { showError('Andikamo amafaranga ushaka kwikuza.', 'Amafaranga ntayo'); return; }
-    if ((profile?.invested_amount || 0) <= 0) { showError('Kugira ngo wikuze, ugomba kubanza kugura umushinga.', 'Ntabwo ushobora kwikuza'); return; }
-    if (amountNum < minWithdraw) { showError(`Amafaranga make ushobora kwikuza ni ${minWithdraw.toLocaleString()} RWF${isFirstWithdraw ? ' (ubwikuze bwa mbere)' : ''}.`, 'Amafaranga ni make'); return; }
-    if (amountNum > maxWithdraw) { showError(`Amafaranga menshi ushobora kwikuza ni ${maxWithdraw.toLocaleString()} RWF.`, 'Amafaranga ni menshi'); return; }
+    if (!amount || isNaN(amountNum)) { showError('Andikamo amafaranga ushaka gukura.', 'Amafaranga ntayo'); return; }
+    if ((profile?.invested_amount || 0) <= 0) { showError('Kugira ngo ubikuze, ugomba kubanza kugura umushinga.', 'Ntabwo ushobora gukura'); return; }
+    if (amountNum < minWithdraw) { showError(`Amafaranga make ushobora gukura ni ${minWithdraw.toLocaleString()} RWF${isFirstWithdraw ? ' (ibikuza bya mbere)' : ''}.`, 'Amafaranga ni make'); return; }
+    if (amountNum > maxWithdraw) { showError(`Amafaranga menshi ushobora gukura ni ${maxWithdraw.toLocaleString()} RWF.`, 'Amafaranga ni menshi'); return; }
     if (amountNum > (profile?.main_balance || 0)) { showError('Ntufite amafaranga ahagije kuri konti yawe.', 'Balance ntihagije'); return; }
-
-    if (!password) { showError('Andika ijambobanga ryawe ryo kwakira.', 'Ijambobanga ribura'); return; }
-    if (password !== profile?.withdraw_password) { showError('Ijambobanga wanditse ntabwo ari ryo. Ongera ugerageze.', 'Ijambobanga si ryo'); return; }
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -94,7 +91,7 @@ export default function Withdraw() {
       .gte('created_at', today.toISOString())
       .limit(1);
     if (todayWithdrawals && todayWithdrawals.length > 0) {
-      showError('Wemerewe kwikuza rimwe ku munsi gusa. Garuka ejo.', 'Wamaze kwikuza uyu munsi');
+      showError('Wemerewe gukura amafaranga rimwe ku munsi gusa. Garuka ejo.', 'Wamaze gukura uyu munsi');
       return;
     }
 
@@ -104,17 +101,16 @@ export default function Withdraw() {
       .insert({
         user_id: profile?.user_id,
         phone: profile!.withdraw_phone!,
-        full_name: profile!.full_name,
+        full_name: profile!.withdraw_name || profile!.full_name,
         amount: amountNum,
         status: 'pending',
       });
     setIsLoading(false);
 
-    if (error) { showError('Ntibyakunze kohereza ubwikuze. Gerageza nanone.', 'Ubwikuze ntibwohererejwe'); return; }
+    if (error) { showError('Ntibyakunze kohereza ibikuza. Gerageza nanone.', 'Ibikuza ntibyohererejwe'); return; }
 
     setWithdrawSuccess({ show: true, amount: amountNum });
     setAmount('');
-    setPassword('');
   };
 
   return (
