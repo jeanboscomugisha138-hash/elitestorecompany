@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Banknote, CheckCircle2, Shield, Wallet, Clock, Headphones, Lock, Phone, User as UserIcon, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Banknote, CheckCircle2, Shield, Wallet, Clock, Headphones, AlertCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BottomNav } from '@/components/BottomNav';
 import { SuccessNotification } from '@/components/SuccessNotification';
