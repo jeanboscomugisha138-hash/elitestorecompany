@@ -175,6 +175,7 @@ export type Database = {
           total_profit: number
           updated_at: string
           user_id: string
+          withdraw_name: string | null
           withdraw_password: string | null
           withdraw_phone: string | null
         }
@@ -192,6 +193,7 @@ export type Database = {
           total_profit?: number
           updated_at?: string
           user_id: string
+          withdraw_name?: string | null
           withdraw_password?: string | null
           withdraw_phone?: string | null
         }
@@ -209,6 +211,7 @@ export type Database = {
           total_profit?: number
           updated_at?: string
           user_id?: string
+          withdraw_name?: string | null
           withdraw_password?: string | null
           withdraw_phone?: string | null
         }
