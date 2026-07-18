@@ -149,7 +149,7 @@ export default function Withdraw() {
             </div>
             {!checking && (
               <span className="text-[10px] font-black px-2 py-1 rounded-full bg-primary/10 text-primary">
-                {isFirstWithdraw ? 'UBWIKUZE BWA MBERE' : `UBWIKUZE #${approvedCount + 1}`}
+                {isFirstWithdraw ? 'IBIKUZA BYA MBERE' : `IBIKUZA #${approvedCount + 1}`}
               </span>
             )}
           </div>
