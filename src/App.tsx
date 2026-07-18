@@ -74,6 +74,7 @@ function AppRoutes() {
       <Route path="/" element={<Navigate to={user ? "/dashboard" : "/signup"} replace />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/register" element={<Signup />} />
 
       {/* Protected User Routes */}
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
