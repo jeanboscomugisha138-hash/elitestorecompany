@@ -11,7 +11,6 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { BottomNav } from '@/components/BottomNav';
 import { ChannelPopup } from '@/components/ChannelPopup';
-import { AnnouncementPopup } from '@/components/AnnouncementPopup';
 import { CustomerServiceButton } from '@/components/CustomerServiceButton';
 import { ReferralCommissionListener } from '@/components/ReferralCommissionListener';
 import { Link } from 'react-router-dom';
@@ -47,7 +46,6 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen pb-24 max-w-md mx-auto bg-[hsl(226_78%_90%)]">
-      <AnnouncementPopup />
       <ChannelPopup />
       <ReferralCommissionListener />
 
