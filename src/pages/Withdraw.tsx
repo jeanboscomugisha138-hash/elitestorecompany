@@ -29,7 +29,7 @@ export default function Withdraw() {
 
   const isFirstWithdraw = approvedCount === 0;
   const minWithdraw = isFirstWithdraw ? minFirst : minRecurring;
-  const bound = !!(profile?.withdraw_phone && profile?.withdraw_password);
+  const bound = !!(profile?.withdraw_phone && profile?.withdraw_name);
 
   useEffect(() => {
     (async () => {
