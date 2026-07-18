@@ -167,7 +167,7 @@ export default function Withdraw() {
                   onClick={() => navigate('/withdrawal-account')}
                   className="mt-3 bg-primary text-primary-foreground text-xs font-black px-4 py-2 rounded-xl active:scale-95 transition"
                 >
-                  Genya Konti
+                  SHYIRAMO KONTI UBIKURIZAHO
                 </button>
               </div>
             </div>
