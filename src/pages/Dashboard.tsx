@@ -121,7 +121,7 @@ export default function Dashboard() {
               <div className="text-[11px] text-muted-foreground mt-1 font-medium leading-tight">Ayo ufiteho</div>
             </div>
             <div className="border-l border-border/60 pl-3">
-              <div className="text-[22px] font-black text-foreground leading-none tracking-tight">{mask(totalProfit)}</div>
+              <div className="text-[22px] font-black text-foreground leading-none tracking-tight">{mask(totalEarnings)}</div>
               <div className="text-primary text-[13px] font-black mt-1">RWF</div>
               <div className="text-[11px] text-muted-foreground mt-1 font-medium leading-tight">Inyungu zose</div>
             </div>
