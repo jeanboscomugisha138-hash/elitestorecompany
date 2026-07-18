@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Banknote, CheckCircle2, Shield, Wallet, Clock, Headphones, Lock, Phone, User as UserIcon, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Banknote, CheckCircle2, Shield, Wallet, Clock, Headphones, AlertCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { BottomNav } from '@/components/BottomNav';
 import { SuccessNotification } from '@/components/SuccessNotification';
@@ -14,8 +14,6 @@ export default function Withdraw() {
   const navigate = useNavigate();
 
   const [amount, setAmount] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPw, setShowPw] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [withdrawSuccess, setWithdrawSuccess] = useState<{ show: boolean; amount: number }>({ show: false, amount: 0 });
   const [errorPopup, setErrorPopup] = useState<{ show: boolean; title?: string; message: string }>({ show: false, message: '' });
@@ -31,7 +29,7 @@ export default function Withdraw() {
 
   const isFirstWithdraw = approvedCount === 0;
   const minWithdraw = isFirstWithdraw ? minFirst : minRecurring;
-  const bound = !!(profile?.withdraw_phone && profile?.withdraw_password);
+  const bound = !!(profile?.withdraw_phone && profile?.withdraw_name);
 
   useEffect(() => {
     (async () => {
@@ -64,26 +62,23 @@ export default function Withdraw() {
     if (isLoading) return;
 
     if (!bound) {
-      showError('Ubanze wandike konti yo kwakira mbere yo gukora ubwikuze bwa mbere.', 'Konti ntiragenwa');
+      showError('Ubanze wandike konti yo kwakira mbere yo gukora ibikuza bwa mbere.', 'Konti ntiragenwa');
       return;
     }
 
     const hour = new Date().getHours();
     if (hour < startHour || hour >= endHour) {
-      showError(`Ubwikuze bwemewe hagati ya saa ${startHour}:00 na ${endHour}:00 gusa.`, 'Ntabwo ari amasaha akora');
+      showError(`Ibikuza byemewe hagati ya saa ${startHour}:00 na ${endHour}:00 gusa.`, 'Ntabwo ari amasaha akora');
       return;
     }
-    if (hasPending) { showError('Ufite ubwikuze bwaheruka bugitegereje kwemezwa. Tegereza bwemezwe.', 'Hari ubwikuze butegereje'); return; }
+    if (hasPending) { showError('Ufite ibikuza byaheruka bigitegereje kwemezwa. Tegereza byemezwe.', 'Hari ibikuza bitegereje'); return; }
 
     const amountNum = parseInt(amount);
-    if (!amount || isNaN(amountNum)) { showError('Andikamo amafaranga ushaka kwikuza.', 'Amafaranga ntayo'); return; }
-    if ((profile?.invested_amount || 0) <= 0) { showError('Kugira ngo wikuze, ugomba kubanza kugura umushinga.', 'Ntabwo ushobora kwikuza'); return; }
-    if (amountNum < minWithdraw) { showError(`Amafaranga make ushobora kwikuza ni ${minWithdraw.toLocaleString()} RWF${isFirstWithdraw ? ' (ubwikuze bwa mbere)' : ''}.`, 'Amafaranga ni make'); return; }
-    if (amountNum > maxWithdraw) { showError(`Amafaranga menshi ushobora kwikuza ni ${maxWithdraw.toLocaleString()} RWF.`, 'Amafaranga ni menshi'); return; }
+    if (!amount || isNaN(amountNum)) { showError('Andikamo amafaranga ushaka gukura.', 'Amafaranga ntayo'); return; }
+    if ((profile?.invested_amount || 0) <= 0) { showError('Kugira ngo ubikuze, ugomba kubanza kugura umushinga.', 'Ntabwo ushobora gukura'); return; }
+    if (amountNum < minWithdraw) { showError(`Amafaranga make ushobora gukura ni ${minWithdraw.toLocaleString()} RWF${isFirstWithdraw ? ' (ibikuza bya mbere)' : ''}.`, 'Amafaranga ni make'); return; }
+    if (amountNum > maxWithdraw) { showError(`Amafaranga menshi ushobora gukura ni ${maxWithdraw.toLocaleString()} RWF.`, 'Amafaranga ni menshi'); return; }
     if (amountNum > (profile?.main_balance || 0)) { showError('Ntufite amafaranga ahagije kuri konti yawe.', 'Balance ntihagije'); return; }
-
-    if (!password) { showError('Andika ijambobanga ryawe ryo kwakira.', 'Ijambobanga ribura'); return; }
-    if (password !== profile?.withdraw_password) { showError('Ijambobanga wanditse ntabwo ari ryo. Ongera ugerageze.', 'Ijambobanga si ryo'); return; }
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -94,7 +89,7 @@ export default function Withdraw() {
       .gte('created_at', today.toISOString())
       .limit(1);
     if (todayWithdrawals && todayWithdrawals.length > 0) {
-      showError('Wemerewe kwikuza rimwe ku munsi gusa. Garuka ejo.', 'Wamaze kwikuza uyu munsi');
+      showError('Wemerewe gukura amafaranga rimwe ku munsi gusa. Garuka ejo.', 'Wamaze gukura uyu munsi');
       return;
     }
 
@@ -104,17 +99,16 @@ export default function Withdraw() {
       .insert({
         user_id: profile?.user_id,
         phone: profile!.withdraw_phone!,
-        full_name: profile!.full_name,
+        full_name: profile!.withdraw_name || profile!.full_name,
         amount: amountNum,
         status: 'pending',
       });
     setIsLoading(false);
 
-    if (error) { showError('Ntibyakunze kohereza ubwikuze. Gerageza nanone.', 'Ubwikuze ntibwohererejwe'); return; }
+    if (error) { showError('Ntibyakunze kohereza ibikuza. Gerageza nanone.', 'Ibikuza ntibyohererejwe'); return; }
 
     setWithdrawSuccess({ show: true, amount: amountNum });
     setAmount('');
-    setPassword('');
   };
 
   return (
@@ -125,7 +119,7 @@ export default function Withdraw() {
             <ArrowLeft className="w-5 h-5 text-primary-foreground" />
           </Link>
           <div className="flex-1">
-            <h1 className="text-lg font-black text-primary-foreground">Kwikuza Amafaranga</h1>
+            <h1 className="text-lg font-black text-primary-foreground">Bikuza Amafaranga</h1>
             <p className="text-xs text-primary-foreground/80">Ohereza amafaranga kuri MoMo yawe</p>
           </div>
           <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center">
@@ -153,7 +147,7 @@ export default function Withdraw() {
             </div>
             {!checking && (
               <span className="text-[10px] font-black px-2 py-1 rounded-full bg-primary/10 text-primary">
-                {isFirstWithdraw ? 'UBWIKUZE BWA MBERE' : `UBWIKUZE #${approvedCount + 1}`}
+                {isFirstWithdraw ? 'IBIKUZA BYA MBERE' : `IBIKUZA #${approvedCount + 1}`}
               </span>
             )}
           </div>
@@ -171,7 +165,7 @@ export default function Withdraw() {
                   onClick={() => navigate('/withdrawal-account')}
                   className="mt-3 bg-primary text-primary-foreground text-xs font-black px-4 py-2 rounded-xl active:scale-95 transition"
                 >
-                  Genya Konti
+                  SHYIRAMO KONTI UBIKURIZAHO
                 </button>
               </div>
             </div>
@@ -199,7 +193,7 @@ export default function Withdraw() {
             <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
               <Banknote className="w-4 h-4 text-primary" />
             </div>
-            <p className="text-base font-black text-foreground">Amafaranga wikuza</p>
+            <p className="text-base font-black text-foreground">Amafaranga ubikuza</p>
           </div>
 
           <div className="relative mb-3">
@@ -237,31 +231,6 @@ export default function Withdraw() {
           )}
         </div>
 
-        {/* Password */}
-        {bound && (
-          <div className="dashboard-card p-5 mb-3">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
-                <Lock className="w-4 h-4 text-primary" />
-              </div>
-              <p className="text-base font-black text-foreground">Ijambobanga ryo Kwakira</p>
-            </div>
-            <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input
-                type={showPw ? 'text' : 'password'}
-                placeholder="Andika ijambobanga ryawe"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="input-field pl-11 pr-11 text-sm"
-              />
-              <button type="button" onClick={() => setShowPw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground p-1">
-                {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-              </button>
-            </div>
-          </div>
-        )}
-
         <button
           onClick={handleSubmit}
           disabled={isLoading || hasPending || !bound}
@@ -270,9 +239,9 @@ export default function Withdraw() {
           {isLoading ? (
             <><div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />Birimo gukorwa...</>
           ) : hasPending ? (
-            <><Clock className="w-4 h-4" />Hari ubwikuze butegereje</>
+            <><Clock className="w-4 h-4" />Hari ibikuza bitegereje</>
           ) : (
-            <><CheckCircle2 className="w-5 h-5" />Emeza Ubwikuze</>
+            <><CheckCircle2 className="w-5 h-5" />Emeza Ibikuza</>
           )}
         </button>
 

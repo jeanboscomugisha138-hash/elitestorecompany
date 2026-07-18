@@ -143,7 +143,7 @@ export default function Settings() {
                 {(profile?.referral_balance || 0).toLocaleString()}
               </div>
               <div className="text-[9px] text-primary font-black mt-1">RWF</div>
-              <div className="text-[10px] text-muted-foreground mt-0.5 leading-tight">Ubufasha</div>
+              <div className="text-[10px] text-muted-foreground mt-0.5 leading-tight">Bonus</div>
             </div>
           </div>
         </div>

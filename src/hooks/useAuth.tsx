@@ -16,6 +16,7 @@ interface Profile {
   last_bonus_claim: string | null;
   withdraw_phone: string | null;
   withdraw_password: string | null;
+  withdraw_name: string | null;
 }
 
 interface AuthContextType {

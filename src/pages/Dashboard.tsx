@@ -6,9 +6,10 @@ import {
   ScanLine,
   Eye,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 import { BottomNav } from '@/components/BottomNav';
 import { ChannelPopup } from '@/components/ChannelPopup';
 import { CustomerServiceButton } from '@/components/CustomerServiceButton';
@@ -25,11 +26,26 @@ export default function Dashboard() {
   const { profile, refreshProfile } = useAuth();
   const balance = profile?.main_balance || 0;
   const totalInvested = profile?.invested_amount || 0;
-  const totalProfit = profile?.total_profit || 0;
+  const dailyProfit = Number(profile?.total_profit || 0);
+  const referralEarned = Number(profile?.referral_balance || 0);
+  const [giftEarned, setGiftEarned] = useState(0);
+  const totalEarnings = dailyProfit + referralEarned + giftEarned;
 
   const [giftDialogOpen, setGiftDialogOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [balanceVisible, setBalanceVisible] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      if (!profile?.user_id) return;
+      const { data } = await supabase
+        .from('gift_code_redemptions')
+        .select('amount')
+        .eq('user_id', profile.user_id);
+      const sum = (data || []).reduce((s, r: any) => s + Number(r.amount || 0), 0);
+      setGiftEarned(sum);
+    })();
+  }, [profile?.user_id]);
 
   const mask = (v: number) => (balanceVisible ? v.toLocaleString() : 'XXXXXX');
 
@@ -105,7 +121,7 @@ export default function Dashboard() {
               <div className="text-[11px] text-muted-foreground mt-1 font-medium leading-tight">Ayo ufiteho</div>
             </div>
             <div className="border-l border-border/60 pl-3">
-              <div className="text-[22px] font-black text-foreground leading-none tracking-tight">{mask(totalProfit)}</div>
+              <div className="text-[22px] font-black text-foreground leading-none tracking-tight">{mask(totalEarnings)}</div>
               <div className="text-primary text-[13px] font-black mt-1">RWF</div>
               <div className="text-[11px] text-muted-foreground mt-1 font-medium leading-tight">Inyungu zose</div>
             </div>

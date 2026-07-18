@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowLeft, Wallet, Phone, Lock, Shield, CheckCircle2, AlertTriangle, Eye, EyeOff } from 'lucide-react';
+import { ArrowLeft, Wallet, Phone, User as UserIcon, Shield, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { BottomNav } from '@/components/BottomNav';
 import { useAuth } from '@/hooks/useAuth';
@@ -9,12 +9,10 @@ import { ErrorNotification } from '@/components/ErrorNotification';
 
 export default function WithdrawalAccount() {
   const { profile, refreshProfile } = useAuth();
-  const bound = !!(profile?.withdraw_phone && profile?.withdraw_password);
+  const bound = !!(profile?.withdraw_phone && profile?.withdraw_name);
 
+  const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirm, setConfirm] = useState('');
-  const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [err, setErr] = useState<{ show: boolean; title?: string; message: string }>({ show: false, message: '' });
@@ -22,23 +20,40 @@ export default function WithdrawalAccount() {
 
   const submit = async () => {
     if (bound || loading) return;
-    const cleaned = phone.replace(/\D/g, '');
-    if (cleaned.length !== 10) return showError('Andika nimero ya telefoni y\'imibare 10.', 'Nimero si nziza');
-    if (password.length < 4) return showError('Ijambobanga rigomba kuba rifite nibura inyuguti 4.', 'Ijambobanga ni rigufi');
-    if (password.length > 20) return showError('Ijambobanga ntirigomba kurenza inyuguti 20.', 'Ijambobanga ni rirerire');
-    if (password !== confirm) return showError('Amabambobanga uwahaye ntabwo ahuye. Yongere ugerageze.', 'Ntibihuye');
+    const cleanedPhone = phone.replace(/\D/g, '');
+    const cleanedName = name.trim();
+    if (cleanedName.length < 3) return showError('Andika amazina yombi neza.', 'Amazina si yo');
+    if (cleanedPhone.length !== 10) return showError("Andika nimero ya telefoni y'imibare 10.", 'Nimero si nziza');
 
     setLoading(true);
+
+    // Uniqueness check: no other account already uses this phone as its withdraw account
+    const { data: taken } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('withdraw_phone', cleanedPhone)
+      .neq('user_id', profile!.user_id)
+      .limit(1);
+    if (taken && taken.length > 0) {
+      setLoading(false);
+      return showError('Iyi nimero yamaze gukoreshwa kuri konti yindi. Koresha indi nimero.', 'Nimero yakoreshejwe');
+    }
+
     const { error } = await supabase
       .from('profiles')
-      .update({ withdraw_phone: cleaned, withdraw_password: password })
+      .update({ withdraw_phone: cleanedPhone, withdraw_name: cleanedName })
       .eq('user_id', profile!.user_id);
     setLoading(false);
 
-    if (error) return showError(error.message || 'Ntibyakunze kubika konti. Gerageza nanone.', 'Ikosa');
+    if (error) {
+      const msg = /unique|duplicate/i.test(error.message)
+        ? 'Iyi nimero yamaze gukoreshwa kuri konti yindi. Koresha indi nimero.'
+        : error.message || 'Ntibyakunze kubika konti. Gerageza nanone.';
+      return showError(msg, 'Ikosa');
+    }
     await refreshProfile();
     setSuccess(true);
-    setPhone(''); setPassword(''); setConfirm('');
+    setName(''); setPhone('');
   };
 
   return (
@@ -74,17 +89,17 @@ export default function WithdrawalAccount() {
             <div className="space-y-2.5">
               <div className="flex items-center justify-between p-3.5 rounded-2xl bg-muted">
                 <div className="flex items-center gap-2.5">
+                  <UserIcon className="w-4 h-4 text-primary" />
+                  <span className="text-xs text-muted-foreground font-bold">Amazina</span>
+                </div>
+                <span className="text-sm font-black text-foreground">{profile?.withdraw_name}</span>
+              </div>
+              <div className="flex items-center justify-between p-3.5 rounded-2xl bg-muted">
+                <div className="flex items-center gap-2.5">
                   <Phone className="w-4 h-4 text-primary" />
                   <span className="text-xs text-muted-foreground font-bold">Nimero</span>
                 </div>
                 <span className="text-sm font-black text-foreground">{profile?.withdraw_phone}</span>
-              </div>
-              <div className="flex items-center justify-between p-3.5 rounded-2xl bg-muted">
-                <div className="flex items-center gap-2.5">
-                  <Lock className="w-4 h-4 text-primary" />
-                  <span className="text-xs text-muted-foreground font-bold">Ijambobanga</span>
-                </div>
-                <span className="text-sm font-black text-foreground tracking-widest">••••••••</span>
               </div>
             </div>
 
@@ -100,81 +115,62 @@ export default function WithdrawalAccount() {
             </Link>
           </div>
         ) : (
-          <>
-            <div className="dashboard-card p-5">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
-                  <Wallet className="w-6 h-6 text-primary" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-base font-black text-foreground">Andika Konti Yawe</p>
-                  <p className="text-[11px] text-muted-foreground font-semibold">Nimero na ijambobanga uzajya ukoresha wakira.</p>
-                </div>
+          <div className="dashboard-card p-5">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
+                <Wallet className="w-6 h-6 text-primary" />
               </div>
-
-              <div className="space-y-3">
-                <div>
-                  <label className="text-xs font-bold text-foreground mb-1.5 block ml-1">Nimero ya telefoni</label>
-                  <div className="relative">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <input
-                      type="tel" inputMode="numeric" maxLength={10}
-                      placeholder="Urugero: 0788123456"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                      className="input-field pl-11 text-sm"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="text-xs font-bold text-foreground mb-1.5 block ml-1">Ijambobanga</label>
-                  <div className="relative">
-                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <input
-                      type={showPw ? 'text' : 'password'} maxLength={20}
-                      placeholder="Andika ijambobanga rikomeye"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="input-field pl-11 pr-11 text-sm"
-                    />
-                    <button type="button" onClick={() => setShowPw(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground p-1">
-                      {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="text-xs font-bold text-foreground mb-1.5 block ml-1">Emeza Ijambobanga</label>
-                  <div className="relative">
-                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <input
-                      type={showPw ? 'text' : 'password'} maxLength={20}
-                      placeholder="Ongera wandike ijambobanga"
-                      value={confirm}
-                      onChange={(e) => setConfirm(e.target.value)}
-                      className="input-field pl-11 text-sm"
-                    />
-                  </div>
-                </div>
+              <div className="flex-1">
+                <p className="text-base font-black text-foreground">Shyiramo Konti Ubikurizaho</p>
+                <p className="text-[11px] text-muted-foreground font-semibold">Amazina na nimero uzajya ukoresha wakira.</p>
               </div>
-
-              <div className="mt-4 flex items-start gap-2 p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20">
-                <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
-                <p className="text-[11px] text-amber-800 font-semibold leading-relaxed">
-                  Menya neza! Amakuru uzashyiraho ntabwo ushobora kuyahindura. Genzura nimero na ijambobanga mbere yo kubika.
-                </p>
-              </div>
-
-              <button
-                onClick={submit}
-                disabled={loading}
-                className="mt-4 w-full bg-primary text-primary-foreground font-black py-3.5 rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition disabled:opacity-60"
-              >
-                {loading ? 'Birimo kubikwa...' : <><CheckCircle2 className="w-5 h-5" /> Bika Konti Burundu</>}
-              </button>
             </div>
-          </>
+
+            <div className="space-y-3">
+              <div>
+                <label className="text-xs font-bold text-foreground mb-1.5 block ml-1">Amazina</label>
+                <div className="relative">
+                  <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <input
+                    type="text" maxLength={60}
+                    placeholder="Urugero: MUKAMANA Alice"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="input-field pl-11 text-sm"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-bold text-foreground mb-1.5 block ml-1">Nimero ya telefoni</label>
+                <div className="relative">
+                  <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <input
+                    type="tel" inputMode="numeric" maxLength={10}
+                    placeholder="Urugero: 0788123456"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                    className="input-field pl-11 text-sm"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4 flex items-start gap-2 p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20">
+              <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+              <p className="text-[11px] text-amber-800 font-semibold leading-relaxed">
+                Menya neza! Amakuru uzashyiraho ntabwo ushobora kuyahindura. Nimero imwe ntishobora gukoreshwa kuri konti zirenze imwe.
+              </p>
+            </div>
+
+            <button
+              onClick={submit}
+              disabled={loading}
+              className="mt-4 w-full bg-primary text-primary-foreground font-black py-3.5 rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition disabled:opacity-60"
+            >
+              {loading ? 'Birimo kubikwa...' : <><CheckCircle2 className="w-5 h-5" /> Bika Konti Burundu</>}
+            </button>
+          </div>
         )}
       </div>
 
