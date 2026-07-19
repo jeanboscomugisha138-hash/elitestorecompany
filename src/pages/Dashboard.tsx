@@ -79,19 +79,25 @@ export default function Dashboard() {
             className="h-14 w-auto brightness-0 invert"
           />
           <div className="flex items-center gap-3">
-            <button className="w-10 h-10 rounded-lg border-2 border-primary-foreground/50 flex items-center justify-center">
+            <button
+              onClick={() => setQrOpen(true)}
+              className="w-10 h-10 rounded-lg border-2 border-primary-foreground/50 flex items-center justify-center active:scale-95 transition"
+              aria-label="QR & Download App"
+            >
               <ScanLine className="w-5 h-5 text-primary-foreground" />
             </button>
-            <a
-              href="https://t.me/+12052657574"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative w-10 h-10 rounded-lg flex items-center justify-center"
+            <button
+              onClick={() => setNotifOpen(true)}
+              className="relative w-10 h-10 rounded-lg flex items-center justify-center active:scale-95 transition"
               aria-label="Notifications"
             >
               <Bell className="w-7 h-7 text-primary-foreground" strokeWidth={2} />
-              <span className="absolute top-0 right-0 w-4 h-4 rounded-full bg-emerald-500 text-[10px] text-white font-bold flex items-center justify-center">1</span>
-            </a>
+              {unreadCount > 0 && (
+                <span className="absolute top-0 right-0 min-w-[16px] h-4 px-1 rounded-full bg-emerald-500 text-[10px] text-white font-bold flex items-center justify-center">
+                  {unreadCount > 9 ? '9+' : unreadCount}
+                </span>
+              )}
+            </button>
           </div>
         </div>
       </div>
