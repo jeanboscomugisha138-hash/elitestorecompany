@@ -19,6 +19,8 @@ import { DownloadAppInfo } from '@/components/DownloadAppButton';
 import { OnlineServiceDialog } from '@/components/OnlineServiceDialog';
 import { GiftCodeDialog } from '@/components/GiftCodeDialog';
 import { LiveActivity } from '@/components/LiveActivity';
+import { QrDownloadDialog } from '@/components/QrDownloadDialog';
+import { NotificationCenter, useUnreadCount } from '@/components/NotificationCenter';
 import petaneLogo from '@/assets/petane-logo.png';
 
 export default function Dashboard() {
