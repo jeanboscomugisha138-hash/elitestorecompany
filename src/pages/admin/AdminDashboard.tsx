@@ -23,6 +23,8 @@ import {
   ToggleLeft,
   ToggleRight,
   Settings as SettingsIcon,
+  Bell,
+  Send,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
