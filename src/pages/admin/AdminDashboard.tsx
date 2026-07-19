@@ -28,7 +28,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
-type TabType = 'users' | 'products' | 'deposits' | 'withdrawals' | 'giftcodes' | 'settings';
+type TabType = 'users' | 'products' | 'deposits' | 'withdrawals' | 'giftcodes' | 'settings' | 'notifications';
 
 const SETTING_FIELDS: { key: string; label: string; placeholder: string; type?: string; multiline?: boolean; full?: boolean }[] = [
   { key: 'payment_phone', label: 'Payment / Recharge number', placeholder: '*182*8*1*1978296#' },
