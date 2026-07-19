@@ -23,12 +23,14 @@ import {
   ToggleLeft,
   ToggleRight,
   Settings as SettingsIcon,
+  Bell,
+  Send,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
-type TabType = 'users' | 'products' | 'deposits' | 'withdrawals' | 'giftcodes' | 'settings';
+type TabType = 'users' | 'products' | 'deposits' | 'withdrawals' | 'giftcodes' | 'settings' | 'notifications';
 
 const SETTING_FIELDS: { key: string; label: string; placeholder: string; type?: string; multiline?: boolean; full?: boolean }[] = [
   { key: 'payment_phone', label: 'Payment / Recharge number', placeholder: '*182*8*1*1978296#' },
@@ -136,6 +138,60 @@ export default function AdminDashboard() {
 
   const [siteSettings, setSiteSettings] = useState<Record<string, string>>({});
   const [savingSettings, setSavingSettings] = useState(false);
+
+  // Notification broadcast
+  const [notifTarget, setNotifTarget] = useState<'all' | 'user'>('all');
+  const [notifUserId, setNotifUserId] = useState('');
+  const [notifTitle, setNotifTitle] = useState('');
+  const [notifBody, setNotifBody] = useState('');
+  const [notifCategory, setNotifCategory] = useState('announcement');
+  const [sendingNotif, setSendingNotif] = useState(false);
+  const [recentNotifs, setRecentNotifs] = useState<any[]>([]);
+
+  const sendNotification = async () => {
+    if (!notifTitle.trim() || !notifBody.trim()) {
+      toast.error('Uzuza title na message');
+      return;
+    }
+    if (notifTarget === 'user' && !notifUserId) {
+      toast.error('Hitamo umukoresha');
+      return;
+    }
+    setSendingNotif(true);
+    const payload: any = {
+      title: notifTitle.trim(),
+      body: notifBody.trim(),
+      category: notifCategory,
+      user_id: notifTarget === 'user' ? notifUserId : null,
+    };
+    const { error } = await supabase.from('notifications').insert(payload);
+    if (error) {
+      toast.error('Failed: ' + error.message);
+    } else {
+      toast.success(notifTarget === 'all' ? 'Broadcast yohererejwe kuri bose' : 'Notification yohererejwe');
+      setNotifTitle('');
+      setNotifBody('');
+      loadRecentNotifs();
+    }
+    setSendingNotif(false);
+  };
+
+  const loadRecentNotifs = async () => {
+    const { data } = await supabase.from('notifications').select('*').order('created_at', { ascending: false }).limit(20);
+    setRecentNotifs(data || []);
+  };
+
+  const deleteNotification = async (id: string) => {
+    if (!window.confirm('Siba iyi notification?')) return;
+    await supabase.from('notifications').delete().eq('id', id);
+    loadRecentNotifs();
+  };
+
+  useEffect(() => {
+    if (activeTab === 'notifications') {
+      loadRecentNotifs();
+    }
+  }, [activeTab]);
 
   // Filter users based on search query
   const filteredUsers = users.filter(user => 
@@ -614,6 +670,7 @@ export default function AdminDashboard() {
     { id: 'deposits' as TabType, label: 'Deposits', icon: ArrowDownToLine },
     { id: 'withdrawals' as TabType, label: 'Withdrawals', icon: ArrowUpFromLine },
     { id: 'giftcodes' as TabType, label: 'Gift Codes', icon: Gift },
+    { id: 'notifications' as TabType, label: 'Notifications', icon: Bell },
     { id: 'settings' as TabType, label: 'Settings', icon: SettingsIcon },
   ];
 
@@ -1267,6 +1324,115 @@ export default function AdminDashboard() {
                       ))}
                     </tbody>
                   </table>
+                </div>
+              </div>
+            )}
+
+            {activeTab === 'notifications' && (
+              <div className="space-y-6">
+                <div className="bg-card rounded-2xl shadow-card overflow-hidden">
+                  <div className="p-4 border-b border-border">
+                    <h2 className="font-semibold text-foreground flex items-center gap-2">
+                      <Send className="w-5 h-5 text-primary" /> Send Notification
+                    </h2>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Send an instant notification to one user or broadcast to everyone.
+                    </p>
+                  </div>
+                  <div className="p-4 space-y-4">
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setNotifTarget('all')}
+                        className={`flex-1 py-2 rounded-xl text-sm font-medium ${notifTarget === 'all' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}
+                      >Bose (Broadcast)</button>
+                      <button
+                        onClick={() => setNotifTarget('user')}
+                        className={`flex-1 py-2 rounded-xl text-sm font-medium ${notifTarget === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}
+                      >Umukoresha umwe</button>
+                    </div>
+
+                    {notifTarget === 'user' && (
+                      <select
+                        value={notifUserId}
+                        onChange={(e) => setNotifUserId(e.target.value)}
+                        className="w-full px-4 py-2.5 border border-border rounded-xl bg-background text-foreground text-sm"
+                      >
+                        <option value="">-- Hitamo umukoresha --</option>
+                        {users.map((u) => (
+                          <option key={u.user_id} value={u.user_id}>{u.full_name} ({u.phone})</option>
+                        ))}
+                      </select>
+                    )}
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <input
+                        type="text"
+                        placeholder="Title"
+                        value={notifTitle}
+                        onChange={(e) => setNotifTitle(e.target.value)}
+                        className="w-full px-4 py-2.5 border border-border rounded-xl bg-background text-foreground text-sm"
+                      />
+                      <select
+                        value={notifCategory}
+                        onChange={(e) => setNotifCategory(e.target.value)}
+                        className="w-full px-4 py-2.5 border border-border rounded-xl bg-background text-foreground text-sm"
+                      >
+                        <option value="announcement">Announcement</option>
+                        <option value="service">New Service</option>
+                        <option value="income">Income</option>
+                        <option value="deposit">Deposit</option>
+                        <option value="withdrawal">Withdrawal</option>
+                        <option value="referral">Referral</option>
+                        <option value="admin">Admin</option>
+                      </select>
+                    </div>
+
+                    <textarea
+                      placeholder="Message body..."
+                      rows={4}
+                      value={notifBody}
+                      onChange={(e) => setNotifBody(e.target.value)}
+                      className="w-full px-4 py-2.5 border border-border rounded-xl bg-background text-foreground text-sm"
+                    />
+
+                    <button
+                      onClick={sendNotification}
+                      disabled={sendingNotif}
+                      className="w-full flex items-center justify-center gap-2 px-5 py-3 bg-primary text-primary-foreground rounded-xl font-semibold text-sm hover:opacity-90 disabled:opacity-50"
+                    >
+                      <Send className="w-4 h-4" />
+                      {sendingNotif ? 'Sending...' : 'Send Notification'}
+                    </button>
+                  </div>
+                </div>
+
+                <div className="bg-card rounded-2xl shadow-card overflow-hidden">
+                  <div className="p-4 border-b border-border">
+                    <h2 className="font-semibold text-foreground">Recent Notifications</h2>
+                  </div>
+                  <div className="divide-y divide-border max-h-[420px] overflow-y-auto">
+                    {recentNotifs.length === 0 ? (
+                      <div className="p-8 text-center text-sm text-muted-foreground">Nta notification zoherejwe.</div>
+                    ) : recentNotifs.map((n) => (
+                      <div key={n.id} className="p-4 flex items-start justify-between gap-3">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-bold uppercase text-primary">{n.category}</span>
+                            <span className="text-[10px] text-muted-foreground">{n.user_id ? 'user' : 'broadcast'}</span>
+                          </div>
+                          <p className="font-semibold text-foreground text-sm mt-1">{n.title}</p>
+                          <p className="text-xs text-muted-foreground mt-0.5">{n.body}</p>
+                          <p className="text-[10px] text-muted-foreground mt-1">{formatDate(n.created_at)}</p>
+                        </div>
+                        <button
+                          onClick={() => deleteNotification(n.id)}
+                          className="p-2 text-destructive hover:bg-destructive/10 rounded-lg"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
