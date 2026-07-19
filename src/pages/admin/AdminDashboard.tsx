@@ -139,6 +139,60 @@ export default function AdminDashboard() {
   const [siteSettings, setSiteSettings] = useState<Record<string, string>>({});
   const [savingSettings, setSavingSettings] = useState(false);
 
+  // Notification broadcast
+  const [notifTarget, setNotifTarget] = useState<'all' | 'user'>('all');
+  const [notifUserId, setNotifUserId] = useState('');
+  const [notifTitle, setNotifTitle] = useState('');
+  const [notifBody, setNotifBody] = useState('');
+  const [notifCategory, setNotifCategory] = useState('announcement');
+  const [sendingNotif, setSendingNotif] = useState(false);
+  const [recentNotifs, setRecentNotifs] = useState<any[]>([]);
+
+  const sendNotification = async () => {
+    if (!notifTitle.trim() || !notifBody.trim()) {
+      toast.error('Uzuza title na message');
+      return;
+    }
+    if (notifTarget === 'user' && !notifUserId) {
+      toast.error('Hitamo umukoresha');
+      return;
+    }
+    setSendingNotif(true);
+    const payload: any = {
+      title: notifTitle.trim(),
+      body: notifBody.trim(),
+      category: notifCategory,
+      user_id: notifTarget === 'user' ? notifUserId : null,
+    };
+    const { error } = await supabase.from('notifications').insert(payload);
+    if (error) {
+      toast.error('Failed: ' + error.message);
+    } else {
+      toast.success(notifTarget === 'all' ? 'Broadcast yohererejwe kuri bose' : 'Notification yohererejwe');
+      setNotifTitle('');
+      setNotifBody('');
+      loadRecentNotifs();
+    }
+    setSendingNotif(false);
+  };
+
+  const loadRecentNotifs = async () => {
+    const { data } = await supabase.from('notifications').select('*').order('created_at', { ascending: false }).limit(20);
+    setRecentNotifs(data || []);
+  };
+
+  const deleteNotification = async (id: string) => {
+    if (!window.confirm('Siba iyi notification?')) return;
+    await supabase.from('notifications').delete().eq('id', id);
+    loadRecentNotifs();
+  };
+
+  useEffect(() => {
+    if (activeTab === 'notifications') {
+      loadRecentNotifs();
+    }
+  }, [activeTab]);
+
   // Filter users based on search query
   const filteredUsers = users.filter(user => 
     user.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
