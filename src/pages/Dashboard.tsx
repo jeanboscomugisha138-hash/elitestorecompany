@@ -238,6 +238,8 @@ export default function Dashboard() {
 
       <GiftCodeDialog open={giftDialogOpen} onOpenChange={setGiftDialogOpen} onRedeemed={refreshProfile} />
       <OnlineServiceDialog open={aboutOpen} onOpenChange={setAboutOpen} />
+      <QrDownloadDialog open={qrOpen} onClose={() => setQrOpen(false)} />
+      <NotificationCenter open={notifOpen} onClose={() => setNotifOpen(false)} />
 
 
       <CustomerServiceButton />
