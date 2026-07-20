@@ -7,26 +7,8 @@
     <meta name="description" content="Invest and earn daily profits with PETANE SHIPPING" />
     <meta name="author" content="PETANE SHIPPING" />
 
-    <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#1747E0" />
     <link rel="icon" type="image/png" href="/icon-192.png" />
-    <link rel="apple-touch-icon" href="/icon-192.png" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="Petane Shipping" />
-    <meta name="mobile-web-app-capable" content="yes" />
-
-    <meta property="og:title" content="PETANE SHIPPING - Investment Platform" />
-    <meta property="og:description" content="Invest and earn daily profits with PETANE SHIPPING" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://elitestorecompany.lovable.app/" />
-    <meta property="og:image" content="https://elitestorecompany.lovable.app/icon-512.png" />
-    <meta property="og:image:width" content="512" />
-    <meta property="og:image:height" content="512" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="PETANE SHIPPING - Investment Platform" />
-    <meta name="twitter:description" content="Invest and earn daily profits with PETANE SHIPPING" />
-    <meta name="twitter:image" content="https://elitestorecompany.lovable.app/icon-512.png" />
   </head>
 
   <body>
@@ -34,17 +16,9 @@
     <script type="module" src="/src/main.tsx"></script>
     <script>
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function () {
-          var h = location.hostname;
-          var isPreview = h.indexOf('lovableproject.com') !== -1 || h.indexOf('lovable.app') !== -1 || h === 'localhost' || h === '127.0.0.1';
-          if (!isPreview) {
-            navigator.serviceWorker.register('/sw.js').catch(function () {});
-          } else {
-            navigator.serviceWorker.getRegistrations().then(function (regs) {
-              regs.forEach(function (r) { r.unregister(); });
-            });
-          }
-        });
+        navigator.serviceWorker.getRegistrations().then(function (regs) {
+          regs.forEach(function (r) { r.unregister(); });
+        }).catch(function () {});
       }
     </script>
   </body>
