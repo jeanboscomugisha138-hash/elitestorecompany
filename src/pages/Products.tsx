@@ -166,7 +166,7 @@ export default function Products() {
               duration={product.duration_days}
               onInvest={handleInvest}
               isLoading={investingId === product.id}
-              purchased={purchasedIds.has(product.id)}
+              purchased={isMaxedOut(product.id, product.investment_amount)}
             />
           </div>
         ))}
