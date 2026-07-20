@@ -75,13 +75,6 @@ export default function Dashboard() {
           />
           <div className="flex items-center gap-3">
             <button
-              onClick={() => setQrOpen(true)}
-              className="w-10 h-10 rounded-lg border-2 border-primary-foreground/50 flex items-center justify-center active:scale-95 transition"
-              aria-label="QR & Download App"
-            >
-              <ScanLine className="w-5 h-5 text-primary-foreground" />
-            </button>
-            <button
               onClick={() => setNotifOpen(true)}
               className="relative w-10 h-10 rounded-lg flex items-center justify-center active:scale-95 transition"
               aria-label="Notifications"
