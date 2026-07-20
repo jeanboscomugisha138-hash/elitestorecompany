@@ -48,14 +48,6 @@ function generateExtendedNames(count: number): string[] {
   return out;
 }
 NAMES.push(...generateExtendedNames(1000));
-  'Bagaza','Niragire','Mukantezimana','Uwituze','Nyirahirwa','Mukandanga','Twagiramungu','Uwizeyimana','Habarurema','Mukandori',
-  'Nizeyimana','Mukamuziga','Twizere','Uwimanimpaye','Munyakazi','Mukamutesi','Bizimana','Nyiramana','Mukasine','Hakizimana',
-  'Niyibizi','Uwababyeyi','Mukandori','Tuyisenge','Mukamugema','Sebatware','Uwizeyimana','Munyaneza','Mukantabana','Habineza',
-  'Twagiramungu','Uwineza','Mukantwari','Bizumuremyi','Niyibaho','Mukamfizi','Hagenimana','Uwamahoro','Mukamana','Twahirwa',
-  'Mukandutiye','Nshimirimana','Uwizera','Habiyaremye','Mukasonga','Tuyirenge','Bizimana','Mukamuziga','Hakimana','Uwitonze',
-  'Mukamugisha','Niyonsaba','Twesigye','Mukantezimana','Iradukunda','Mukabazungu','Uwingabire','Habinshuti','Mukasakindi','Niyibizi',
-  'Tuyizere','Mukamutara','Bizoza','Nyirahabimana','Mukandayisenga','Uwitware','Nshimiyimana','Munyemana','Mukasine','Twizere'
-];
 
 const ACTIONS = [
   { t: 'invested in VIP', amounts: [10000, 20000, 30000, 40000, 50000, 100000, 250000, 500000], icon: TrendingUp, color: 'from-primary to-secondary' },
