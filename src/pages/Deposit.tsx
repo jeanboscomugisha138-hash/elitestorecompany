@@ -279,29 +279,29 @@ export default function Deposit() {
               </div>
             </div>
 
-            {/* Recipient Card - compact */}
-            <div className="bg-card rounded-2xl p-4 shadow-card border border-border/40 mb-4">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <Wallet className="w-5 h-5 text-primary" />
+            {/* Recipient Card - bold blue */}
+            <div className="rounded-3xl p-5 shadow-elevated mb-4 text-primary-foreground" style={{ background: 'linear-gradient(135deg, hsl(226 78% 45%) 0%, hsl(226 78% 32%) 100%)' }}>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-11 h-11 rounded-2xl bg-white/20 flex items-center justify-center backdrop-blur-sm">
+                  <Wallet className="w-5 h-5 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wide">{t('deposit.sendMoneyTo')}</p>
-                  <p className="text-sm font-bold text-foreground truncate">{momoName}</p>
+                  <p className="text-[10px] text-white/70 font-semibold uppercase tracking-wider">{t('deposit.sendMoneyTo')}</p>
+                  <p className="text-lg font-extrabold text-white truncate leading-tight">{momoName}</p>
                 </div>
               </div>
 
-              <div className="bg-muted rounded-xl p-3 mb-3">
-                <p className="text-[10px] text-muted-foreground mb-1 uppercase">{t('deposit.momoNumber')}</p>
-                <div className="flex items-center justify-between gap-2">
-                  <p className="text-base font-extrabold text-foreground tracking-tight break-all flex-1 leading-tight">{momoNumber}</p>
-                  <button type="button" onClick={handleCopy} className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center flex-shrink-0 active:scale-95 transition-transform">
-                    {copied ? <Check className="w-4 h-4 text-primary-foreground" /> : <Copy className="w-4 h-4 text-primary-foreground" />}
+              <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-4 mb-4 border border-white/20">
+                <p className="text-[10px] text-white/80 mb-2 uppercase tracking-wider font-semibold">{t('deposit.momoNumber')}</p>
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-2xl font-extrabold text-white tracking-tight break-all flex-1 leading-tight">{momoNumber}</p>
+                  <button type="button" onClick={handleCopy} className="w-11 h-11 rounded-xl bg-white flex items-center justify-center flex-shrink-0 active:scale-95 transition-transform shadow-md">
+                    {copied ? <Check className="w-5 h-5 text-primary" /> : <Copy className="w-5 h-5 text-primary" />}
                   </button>
                 </div>
               </div>
 
-              <a href={`tel:${encodeURIComponent(momoNumber)}`} className="w-full bg-primary text-primary-foreground font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-transform text-sm">
+              <a href={`tel:${encodeURIComponent(momoNumber)}`} className="w-full bg-white text-primary font-bold py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-transform text-sm shadow-md">
                 <Phone className="w-4 h-4" />
                 {t('deposit.callToPay')}
               </a>
