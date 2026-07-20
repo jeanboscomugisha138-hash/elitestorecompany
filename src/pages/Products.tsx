@@ -19,7 +19,7 @@ interface Product {
 export default function Products() {
   const { t } = useTranslation();
   const [products, setProducts] = useState<Product[]>([]);
-  const [purchasedIds, setPurchasedIds] = useState<Set<string>>(new Set());
+  const [purchaseCounts, setPurchaseCounts] = useState<Record<string, number>>({});
   const [isLoading, setIsLoading] = useState(true);
   const { profile, refreshProfile } = useAuth();
 
