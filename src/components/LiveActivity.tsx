@@ -24,6 +24,31 @@ const NAMES = [
   'Tuyizere','Mukamutara','Bizoza','Nyirahabimana','Mukandayisenga','Uwitware','Nshimiyimana','Munyemana','Mukasine','Twizere'
 ];
 
+// --- Extended pool: 1000 fictional Rwandan investor records with masked phones ---
+const SURNAMES = ['Mugisha','Uwase','Niyonzima','Habimana','Mukamana','Ishimwe','Nshimiyimana','Munyaneza','Ingabire','Hakizimana','Uwineza','Bizimana','Mukashema','Nzeyimana','Uwimana','Tuyishime','Rwema','Iradukunda','Niyibizi','Umutoni','Nshuti','Bigirimana','Twagirayezu','Uwizeyimana','Nsengiyumva','Kayitesi','Twizeyimana','Uwamahoro','Mugabo','Nshimirimana','Habiyaremye','Uwizeye','Manirakiza','Munyemana','Twahirwa','Iyamuremye','Bagirishya','Uwamariya','Mucyo','Niyitegeka','Tuyizere','Umugwaneza','Habinshuti','Uwitonze','Bizimungu','Hategekimana','Tuyishimire','Nzabonimpa','Habineza','Niyibaho','Umutesi','Sebahire','Tuyizere','Nyandwi','Uwambaje','Mugemana','Uwamungu','Bizoza','Hakimana','Uwingabire','Niyonkuru','Tuyirenge','Habiyambere','Uwizera','Sibomana','Twesigye','Uwitware','Niyonzima','Uwanyirigira','Bagaza','Niragire','Uwituze','Habarurema','Nizeyimana','Twizere','Uwimanimpaye','Bizimana','Hakizimana','Niyibizi','Uwababyeyi','Uwizeyimana','Habineza','Twagiramungu','Uwineza','Bizumuremyi','Hagenimana','Uwamahoro','Twahirwa','Nshimirimana','Uwizera','Tuyirenge','Bizimana','Hakimana','Uwitonze','Niyonsaba','Twesigye','Iradukunda','Uwingabire','Habinshuti','Niyibizi','Bizoza'];
+const GIVEN = ['Jean','Marie','Alphonse','Emmanuel','Claudine','Pascal','Josiane','Fidele','Aline','Vincent','Beatrice','Eric','Chantal','Innocent','Solange','Damascene','Odette','Theogene','Josephine','Patrick','Diane','Bosco','Immaculee','Fabrice','Yvette','Jacques','Christine','Andre','Grace','Olivier','Sandrine','Emile','Justine','Placide','Liliane','Serge','Nadine','Faustin','Berthe','Aimable','Divine','Cyprien','Rachel','Elias','Sarah','Prince','Peace','Angel','Kevin','Sylvie'];
+const MOBILE_PREFIXES = ['72','73','78','79'];
+
+function pad2(n: number) { return n < 10 ? '0' + n : String(n); }
+function seedRand(seed: number) {
+  let s = seed >>> 0;
+  return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 0xffffffff; };
+}
+function generateExtendedNames(count: number): string[] {
+  const rand = seedRand(20260720);
+  const out: string[] = [];
+  for (let i = 0; i < count; i++) {
+    const first = GIVEN[Math.floor(rand() * GIVEN.length)];
+    const last = SURNAMES[Math.floor(rand() * SURNAMES.length)];
+    const prefix = MOBILE_PREFIXES[Math.floor(rand() * MOBILE_PREFIXES.length)];
+    const first3 = String(100 + Math.floor(rand() * 900)).slice(0, 3);
+    const last2 = pad2(Math.floor(rand() * 100));
+    out.push(`${last} ${first[0]}. +2507${prefix.slice(1)}${first3.slice(0,1)}****${last2}`);
+  }
+  return out;
+}
+NAMES.push(...generateExtendedNames(1000));
+
 const ACTIONS = [
   { t: 'invested in VIP', amounts: [10000, 20000, 30000, 40000, 50000, 100000, 250000, 500000], icon: TrendingUp, color: 'from-primary to-secondary' },
   { t: 'withdrew', amounts: [5000, 12000, 25000, 40000, 80000, 150000, 300000], icon: Wallet, color: 'from-emerald-500 to-green-500' },

@@ -3,7 +3,6 @@ import {
   Wallet,
   PiggyBank,
   Bell,
-  ScanLine,
   Eye,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
@@ -12,14 +11,11 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { BottomNav } from '@/components/BottomNav';
 import { ChannelPopup } from '@/components/ChannelPopup';
-import { CustomerServiceButton } from '@/components/CustomerServiceButton';
 import { ReferralCommissionListener } from '@/components/ReferralCommissionListener';
 import { Link } from 'react-router-dom';
-import { DownloadAppInfo } from '@/components/DownloadAppButton';
 import { OnlineServiceDialog } from '@/components/OnlineServiceDialog';
 import { GiftCodeDialog } from '@/components/GiftCodeDialog';
 import { LiveActivity } from '@/components/LiveActivity';
-import { QrDownloadDialog } from '@/components/QrDownloadDialog';
 import { NotificationCenter, useUnreadCount } from '@/components/NotificationCenter';
 import petaneLogo from '@/assets/petane-logo.png';
 
@@ -36,7 +32,6 @@ export default function Dashboard() {
   const [giftDialogOpen, setGiftDialogOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [balanceVisible, setBalanceVisible] = useState(true);
-  const [qrOpen, setQrOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const unreadCount = useUnreadCount();
 
@@ -79,13 +74,6 @@ export default function Dashboard() {
             className="h-14 w-auto brightness-0 invert"
           />
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => setQrOpen(true)}
-              className="w-10 h-10 rounded-lg border-2 border-primary-foreground/50 flex items-center justify-center active:scale-95 transition"
-              aria-label="QR & Download App"
-            >
-              <ScanLine className="w-5 h-5 text-primary-foreground" />
-            </button>
             <button
               onClick={() => setNotifOpen(true)}
               className="relative w-10 h-10 rounded-lg flex items-center justify-center active:scale-95 transition"
@@ -227,9 +215,6 @@ export default function Dashboard() {
           </span>
         </Link>
 
-        <div className="mt-3">
-          <DownloadAppInfo />
-        </div>
       </div>
 
       <div className="px-3 mt-5 space-y-4">
@@ -238,11 +223,8 @@ export default function Dashboard() {
 
       <GiftCodeDialog open={giftDialogOpen} onOpenChange={setGiftDialogOpen} onRedeemed={refreshProfile} />
       <OnlineServiceDialog open={aboutOpen} onOpenChange={setAboutOpen} />
-      <QrDownloadDialog open={qrOpen} onClose={() => setQrOpen(false)} />
       <NotificationCenter open={notifOpen} onClose={() => setNotifOpen(false)} />
 
-
-      <CustomerServiceButton />
       <BottomNav />
     </div>
   );
