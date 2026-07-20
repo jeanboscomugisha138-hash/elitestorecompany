@@ -47,8 +47,16 @@ export default function Products() {
       .from('user_investments')
       .select('product_id')
       .eq('user_id', profile.user_id);
-    if (data) setPurchasedIds(new Set(data.map(d => d.product_id)));
+    if (data) {
+      const counts: Record<string, number> = {};
+      data.forEach((d: any) => { counts[d.product_id] = (counts[d.product_id] || 0) + 1; });
+      setPurchaseCounts(counts);
+    }
   };
+
+  const getLimit = (amount: number) => (amount === 3500 ? 1 : 5);
+  const isMaxedOut = (productId: string, amount: number) =>
+    (purchaseCounts[productId] || 0) >= getLimit(amount);
 
   const [investingId, setInvestingId] = useState<string | null>(null);
   const investingRef = useRef(false);
@@ -56,12 +64,14 @@ export default function Products() {
 
   const handleInvest = async (productId: string) => {
     if (investingRef.current) return;
-    if (purchasedIds.has(productId)) {
-      toast.error('You have already purchased this product.');
-      return;
-    }
     const product = products.find((p) => p.id === productId);
     if (!product || !profile?.user_id) return;
+
+    const limit = getLimit(product.investment_amount);
+    if ((purchaseCounts[productId] || 0) >= limit) {
+      toast.error(limit === 1 ? 'Uyu mushinga washoboraga kugurwa rimwe gusa.' : `Wagejeje ku kigero ntarengwa cyo kugura uyu mushinga (${limit}).`);
+      return;
+    }
 
     investingRef.current = true;
     setInvestingId(productId);
@@ -80,16 +90,15 @@ export default function Products() {
         return;
       }
 
-      // Double-check no duplicate
+      // Re-count to prevent race
       const { data: existing } = await supabase
         .from('user_investments')
         .select('id')
         .eq('user_id', profile.user_id)
-        .eq('product_id', productId)
-        .limit(1);
-      if (existing && existing.length > 0) {
-        setPurchasedIds(prev => new Set(prev).add(productId));
-        toast.error('You have already purchased this product.');
+        .eq('product_id', productId);
+      if (existing && existing.length >= limit) {
+        setPurchaseCounts(prev => ({ ...prev, [productId]: existing.length }));
+        toast.error(limit === 1 ? 'Uyu mushinga washoboraga kugurwa rimwe gusa.' : `Wagejeje ku kigero ntarengwa cyo kugura uyu mushinga (${limit}).`);
         return;
       }
 
