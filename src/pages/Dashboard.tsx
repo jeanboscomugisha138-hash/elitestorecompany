@@ -32,7 +32,6 @@ export default function Dashboard() {
   const [giftDialogOpen, setGiftDialogOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [balanceVisible, setBalanceVisible] = useState(true);
-  const [qrOpen, setQrOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const unreadCount = useUnreadCount();
 
