@@ -130,7 +130,7 @@ export default function Products() {
       if (updateError) { toast.error('Failed to update balance'); return; }
 
       refreshProfile();
-      setPurchasedIds(prev => new Set(prev).add(productId));
+      setPurchaseCounts(prev => ({ ...prev, [productId]: (prev[productId] || 0) + 1 }));
       const names: Record<string, string> = { '3500': 'Petane Peteroli Mbisi', '10000': 'Petane Mazutu', '20000': 'Petane Essence', '30000': 'Wireless Duo', '40000': 'Petane LPG', '50000': 'Petane Cargo', '100000': 'Petane Marine', '250000': 'Petane Tanker', '500000': 'Petane Fleet', '1000000': 'Petane Global Energy' };
       setInvestSuccess({ show: true, amount: product.investment_amount, name: names[product.investment_amount.toString()] || 'Petane Shipping' });
     } finally {
