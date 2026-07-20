@@ -215,9 +215,6 @@ export default function Dashboard() {
           </span>
         </Link>
 
-        <div className="mt-3">
-          <DownloadAppInfo />
-        </div>
       </div>
 
       <div className="px-3 mt-5 space-y-4">
@@ -226,11 +223,8 @@ export default function Dashboard() {
 
       <GiftCodeDialog open={giftDialogOpen} onOpenChange={setGiftDialogOpen} onRedeemed={refreshProfile} />
       <OnlineServiceDialog open={aboutOpen} onOpenChange={setAboutOpen} />
-      <QrDownloadDialog open={qrOpen} onClose={() => setQrOpen(false)} />
       <NotificationCenter open={notifOpen} onClose={() => setNotifOpen(false)} />
 
-
-      <CustomerServiceButton />
       <BottomNav />
     </div>
   );
