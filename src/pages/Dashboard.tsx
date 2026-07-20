@@ -3,7 +3,6 @@ import {
   Wallet,
   PiggyBank,
   Bell,
-  ScanLine,
   Eye,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
@@ -12,14 +11,11 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { BottomNav } from '@/components/BottomNav';
 import { ChannelPopup } from '@/components/ChannelPopup';
-import { CustomerServiceButton } from '@/components/CustomerServiceButton';
 import { ReferralCommissionListener } from '@/components/ReferralCommissionListener';
 import { Link } from 'react-router-dom';
-import { DownloadAppInfo } from '@/components/DownloadAppButton';
 import { OnlineServiceDialog } from '@/components/OnlineServiceDialog';
 import { GiftCodeDialog } from '@/components/GiftCodeDialog';
 import { LiveActivity } from '@/components/LiveActivity';
-import { QrDownloadDialog } from '@/components/QrDownloadDialog';
 import { NotificationCenter, useUnreadCount } from '@/components/NotificationCenter';
 import petaneLogo from '@/assets/petane-logo.png';
 
