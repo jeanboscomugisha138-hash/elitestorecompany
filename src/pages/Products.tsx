@@ -182,6 +182,15 @@ export default function Products() {
         productName={investSuccess.name}
       />
 
+      <ErrorNotification
+        isOpen={insufficient.show}
+        onClose={() => setInsufficient({ show: false, needed: 0, have: 0 })}
+        title="Amafaranga ntahagije"
+        message={`Nta mafaranga ahagije ufite kuri konti yawe. Ukeneye ${insufficient.needed.toLocaleString()} RWF ariko ufite ${insufficient.have.toLocaleString()} RWF gusa. Banza ubitse (Bitsa) mbere yo kugura uyu mushinga.`}
+        buttonText="BITSA UBU"
+      />
+
+
       <BottomNav />
     </div>
   );
