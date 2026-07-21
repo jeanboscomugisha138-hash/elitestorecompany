@@ -15,6 +15,7 @@ import Withdraw from "./pages/Withdraw";
 import Referral from "./pages/Referral";
 import History from "./pages/History";
 import Settings from "./pages/Settings";
+import AboutUs from "./pages/AboutUs";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import MyInvestments from "./pages/MyInvestments";
@@ -84,6 +85,7 @@ function AppRoutes() {
       <Route path="/referral" element={<ProtectedRoute><Referral /></ProtectedRoute>} />
       <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
       <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+      <Route path="/about" element={<ProtectedRoute><AboutUs /></ProtectedRoute>} />
       <Route path="/my-investments" element={<ProtectedRoute><MyInvestments /></ProtectedRoute>} />
       <Route path="/withdrawal-account" element={<ProtectedRoute><WithdrawalAccount /></ProtectedRoute>} />
 

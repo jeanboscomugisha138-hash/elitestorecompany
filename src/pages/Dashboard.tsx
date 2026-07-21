@@ -54,7 +54,7 @@ export default function Dashboard() {
     { label: 'Kwakira', emoji: '⬇️', to: '/withdraw' },
     { label: 'Amateka', emoji: '🕐', to: '/history' },
     { label: 'Bonus', emoji: '🎁', onClick: () => setGiftDialogOpen(true) },
-    { label: 'Abo turi bo', emoji: '👥', to: '/referral' },
+    { label: 'Abo turi bo', emoji: '👥', to: '/about' },
     { label: 'Ubufasha', emoji: '🎧', onClick: () => setAboutOpen(true) },
     { label: 'Imirimo', emoji: '📦', to: '/products' },
     { label: 'Imishinga', emoji: '💼', to: '/my-investments' },
