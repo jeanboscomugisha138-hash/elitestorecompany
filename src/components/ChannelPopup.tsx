@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Send } from 'lucide-react';
 import { PopupModal } from './PopupModal';
+import { useSiteSettings } from '@/hooks/useSiteSettings';
 
-const TELEGRAM_URL = 'https://t.me/+12052657574';
+
 
 export function ChannelPopup() {
   const [showPopup, setShowPopup] = useState(false);
+  const { settings } = useSiteSettings();
 
   useEffect(() => {
     const justLoggedIn = sessionStorage.getItem('justLoggedIn');
@@ -27,21 +29,21 @@ export function ChannelPopup() {
           <Send className="w-6 h-6 text-primary" />
         </div>
         <div className="flex-1 min-w-0 pt-1">
-          <h3 className="text-lg font-black text-foreground leading-tight">Injira muri Telegram Group</h3>
+          <h3 className="text-lg font-black text-foreground leading-tight">Injira ahakorerwa inama</h3>
           <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-            Injira mu itsinda ryacu rya Telegram uhabwe amakuru mashya, amatangazo n'ubufasha bwihuse.
+            Injira muri Telegram Group y'inama uhabwe amakuru y'ishoramari, amatangazo n'ubufasha bwihuse.
           </p>
         </div>
       </div>
 
       <a
-        href={TELEGRAM_URL}
+        href={settings.telegram_meeting_url}
         target="_blank"
         rel="noopener noreferrer"
         onClick={closePopup}
-        className="w-full bg-[#229ED9] text-white font-black text-sm py-3.5 rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition shadow-lg-custom"
+        className="w-full bg-gradient-to-r from-[#1747E0] to-[#0E2E9A] text-white font-black text-sm py-3.5 rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition shadow-lg-custom"
       >
-        <Send className="w-5 h-5" /> INJIRA MURI TELEGRAM GROUP
+        <Send className="w-5 h-5" /> INJIRA AHAKORERWA INAMA
       </a>
     </PopupModal>
   );

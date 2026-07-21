@@ -6,6 +6,9 @@ export type SiteSettings = {
   payment_name: string;
   whatsapp_group_url: string;
   customer_service_url: string;
+  telegram_admin_url: string;
+  telegram_group_url: string;
+  telegram_meeting_url: string;
   min_deposit: string;
   max_deposit: string;
   min_withdraw: string;
@@ -17,10 +20,13 @@ export type SiteSettings = {
 };
 
 const DEFAULTS: SiteSettings = {
-  payment_phone: '*182*8*1*1978296#',
-  payment_name: 'Thacienne',
-  whatsapp_group_url: 'https://chat.whatsapp.com/HAWV3a3MW9G8ErOVRRdPSX?s=cl&p=a&ilr=1',
-  customer_service_url: 'https://t.me/+12052657574',
+  payment_phone: '0799599856',
+  payment_name: 'Cedric KWIBUKWANIMANA',
+  whatsapp_group_url: 'https://t.me/+SS_wfux-pzI0OTRh',
+  customer_service_url: 'https://t.me/petaneshipping',
+  telegram_admin_url: 'https://t.me/petaneshipping',
+  telegram_group_url: 'https://t.me/+SS_wfux-pzI0OTRh',
+  telegram_meeting_url: 'https://t.me/+SS_wfux-pzI0OTRh',
   min_deposit: '3500',
   max_deposit: '2000000',
   min_withdraw: '3000',
@@ -44,7 +50,7 @@ export function useSiteSettings() {
       if (mounted && data) {
         const merged = { ...DEFAULTS };
         for (const row of data as { key: string; value: string }[]) {
-          (merged as any)[row.key] = row.value;
+          if (row.value) (merged as any)[row.key] = row.value;
         }
         setSettings(merged);
       }
