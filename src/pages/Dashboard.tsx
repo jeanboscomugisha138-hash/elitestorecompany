@@ -50,14 +50,14 @@ export default function Dashboard() {
   const mask = (v: number) => (balanceVisible ? v.toLocaleString() : 'XXXXXX');
 
   const quickActions = [
-    { label: 'Ishyura', emoji: '💸', to: '/deposit' },
-    { label: 'Kwakira', emoji: '⬇️', to: '/withdraw' },
+    { label: 'Bitsa', emoji: '💸', to: '/deposit' },
+    { label: 'Bikuza', emoji: '⬇️', to: '/withdraw' },
     { label: 'Amateka', emoji: '🕐', to: '/history' },
     { label: 'Bonus', emoji: '🎁', onClick: () => setGiftDialogOpen(true) },
     { label: 'Abo turi bo', emoji: '👥', to: '/about' },
     { label: 'Ubufasha', emoji: '🎧', onClick: () => setAboutOpen(true) },
-    { label: 'Imirimo', emoji: '📦', to: '/products' },
-    { label: 'Imishinga', emoji: '💼', to: '/my-investments' },
+    { label: 'Shora', emoji: '📦', to: '/products' },
+    { label: 'Ibyaguzwe', emoji: '💼', to: '/my-investments' },
   ];
 
   return (
@@ -140,7 +140,7 @@ export default function Dashboard() {
               className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-black text-[13px] py-2.5 rounded-xl active:scale-[0.98] transition"
             >
               <span aria-hidden>💸</span>
-              <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} /> Ishyura
+              <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} /> Bitsa
             </Link>
           </div>
         </div>

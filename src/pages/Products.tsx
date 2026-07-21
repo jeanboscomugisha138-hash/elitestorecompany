@@ -8,6 +8,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { SuccessNotification } from '@/components/SuccessNotification';
+import { PopupModal } from '@/components/PopupModal';
+import { Wallet, AlertCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface Product {
   id: string;
@@ -18,6 +21,7 @@ interface Product {
 
 export default function Products() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [purchaseCounts, setPurchaseCounts] = useState<Record<string, number>>({});
   const [isLoading, setIsLoading] = useState(true);
@@ -61,6 +65,7 @@ export default function Products() {
   const [investingId, setInvestingId] = useState<string | null>(null);
   const investingRef = useRef(false);
   const [investSuccess, setInvestSuccess] = useState<{ show: boolean; amount: number; name: string }>({ show: false, amount: 0, name: '' });
+  const [insufficient, setInsufficient] = useState<{ show: boolean; needed: number; have: number }>({ show: false, needed: 0, have: 0 });
 
   const handleInvest = async (productId: string) => {
     if (investingRef.current) return;
@@ -86,7 +91,7 @@ export default function Products() {
       if (fetchError || !freshProfile) { toast.error('Failed to verify balance'); return; }
 
       if (freshProfile.main_balance < product.investment_amount) {
-        toast.error('Insufficient balance. Please deposit first.');
+        setInsufficient({ show: true, needed: product.investment_amount, have: Number(freshProfile.main_balance || 0) });
         return;
       }
 
@@ -179,6 +184,63 @@ export default function Products() {
         amount={investSuccess.amount}
         productName={investSuccess.name}
       />
+
+      <PopupModal
+        isOpen={insufficient.show}
+        onClose={() => setInsufficient({ show: false, needed: 0, have: 0 })}
+        accent="primary"
+      >
+        <div className="text-center">
+          <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-[#1747E0] to-[#0E2E9A] flex items-center justify-center shadow-lg-custom mb-4">
+            <Wallet className="w-8 h-8 text-white" strokeWidth={2.4} />
+          </div>
+          <h3 className="text-lg font-black text-foreground leading-tight">Amafaranga ntahagije</h3>
+          <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed px-2">
+            Ntushobora kugura uyu mushinga ubu kuko amafaranga uri ku konti yawe ari make.
+          </p>
+
+          <div className="mt-4 rounded-2xl bg-gradient-to-br from-[#1747E0] to-[#0E2E9A] text-white p-4 shadow-lg-custom">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-white/80">Ukeneye</span>
+              <span className="text-lg font-black">{insufficient.needed.toLocaleString()} <span className="text-xs">RWF</span></span>
+            </div>
+            <div className="h-px bg-white/20 my-2" />
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-white/80">Ufite</span>
+              <span className="text-lg font-black">{insufficient.have.toLocaleString()} <span className="text-xs">RWF</span></span>
+            </div>
+            <div className="h-px bg-white/20 my-2" />
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-white/80">Wongeraho</span>
+              <span className="text-lg font-black text-yellow-200">
+                {Math.max(0, insufficient.needed - insufficient.have).toLocaleString()} <span className="text-xs">RWF</span>
+              </span>
+            </div>
+          </div>
+
+          <div className="mt-4 flex items-start gap-2 bg-primary/5 rounded-xl p-3 text-left">
+            <AlertCircle className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+            <p className="text-[11px] text-foreground/80 leading-relaxed">
+              Banza <b>ubitse</b> amafaranga akwiye kuri konti yawe kugira ngo ubashe kugura uyu mushinga.
+            </p>
+          </div>
+
+          <button
+            onClick={() => { setInsufficient({ show: false, needed: 0, have: 0 }); navigate('/deposit'); }}
+            className="mt-4 w-full bg-gradient-to-r from-[#1747E0] to-[#0E2E9A] text-white font-black text-sm py-3.5 rounded-2xl active:scale-[0.98] transition shadow-lg-custom"
+          >
+            BITSA AMAFARANGA UBU
+          </button>
+          <button
+            onClick={() => setInsufficient({ show: false, needed: 0, have: 0 })}
+            className="mt-2 w-full text-muted-foreground font-bold text-xs py-2"
+          >
+            Funga
+          </button>
+        </div>
+      </PopupModal>
+
+
 
       <BottomNav />
     </div>
