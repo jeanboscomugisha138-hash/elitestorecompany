@@ -8,6 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { SuccessNotification } from '@/components/SuccessNotification';
+import { ErrorNotification } from '@/components/ErrorNotification';
 
 interface Product {
   id: string;
@@ -61,6 +62,7 @@ export default function Products() {
   const [investingId, setInvestingId] = useState<string | null>(null);
   const investingRef = useRef(false);
   const [investSuccess, setInvestSuccess] = useState<{ show: boolean; amount: number; name: string }>({ show: false, amount: 0, name: '' });
+  const [insufficient, setInsufficient] = useState<{ show: boolean; needed: number; have: number }>({ show: false, needed: 0, have: 0 });
 
   const handleInvest = async (productId: string) => {
     if (investingRef.current) return;
@@ -86,7 +88,7 @@ export default function Products() {
       if (fetchError || !freshProfile) { toast.error('Failed to verify balance'); return; }
 
       if (freshProfile.main_balance < product.investment_amount) {
-        toast.error('Insufficient balance. Please deposit first.');
+        setInsufficient({ show: true, needed: product.investment_amount, have: Number(freshProfile.main_balance || 0) });
         return;
       }
 
