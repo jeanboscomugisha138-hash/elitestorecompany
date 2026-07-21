@@ -73,6 +73,7 @@ export default function Settings() {
         { icon: Wallet, label: 'Konti yo Kwakira', to: '/withdrawal-account', tint: 'bg-blue-500/10 text-blue-600' },
         { icon: Users, label: 'Tumira Inshuti', to: '/referral', tint: 'bg-emerald-500/10 text-emerald-600' },
         { icon: Headphones, label: 'Serivisi ku Ntandaro', onClick: () => setServiceOpen(true), tint: 'bg-purple-500/10 text-purple-600' },
+        { icon: Star, label: 'Abo Turi Bo', to: '/about', tint: 'bg-rose-500/10 text-rose-600' },
       ],
     },
   ];
