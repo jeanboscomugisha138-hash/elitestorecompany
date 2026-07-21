@@ -21,6 +21,7 @@ interface Product {
 
 export default function Products() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [purchaseCounts, setPurchaseCounts] = useState<Record<string, number>>({});
   const [isLoading, setIsLoading] = useState(true);
