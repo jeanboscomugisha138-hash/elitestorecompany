@@ -232,18 +232,28 @@ export default function AdminDashboard() {
   const fetchData = async () => {
     setIsLoading(true);
 
-    if (activeTab === 'users') {
+    if (activeTab === 'users' || activeTab === 'overview') {
       const { data } = await supabase.from('profiles').select('*').order('created_at', { ascending: false });
       setUsers(data || []);
-    } else if (activeTab === 'products') {
+    }
+    if (activeTab === 'products') {
       const { data } = await supabase.from('investment_products').select('*').order('investment_amount', { ascending: true });
       setProducts(data || []);
-    } else if (activeTab === 'deposits') {
+    } else if (activeTab === 'deposits' || activeTab === 'overview') {
       const { data } = await supabase.from('deposit_transactions').select('*').order('created_at', { ascending: false });
       setDeposits(data || []);
-    } else if (activeTab === 'withdrawals') {
+    }
+    if (activeTab === 'withdrawals' || activeTab === 'overview') {
       const { data } = await supabase.from('withdrawal_transactions').select('*').order('created_at', { ascending: false });
       setWithdrawals(data || []);
+    }
+    if (activeTab === 'investments') {
+      const { data } = await supabase
+        .from('user_investments')
+        .select('*, investment_products(investment_amount), profiles:user_id(full_name, phone)')
+        .order('created_at', { ascending: false })
+        .limit(200);
+      setAllInvestments(data || []);
     } else if (activeTab === 'giftcodes') {
       const { data } = await supabase.from('gift_codes').select('*').order('created_at', { ascending: false });
       setGiftCodes((data as GiftCode[]) || []);
@@ -251,13 +261,15 @@ export default function AdminDashboard() {
       const { data } = await supabase.from('site_settings').select('key, value');
       const map: Record<string, string> = {};
       (data || []).forEach((r: any) => { map[r.key] = r.value; });
-      // ensure all keys present
       SETTING_FIELDS.forEach(f => { if (!(f.key in map)) map[f.key] = ''; });
       setSiteSettings(map);
     }
 
     setIsLoading(false);
   };
+
+  // (fetchData closed above)
+  const _unused = () => {
 
   const saveSiteSettings = async () => {
     setSavingSettings(true);
