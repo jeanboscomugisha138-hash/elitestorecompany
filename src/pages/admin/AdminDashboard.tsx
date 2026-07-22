@@ -1109,136 +1109,33 @@ export default function AdminDashboard() {
             )}
 
             {activeTab === 'deposits' && (
-              <div className="bg-card rounded-2xl shadow-card overflow-hidden">
-                <div className="p-4 border-b border-border flex items-center justify-between">
-                  <h2 className="font-semibold text-foreground">Deposits Management</h2>
-                  {pendingDeposits > 0 && (
-                    <span className="text-sm text-primary font-medium">{pendingDeposits} pending</span>
-                  )}
-                </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead className="bg-muted">
-                      <tr>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">User</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Phone</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Amount</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Date</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Status</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {deposits.map((tx) => (
-                        <tr key={tx.id} className={`border-b border-border hover:bg-muted/50 ${tx.status === 'pending' ? 'bg-yellow-50/50' : ''}`}>
-                          <td className="p-4 font-medium text-foreground">{tx.full_name}</td>
-                          <td className="p-4 text-muted-foreground">{tx.phone}</td>
-                          <td className="p-4 text-primary font-medium">{tx.amount.toLocaleString()} RWF</td>
-                          <td className="p-4 text-muted-foreground">{formatDate(tx.created_at)}</td>
-                          <td className="p-4">
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              tx.status === 'approved' ? 'bg-green-100 text-green-700' :
-                              tx.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-                              'bg-red-100 text-red-700'
-                            }`}>
-                              {tx.status}
-                            </span>
-                          </td>
-                          <td className="p-4">
-                            {tx.status === 'pending' && (
-                              <div className="flex gap-2">
-                                <button
-                                  onClick={() => handleApproveDeposit(tx)}
-                                  disabled={processingTxId === tx.id}
-                                  className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors disabled:opacity-50 disabled:pointer-events-none"
-                                  title="Approve"
-                                >
-                                  <Check className="w-4 h-4" />
-                                </button>
-                                <button
-                                  onClick={() => handleRejectDeposit(tx)}
-                                  disabled={processingTxId === tx.id}
-                                  className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors disabled:opacity-50 disabled:pointer-events-none"
-                                  title="Reject"
-                                >
-                                  <X className="w-4 h-4" />
-                                </button>
-                              </div>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+              <TxCards
+                items={deposits}
+                filter={depositFilter}
+                setFilter={setDepositFilter}
+                onApprove={handleApproveDeposit}
+                onReject={handleRejectDeposit}
+                processingId={processingTxId}
+                formatDate={formatDate}
+                title="Recharges"
+                accent="text-emerald-600"
+              />
             )}
 
             {activeTab === 'withdrawals' && (
-              <div className="bg-card rounded-2xl shadow-card overflow-hidden">
-                <div className="p-4 border-b border-border flex items-center justify-between">
-                  <h2 className="font-semibold text-foreground">Withdrawals Management</h2>
-                  {pendingWithdrawals > 0 && (
-                    <span className="text-sm text-primary font-medium">{pendingWithdrawals} pending</span>
-                  )}
-                </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead className="bg-muted">
-                      <tr>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">User</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Phone</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Amount</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Date</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Status</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {withdrawals.map((tx) => (
-                        <tr key={tx.id} className={`border-b border-border hover:bg-muted/50 ${tx.status === 'pending' ? 'bg-yellow-50/50' : ''}`}>
-                          <td className="p-4 font-medium text-foreground">{tx.full_name}</td>
-                          <td className="p-4 text-muted-foreground">{tx.phone}</td>
-                          <td className="p-4 text-primary font-medium">{tx.amount.toLocaleString()} RWF</td>
-                          <td className="p-4 text-muted-foreground">{formatDate(tx.created_at)}</td>
-                          <td className="p-4">
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              tx.status === 'approved' ? 'bg-green-100 text-green-700' :
-                              tx.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-                              'bg-red-100 text-red-700'
-                            }`}>
-                              {tx.status}
-                            </span>
-                          </td>
-                          <td className="p-4">
-                            {tx.status === 'pending' && (
-                              <div className="flex gap-2">
-                                <button
-                                  onClick={() => handleApproveWithdrawal(tx)}
-                                  disabled={processingTxId === tx.id}
-                                  className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors disabled:opacity-50 disabled:pointer-events-none"
-                                  title="Approve"
-                                >
-                                  <Check className="w-4 h-4" />
-                                </button>
-                                <button
-                                  onClick={() => handleRejectWithdrawal(tx)}
-                                  disabled={processingTxId === tx.id}
-                                  className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors disabled:opacity-50 disabled:pointer-events-none"
-                                  title="Reject"
-                                >
-                                  <X className="w-4 h-4" />
-                                </button>
-                              </div>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+              <TxCards
+                items={withdrawals}
+                filter={withdrawalFilter}
+                setFilter={setWithdrawalFilter}
+                onApprove={handleApproveWithdrawal}
+                onReject={handleRejectWithdrawal}
+                processingId={processingTxId}
+                formatDate={formatDate}
+                title="Withdrawals"
+                accent="text-rose-600"
+              />
             )}
+
 
             {activeTab === 'giftcodes' && (
               <div className="bg-card rounded-2xl shadow-card overflow-hidden">
