@@ -30,7 +30,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
-type TabType = 'users' | 'products' | 'deposits' | 'withdrawals' | 'giftcodes' | 'settings' | 'notifications';
+type TabType = 'overview' | 'users' | 'deposits' | 'withdrawals' | 'investments' | 'giftcodes' | 'products' | 'notifications' | 'settings';
+type StatusFilter = 'all' | 'pending' | 'approved' | 'rejected';
 
 const SETTING_FIELDS: { key: string; label: string; placeholder: string; type?: string; multiline?: boolean; full?: boolean }[] = [
   { key: 'payment_phone', label: 'Nimero yakira amafaranga (MoMo)', placeholder: '0799599856' },
@@ -105,8 +106,93 @@ interface UserInvestment {
   product_id: string;
 }
 
+function TxCards({ items, filter, setFilter, onApprove, onReject, processingId, formatDate, title, accent }: {
+  items: any[]; filter: StatusFilter; setFilter: (s: StatusFilter) => void;
+  onApprove: (tx: any) => void; onReject: (tx: any) => void;
+  processingId: string | null; formatDate: (d: string) => string; title: string; accent: string;
+}) {
+  const filtered = filter === 'all' ? items : items.filter(t => t.status === filter);
+  const counts = {
+    all: items.length,
+    pending: items.filter(t => t.status === 'pending').length,
+    approved: items.filter(t => t.status === 'approved').length,
+    rejected: items.filter(t => t.status === 'rejected').length,
+  };
+  const chips: { key: StatusFilter; label: string }[] = [
+    { key: 'all', label: 'All' },
+    { key: 'pending', label: 'Pending' },
+    { key: 'approved', label: 'Approved' },
+    { key: 'rejected', label: 'Rejected' },
+  ];
+  return (
+    <div>
+      <div className="flex gap-2 overflow-x-auto pb-2 mb-3">
+        {chips.map(c => (
+          <button
+            key={c.key}
+            onClick={() => setFilter(c.key)}
+            className={`px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors border ${
+              filter === c.key
+                ? 'bg-primary text-primary-foreground border-primary'
+                : 'bg-card text-muted-foreground border-border hover:text-foreground'
+            }`}
+          >
+            {c.label} <span className="opacity-70">({counts[c.key]})</span>
+          </button>
+        ))}
+      </div>
+      <div className="space-y-3">
+        {filtered.map((tx) => (
+          <div key={tx.id} className="bg-card rounded-2xl border border-border/60 shadow-sm p-4">
+            <div className="flex items-start justify-between gap-3 mb-3">
+              <div className="min-w-0">
+                <p className="font-semibold text-foreground truncate">{tx.full_name}</p>
+                <p className="text-xs text-muted-foreground">{tx.phone} • {formatDate(tx.created_at)}</p>
+              </div>
+              <span className={`text-[10px] font-bold uppercase px-2 py-1 rounded-full whitespace-nowrap ${
+                tx.status === 'approved' ? 'bg-emerald-500/10 text-emerald-600' :
+                tx.status === 'pending' ? 'bg-amber-500/10 text-amber-600' :
+                'bg-rose-500/10 text-rose-600'
+              }`}>{tx.status}</span>
+            </div>
+            <div className="flex items-center justify-between gap-3">
+              <p className={`text-xl font-extrabold ${accent}`}>{Number(tx.amount).toLocaleString()} <span className="text-xs font-medium text-muted-foreground">RWF</span></p>
+              {tx.status === 'pending' && (
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => onApprove(tx)}
+                    disabled={processingId === tx.id}
+                    className="flex items-center gap-1 px-4 py-2 bg-emerald-500 text-white rounded-xl text-sm font-semibold hover:bg-emerald-600 transition-colors disabled:opacity-50"
+                  >
+                    <Check className="w-4 h-4" /> Approve
+                  </button>
+                  <button
+                    onClick={() => onReject(tx)}
+                    disabled={processingId === tx.id}
+                    className="flex items-center gap-1 px-4 py-2 bg-rose-500 text-white rounded-xl text-sm font-semibold hover:bg-rose-600 transition-colors disabled:opacity-50"
+                  >
+                    <X className="w-4 h-4" /> Reject
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+        {filtered.length === 0 && (
+          <div className="text-center py-12 text-muted-foreground text-sm">No {title.toLowerCase()} in this view</div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+
+
 export default function AdminDashboard() {
-  const [activeTab, setActiveTab] = useState<TabType>('users');
+  const [activeTab, setActiveTab] = useState<TabType>('overview');
+  const [depositFilter, setDepositFilter] = useState<StatusFilter>('pending');
+  const [withdrawalFilter, setWithdrawalFilter] = useState<StatusFilter>('pending');
+  const [allInvestments, setAllInvestments] = useState<any[]>([]);
   const [users, setUsers] = useState<Profile[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [deposits, setDeposits] = useState<Transaction[]>([]);
@@ -228,18 +314,28 @@ export default function AdminDashboard() {
   const fetchData = async () => {
     setIsLoading(true);
 
-    if (activeTab === 'users') {
+    if (activeTab === 'users' || activeTab === 'overview') {
       const { data } = await supabase.from('profiles').select('*').order('created_at', { ascending: false });
       setUsers(data || []);
-    } else if (activeTab === 'products') {
+    }
+    if (activeTab === 'products') {
       const { data } = await supabase.from('investment_products').select('*').order('investment_amount', { ascending: true });
       setProducts(data || []);
-    } else if (activeTab === 'deposits') {
+    } else if (activeTab === 'deposits' || activeTab === 'overview') {
       const { data } = await supabase.from('deposit_transactions').select('*').order('created_at', { ascending: false });
       setDeposits(data || []);
-    } else if (activeTab === 'withdrawals') {
+    }
+    if (activeTab === 'withdrawals' || activeTab === 'overview') {
       const { data } = await supabase.from('withdrawal_transactions').select('*').order('created_at', { ascending: false });
       setWithdrawals(data || []);
+    }
+    if (activeTab === 'investments') {
+      const { data } = await supabase
+        .from('user_investments')
+        .select('*, investment_products(investment_amount), profiles:user_id(full_name, phone)')
+        .order('created_at', { ascending: false })
+        .limit(200);
+      setAllInvestments(data || []);
     } else if (activeTab === 'giftcodes') {
       const { data } = await supabase.from('gift_codes').select('*').order('created_at', { ascending: false });
       setGiftCodes((data as GiftCode[]) || []);
@@ -247,13 +343,15 @@ export default function AdminDashboard() {
       const { data } = await supabase.from('site_settings').select('key, value');
       const map: Record<string, string> = {};
       (data || []).forEach((r: any) => { map[r.key] = r.value; });
-      // ensure all keys present
       SETTING_FIELDS.forEach(f => { if (!(f.key in map)) map[f.key] = ''; });
       setSiteSettings(map);
     }
 
     setIsLoading(false);
   };
+
+
+
 
   const saveSiteSettings = async () => {
     setSavingSettings(true);
@@ -667,11 +765,13 @@ export default function AdminDashboard() {
   };
 
   const tabs = [
+    { id: 'overview' as TabType, label: 'Overview', icon: TrendingUp },
     { id: 'users' as TabType, label: 'Users', icon: Users },
-    { id: 'products' as TabType, label: 'Products', icon: Package },
-    { id: 'deposits' as TabType, label: 'Deposits', icon: ArrowDownToLine },
+    { id: 'deposits' as TabType, label: 'Recharges', icon: ArrowDownToLine },
     { id: 'withdrawals' as TabType, label: 'Withdrawals', icon: ArrowUpFromLine },
+    { id: 'investments' as TabType, label: 'Investments', icon: PiggyBank },
     { id: 'giftcodes' as TabType, label: 'Gift Codes', icon: Gift },
+    { id: 'products' as TabType, label: 'Products', icon: Package },
     { id: 'notifications' as TabType, label: 'Notifications', icon: Bell },
     { id: 'settings' as TabType, label: 'Settings', icon: SettingsIcon },
   ];
@@ -689,102 +789,50 @@ export default function AdminDashboard() {
   const pendingWithdrawals = withdrawals.filter(w => w.status === 'pending').length;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-muted/30">
       {/* Header */}
-      <header className="bg-card border-b border-border sticky top-0 z-50">
+      <header className="bg-card border-b border-border sticky top-0 z-50 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center">
-              <Shield className="w-5 h-5 text-secondary-foreground" />
+            <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center shadow-md">
+              <Shield className="w-5 h-5 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="font-bold text-foreground">Admin Panel</h1>
-              <p className="text-xs text-muted-foreground">PETANE SHIPPING</p>
+              <h1 className="font-extrabold text-lg text-primary tracking-tight">Petane Admin</h1>
+              <p className="text-[11px] text-muted-foreground -mt-0.5">Control Panel</p>
             </div>
           </div>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 text-destructive hover:bg-destructive/10 rounded-xl transition-colors"
+            className="flex items-center gap-2 px-3 py-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl transition-colors"
           >
             <LogOut className="w-5 h-5" />
-            <span className="hidden sm:inline">Logout</span>
+            <span className="hidden sm:inline text-sm font-medium">Logout</span>
           </button>
         </div>
-      </header>
 
-      {/* Stats Overview */}
-      <div className="max-w-6xl mx-auto px-4 py-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <div className="bg-card rounded-xl p-4 shadow-card">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-                <Users className="w-5 h-5 text-primary" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Total Users</p>
-                <p className="text-lg font-bold text-foreground">{stats.totalUsers}</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-card rounded-xl p-4 shadow-card">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-green-500/10 rounded-xl flex items-center justify-center">
-                <ArrowDownToLine className="w-5 h-5 text-green-500" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Total Deposits</p>
-                <p className="text-lg font-bold text-foreground">{stats.totalDeposits.toLocaleString()} RWF</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-card rounded-xl p-4 shadow-card">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-secondary/10 rounded-xl flex items-center justify-center">
-                <Wallet className="w-5 h-5 text-secondary" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Total Balance</p>
-                <p className="text-lg font-bold text-foreground">{stats.totalBalance.toLocaleString()} RWF</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-card rounded-xl p-4 shadow-card">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-red-500/10 rounded-xl flex items-center justify-center">
-                <PiggyBank className="w-5 h-5 text-red-500" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Total Invested</p>
-                <p className="text-lg font-bold text-foreground">{stats.totalInvested.toLocaleString()} RWF</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Tabs */}
-      <div className="bg-card border-b border-border">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex gap-1 overflow-x-auto">
+        {/* Tabs */}
+        <div className="max-w-6xl mx-auto px-2 relative">
+          <div className="flex gap-1 overflow-x-auto scrollbar-none">
             {tabs.map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
                 onClick={() => setActiveTab(id)}
                 className={`flex items-center gap-2 px-4 py-3 font-medium text-sm whitespace-nowrap border-b-2 transition-colors relative ${
                   activeTab === id
-                    ? 'border-secondary text-secondary'
+                    ? 'border-primary text-primary'
                     : 'border-transparent text-muted-foreground hover:text-foreground'
                 }`}
               >
                 <Icon className="w-4 h-4" />
                 {label}
                 {id === 'deposits' && pendingDeposits > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="ml-1 bg-primary text-primary-foreground text-[10px] font-bold rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center">
                     {pendingDeposits}
                   </span>
                 )}
                 {id === 'withdrawals' && pendingWithdrawals > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="ml-1 bg-primary text-primary-foreground text-[10px] font-bold rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center">
                     {pendingWithdrawals}
                   </span>
                 )}
@@ -792,10 +840,37 @@ export default function AdminDashboard() {
             ))}
           </div>
         </div>
-      </div>
+      </header>
 
       {/* Content */}
       <div className="max-w-6xl mx-auto px-4 py-6">
+        {activeTab === 'overview' && (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
+            {[
+              { label: 'Total Users', value: stats.totalUsers.toLocaleString(), icon: Users, tint: 'text-primary bg-primary/10' },
+              { label: 'Deposits', value: `${stats.totalDeposits.toLocaleString()} RWF`, icon: ArrowDownToLine, tint: 'text-green-600 bg-green-500/10' },
+              { label: 'Withdrawals', value: `${withdrawals.filter(w=>w.status==='approved').reduce((s,w)=>s+w.amount,0).toLocaleString()} RWF`, icon: ArrowUpFromLine, tint: 'text-rose-600 bg-rose-500/10' },
+              { label: 'Investments', value: `${stats.totalInvested.toLocaleString()} RWF`, icon: PiggyBank, tint: 'text-amber-600 bg-amber-500/10' },
+              { label: 'Total Balance', value: `${stats.totalBalance.toLocaleString()} RWF`, icon: Wallet, tint: 'text-secondary bg-secondary/10' },
+            ].map((c) => (
+              <div key={c.label} className="bg-card rounded-2xl p-4 border border-border/60 shadow-sm">
+                <div className={`w-9 h-9 rounded-xl flex items-center justify-center mb-3 ${c.tint}`}>
+                  <c.icon className="w-4 h-4" />
+                </div>
+                <p className="text-xs text-muted-foreground">{c.label}</p>
+                <p className="text-lg font-bold text-foreground mt-0.5">{c.value}</p>
+              </div>
+            ))}
+            <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+              <p className="text-xs text-muted-foreground">Pending Recharges</p>
+              <p className="text-2xl font-extrabold text-primary mt-1">{pendingDeposits}</p>
+            </div>
+            <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+              <p className="text-xs text-muted-foreground">Pending Withdrawals</p>
+              <p className="text-2xl font-extrabold text-primary mt-1">{pendingWithdrawals}</p>
+            </div>
+          </div>
+        )}
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -803,114 +878,134 @@ export default function AdminDashboard() {
         ) : (
           <>
             {activeTab === 'users' && (
-              <div className="bg-card rounded-2xl shadow-card overflow-hidden">
-                <div className="p-4 border-b border-border">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                    <h2 className="font-semibold text-foreground">Users Management</h2>
-                    <div className="flex items-center gap-3">
-                      <div className="relative flex-1 sm:flex-none">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                        <input
-                          type="text"
-                          placeholder="Search by name or phone..."
-                          value={searchQuery}
-                          onChange={(e) => setSearchQuery(e.target.value)}
-                          className="w-full sm:w-64 pl-9 pr-4 py-2 border border-border rounded-xl bg-background text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
-                        />
-                      </div>
-                      <span className="text-sm text-muted-foreground whitespace-nowrap">
-                        {filteredUsers.length} of {users.length} users
-                      </span>
-                    </div>
-                  </div>
+              <div>
+                <div className="bg-card rounded-2xl border border-border/60 p-3 mb-3 flex items-center gap-2 shadow-sm">
+                  <Search className="w-4 h-4 text-muted-foreground ml-2" />
+                  <input
+                    type="text"
+                    placeholder="Search by name or phone..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none py-2"
+                  />
+                  <span className="text-xs text-muted-foreground whitespace-nowrap pr-2">
+                    {filteredUsers.length}/{users.length}
+                  </span>
                 </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead className="bg-muted">
-                      <tr>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Name</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Phone</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Balance</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Invested</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Referral Bonus</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Joined</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredUsers.map((user) => (
-                        <tr key={user.id} className="border-b border-border hover:bg-muted/50">
-                          <td className="p-4 font-medium text-foreground">{user.full_name}</td>
-                          <td className="p-4 text-muted-foreground">{user.phone}</td>
-                          <td className="p-4">
-                            {editingUser?.id === user.id ? (
-                              <input
-                                type="number"
-                                value={editBalance}
-                                onChange={(e) => setEditBalance(e.target.value)}
-                                className="w-32 px-2 py-1 border border-border rounded-lg bg-background text-foreground"
-                              />
-                            ) : (
-                              <span className="text-primary font-medium">{user.main_balance.toLocaleString()} RWF</span>
-                            )}
-                          </td>
-                          <td className="p-4">
-                            {editingInvestedUser?.id === user.id ? (
-                              <input
-                                type="number"
-                                value={editInvestedAmount}
-                                onChange={(e) => setEditInvestedAmount(e.target.value)}
-                                className="w-32 px-2 py-1 border border-border rounded-lg bg-background text-foreground"
-                              />
-                            ) : (
-                              <span className="text-secondary font-medium">{user.invested_amount.toLocaleString()} RWF</span>
-                            )}
-                          </td>
-                          <td className="p-4 text-accent-foreground font-medium">{user.referral_balance.toLocaleString()} RWF</td>
-                          <td className="p-4 text-muted-foreground">{formatDate(user.created_at)}</td>
-                          <td className="p-4">
-                            {editingUser?.id === user.id ? (
-                              <div className="flex gap-2">
-                                <button onClick={saveUserBalance} className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors">
+                <div className="space-y-3">
+                  {filteredUsers.map((user) => {
+                    const isEditingBal = editingUser?.id === user.id;
+                    const isEditingInv = editingInvestedUser?.id === user.id;
+                    return (
+                      <div key={user.id} className="bg-card rounded-2xl border border-border/60 shadow-sm p-4">
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <div className="flex items-center gap-3 min-w-0">
+                            <div className="w-11 h-11 rounded-full bg-gradient-to-br from-primary to-secondary text-primary-foreground font-bold flex items-center justify-center flex-shrink-0">
+                              {user.full_name.charAt(0).toUpperCase()}
+                            </div>
+                            <div className="min-w-0">
+                              <p className="font-semibold text-foreground truncate">{user.full_name}</p>
+                              <p className="text-xs text-muted-foreground">{user.phone} • {formatDate(user.created_at)}</p>
+                            </div>
+                          </div>
+                          <div className="flex gap-1 flex-shrink-0">
+                            {isEditingBal || isEditingInv ? (
+                              <>
+                                <button onClick={isEditingBal ? saveUserBalance : saveUserInvestedAmount} className="p-2 text-green-600 hover:bg-green-100 rounded-lg">
                                   <Save className="w-4 h-4" />
                                 </button>
-                                <button onClick={cancelEditUser} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors">
+                                <button onClick={isEditingBal ? cancelEditUser : cancelEditInvested} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg">
                                   <X className="w-4 h-4" />
                                 </button>
-                              </div>
-                            ) : editingInvestedUser?.id === user.id ? (
-                              <div className="flex gap-2">
-                                <button onClick={saveUserInvestedAmount} className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors">
-                                  <Save className="w-4 h-4" />
-                                </button>
-                                <button onClick={cancelEditInvested} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors">
-                                  <X className="w-4 h-4" />
-                                </button>
-                              </div>
+                              </>
                             ) : (
-                              <div className="flex gap-1">
-                                <button onClick={() => startEditUser(user)} className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Edit balance">
-                                  <Edit className="w-4 h-4" />
-                                </button>
-                                <button onClick={() => startEditInvested(user)} className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors" title="Edit invested amount">
-                                  <PiggyBank className="w-4 h-4" />
-                                </button>
-                                <button onClick={() => viewUserInvestments(user)} className="p-2 text-secondary hover:bg-secondary/10 rounded-lg transition-colors" title="View investments">
+                              <>
+                                <button onClick={() => viewUserInvestments(user)} className="p-2 text-secondary hover:bg-secondary/10 rounded-lg" title="View investments">
                                   <Eye className="w-4 h-4" />
                                 </button>
-                                <button onClick={() => handleDeleteUser(user)} disabled={deletingUserId === user.user_id} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors disabled:opacity-50" title="Delete user">
+                                <button onClick={() => startEditUser(user)} className="p-2 text-primary hover:bg-primary/10 rounded-lg" title="Edit balance">
+                                  <Edit className="w-4 h-4" />
+                                </button>
+                                <button onClick={() => startEditInvested(user)} className="p-2 text-amber-600 hover:bg-amber-500/10 rounded-lg" title="Edit invested">
+                                  <PiggyBank className="w-4 h-4" />
+                                </button>
+                                <button onClick={() => handleDeleteUser(user)} disabled={deletingUserId === user.user_id} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg disabled:opacity-50" title="Delete">
                                   <Trash2 className="w-4 h-4" />
                                 </button>
-                              </div>
+                              </>
                             )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2">
+                          <div className="bg-primary/5 rounded-xl p-2.5">
+                            <p className="text-[10px] uppercase tracking-wide text-muted-foreground">Balance</p>
+                            {isEditingBal ? (
+                              <input type="number" value={editBalance} onChange={(e)=>setEditBalance(e.target.value)} className="w-full mt-1 px-2 py-1 border border-border rounded-md bg-background text-sm" />
+                            ) : (
+                              <p className="text-sm font-bold text-primary mt-0.5">{user.main_balance.toLocaleString()}</p>
+                            )}
+                          </div>
+                          <div className="bg-amber-500/5 rounded-xl p-2.5">
+                            <p className="text-[10px] uppercase tracking-wide text-muted-foreground">Invested</p>
+                            {isEditingInv ? (
+                              <input type="number" value={editInvestedAmount} onChange={(e)=>setEditInvestedAmount(e.target.value)} className="w-full mt-1 px-2 py-1 border border-border rounded-md bg-background text-sm" />
+                            ) : (
+                              <p className="text-sm font-bold text-amber-600 mt-0.5">{user.invested_amount.toLocaleString()}</p>
+                            )}
+                          </div>
+                          <div className="bg-emerald-500/5 rounded-xl p-2.5">
+                            <p className="text-[10px] uppercase tracking-wide text-muted-foreground">Referral</p>
+                            <p className="text-sm font-bold text-emerald-600 mt-0.5">{user.referral_balance.toLocaleString()}</p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                  {filteredUsers.length === 0 && (
+                    <div className="text-center py-12 text-muted-foreground text-sm">No users found</div>
+                  )}
                 </div>
               </div>
             )}
+
+            {activeTab === 'investments' && (
+              <div className="space-y-3">
+                {allInvestments.map((inv: any) => {
+                  const earned = Number(inv.daily_profit) * Math.max(0, Math.floor((Date.now() - new Date(inv.start_date).getTime()) / 86400000));
+                  return (
+                    <div key={inv.id} className="bg-card rounded-2xl border border-border/60 shadow-sm p-4">
+                      <div className="flex items-start justify-between mb-3">
+                        <div>
+                          <p className="font-semibold text-foreground">{inv.profiles?.full_name || 'User'}</p>
+                          <p className="text-xs text-muted-foreground">{inv.profiles?.phone} • {formatDate(inv.start_date)}</p>
+                        </div>
+                        <span className={`text-[10px] font-bold uppercase px-2 py-1 rounded-full ${inv.status === 'active' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-muted text-muted-foreground'}`}>
+                          {inv.status}
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-3 gap-2">
+                        <div className="bg-primary/5 rounded-xl p-2.5">
+                          <p className="text-[10px] uppercase text-muted-foreground">Amount</p>
+                          <p className="text-sm font-bold text-primary mt-0.5">{Number(inv.amount).toLocaleString()}</p>
+                        </div>
+                        <div className="bg-amber-500/5 rounded-xl p-2.5">
+                          <p className="text-[10px] uppercase text-muted-foreground">Daily</p>
+                          <p className="text-sm font-bold text-amber-600 mt-0.5">{Number(inv.daily_profit).toLocaleString()}</p>
+                        </div>
+                        <div className="bg-emerald-500/5 rounded-xl p-2.5">
+                          <p className="text-[10px] uppercase text-muted-foreground">Earned</p>
+                          <p className="text-sm font-bold text-emerald-600 mt-0.5">{earned.toLocaleString()}</p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+                {allInvestments.length === 0 && (
+                  <div className="text-center py-12 text-muted-foreground text-sm">No investments</div>
+                )}
+              </div>
+            )}
+
 
             {/* User Investments Modal */}
             {viewingInvestmentsUser && (
@@ -1096,136 +1191,33 @@ export default function AdminDashboard() {
             )}
 
             {activeTab === 'deposits' && (
-              <div className="bg-card rounded-2xl shadow-card overflow-hidden">
-                <div className="p-4 border-b border-border flex items-center justify-between">
-                  <h2 className="font-semibold text-foreground">Deposits Management</h2>
-                  {pendingDeposits > 0 && (
-                    <span className="text-sm text-primary font-medium">{pendingDeposits} pending</span>
-                  )}
-                </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead className="bg-muted">
-                      <tr>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">User</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Phone</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Amount</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Date</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Status</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {deposits.map((tx) => (
-                        <tr key={tx.id} className={`border-b border-border hover:bg-muted/50 ${tx.status === 'pending' ? 'bg-yellow-50/50' : ''}`}>
-                          <td className="p-4 font-medium text-foreground">{tx.full_name}</td>
-                          <td className="p-4 text-muted-foreground">{tx.phone}</td>
-                          <td className="p-4 text-primary font-medium">{tx.amount.toLocaleString()} RWF</td>
-                          <td className="p-4 text-muted-foreground">{formatDate(tx.created_at)}</td>
-                          <td className="p-4">
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              tx.status === 'approved' ? 'bg-green-100 text-green-700' :
-                              tx.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-                              'bg-red-100 text-red-700'
-                            }`}>
-                              {tx.status}
-                            </span>
-                          </td>
-                          <td className="p-4">
-                            {tx.status === 'pending' && (
-                              <div className="flex gap-2">
-                                <button
-                                  onClick={() => handleApproveDeposit(tx)}
-                                  disabled={processingTxId === tx.id}
-                                  className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors disabled:opacity-50 disabled:pointer-events-none"
-                                  title="Approve"
-                                >
-                                  <Check className="w-4 h-4" />
-                                </button>
-                                <button
-                                  onClick={() => handleRejectDeposit(tx)}
-                                  disabled={processingTxId === tx.id}
-                                  className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors disabled:opacity-50 disabled:pointer-events-none"
-                                  title="Reject"
-                                >
-                                  <X className="w-4 h-4" />
-                                </button>
-                              </div>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+              <TxCards
+                items={deposits}
+                filter={depositFilter}
+                setFilter={setDepositFilter}
+                onApprove={handleApproveDeposit}
+                onReject={handleRejectDeposit}
+                processingId={processingTxId}
+                formatDate={formatDate}
+                title="Recharges"
+                accent="text-emerald-600"
+              />
             )}
 
             {activeTab === 'withdrawals' && (
-              <div className="bg-card rounded-2xl shadow-card overflow-hidden">
-                <div className="p-4 border-b border-border flex items-center justify-between">
-                  <h2 className="font-semibold text-foreground">Withdrawals Management</h2>
-                  {pendingWithdrawals > 0 && (
-                    <span className="text-sm text-primary font-medium">{pendingWithdrawals} pending</span>
-                  )}
-                </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead className="bg-muted">
-                      <tr>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">User</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Phone</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Amount</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Date</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Status</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {withdrawals.map((tx) => (
-                        <tr key={tx.id} className={`border-b border-border hover:bg-muted/50 ${tx.status === 'pending' ? 'bg-yellow-50/50' : ''}`}>
-                          <td className="p-4 font-medium text-foreground">{tx.full_name}</td>
-                          <td className="p-4 text-muted-foreground">{tx.phone}</td>
-                          <td className="p-4 text-primary font-medium">{tx.amount.toLocaleString()} RWF</td>
-                          <td className="p-4 text-muted-foreground">{formatDate(tx.created_at)}</td>
-                          <td className="p-4">
-                            <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              tx.status === 'approved' ? 'bg-green-100 text-green-700' :
-                              tx.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-                              'bg-red-100 text-red-700'
-                            }`}>
-                              {tx.status}
-                            </span>
-                          </td>
-                          <td className="p-4">
-                            {tx.status === 'pending' && (
-                              <div className="flex gap-2">
-                                <button
-                                  onClick={() => handleApproveWithdrawal(tx)}
-                                  disabled={processingTxId === tx.id}
-                                  className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors disabled:opacity-50 disabled:pointer-events-none"
-                                  title="Approve"
-                                >
-                                  <Check className="w-4 h-4" />
-                                </button>
-                                <button
-                                  onClick={() => handleRejectWithdrawal(tx)}
-                                  disabled={processingTxId === tx.id}
-                                  className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors disabled:opacity-50 disabled:pointer-events-none"
-                                  title="Reject"
-                                >
-                                  <X className="w-4 h-4" />
-                                </button>
-                              </div>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+              <TxCards
+                items={withdrawals}
+                filter={withdrawalFilter}
+                setFilter={setWithdrawalFilter}
+                onApprove={handleApproveWithdrawal}
+                onReject={handleRejectWithdrawal}
+                processingId={processingTxId}
+                formatDate={formatDate}
+                title="Withdrawals"
+                accent="text-rose-600"
+              />
             )}
+
 
             {activeTab === 'giftcodes' && (
               <div className="bg-card rounded-2xl shadow-card overflow-hidden">
