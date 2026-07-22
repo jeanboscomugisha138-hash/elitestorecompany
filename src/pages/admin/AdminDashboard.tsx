@@ -268,8 +268,8 @@ export default function AdminDashboard() {
     setIsLoading(false);
   };
 
-  // (fetchData closed above)
-  const _unused = () => {
+
+
 
   const saveSiteSettings = async () => {
     setSavingSettings(true);
