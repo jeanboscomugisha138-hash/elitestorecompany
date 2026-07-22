@@ -107,7 +107,10 @@ interface UserInvestment {
 }
 
 export default function AdminDashboard() {
-  const [activeTab, setActiveTab] = useState<TabType>('users');
+  const [activeTab, setActiveTab] = useState<TabType>('overview');
+  const [depositFilter, setDepositFilter] = useState<StatusFilter>('pending');
+  const [withdrawalFilter, setWithdrawalFilter] = useState<StatusFilter>('pending');
+  const [allInvestments, setAllInvestments] = useState<any[]>([]);
   const [users, setUsers] = useState<Profile[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [deposits, setDeposits] = useState<Transaction[]>([]);
