@@ -683,11 +683,13 @@ export default function AdminDashboard() {
   };
 
   const tabs = [
+    { id: 'overview' as TabType, label: 'Overview', icon: TrendingUp },
     { id: 'users' as TabType, label: 'Users', icon: Users },
-    { id: 'products' as TabType, label: 'Products', icon: Package },
-    { id: 'deposits' as TabType, label: 'Deposits', icon: ArrowDownToLine },
+    { id: 'deposits' as TabType, label: 'Recharges', icon: ArrowDownToLine },
     { id: 'withdrawals' as TabType, label: 'Withdrawals', icon: ArrowUpFromLine },
+    { id: 'investments' as TabType, label: 'Investments', icon: PiggyBank },
     { id: 'giftcodes' as TabType, label: 'Gift Codes', icon: Gift },
+    { id: 'products' as TabType, label: 'Products', icon: Package },
     { id: 'notifications' as TabType, label: 'Notifications', icon: Bell },
     { id: 'settings' as TabType, label: 'Settings', icon: SettingsIcon },
   ];
