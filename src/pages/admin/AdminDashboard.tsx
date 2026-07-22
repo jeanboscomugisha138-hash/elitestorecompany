@@ -796,114 +796,134 @@ export default function AdminDashboard() {
         ) : (
           <>
             {activeTab === 'users' && (
-              <div className="bg-card rounded-2xl shadow-card overflow-hidden">
-                <div className="p-4 border-b border-border">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                    <h2 className="font-semibold text-foreground">Users Management</h2>
-                    <div className="flex items-center gap-3">
-                      <div className="relative flex-1 sm:flex-none">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                        <input
-                          type="text"
-                          placeholder="Search by name or phone..."
-                          value={searchQuery}
-                          onChange={(e) => setSearchQuery(e.target.value)}
-                          className="w-full sm:w-64 pl-9 pr-4 py-2 border border-border rounded-xl bg-background text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
-                        />
-                      </div>
-                      <span className="text-sm text-muted-foreground whitespace-nowrap">
-                        {filteredUsers.length} of {users.length} users
-                      </span>
-                    </div>
-                  </div>
+              <div>
+                <div className="bg-card rounded-2xl border border-border/60 p-3 mb-3 flex items-center gap-2 shadow-sm">
+                  <Search className="w-4 h-4 text-muted-foreground ml-2" />
+                  <input
+                    type="text"
+                    placeholder="Search by name or phone..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none py-2"
+                  />
+                  <span className="text-xs text-muted-foreground whitespace-nowrap pr-2">
+                    {filteredUsers.length}/{users.length}
+                  </span>
                 </div>
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead className="bg-muted">
-                      <tr>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Name</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Phone</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Balance</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Invested</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Referral Bonus</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Joined</th>
-                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredUsers.map((user) => (
-                        <tr key={user.id} className="border-b border-border hover:bg-muted/50">
-                          <td className="p-4 font-medium text-foreground">{user.full_name}</td>
-                          <td className="p-4 text-muted-foreground">{user.phone}</td>
-                          <td className="p-4">
-                            {editingUser?.id === user.id ? (
-                              <input
-                                type="number"
-                                value={editBalance}
-                                onChange={(e) => setEditBalance(e.target.value)}
-                                className="w-32 px-2 py-1 border border-border rounded-lg bg-background text-foreground"
-                              />
-                            ) : (
-                              <span className="text-primary font-medium">{user.main_balance.toLocaleString()} RWF</span>
-                            )}
-                          </td>
-                          <td className="p-4">
-                            {editingInvestedUser?.id === user.id ? (
-                              <input
-                                type="number"
-                                value={editInvestedAmount}
-                                onChange={(e) => setEditInvestedAmount(e.target.value)}
-                                className="w-32 px-2 py-1 border border-border rounded-lg bg-background text-foreground"
-                              />
-                            ) : (
-                              <span className="text-secondary font-medium">{user.invested_amount.toLocaleString()} RWF</span>
-                            )}
-                          </td>
-                          <td className="p-4 text-accent-foreground font-medium">{user.referral_balance.toLocaleString()} RWF</td>
-                          <td className="p-4 text-muted-foreground">{formatDate(user.created_at)}</td>
-                          <td className="p-4">
-                            {editingUser?.id === user.id ? (
-                              <div className="flex gap-2">
-                                <button onClick={saveUserBalance} className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors">
+                <div className="space-y-3">
+                  {filteredUsers.map((user) => {
+                    const isEditingBal = editingUser?.id === user.id;
+                    const isEditingInv = editingInvestedUser?.id === user.id;
+                    return (
+                      <div key={user.id} className="bg-card rounded-2xl border border-border/60 shadow-sm p-4">
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <div className="flex items-center gap-3 min-w-0">
+                            <div className="w-11 h-11 rounded-full bg-gradient-to-br from-primary to-secondary text-primary-foreground font-bold flex items-center justify-center flex-shrink-0">
+                              {user.full_name.charAt(0).toUpperCase()}
+                            </div>
+                            <div className="min-w-0">
+                              <p className="font-semibold text-foreground truncate">{user.full_name}</p>
+                              <p className="text-xs text-muted-foreground">{user.phone} • {formatDate(user.created_at)}</p>
+                            </div>
+                          </div>
+                          <div className="flex gap-1 flex-shrink-0">
+                            {isEditingBal || isEditingInv ? (
+                              <>
+                                <button onClick={isEditingBal ? saveUserBalance : saveUserInvestedAmount} className="p-2 text-green-600 hover:bg-green-100 rounded-lg">
                                   <Save className="w-4 h-4" />
                                 </button>
-                                <button onClick={cancelEditUser} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors">
+                                <button onClick={isEditingBal ? cancelEditUser : cancelEditInvested} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg">
                                   <X className="w-4 h-4" />
                                 </button>
-                              </div>
-                            ) : editingInvestedUser?.id === user.id ? (
-                              <div className="flex gap-2">
-                                <button onClick={saveUserInvestedAmount} className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors">
-                                  <Save className="w-4 h-4" />
-                                </button>
-                                <button onClick={cancelEditInvested} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors">
-                                  <X className="w-4 h-4" />
-                                </button>
-                              </div>
+                              </>
                             ) : (
-                              <div className="flex gap-1">
-                                <button onClick={() => startEditUser(user)} className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Edit balance">
-                                  <Edit className="w-4 h-4" />
-                                </button>
-                                <button onClick={() => startEditInvested(user)} className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors" title="Edit invested amount">
-                                  <PiggyBank className="w-4 h-4" />
-                                </button>
-                                <button onClick={() => viewUserInvestments(user)} className="p-2 text-secondary hover:bg-secondary/10 rounded-lg transition-colors" title="View investments">
+                              <>
+                                <button onClick={() => viewUserInvestments(user)} className="p-2 text-secondary hover:bg-secondary/10 rounded-lg" title="View investments">
                                   <Eye className="w-4 h-4" />
                                 </button>
-                                <button onClick={() => handleDeleteUser(user)} disabled={deletingUserId === user.user_id} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors disabled:opacity-50" title="Delete user">
+                                <button onClick={() => startEditUser(user)} className="p-2 text-primary hover:bg-primary/10 rounded-lg" title="Edit balance">
+                                  <Edit className="w-4 h-4" />
+                                </button>
+                                <button onClick={() => startEditInvested(user)} className="p-2 text-amber-600 hover:bg-amber-500/10 rounded-lg" title="Edit invested">
+                                  <PiggyBank className="w-4 h-4" />
+                                </button>
+                                <button onClick={() => handleDeleteUser(user)} disabled={deletingUserId === user.user_id} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg disabled:opacity-50" title="Delete">
                                   <Trash2 className="w-4 h-4" />
                                 </button>
-                              </div>
+                              </>
                             )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                          </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2">
+                          <div className="bg-primary/5 rounded-xl p-2.5">
+                            <p className="text-[10px] uppercase tracking-wide text-muted-foreground">Balance</p>
+                            {isEditingBal ? (
+                              <input type="number" value={editBalance} onChange={(e)=>setEditBalance(e.target.value)} className="w-full mt-1 px-2 py-1 border border-border rounded-md bg-background text-sm" />
+                            ) : (
+                              <p className="text-sm font-bold text-primary mt-0.5">{user.main_balance.toLocaleString()}</p>
+                            )}
+                          </div>
+                          <div className="bg-amber-500/5 rounded-xl p-2.5">
+                            <p className="text-[10px] uppercase tracking-wide text-muted-foreground">Invested</p>
+                            {isEditingInv ? (
+                              <input type="number" value={editInvestedAmount} onChange={(e)=>setEditInvestedAmount(e.target.value)} className="w-full mt-1 px-2 py-1 border border-border rounded-md bg-background text-sm" />
+                            ) : (
+                              <p className="text-sm font-bold text-amber-600 mt-0.5">{user.invested_amount.toLocaleString()}</p>
+                            )}
+                          </div>
+                          <div className="bg-emerald-500/5 rounded-xl p-2.5">
+                            <p className="text-[10px] uppercase tracking-wide text-muted-foreground">Referral</p>
+                            <p className="text-sm font-bold text-emerald-600 mt-0.5">{user.referral_balance.toLocaleString()}</p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                  {filteredUsers.length === 0 && (
+                    <div className="text-center py-12 text-muted-foreground text-sm">No users found</div>
+                  )}
                 </div>
               </div>
             )}
+
+            {activeTab === 'investments' && (
+              <div className="space-y-3">
+                {allInvestments.map((inv: any) => {
+                  const earned = Number(inv.daily_profit) * Math.max(0, Math.floor((Date.now() - new Date(inv.start_date).getTime()) / 86400000));
+                  return (
+                    <div key={inv.id} className="bg-card rounded-2xl border border-border/60 shadow-sm p-4">
+                      <div className="flex items-start justify-between mb-3">
+                        <div>
+                          <p className="font-semibold text-foreground">{inv.profiles?.full_name || 'User'}</p>
+                          <p className="text-xs text-muted-foreground">{inv.profiles?.phone} • {formatDate(inv.start_date)}</p>
+                        </div>
+                        <span className={`text-[10px] font-bold uppercase px-2 py-1 rounded-full ${inv.status === 'active' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-muted text-muted-foreground'}`}>
+                          {inv.status}
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-3 gap-2">
+                        <div className="bg-primary/5 rounded-xl p-2.5">
+                          <p className="text-[10px] uppercase text-muted-foreground">Amount</p>
+                          <p className="text-sm font-bold text-primary mt-0.5">{Number(inv.amount).toLocaleString()}</p>
+                        </div>
+                        <div className="bg-amber-500/5 rounded-xl p-2.5">
+                          <p className="text-[10px] uppercase text-muted-foreground">Daily</p>
+                          <p className="text-sm font-bold text-amber-600 mt-0.5">{Number(inv.daily_profit).toLocaleString()}</p>
+                        </div>
+                        <div className="bg-emerald-500/5 rounded-xl p-2.5">
+                          <p className="text-[10px] uppercase text-muted-foreground">Earned</p>
+                          <p className="text-sm font-bold text-emerald-600 mt-0.5">{earned.toLocaleString()}</p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+                {allInvestments.length === 0 && (
+                  <div className="text-center py-12 text-muted-foreground text-sm">No investments</div>
+                )}
+              </div>
+            )}
+
 
             {/* User Investments Modal */}
             {viewingInvestmentsUser && (
