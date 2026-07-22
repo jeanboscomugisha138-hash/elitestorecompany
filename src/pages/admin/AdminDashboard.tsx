@@ -707,102 +707,50 @@ export default function AdminDashboard() {
   const pendingWithdrawals = withdrawals.filter(w => w.status === 'pending').length;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-muted/30">
       {/* Header */}
-      <header className="bg-card border-b border-border sticky top-0 z-50">
+      <header className="bg-card border-b border-border sticky top-0 z-50 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center">
-              <Shield className="w-5 h-5 text-secondary-foreground" />
+            <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center shadow-md">
+              <Shield className="w-5 h-5 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="font-bold text-foreground">Admin Panel</h1>
-              <p className="text-xs text-muted-foreground">PETANE SHIPPING</p>
+              <h1 className="font-extrabold text-lg text-primary tracking-tight">Petane Admin</h1>
+              <p className="text-[11px] text-muted-foreground -mt-0.5">Control Panel</p>
             </div>
           </div>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 text-destructive hover:bg-destructive/10 rounded-xl transition-colors"
+            className="flex items-center gap-2 px-3 py-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-xl transition-colors"
           >
             <LogOut className="w-5 h-5" />
-            <span className="hidden sm:inline">Logout</span>
+            <span className="hidden sm:inline text-sm font-medium">Logout</span>
           </button>
         </div>
-      </header>
 
-      {/* Stats Overview */}
-      <div className="max-w-6xl mx-auto px-4 py-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <div className="bg-card rounded-xl p-4 shadow-card">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-                <Users className="w-5 h-5 text-primary" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Total Users</p>
-                <p className="text-lg font-bold text-foreground">{stats.totalUsers}</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-card rounded-xl p-4 shadow-card">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-green-500/10 rounded-xl flex items-center justify-center">
-                <ArrowDownToLine className="w-5 h-5 text-green-500" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Total Deposits</p>
-                <p className="text-lg font-bold text-foreground">{stats.totalDeposits.toLocaleString()} RWF</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-card rounded-xl p-4 shadow-card">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-secondary/10 rounded-xl flex items-center justify-center">
-                <Wallet className="w-5 h-5 text-secondary" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Total Balance</p>
-                <p className="text-lg font-bold text-foreground">{stats.totalBalance.toLocaleString()} RWF</p>
-              </div>
-            </div>
-          </div>
-          <div className="bg-card rounded-xl p-4 shadow-card">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-red-500/10 rounded-xl flex items-center justify-center">
-                <PiggyBank className="w-5 h-5 text-red-500" />
-              </div>
-              <div>
-                <p className="text-xs text-muted-foreground">Total Invested</p>
-                <p className="text-lg font-bold text-foreground">{stats.totalInvested.toLocaleString()} RWF</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Tabs */}
-      <div className="bg-card border-b border-border">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex gap-1 overflow-x-auto">
+        {/* Tabs */}
+        <div className="max-w-6xl mx-auto px-2 relative">
+          <div className="flex gap-1 overflow-x-auto scrollbar-none">
             {tabs.map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
                 onClick={() => setActiveTab(id)}
                 className={`flex items-center gap-2 px-4 py-3 font-medium text-sm whitespace-nowrap border-b-2 transition-colors relative ${
                   activeTab === id
-                    ? 'border-secondary text-secondary'
+                    ? 'border-primary text-primary'
                     : 'border-transparent text-muted-foreground hover:text-foreground'
                 }`}
               >
                 <Icon className="w-4 h-4" />
                 {label}
                 {id === 'deposits' && pendingDeposits > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="ml-1 bg-primary text-primary-foreground text-[10px] font-bold rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center">
                     {pendingDeposits}
                   </span>
                 )}
                 {id === 'withdrawals' && pendingWithdrawals > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="ml-1 bg-primary text-primary-foreground text-[10px] font-bold rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center">
                     {pendingWithdrawals}
                   </span>
                 )}
@@ -810,10 +758,37 @@ export default function AdminDashboard() {
             ))}
           </div>
         </div>
-      </div>
+      </header>
 
       {/* Content */}
       <div className="max-w-6xl mx-auto px-4 py-6">
+        {activeTab === 'overview' && (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
+            {[
+              { label: 'Total Users', value: stats.totalUsers.toLocaleString(), icon: Users, tint: 'text-primary bg-primary/10' },
+              { label: 'Deposits', value: `${stats.totalDeposits.toLocaleString()} RWF`, icon: ArrowDownToLine, tint: 'text-green-600 bg-green-500/10' },
+              { label: 'Withdrawals', value: `${withdrawals.filter(w=>w.status==='approved').reduce((s,w)=>s+w.amount,0).toLocaleString()} RWF`, icon: ArrowUpFromLine, tint: 'text-rose-600 bg-rose-500/10' },
+              { label: 'Investments', value: `${stats.totalInvested.toLocaleString()} RWF`, icon: PiggyBank, tint: 'text-amber-600 bg-amber-500/10' },
+              { label: 'Total Balance', value: `${stats.totalBalance.toLocaleString()} RWF`, icon: Wallet, tint: 'text-secondary bg-secondary/10' },
+            ].map((c) => (
+              <div key={c.label} className="bg-card rounded-2xl p-4 border border-border/60 shadow-sm">
+                <div className={`w-9 h-9 rounded-xl flex items-center justify-center mb-3 ${c.tint}`}>
+                  <c.icon className="w-4 h-4" />
+                </div>
+                <p className="text-xs text-muted-foreground">{c.label}</p>
+                <p className="text-lg font-bold text-foreground mt-0.5">{c.value}</p>
+              </div>
+            ))}
+            <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+              <p className="text-xs text-muted-foreground">Pending Recharges</p>
+              <p className="text-2xl font-extrabold text-primary mt-1">{pendingDeposits}</p>
+            </div>
+            <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4">
+              <p className="text-xs text-muted-foreground">Pending Withdrawals</p>
+              <p className="text-2xl font-extrabold text-primary mt-1">{pendingWithdrawals}</p>
+            </div>
+          </div>
+        )}
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
