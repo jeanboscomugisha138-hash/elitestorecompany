@@ -342,6 +342,7 @@ export type Database = {
           daily_profit: number
           end_date: string
           id: string
+          last_profit_paid_on: string | null
           product_id: string
           start_date: string
           status: string
@@ -354,6 +355,7 @@ export type Database = {
           daily_profit: number
           end_date: string
           id?: string
+          last_profit_paid_on?: string | null
           product_id: string
           start_date?: string
           status?: string
@@ -366,6 +368,7 @@ export type Database = {
           daily_profit?: number
           end_date?: string
           id?: string
+          last_profit_paid_on?: string | null
           product_id?: string
           start_date?: string
           status?: string
@@ -459,6 +462,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      process_daily_profits_kigali: { Args: never; Returns: Json }
     }
     Enums: {
       app_role: "admin" | "user"
