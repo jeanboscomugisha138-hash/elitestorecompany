@@ -462,6 +462,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      process_daily_profits_kigali: { Args: never; Returns: Json }
     }
     Enums: {
       app_role: "admin" | "user"
