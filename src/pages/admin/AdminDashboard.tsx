@@ -30,7 +30,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
-type TabType = 'users' | 'products' | 'deposits' | 'withdrawals' | 'giftcodes' | 'settings' | 'notifications';
+type TabType = 'overview' | 'users' | 'deposits' | 'withdrawals' | 'investments' | 'giftcodes' | 'products' | 'notifications' | 'settings';
+type StatusFilter = 'all' | 'pending' | 'approved' | 'rejected';
 
 const SETTING_FIELDS: { key: string; label: string; placeholder: string; type?: string; multiline?: boolean; full?: boolean }[] = [
   { key: 'payment_phone', label: 'Nimero yakira amafaranga (MoMo)', placeholder: '0799599856' },
