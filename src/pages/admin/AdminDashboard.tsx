@@ -106,6 +106,88 @@ interface UserInvestment {
   product_id: string;
 }
 
+function TxCards({ items, filter, setFilter, onApprove, onReject, processingId, formatDate, title, accent }: {
+  items: any[]; filter: StatusFilter; setFilter: (s: StatusFilter) => void;
+  onApprove: (tx: any) => void; onReject: (tx: any) => void;
+  processingId: string | null; formatDate: (d: string) => string; title: string; accent: string;
+}) {
+  const filtered = filter === 'all' ? items : items.filter(t => t.status === filter);
+  const counts = {
+    all: items.length,
+    pending: items.filter(t => t.status === 'pending').length,
+    approved: items.filter(t => t.status === 'approved').length,
+    rejected: items.filter(t => t.status === 'rejected').length,
+  };
+  const chips: { key: StatusFilter; label: string }[] = [
+    { key: 'all', label: 'All' },
+    { key: 'pending', label: 'Pending' },
+    { key: 'approved', label: 'Approved' },
+    { key: 'rejected', label: 'Rejected' },
+  ];
+  return (
+    <div>
+      <div className="flex gap-2 overflow-x-auto pb-2 mb-3">
+        {chips.map(c => (
+          <button
+            key={c.key}
+            onClick={() => setFilter(c.key)}
+            className={`px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors border ${
+              filter === c.key
+                ? 'bg-primary text-primary-foreground border-primary'
+                : 'bg-card text-muted-foreground border-border hover:text-foreground'
+            }`}
+          >
+            {c.label} <span className="opacity-70">({counts[c.key]})</span>
+          </button>
+        ))}
+      </div>
+      <div className="space-y-3">
+        {filtered.map((tx) => (
+          <div key={tx.id} className="bg-card rounded-2xl border border-border/60 shadow-sm p-4">
+            <div className="flex items-start justify-between gap-3 mb-3">
+              <div className="min-w-0">
+                <p className="font-semibold text-foreground truncate">{tx.full_name}</p>
+                <p className="text-xs text-muted-foreground">{tx.phone} • {formatDate(tx.created_at)}</p>
+              </div>
+              <span className={`text-[10px] font-bold uppercase px-2 py-1 rounded-full whitespace-nowrap ${
+                tx.status === 'approved' ? 'bg-emerald-500/10 text-emerald-600' :
+                tx.status === 'pending' ? 'bg-amber-500/10 text-amber-600' :
+                'bg-rose-500/10 text-rose-600'
+              }`}>{tx.status}</span>
+            </div>
+            <div className="flex items-center justify-between gap-3">
+              <p className={`text-xl font-extrabold ${accent}`}>{Number(tx.amount).toLocaleString()} <span className="text-xs font-medium text-muted-foreground">RWF</span></p>
+              {tx.status === 'pending' && (
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => onApprove(tx)}
+                    disabled={processingId === tx.id}
+                    className="flex items-center gap-1 px-4 py-2 bg-emerald-500 text-white rounded-xl text-sm font-semibold hover:bg-emerald-600 transition-colors disabled:opacity-50"
+                  >
+                    <Check className="w-4 h-4" /> Approve
+                  </button>
+                  <button
+                    onClick={() => onReject(tx)}
+                    disabled={processingId === tx.id}
+                    className="flex items-center gap-1 px-4 py-2 bg-rose-500 text-white rounded-xl text-sm font-semibold hover:bg-rose-600 transition-colors disabled:opacity-50"
+                  >
+                    <X className="w-4 h-4" /> Reject
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+        {filtered.length === 0 && (
+          <div className="text-center py-12 text-muted-foreground text-sm">No {title.toLowerCase()} in this view</div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+
+
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<TabType>('overview');
   const [depositFilter, setDepositFilter] = useState<StatusFilter>('pending');
