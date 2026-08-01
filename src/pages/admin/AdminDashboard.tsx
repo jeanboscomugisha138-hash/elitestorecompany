@@ -354,13 +354,37 @@ export default function AdminDashboard() {
       setWithdrawals(data || []);
     }
     if (activeTab === 'investments') {
-      const { data } = await supabase
+      const { data: invs } = await supabase
         .from('user_investments')
-        .select('*, investment_products(investment_amount), profiles:user_id(full_name, phone)')
+        .select('*')
         .order('created_at', { ascending: false })
-        .limit(200);
-      setAllInvestments(data || []);
+        .limit(300);
+
+      const list = invs || [];
+      const userIds = Array.from(new Set(list.map((i: any) => i.user_id)));
+      const productIds = Array.from(new Set(list.map((i: any) => i.product_id)));
+
+      const [{ data: profs }, { data: prods }] = await Promise.all([
+        userIds.length
+          ? supabase.from('profiles').select('user_id, full_name, phone').in('user_id', userIds)
+          : Promise.resolve({ data: [] as any[] }),
+        supabase.from('investment_products').select('id, investment_amount, duration_days').order('investment_amount', { ascending: true }),
+      ]);
+
+      const profMap: Record<string, any> = {};
+      (profs || []).forEach((p: any) => { profMap[p.user_id] = p; });
+      const rankMap: Record<string, number> = {};
+      const durMap: Record<string, number> = {};
+      (prods || []).forEach((p: any, idx: number) => { rankMap[p.id] = idx + 1; durMap[p.id] = p.duration_days; });
+
+      setAllInvestments(list.map((i: any) => ({
+        ...i,
+        profiles: profMap[i.user_id] || null,
+        vip: rankMap[i.product_id] ? `VIP ${rankMap[i.product_id]}` : 'Investment',
+        duration_days: durMap[i.product_id] ?? null,
+      })));
     } else if (activeTab === 'giftcodes') {
+
       const { data } = await supabase.from('gift_codes').select('*').order('created_at', { ascending: false });
       setGiftCodes((data as GiftCode[]) || []);
     } else if (activeTab === 'settings') {
@@ -996,17 +1020,28 @@ export default function AdminDashboard() {
             {activeTab === 'investments' && (
               <div className="space-y-3">
                 {allInvestments.map((inv: any) => {
-                  const earned = Number(inv.daily_profit) * Math.max(0, Math.floor((Date.now() - new Date(inv.start_date).getTime()) / 86400000));
+                  const daysElapsed = Math.max(0, Math.floor((Date.now() - new Date(inv.start_date).getTime()) / 86400000));
+                  const daysPaid = inv.duration_days ? Math.min(daysElapsed, inv.duration_days) : daysElapsed;
+                  const earned = Number(inv.daily_profit) * daysPaid;
                   return (
                     <div key={inv.id} className="bg-card rounded-2xl border border-border/60 shadow-sm p-4">
-                      <div className="flex items-start justify-between mb-3">
-                        <div>
-                          <p className="font-semibold text-foreground">{inv.profiles?.full_name || 'User'}</p>
-                          <p className="text-xs text-muted-foreground">{inv.profiles?.phone} • {formatDate(inv.start_date)}</p>
+                      <div className="flex items-start justify-between gap-3 mb-3">
+                        <div className="min-w-0">
+                          <p className="text-base font-extrabold text-foreground truncate">{inv.vip} — {Number(inv.amount).toLocaleString()} RWF</p>
+                          <p className="text-sm text-muted-foreground truncate">{inv.profiles?.full_name || 'User'}</p>
+                          <p className="text-xs text-muted-foreground">{inv.profiles?.phone || '—'}</p>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            {formatDate(inv.start_date)} • <span className={inv.status === 'active' ? 'text-emerald-600 font-semibold' : ''}>{inv.status}</span>
+                          </p>
                         </div>
-                        <span className={`text-[10px] font-bold uppercase px-2 py-1 rounded-full ${inv.status === 'active' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-muted text-muted-foreground'}`}>
-                          {inv.status}
-                        </span>
+                        <button
+                          onClick={() => cancelInvestment(inv)}
+                          disabled={cancellingInvestmentId === inv.id}
+                          className="shrink-0 w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center disabled:opacity-50"
+                          title="Cancel investment"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
                       </div>
                       <div className="grid grid-cols-3 gap-2">
                         <div className="bg-primary/5 rounded-xl p-2.5">
@@ -1025,6 +1060,7 @@ export default function AdminDashboard() {
                     </div>
                   );
                 })}
+
                 {allInvestments.length === 0 && (
                   <div className="text-center py-12 text-muted-foreground text-sm">No investments</div>
                 )}
