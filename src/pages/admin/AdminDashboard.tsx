@@ -106,10 +106,11 @@ interface UserInvestment {
   product_id: string;
 }
 
-function TxCards({ items, filter, setFilter, onApprove, onReject, processingId, formatDate, title, accent }: {
+function TxCards({ items, filter, setFilter, onApprove, onReject, processingId, formatDate, title, accent, showNet }: {
   items: any[]; filter: StatusFilter; setFilter: (s: StatusFilter) => void;
   onApprove: (tx: any) => void; onReject: (tx: any) => void;
   processingId: string | null; formatDate: (d: string) => string; title: string; accent: string;
+  showNet?: boolean;
 }) {
   const filtered = filter === 'all' ? items : items.filter(t => t.status === filter);
   const counts = {
