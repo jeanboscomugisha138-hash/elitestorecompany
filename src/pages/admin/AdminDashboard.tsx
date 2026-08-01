@@ -1238,7 +1238,9 @@ export default function AdminDashboard() {
                 processingId={processingTxId}
                 formatDate={formatDate}
                 title="Withdrawals"
-                accent="text-rose-600"
+                accent="text-emerald-600"
+                showNet
+
               />
             )}
 
