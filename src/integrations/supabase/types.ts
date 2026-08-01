@@ -410,8 +410,10 @@ export type Database = {
         Row: {
           amount: number
           created_at: string
+          fee_amount: number
           full_name: string
           id: string
+          net_amount: number
           phone: string
           status: string
           updated_at: string
@@ -420,8 +422,10 @@ export type Database = {
         Insert: {
           amount: number
           created_at?: string
+          fee_amount?: number
           full_name: string
           id?: string
+          net_amount?: number
           phone: string
           status?: string
           updated_at?: string
@@ -430,8 +434,10 @@ export type Database = {
         Update: {
           amount?: number
           created_at?: string
+          fee_amount?: number
           full_name?: string
           id?: string
+          net_amount?: number
           phone?: string
           status?: string
           updated_at?: string
