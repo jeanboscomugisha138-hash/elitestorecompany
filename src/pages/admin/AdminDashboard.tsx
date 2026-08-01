@@ -157,7 +157,31 @@ function TxCards({ items, filter, setFilter, onApprove, onReject, processingId, 
               }`}>{tx.status}</span>
             </div>
             <div className="flex items-center justify-between gap-3">
-              <p className={`text-xl font-extrabold ${accent}`}>{Number(tx.amount).toLocaleString()} <span className="text-xs font-medium text-muted-foreground">RWF</span></p>
+            {showNet && (
+              <div className="grid grid-cols-3 gap-2 mb-3">
+                <div className="rounded-xl bg-muted/60 px-2.5 py-2">
+                  <p className="text-[10px] font-semibold uppercase text-muted-foreground">Yasabye</p>
+                  <p className="text-sm font-bold text-foreground">{Number(tx.amount).toLocaleString()}</p>
+                </div>
+                <div className="rounded-xl bg-rose-500/10 px-2.5 py-2">
+                  <p className="text-[10px] font-semibold uppercase text-rose-600">Fee</p>
+                  <p className="text-sm font-bold text-rose-600">-{Number(tx.fee_amount ?? Math.round(Number(tx.amount) * 0.1)).toLocaleString()}</p>
+                </div>
+                <div className="rounded-xl bg-emerald-500/10 px-2.5 py-2">
+                  <p className="text-[10px] font-semibold uppercase text-emerald-600">Azakira</p>
+                  <p className="text-sm font-bold text-emerald-600">{Number(tx.net_amount ?? (Number(tx.amount) - Math.round(Number(tx.amount) * 0.1))).toLocaleString()}</p>
+                </div>
+              </div>
+            )}
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className={`text-xl font-extrabold ${accent}`}>
+                  {Number(showNet ? (tx.net_amount ?? Number(tx.amount) - Math.round(Number(tx.amount) * 0.1)) : tx.amount).toLocaleString()}{' '}
+                  <span className="text-xs font-medium text-muted-foreground">RWF</span>
+                </p>
+                {showNet && <p className="text-[10px] font-semibold text-muted-foreground">NET yo kohereza kuri MoMo</p>}
+              </div>
+
               {tx.status === 'pending' && (
                 <div className="flex gap-2">
                   <button
