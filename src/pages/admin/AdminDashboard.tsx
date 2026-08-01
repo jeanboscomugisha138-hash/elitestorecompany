@@ -106,10 +106,11 @@ interface UserInvestment {
   product_id: string;
 }
 
-function TxCards({ items, filter, setFilter, onApprove, onReject, processingId, formatDate, title, accent }: {
+function TxCards({ items, filter, setFilter, onApprove, onReject, processingId, formatDate, title, accent, showNet }: {
   items: any[]; filter: StatusFilter; setFilter: (s: StatusFilter) => void;
   onApprove: (tx: any) => void; onReject: (tx: any) => void;
   processingId: string | null; formatDate: (d: string) => string; title: string; accent: string;
+  showNet?: boolean;
 }) {
   const filtered = filter === 'all' ? items : items.filter(t => t.status === filter);
   const counts = {
@@ -155,8 +156,31 @@ function TxCards({ items, filter, setFilter, onApprove, onReject, processingId, 
                 'bg-rose-500/10 text-rose-600'
               }`}>{tx.status}</span>
             </div>
+            {showNet && (
+              <div className="grid grid-cols-3 gap-2 mb-3">
+                <div className="rounded-xl bg-muted/60 px-2.5 py-2">
+                  <p className="text-[10px] font-semibold uppercase text-muted-foreground">Yasabye</p>
+                  <p className="text-sm font-bold text-foreground">{Number(tx.amount).toLocaleString()}</p>
+                </div>
+                <div className="rounded-xl bg-rose-500/10 px-2.5 py-2">
+                  <p className="text-[10px] font-semibold uppercase text-rose-600">Fee</p>
+                  <p className="text-sm font-bold text-rose-600">-{Number(tx.fee_amount ?? Math.round(Number(tx.amount) * 0.1)).toLocaleString()}</p>
+                </div>
+                <div className="rounded-xl bg-emerald-500/10 px-2.5 py-2">
+                  <p className="text-[10px] font-semibold uppercase text-emerald-600">Azakira</p>
+                  <p className="text-sm font-bold text-emerald-600">{Number(tx.net_amount ?? (Number(tx.amount) - Math.round(Number(tx.amount) * 0.1))).toLocaleString()}</p>
+                </div>
+              </div>
+            )}
             <div className="flex items-center justify-between gap-3">
-              <p className={`text-xl font-extrabold ${accent}`}>{Number(tx.amount).toLocaleString()} <span className="text-xs font-medium text-muted-foreground">RWF</span></p>
+              <div>
+                <p className={`text-xl font-extrabold ${accent}`}>
+                  {Number(showNet ? (tx.net_amount ?? Number(tx.amount) - Math.round(Number(tx.amount) * 0.1)) : tx.amount).toLocaleString()}{' '}
+                  <span className="text-xs font-medium text-muted-foreground">RWF</span>
+                </p>
+                {showNet && <p className="text-[10px] font-semibold text-muted-foreground">NET yo kohereza kuri MoMo</p>}
+              </div>
+
               {tx.status === 'pending' && (
                 <div className="flex gap-2">
                   <button
@@ -850,6 +874,7 @@ export default function AdminDashboard() {
               { label: 'Total Users', value: stats.totalUsers.toLocaleString(), icon: Users, tint: 'text-primary bg-primary/10' },
               { label: 'Deposits', value: `${stats.totalDeposits.toLocaleString()} RWF`, icon: ArrowDownToLine, tint: 'text-green-600 bg-green-500/10' },
               { label: 'Withdrawals', value: `${withdrawals.filter(w=>w.status==='approved').reduce((s,w)=>s+w.amount,0).toLocaleString()} RWF`, icon: ArrowUpFromLine, tint: 'text-rose-600 bg-rose-500/10' },
+              { label: 'Net Paid Out', value: `${withdrawals.filter(w=>w.status==='approved').reduce((s,w)=>s+Number((w as any).net_amount ?? Math.round(w.amount*0.9)),0).toLocaleString()} RWF`, icon: ArrowUpFromLine, tint: 'text-emerald-600 bg-emerald-500/10' },
               { label: 'Investments', value: `${stats.totalInvested.toLocaleString()} RWF`, icon: PiggyBank, tint: 'text-amber-600 bg-amber-500/10' },
               { label: 'Total Balance', value: `${stats.totalBalance.toLocaleString()} RWF`, icon: Wallet, tint: 'text-secondary bg-secondary/10' },
             ].map((c) => (
@@ -1214,7 +1239,9 @@ export default function AdminDashboard() {
                 processingId={processingTxId}
                 formatDate={formatDate}
                 title="Withdrawals"
-                accent="text-rose-600"
+                accent="text-emerald-600"
+                showNet
+
               />
             )}
 
