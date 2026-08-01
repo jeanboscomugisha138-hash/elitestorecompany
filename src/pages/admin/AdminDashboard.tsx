@@ -156,7 +156,6 @@ function TxCards({ items, filter, setFilter, onApprove, onReject, processingId, 
                 'bg-rose-500/10 text-rose-600'
               }`}>{tx.status}</span>
             </div>
-            <div className="flex items-center justify-between gap-3">
             {showNet && (
               <div className="grid grid-cols-3 gap-2 mb-3">
                 <div className="rounded-xl bg-muted/60 px-2.5 py-2">
