@@ -874,6 +874,7 @@ export default function AdminDashboard() {
               { label: 'Total Users', value: stats.totalUsers.toLocaleString(), icon: Users, tint: 'text-primary bg-primary/10' },
               { label: 'Deposits', value: `${stats.totalDeposits.toLocaleString()} RWF`, icon: ArrowDownToLine, tint: 'text-green-600 bg-green-500/10' },
               { label: 'Withdrawals', value: `${withdrawals.filter(w=>w.status==='approved').reduce((s,w)=>s+w.amount,0).toLocaleString()} RWF`, icon: ArrowUpFromLine, tint: 'text-rose-600 bg-rose-500/10' },
+              { label: 'Net Paid Out', value: `${withdrawals.filter(w=>w.status==='approved').reduce((s,w)=>s+Number((w as any).net_amount ?? Math.round(w.amount*0.9)),0).toLocaleString()} RWF`, icon: ArrowUpFromLine, tint: 'text-emerald-600 bg-emerald-500/10' },
               { label: 'Investments', value: `${stats.totalInvested.toLocaleString()} RWF`, icon: PiggyBank, tint: 'text-amber-600 bg-amber-500/10' },
               { label: 'Total Balance', value: `${stats.totalBalance.toLocaleString()} RWF`, icon: Wallet, tint: 'text-secondary bg-secondary/10' },
             ].map((c) => (
