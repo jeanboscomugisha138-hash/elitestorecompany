@@ -354,13 +354,37 @@ export default function AdminDashboard() {
       setWithdrawals(data || []);
     }
     if (activeTab === 'investments') {
-      const { data } = await supabase
+      const { data: invs } = await supabase
         .from('user_investments')
-        .select('*, investment_products(investment_amount), profiles:user_id(full_name, phone)')
+        .select('*')
         .order('created_at', { ascending: false })
-        .limit(200);
-      setAllInvestments(data || []);
+        .limit(300);
+
+      const list = invs || [];
+      const userIds = Array.from(new Set(list.map((i: any) => i.user_id)));
+      const productIds = Array.from(new Set(list.map((i: any) => i.product_id)));
+
+      const [{ data: profs }, { data: prods }] = await Promise.all([
+        userIds.length
+          ? supabase.from('profiles').select('user_id, full_name, phone').in('user_id', userIds)
+          : Promise.resolve({ data: [] as any[] }),
+        supabase.from('investment_products').select('id, investment_amount, duration_days').order('investment_amount', { ascending: true }),
+      ]);
+
+      const profMap: Record<string, any> = {};
+      (profs || []).forEach((p: any) => { profMap[p.user_id] = p; });
+      const rankMap: Record<string, number> = {};
+      const durMap: Record<string, number> = {};
+      (prods || []).forEach((p: any, idx: number) => { rankMap[p.id] = idx + 1; durMap[p.id] = p.duration_days; });
+
+      setAllInvestments(list.map((i: any) => ({
+        ...i,
+        profiles: profMap[i.user_id] || null,
+        vip: rankMap[i.product_id] ? `VIP ${rankMap[i.product_id]}` : 'Investment',
+        duration_days: durMap[i.product_id] ?? null,
+      })));
     } else if (activeTab === 'giftcodes') {
+
       const { data } = await supabase.from('gift_codes').select('*').order('created_at', { ascending: false });
       setGiftCodes((data as GiftCode[]) || []);
     } else if (activeTab === 'settings') {
