@@ -52,7 +52,8 @@ export default function Withdraw() {
     })();
   }, [profile?.user_id, withdrawSuccess.show]);
 
-  const fee = amount ? Math.round(parseFloat(amount) * 0.1) : 0;
+  const feePercent = parseFloat(settings.withdraw_fee_percent || '15');
+  const fee = amount ? Math.round(parseFloat(amount) * (feePercent / 100)) : 0;
   const amountToReceive = amount ? parseFloat(amount) - fee : 0;
 
   const showError = (message: string, title?: string) => setErrorPopup({ show: true, title, message });
@@ -220,7 +221,7 @@ export default function Withdraw() {
                 <span className="font-black text-foreground">{parseFloat(amount).toLocaleString()} RWF</span>
               </div>
               <div className="flex justify-between text-xs">
-                <span className="text-muted-foreground">Serivisi (10%)</span>
+                <span className="text-muted-foreground">Serivisi ({feePercent}%)</span>
                 <span className="font-black text-destructive">-{fee.toLocaleString()} RWF</span>
               </div>
               <div className="flex justify-between pt-2 border-t border-border/60">

@@ -16,6 +16,7 @@ export type SiteSettings = {
   max_withdraw: string;
   withdraw_start_hour: string;
   withdraw_end_hour: string;
+  withdraw_fee_percent: string;
   announcements: string;
 };
 
@@ -34,6 +35,7 @@ const DEFAULTS: SiteSettings = {
   max_withdraw: '1000000',
   withdraw_start_hour: '7',
   withdraw_end_hour: '22',
+  withdraw_fee_percent: '15',
   announcements: [
     'Welcome to PETANE SHIPPING!',
   ].join('\n'),
