@@ -115,7 +115,12 @@ export default function Deposit() {
       .from('deposit_transactions')
       .insert({ user_id: profile?.user_id, phone, full_name: name, amount: parseFloat(amount), status: 'pending' });
 
-    if (error) { showError('Ntibyakunze kohereza ubwishyu bwawe. Gerageza nanone cyangwa vugana na serivisi.', 'Ubwishyu ntibwohererejwe'); setIsLoading(false); return; }
+    if (error) {
+      const msg = /gitegereje|pending/i.test(error.message)
+        ? 'Ufite ubwishyu bugitegereje kwemezwa. Tegereza bwemezwe mbere yo gukora ubundi.'
+        : 'Ntibyakunze kohereza ubwishyu bwawe. Gerageza nanone cyangwa vugana na serivisi.';
+      showError(msg, 'Ubwishyu ntibwohererejwe'); setIsLoading(false); return;
+    }
 
     setDepositSuccess({ show: true, amount: parseFloat(amount) });
     setPhone(''); setName(''); setAmount('');
