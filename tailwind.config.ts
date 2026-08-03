@@ -83,6 +83,10 @@ export default {
           "0%, 100%": { boxShadow: "0 0 0 0 hsl(322 85% 55% / 0.6), 0 0 20px 0 hsl(243 75% 55% / 0.4)" },
           "50%": { boxShadow: "0 0 0 12px hsl(322 85% 55% / 0), 0 0 30px 6px hsl(243 75% 55% / 0.6)" },
         },
+        "pulse-success": {
+          "0%, 100%": { boxShadow: "0 0 0 0 hsl(var(--success) / 0.55), 0 8px 20px -6px hsl(var(--success) / 0.5)" },
+          "50%": { boxShadow: "0 0 0 12px hsl(var(--success) / 0), 0 10px 26px -6px hsl(var(--success) / 0.6)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
