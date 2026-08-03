@@ -106,7 +106,14 @@ export default function Withdraw() {
       });
     setIsLoading(false);
 
-    if (error) { showError('Ntibyakunze kohereza ibikuza. Gerageza nanone.', 'Ibikuza ntibyohererejwe'); return; }
+    if (error) {
+      const msg = /gitegereje|pending/i.test(error.message)
+        ? 'Ufite ibikuza bigitegereje kwemezwa. Tegereza byemezwe.'
+        : /ahagije/i.test(error.message)
+          ? 'Ntufite amafaranga ahagije kuri konti yawe.'
+          : 'Ntibyakunze kohereza ibikuza. Gerageza nanone.';
+      showError(msg, 'Ibikuza ntibyohererejwe'); return;
+    }
 
     setWithdrawSuccess({ show: true, amount: amountNum });
     setAmount('');
