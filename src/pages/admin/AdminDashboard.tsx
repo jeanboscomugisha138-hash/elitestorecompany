@@ -164,18 +164,18 @@ function TxCards({ items, filter, setFilter, onApprove, onReject, processingId, 
                 </div>
                 <div className="rounded-xl bg-rose-500/10 px-2.5 py-2">
                   <p className="text-[10px] font-semibold uppercase text-rose-600">Fee</p>
-                  <p className="text-sm font-bold text-rose-600">-{Number(tx.fee_amount ?? Math.round(Number(tx.amount) * 0.1)).toLocaleString()}</p>
+                  <p className="text-sm font-bold text-rose-600">-{Number(tx.fee_amount ?? Math.round(Number(tx.amount) * 0.15)).toLocaleString()}</p>
                 </div>
                 <div className="rounded-xl bg-emerald-500/10 px-2.5 py-2">
                   <p className="text-[10px] font-semibold uppercase text-emerald-600">Azakira</p>
-                  <p className="text-sm font-bold text-emerald-600">{Number(tx.net_amount ?? (Number(tx.amount) - Math.round(Number(tx.amount) * 0.1))).toLocaleString()}</p>
+                  <p className="text-sm font-bold text-emerald-600">{Number(tx.net_amount ?? (Number(tx.amount) - Math.round(Number(tx.amount) * 0.15))).toLocaleString()}</p>
                 </div>
               </div>
             )}
             <div className="flex items-center justify-between gap-3">
               <div>
                 <p className={`text-xl font-extrabold ${accent}`}>
-                  {Number(showNet ? (tx.net_amount ?? Number(tx.amount) - Math.round(Number(tx.amount) * 0.1)) : tx.amount).toLocaleString()}{' '}
+                  {Number(showNet ? (tx.net_amount ?? Number(tx.amount) - Math.round(Number(tx.amount) * 0.15)) : tx.amount).toLocaleString()}{' '}
                   <span className="text-xs font-medium text-muted-foreground">RWF</span>
                 </p>
                 {showNet && <p className="text-[10px] font-semibold text-muted-foreground">NET yo kohereza kuri MoMo</p>}
