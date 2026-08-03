@@ -307,6 +307,19 @@ export default function Deposit() {
               </a>
             </div>
 
+            {/* Confirm payment button */}
+            <form onSubmit={handleSubmit} className="mb-4">
+              <button type="submit" className="w-full bg-destructive text-destructive-foreground font-bold py-4 px-4 rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-transform shadow-button disabled:opacity-70" disabled={isLoading || hasPending}>
+                {isLoading ? (
+                  <><div className="w-4 h-4 border-2 border-destructive-foreground/30 border-t-destructive-foreground rounded-full animate-spin" />{t('deposit.submitting')}</>
+                ) : hasPending ? (
+                  <><Clock className="w-4 h-4" />{t('deposit.pendingInProgress')}</>
+                ) : (
+                  <><CheckCircle2 className="w-5 h-5" />Emeza ko wishyuye</>
+                )}
+              </button>
+            </form>
+
             {/* How it works - numbered steps */}
             <div className="bg-card rounded-2xl p-4 shadow-card border border-border/40 mb-4">
               <div className="flex items-center gap-2 mb-3">
@@ -319,7 +332,7 @@ export default function Deposit() {
                 {[
                   `Kanda "Hamagara Wishyure" cyangwa wandike kode ${momoNumber} kuri MoMo.`,
                   `Emeza kwishyura amafaranga (${parseFloat(amount || '0').toLocaleString()} RWF) kuri konti ya ${momoName}.`,
-                  'Garuka hano, ukande "Emeza Ubwishyu". Amafaranga azagaragara mu minota itarenze 20.',
+                  'Garuka hano, ukande "Emeza ko wishyuye". Amafaranga azagaragara mu minota itarenze 20.',
                 ].map((line, i) => (
                   <li key={i} className="flex gap-3">
                     <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center flex-shrink-0">{i + 1}</span>
@@ -329,17 +342,6 @@ export default function Deposit() {
               </ol>
             </div>
 
-            <form onSubmit={handleSubmit}>
-              <button type="submit" className="w-full bg-primary text-primary-foreground font-bold py-4 px-4 rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-transform shadow-button disabled:opacity-70" disabled={isLoading || hasPending}>
-                {isLoading ? (
-                  <><div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />{t('deposit.submitting')}</>
-                ) : hasPending ? (
-                  <><Clock className="w-4 h-4" />{t('deposit.pendingInProgress')}</>
-                ) : (
-                  <><CheckCircle2 className="w-5 h-5" />{t('deposit.confirmDeposit')}</>
-                )}
-              </button>
-            </form>
           </>
         )}
       </div>
