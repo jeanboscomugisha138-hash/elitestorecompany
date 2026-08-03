@@ -309,16 +309,21 @@ export default function Deposit() {
 
             {/* Confirm payment button */}
             <form onSubmit={handleSubmit} className="mb-4">
-              <button type="submit" className="w-full bg-destructive text-destructive-foreground font-bold py-4 px-4 rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-transform shadow-button disabled:opacity-70" disabled={isLoading || hasPending}>
+              <button
+                type="submit"
+                className="w-full bg-[hsl(var(--success))] text-[hsl(var(--success-foreground))] font-extrabold text-base py-5 px-4 rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-transform ring-4 ring-[hsl(var(--success)/0.25)] shadow-[0_10px_24px_-6px_hsl(var(--success)/0.55)] animate-pulse-glow disabled:opacity-70 disabled:animate-none"
+                disabled={isLoading || hasPending}
+              >
                 {isLoading ? (
-                  <><div className="w-4 h-4 border-2 border-destructive-foreground/30 border-t-destructive-foreground rounded-full animate-spin" />{t('deposit.submitting')}</>
+                  <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />{t('deposit.submitting')}</>
                 ) : hasPending ? (
                   <><Clock className="w-4 h-4" />{t('deposit.pendingInProgress')}</>
                 ) : (
-                  <><CheckCircle2 className="w-5 h-5" />Emeza ko wishyuye</>
+                  <><CheckCircle2 className="w-6 h-6" />Emeza ko wishyuye</>
                 )}
               </button>
             </form>
+
 
             {/* How it works - numbered steps */}
             <div className="bg-card rounded-2xl p-4 shadow-card border border-border/40 mb-4">
