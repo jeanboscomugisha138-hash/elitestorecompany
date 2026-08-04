@@ -136,6 +136,21 @@ function TxCards({ items, filter, setFilter, onApprove, onReject, processingId, 
   ];
   return (
     <div>
+      <div className="flex items-center gap-2 bg-card border border-border/60 rounded-xl px-3 py-2 mb-3 shadow-sm">
+        <Search className="w-4 h-4 text-muted-foreground" />
+        <input
+          type="text"
+          placeholder="Shakisha izina, nimero cyangwa amafaranga..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="flex-1 bg-transparent text-sm outline-none text-foreground placeholder:text-muted-foreground"
+        />
+        {query && (
+          <button onClick={() => setQuery('')} className="p-1 hover:bg-muted rounded-md">
+            <X className="w-3.5 h-3.5 text-muted-foreground" />
+          </button>
+        )}
+      </div>
       <div className="flex gap-2 overflow-x-auto pb-2 mb-3">
         {chips.map(c => (
           <button
