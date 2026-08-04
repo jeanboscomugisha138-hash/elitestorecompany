@@ -230,6 +230,9 @@ export default function AdminDashboard() {
   const [editBalance, setEditBalance] = useState('');
   const [editingInvestedUser, setEditingInvestedUser] = useState<Profile | null>(null);
   const [editInvestedAmount, setEditInvestedAmount] = useState('');
+  const [editingWithdrawUser, setEditingWithdrawUser] = useState<Profile | null>(null);
+  const [editWithdrawAcct, setEditWithdrawAcct] = useState({ name: '', phone: '' });
+  const [savingWithdrawAcct, setSavingWithdrawAcct] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
   const [viewingInvestmentsUser, setViewingInvestmentsUser] = useState<Profile | null>(null);
