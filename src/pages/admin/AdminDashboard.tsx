@@ -114,7 +114,14 @@ function TxCards({ items, filter, setFilter, onApprove, onReject, processingId, 
   processingId: string | null; formatDate: (d: string) => string; title: string; accent: string;
   showNet?: boolean;
 }) {
-  const filtered = filter === 'all' ? items : items.filter(t => t.status === filter);
+  const [query, setQuery] = useState('');
+  const q = query.trim().toLowerCase();
+  const byStatus = filter === 'all' ? items : items.filter(t => t.status === filter);
+  const filtered = !q ? byStatus : byStatus.filter(t =>
+    (t.full_name || '').toLowerCase().includes(q) ||
+    (t.phone || '').toLowerCase().includes(q) ||
+    String(t.amount).includes(q)
+  );
   const counts = {
     all: items.length,
     pending: items.filter(t => t.status === 'pending').length,
