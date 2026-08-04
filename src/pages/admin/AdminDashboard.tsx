@@ -68,6 +68,8 @@ interface Profile {
   main_balance: number;
   referral_balance: number;
   invested_amount: number;
+  withdraw_phone: string | null;
+  withdraw_name: string | null;
   created_at: string;
 }
 
