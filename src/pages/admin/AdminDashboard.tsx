@@ -68,6 +68,8 @@ interface Profile {
   main_balance: number;
   referral_balance: number;
   invested_amount: number;
+  withdraw_phone: string | null;
+  withdraw_name: string | null;
   created_at: string;
 }
 
@@ -228,6 +230,9 @@ export default function AdminDashboard() {
   const [editBalance, setEditBalance] = useState('');
   const [editingInvestedUser, setEditingInvestedUser] = useState<Profile | null>(null);
   const [editInvestedAmount, setEditInvestedAmount] = useState('');
+  const [editingWithdrawUser, setEditingWithdrawUser] = useState<Profile | null>(null);
+  const [editWithdrawAcct, setEditWithdrawAcct] = useState({ name: '', phone: '' });
+  const [savingWithdrawAcct, setSavingWithdrawAcct] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
   const [viewingInvestmentsUser, setViewingInvestmentsUser] = useState<Profile | null>(null);
@@ -600,6 +605,50 @@ export default function AdminDashboard() {
     setEditInvestedAmount('');
     fetchData();
     fetchStats();
+  };
+
+  // Withdraw account edit (admin can override the locked account)
+  const startEditWithdraw = (user: Profile) => {
+    setEditingWithdrawUser(user);
+    setEditWithdrawAcct({ name: user.withdraw_name || '', phone: user.withdraw_phone || '' });
+  };
+
+  const cancelEditWithdraw = () => {
+    setEditingWithdrawUser(null);
+    setEditWithdrawAcct({ name: '', phone: '' });
+  };
+
+  const saveWithdrawAccount = async () => {
+    if (!editingWithdrawUser || savingWithdrawAcct) return;
+    const name = editWithdrawAcct.name.trim();
+    const phone = editWithdrawAcct.phone.replace(/\D/g, '');
+    if (name.length < 3) { toast.error('Enter a valid receiving name'); return; }
+    if (phone.length !== 10) { toast.error('Enter a valid 10-digit phone'); return; }
+
+    setSavingWithdrawAcct(true);
+    const { data: taken } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('withdraw_phone', phone)
+      .neq('user_id', editingWithdrawUser.user_id)
+      .limit(1);
+    if (taken && taken.length > 0) {
+      setSavingWithdrawAcct(false);
+      toast.error('This phone is already used as another user\'s withdraw account');
+      return;
+    }
+
+    const { error } = await supabase
+      .from('profiles')
+      .update({ withdraw_phone: phone, withdraw_name: name })
+      .eq('user_id', editingWithdrawUser.user_id);
+    setSavingWithdrawAcct(false);
+
+    if (error) { toast.error(error.message || 'Failed to update withdraw account'); return; }
+
+    toast.success('Withdraw account updated — it now shows on the user account');
+    cancelEditWithdraw();
+    fetchData();
   };
 
   // Product edit functions
@@ -978,6 +1027,9 @@ export default function AdminDashboard() {
                                 <button onClick={() => startEditInvested(user)} className="p-2 text-amber-600 hover:bg-amber-500/10 rounded-lg" title="Edit invested">
                                   <PiggyBank className="w-4 h-4" />
                                 </button>
+                                <button onClick={() => (editingWithdrawUser?.id === user.id ? cancelEditWithdraw() : startEditWithdraw(user))} className="p-2 text-sky-600 hover:bg-sky-500/10 rounded-lg" title="Edit withdraw account">
+                                  <Wallet className="w-4 h-4" />
+                                </button>
                                 <button onClick={() => handleDeleteUser(user)} disabled={deletingUserId === user.user_id} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg disabled:opacity-50" title="Delete">
                                   <Trash2 className="w-4 h-4" />
                                 </button>
@@ -1006,6 +1058,43 @@ export default function AdminDashboard() {
                             <p className="text-[10px] uppercase tracking-wide text-muted-foreground">Referral</p>
                             <p className="text-sm font-bold text-emerald-600 mt-0.5">{user.referral_balance.toLocaleString()}</p>
                           </div>
+                        </div>
+
+                        <div className="mt-3 rounded-xl border border-sky-500/20 bg-sky-500/5 p-3">
+                          <div className="flex items-center justify-between gap-2">
+                            <p className="text-[10px] uppercase tracking-wide text-muted-foreground font-semibold">Withdraw account</p>
+                            {editingWithdrawUser?.id !== user.id && (
+                              <button onClick={() => startEditWithdraw(user)} className="text-[11px] font-bold text-sky-600 hover:underline">
+                                {user.withdraw_phone ? 'Change' : 'Set'}
+                              </button>
+                            )}
+                          </div>
+                          {editingWithdrawUser?.id === user.id ? (
+                            <div className="mt-2 space-y-2">
+                              <input
+                                type="text" placeholder="Receiving name"
+                                value={editWithdrawAcct.name}
+                                onChange={(e) => setEditWithdrawAcct({ ...editWithdrawAcct, name: e.target.value })}
+                                className="w-full px-2 py-1.5 border border-border rounded-md bg-background text-sm"
+                              />
+                              <input
+                                type="tel" inputMode="numeric" maxLength={10} placeholder="07XXXXXXXX"
+                                value={editWithdrawAcct.phone}
+                                onChange={(e) => setEditWithdrawAcct({ ...editWithdrawAcct, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })}
+                                className="w-full px-2 py-1.5 border border-border rounded-md bg-background text-sm"
+                              />
+                              <div className="flex gap-2">
+                                <button onClick={saveWithdrawAccount} disabled={savingWithdrawAcct} className="flex-1 py-1.5 rounded-md bg-sky-600 text-white text-xs font-bold disabled:opacity-50">
+                                  {savingWithdrawAcct ? 'Saving...' : 'Save'}
+                                </button>
+                                <button onClick={cancelEditWithdraw} className="px-3 py-1.5 rounded-md border border-border text-xs font-bold">Cancel</button>
+                              </div>
+                            </div>
+                          ) : (
+                            <p className="text-sm font-bold text-foreground mt-0.5">
+                              {user.withdraw_phone ? `${user.withdraw_name || '—'} • ${user.withdraw_phone}` : 'Not set'}
+                            </p>
+                          )}
                         </div>
                       </div>
                     );
