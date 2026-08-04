@@ -1027,6 +1027,9 @@ export default function AdminDashboard() {
                                 <button onClick={() => startEditInvested(user)} className="p-2 text-amber-600 hover:bg-amber-500/10 rounded-lg" title="Edit invested">
                                   <PiggyBank className="w-4 h-4" />
                                 </button>
+                                <button onClick={() => (editingWithdrawUser?.id === user.id ? cancelEditWithdraw() : startEditWithdraw(user))} className="p-2 text-sky-600 hover:bg-sky-500/10 rounded-lg" title="Edit withdraw account">
+                                  <Wallet className="w-4 h-4" />
+                                </button>
                                 <button onClick={() => handleDeleteUser(user)} disabled={deletingUserId === user.user_id} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg disabled:opacity-50" title="Delete">
                                   <Trash2 className="w-4 h-4" />
                                 </button>
