@@ -1130,7 +1130,22 @@ export default function AdminDashboard() {
 
             {activeTab === 'investments' && (
               <div className="space-y-3">
-                {allInvestments.map((inv: any) => {
+                <div className="flex items-center gap-2 bg-card border border-border/60 rounded-xl px-3 py-2 shadow-sm">
+                  <Search className="w-4 h-4 text-muted-foreground" />
+                  <input
+                    type="text"
+                    placeholder="Shakisha izina, nimero, VIP cyangwa amafaranga..."
+                    value={investmentSearch}
+                    onChange={(e) => setInvestmentSearch(e.target.value)}
+                    className="flex-1 bg-transparent text-sm outline-none text-foreground placeholder:text-muted-foreground"
+                  />
+                  {investmentSearch && (
+                    <button onClick={() => setInvestmentSearch('')} className="p-1 hover:bg-muted rounded-md">
+                      <X className="w-3.5 h-3.5 text-muted-foreground" />
+                    </button>
+                  )}
+                </div>
+                {filteredInvestments.map((inv: any) => {
                   const daysElapsed = Math.max(0, Math.floor((Date.now() - new Date(inv.start_date).getTime()) / 86400000));
                   const daysPaid = inv.duration_days ? Math.min(daysElapsed, inv.duration_days) : daysElapsed;
                   const earned = Number(inv.daily_profit) * daysPaid;
