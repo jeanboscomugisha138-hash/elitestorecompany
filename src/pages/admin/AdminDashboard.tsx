@@ -1187,7 +1187,7 @@ export default function AdminDashboard() {
                   );
                 })}
 
-                {allInvestments.length === 0 && (
+                {filteredInvestments.length === 0 && (
                   <div className="text-center py-12 text-muted-foreground text-sm">No investments</div>
                 )}
               </div>
