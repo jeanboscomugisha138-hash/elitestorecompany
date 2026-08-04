@@ -338,6 +338,17 @@ export default function AdminDashboard() {
     user.phone.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const [investmentSearch, setInvestmentSearch] = useState('');
+  const invQ = investmentSearch.trim().toLowerCase();
+  const filteredInvestments = !invQ ? allInvestments : (allInvestments as any[]).filter((inv: any) =>
+    (inv.profiles?.full_name || '').toLowerCase().includes(invQ) ||
+    (inv.profiles?.phone || '').toLowerCase().includes(invQ) ||
+    (inv.vip || '').toString().toLowerCase().includes(invQ) ||
+    String(inv.amount).includes(invQ)
+  );
+
+
+
   useEffect(() => {
     fetchStats();
     fetchData();
