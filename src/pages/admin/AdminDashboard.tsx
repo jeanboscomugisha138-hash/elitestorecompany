@@ -114,7 +114,14 @@ function TxCards({ items, filter, setFilter, onApprove, onReject, processingId, 
   processingId: string | null; formatDate: (d: string) => string; title: string; accent: string;
   showNet?: boolean;
 }) {
-  const filtered = filter === 'all' ? items : items.filter(t => t.status === filter);
+  const [query, setQuery] = useState('');
+  const q = query.trim().toLowerCase();
+  const byStatus = filter === 'all' ? items : items.filter(t => t.status === filter);
+  const filtered = !q ? byStatus : byStatus.filter(t =>
+    (t.full_name || '').toLowerCase().includes(q) ||
+    (t.phone || '').toLowerCase().includes(q) ||
+    String(t.amount).includes(q)
+  );
   const counts = {
     all: items.length,
     pending: items.filter(t => t.status === 'pending').length,
@@ -129,6 +136,21 @@ function TxCards({ items, filter, setFilter, onApprove, onReject, processingId, 
   ];
   return (
     <div>
+      <div className="flex items-center gap-2 bg-card border border-border/60 rounded-xl px-3 py-2 mb-3 shadow-sm">
+        <Search className="w-4 h-4 text-muted-foreground" />
+        <input
+          type="text"
+          placeholder="Shakisha izina, nimero cyangwa amafaranga..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="flex-1 bg-transparent text-sm outline-none text-foreground placeholder:text-muted-foreground"
+        />
+        {query && (
+          <button onClick={() => setQuery('')} className="p-1 hover:bg-muted rounded-md">
+            <X className="w-3.5 h-3.5 text-muted-foreground" />
+          </button>
+        )}
+      </div>
       <div className="flex gap-2 overflow-x-auto pb-2 mb-3">
         {chips.map(c => (
           <button
@@ -315,6 +337,17 @@ export default function AdminDashboard() {
     user.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     user.phone.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const [investmentSearch, setInvestmentSearch] = useState('');
+  const invQ = investmentSearch.trim().toLowerCase();
+  const filteredInvestments = !invQ ? allInvestments : (allInvestments as any[]).filter((inv: any) =>
+    (inv.profiles?.full_name || '').toLowerCase().includes(invQ) ||
+    (inv.profiles?.phone || '').toLowerCase().includes(invQ) ||
+    (inv.vip || '').toString().toLowerCase().includes(invQ) ||
+    String(inv.amount).includes(invQ)
+  );
+
+
 
   useEffect(() => {
     fetchStats();
@@ -1108,7 +1141,22 @@ export default function AdminDashboard() {
 
             {activeTab === 'investments' && (
               <div className="space-y-3">
-                {allInvestments.map((inv: any) => {
+                <div className="flex items-center gap-2 bg-card border border-border/60 rounded-xl px-3 py-2 shadow-sm">
+                  <Search className="w-4 h-4 text-muted-foreground" />
+                  <input
+                    type="text"
+                    placeholder="Shakisha izina, nimero, VIP cyangwa amafaranga..."
+                    value={investmentSearch}
+                    onChange={(e) => setInvestmentSearch(e.target.value)}
+                    className="flex-1 bg-transparent text-sm outline-none text-foreground placeholder:text-muted-foreground"
+                  />
+                  {investmentSearch && (
+                    <button onClick={() => setInvestmentSearch('')} className="p-1 hover:bg-muted rounded-md">
+                      <X className="w-3.5 h-3.5 text-muted-foreground" />
+                    </button>
+                  )}
+                </div>
+                {filteredInvestments.map((inv: any) => {
                   const daysElapsed = Math.max(0, Math.floor((Date.now() - new Date(inv.start_date).getTime()) / 86400000));
                   const daysPaid = inv.duration_days ? Math.min(daysElapsed, inv.duration_days) : daysElapsed;
                   const earned = Number(inv.daily_profit) * daysPaid;
@@ -1150,7 +1198,7 @@ export default function AdminDashboard() {
                   );
                 })}
 
-                {allInvestments.length === 0 && (
+                {filteredInvestments.length === 0 && (
                   <div className="text-center py-12 text-muted-foreground text-sm">No investments</div>
                 )}
               </div>
