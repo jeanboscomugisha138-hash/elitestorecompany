@@ -1059,6 +1059,43 @@ export default function AdminDashboard() {
                             <p className="text-sm font-bold text-emerald-600 mt-0.5">{user.referral_balance.toLocaleString()}</p>
                           </div>
                         </div>
+
+                        <div className="mt-3 rounded-xl border border-sky-500/20 bg-sky-500/5 p-3">
+                          <div className="flex items-center justify-between gap-2">
+                            <p className="text-[10px] uppercase tracking-wide text-muted-foreground font-semibold">Withdraw account</p>
+                            {editingWithdrawUser?.id !== user.id && (
+                              <button onClick={() => startEditWithdraw(user)} className="text-[11px] font-bold text-sky-600 hover:underline">
+                                {user.withdraw_phone ? 'Change' : 'Set'}
+                              </button>
+                            )}
+                          </div>
+                          {editingWithdrawUser?.id === user.id ? (
+                            <div className="mt-2 space-y-2">
+                              <input
+                                type="text" placeholder="Receiving name"
+                                value={editWithdrawAcct.name}
+                                onChange={(e) => setEditWithdrawAcct({ ...editWithdrawAcct, name: e.target.value })}
+                                className="w-full px-2 py-1.5 border border-border rounded-md bg-background text-sm"
+                              />
+                              <input
+                                type="tel" inputMode="numeric" maxLength={10} placeholder="07XXXXXXXX"
+                                value={editWithdrawAcct.phone}
+                                onChange={(e) => setEditWithdrawAcct({ ...editWithdrawAcct, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })}
+                                className="w-full px-2 py-1.5 border border-border rounded-md bg-background text-sm"
+                              />
+                              <div className="flex gap-2">
+                                <button onClick={saveWithdrawAccount} disabled={savingWithdrawAcct} className="flex-1 py-1.5 rounded-md bg-sky-600 text-white text-xs font-bold disabled:opacity-50">
+                                  {savingWithdrawAcct ? 'Saving...' : 'Save'}
+                                </button>
+                                <button onClick={cancelEditWithdraw} className="px-3 py-1.5 rounded-md border border-border text-xs font-bold">Cancel</button>
+                              </div>
+                            </div>
+                          ) : (
+                            <p className="text-sm font-bold text-foreground mt-0.5">
+                              {user.withdraw_phone ? `${user.withdraw_name || '—'} • ${user.withdraw_phone}` : 'Not set'}
+                            </p>
+                          )}
+                        </div>
                       </div>
                     );
                   })}
