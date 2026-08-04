@@ -607,6 +607,50 @@ export default function AdminDashboard() {
     fetchStats();
   };
 
+  // Withdraw account edit (admin can override the locked account)
+  const startEditWithdraw = (user: Profile) => {
+    setEditingWithdrawUser(user);
+    setEditWithdrawAcct({ name: user.withdraw_name || '', phone: user.withdraw_phone || '' });
+  };
+
+  const cancelEditWithdraw = () => {
+    setEditingWithdrawUser(null);
+    setEditWithdrawAcct({ name: '', phone: '' });
+  };
+
+  const saveWithdrawAccount = async () => {
+    if (!editingWithdrawUser || savingWithdrawAcct) return;
+    const name = editWithdrawAcct.name.trim();
+    const phone = editWithdrawAcct.phone.replace(/\D/g, '');
+    if (name.length < 3) { toast.error('Enter a valid receiving name'); return; }
+    if (phone.length !== 10) { toast.error('Enter a valid 10-digit phone'); return; }
+
+    setSavingWithdrawAcct(true);
+    const { data: taken } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('withdraw_phone', phone)
+      .neq('user_id', editingWithdrawUser.user_id)
+      .limit(1);
+    if (taken && taken.length > 0) {
+      setSavingWithdrawAcct(false);
+      toast.error('This phone is already used as another user\'s withdraw account');
+      return;
+    }
+
+    const { error } = await supabase
+      .from('profiles')
+      .update({ withdraw_phone: phone, withdraw_name: name })
+      .eq('user_id', editingWithdrawUser.user_id);
+    setSavingWithdrawAcct(false);
+
+    if (error) { toast.error(error.message || 'Failed to update withdraw account'); return; }
+
+    toast.success('Withdraw account updated — it now shows on the user account');
+    cancelEditWithdraw();
+    fetchData();
+  };
+
   // Product edit functions
   const startEditProduct = (product: Product) => {
     setEditingProduct(product);
