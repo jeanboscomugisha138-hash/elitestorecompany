@@ -228,7 +228,9 @@ export type Database = {
           full_name: string
           id: string
           invested_amount: number
+          is_locked: boolean
           last_bonus_claim: string | null
+          locked_at: string | null
           main_balance: number
           phone: string
           referral_balance: number
@@ -246,7 +248,9 @@ export type Database = {
           full_name: string
           id?: string
           invested_amount?: number
+          is_locked?: boolean
           last_bonus_claim?: string | null
+          locked_at?: string | null
           main_balance?: number
           phone: string
           referral_balance?: number
@@ -264,7 +268,9 @@ export type Database = {
           full_name?: string
           id?: string
           invested_amount?: number
+          is_locked?: boolean
           last_bonus_claim?: string | null
+          locked_at?: string | null
           main_balance?: number
           phone?: string
           referral_balance?: number
