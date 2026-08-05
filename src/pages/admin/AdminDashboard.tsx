@@ -1378,23 +1378,78 @@ export default function AdminDashboard() {
 
             {activeTab === 'products' && (
               <div className="bg-card rounded-2xl shadow-card overflow-hidden">
-                <div className="p-4 border-b border-border flex items-center justify-between">
+                <div className="p-4 border-b border-border flex flex-wrap items-center justify-between gap-3">
                   <h2 className="font-semibold text-foreground">Products Management</h2>
-                  <span className="text-sm text-muted-foreground">{products.length} products</span>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {(['all', 'regular', 'compound', 'bonus'] as const).map((c) => (
+                      <button
+                        key={c}
+                        onClick={() => setProductCategory(c)}
+                        className={`px-3 py-1.5 rounded-full text-xs font-bold uppercase transition-colors ${
+                          productCategory === c ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                        }`}
+                      >
+                        {c}
+                      </button>
+                    ))}
+                    <button
+                      onClick={() => setShowNewBonusForm((v) => !v)}
+                      className="px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-600 text-white flex items-center gap-1"
+                    >
+                      <Plus className="w-3 h-3" /> Bonus product
+                    </button>
+                  </div>
                 </div>
+
+                {showNewBonusForm && (
+                  <div className="p-4 border-b border-border bg-muted/40 grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <input placeholder="Amount (RWF)" type="number" value={newBonus.investment_amount}
+                      onChange={(e) => setNewBonus({ ...newBonus, investment_amount: e.target.value })}
+                      className="px-3 py-2 border border-border rounded-lg bg-background text-foreground text-sm" />
+                    <input placeholder="Daily rate %" type="number" value={newBonus.daily_profit_rate}
+                      onChange={(e) => setNewBonus({ ...newBonus, daily_profit_rate: e.target.value })}
+                      className="px-3 py-2 border border-border rounded-lg bg-background text-foreground text-sm" />
+                    <input placeholder="Duration (days)" type="number" value={newBonus.duration_days}
+                      onChange={(e) => setNewBonus({ ...newBonus, duration_days: e.target.value })}
+                      className="px-3 py-2 border border-border rounded-lg bg-background text-foreground text-sm" />
+                    <input placeholder="Available for (days)" type="number" step="0.01" value={newBonus.available_days}
+                      onChange={(e) => setNewBonus({ ...newBonus, available_days: e.target.value })}
+                      className="px-3 py-2 border border-border rounded-lg bg-background text-foreground text-sm" />
+                    <input placeholder="Name" value={newBonus.name}
+                      onChange={(e) => setNewBonus({ ...newBonus, name: e.target.value })}
+                      className="px-3 py-2 border border-border rounded-lg bg-background text-foreground text-sm" />
+                    <input placeholder="Tier (VIP 1)" value={newBonus.tier_label}
+                      onChange={(e) => setNewBonus({ ...newBonus, tier_label: e.target.value })}
+                      className="px-3 py-2 border border-border rounded-lg bg-background text-foreground text-sm" />
+                    <select value={newBonus.image_key}
+                      onChange={(e) => setNewBonus({ ...newBonus, image_key: e.target.value })}
+                      className="px-3 py-2 border border-border rounded-lg bg-background text-foreground text-sm">
+                      <option value="bonus-1">Image: Peteroli</option>
+                      <option value="bonus-2">Image: Cargo</option>
+                      <option value="bonus-3">Image: Marine Fleet</option>
+                    </select>
+                    <button onClick={createBonusProduct} className="px-3 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-bold">
+                      Create
+                    </button>
+                  </div>
+                )}
+
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead className="bg-muted">
                       <tr>
                         <th className="text-left p-4 text-sm font-medium text-muted-foreground">Investment</th>
+                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Category</th>
                         <th className="text-left p-4 text-sm font-medium text-muted-foreground">Daily Rate</th>
                         <th className="text-left p-4 text-sm font-medium text-muted-foreground">Duration</th>
+                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Limit / Ends</th>
                         <th className="text-left p-4 text-sm font-medium text-muted-foreground">Status</th>
                         <th className="text-left p-4 text-sm font-medium text-muted-foreground">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {products.map((product) => (
+                      {products.filter((p) => productCategory === 'all' || (p.category || 'regular') === productCategory).map((product) => (
+
                         <tr key={product.id} className="border-b border-border hover:bg-muted/50">
                           <td className="p-4">
                             {editingProduct?.id === product.id ? (
