@@ -275,7 +275,16 @@ export default function AdminDashboard() {
     daily_profit_rate: '',
     duration_days: '',
     is_active: true,
+    available_until: '',
+    max_purchases: '',
   });
+  const [productCategory, setProductCategory] = useState<'all' | 'regular' | 'compound' | 'bonus'>('all');
+  const [showNewBonusForm, setShowNewBonusForm] = useState(false);
+  const [newBonus, setNewBonus] = useState({
+    investment_amount: '', daily_profit_rate: '', duration_days: '',
+    available_days: '2', name: '', tier_label: '', image_key: 'bonus-1',
+  });
+
   const { signOut } = useAuth();
   const navigate = useNavigate();
 
