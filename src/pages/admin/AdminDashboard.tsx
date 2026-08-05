@@ -82,7 +82,15 @@ interface Product {
   daily_profit_rate: number;
   duration_days: number;
   is_active: boolean;
+  category?: string;
+  payout_type?: string;
+  name?: string | null;
+  tier_label?: string | null;
+  image_key?: string | null;
+  max_purchases?: number;
+  available_until?: string | null;
 }
+
 
 interface Transaction {
   id: string;
