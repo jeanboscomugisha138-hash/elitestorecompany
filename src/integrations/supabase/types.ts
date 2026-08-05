@@ -132,30 +132,54 @@ export type Database = {
       }
       investment_products: {
         Row: {
+          available_until: string | null
+          category: string
           created_at: string
           daily_profit_rate: number
           duration_days: number
           id: string
+          image_key: string | null
           investment_amount: number
           is_active: boolean | null
+          max_purchases: number
+          name: string | null
+          payout_type: string
+          sort_order: number
+          tier_label: string | null
           updated_at: string
         }
         Insert: {
+          available_until?: string | null
+          category?: string
           created_at?: string
           daily_profit_rate?: number
           duration_days?: number
           id?: string
+          image_key?: string | null
           investment_amount: number
           is_active?: boolean | null
+          max_purchases?: number
+          name?: string | null
+          payout_type?: string
+          sort_order?: number
+          tier_label?: string | null
           updated_at?: string
         }
         Update: {
+          available_until?: string | null
+          category?: string
           created_at?: string
           daily_profit_rate?: number
           duration_days?: number
           id?: string
+          image_key?: string | null
           investment_amount?: number
           is_active?: boolean | null
+          max_purchases?: number
+          name?: string | null
+          payout_type?: string
+          sort_order?: number
+          tier_label?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -349,6 +373,7 @@ export type Database = {
           end_date: string
           id: string
           last_profit_paid_on: string | null
+          payout_type: string
           product_id: string
           start_date: string
           status: string
@@ -362,6 +387,7 @@ export type Database = {
           end_date: string
           id?: string
           last_profit_paid_on?: string | null
+          payout_type?: string
           product_id: string
           start_date?: string
           status?: string
@@ -375,6 +401,7 @@ export type Database = {
           end_date?: string
           id?: string
           last_profit_paid_on?: string | null
+          payout_type?: string
           product_id?: string
           start_date?: string
           status?: string

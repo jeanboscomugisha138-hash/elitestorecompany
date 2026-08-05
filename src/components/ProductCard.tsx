@@ -1,5 +1,7 @@
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, Clock, Timer } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { productImagesByKey } from '@/lib/productAssets';
 import shipCrude from '@/assets/ship-crude.jpg';
 import shipDiesel from '@/assets/ship-diesel.jpg';
 import shipGasoline from '@/assets/ship-gasoline.jpg';
@@ -28,6 +30,22 @@ function getProductInfo(investment: number) {
   return productImages[investment.toString()] || { image: shipCargo, name: 'Petane Shipping', tier: 'VIP' };
 }
 
+function useCountdown(target?: string | null) {
+  const [left, setLeft] = useState<number>(() => (target ? new Date(target).getTime() - Date.now() : 0));
+  useEffect(() => {
+    if (!target) return;
+    const id = setInterval(() => setLeft(new Date(target).getTime() - Date.now()), 1000);
+    return () => clearInterval(id);
+  }, [target]);
+  if (!target) return null;
+  const ms = Math.max(0, left);
+  const d = Math.floor(ms / 86400000);
+  const h = Math.floor((ms % 86400000) / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
+  const s = Math.floor((ms % 60000) / 1000);
+  return { expired: ms <= 0, text: `${d}i ${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}` };
+}
+
 interface ProductCardProps {
   id: string;
   investment: number;
@@ -36,12 +54,28 @@ interface ProductCardProps {
   onInvest: (id: string) => void;
   isLoading?: boolean;
   purchased?: boolean;
+  category?: string;
+  payoutType?: string;
+  imageKey?: string | null;
+  name?: string | null;
+  tierLabel?: string | null;
+  availableUntil?: string | null;
+  purchasedCount?: number;
+  maxPurchases?: number;
 }
 
-export function ProductCard({ id, investment, dailyProfit, duration, onInvest, isLoading, purchased }: ProductCardProps) {
+export function ProductCard({
+  id, investment, dailyProfit, duration, onInvest, isLoading, purchased,
+  category = 'regular', payoutType = 'daily', imageKey, name: nameProp, tierLabel,
+  availableUntil, purchasedCount = 0, maxPurchases,
+}: ProductCardProps) {
   const totalProfit = dailyProfit * duration;
-  const { image, name, tier } = getProductInfo(investment);
+  const fallback = getProductInfo(investment);
+  const image = (imageKey && productImagesByKey[imageKey]) || fallback.image;
+  const name = nameProp || fallback.name;
+  const tier = tierLabel || fallback.tier;
   const { t } = useTranslation();
+  const countdown = useCountdown(category === 'bonus' ? availableUntil : null);
 
   return (
     <div className={`rounded-2xl overflow-hidden shadow-card animate-slide-up bg-card border-2 ${purchased ? 'border-emerald-500/40' : 'border-primary/30'}`}>
@@ -67,6 +101,23 @@ export function ProductCard({ id, investment, dailyProfit, duration, onInvest, i
           <div className="flex justify-between"><span className="text-muted-foreground">{t('products.incomeCycle')}</span><span className="font-bold text-foreground">{duration} {t('products.days')}</span></div>
           <div className="flex justify-between"><span className="text-muted-foreground">{t('products.dailyIncome')}</span><span className="font-bold text-primary">{dailyProfit.toLocaleString()} RWF</span></div>
           <div className="flex justify-between"><span className="text-muted-foreground">{t('products.totalProfit')}</span><span className="font-bold text-primary">{totalProfit.toLocaleString()} RWF</span></div>
+          {payoutType === 'maturity' && (
+            <div className="flex items-center gap-1 text-[11px] font-semibold text-emerald-600 pt-1">
+              <Clock className="w-3 h-3" />
+              Uzahabwa igishoro + inyungu yose iminsi {duration} irangiye
+            </div>
+          )}
+          {category === 'bonus' && countdown && (
+            <div className="flex items-center gap-1 text-[11px] font-bold text-destructive pt-1">
+              <Timer className="w-3 h-3" />
+              {countdown.expired ? 'Igihe cyarangiye' : `Isigaje: ${countdown.text}`}
+            </div>
+          )}
+          {typeof maxPurchases === 'number' && (
+            <div className="text-[11px] text-muted-foreground">
+              Ushobora kugura: {purchasedCount}/{maxPurchases}
+            </div>
+          )}
         </div>
       </div>
 
@@ -88,3 +139,4 @@ export function ProductCard({ id, investment, dailyProfit, duration, onInvest, i
     </div>
   );
 }
+

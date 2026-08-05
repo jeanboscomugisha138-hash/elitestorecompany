@@ -17,12 +17,29 @@ interface Product {
   investment_amount: number;
   daily_profit_rate: number;
   duration_days: number;
+  category: string;
+  payout_type: string;
+  name: string | null;
+  tier_label: string | null;
+  image_key: string | null;
+  max_purchases: number;
+  available_until: string | null;
+  sort_order: number;
 }
+
+type Category = 'regular' | 'compound' | 'bonus';
+
+const TABS: { id: Category; label: string }[] = [
+  { id: 'regular', label: 'REGULAR' },
+  { id: 'compound', label: 'COMPOUND' },
+  { id: 'bonus', label: 'BONUS' },
+];
 
 export default function Products() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
+  const [category, setCategory] = useState<Category>('regular');
   const [purchaseCounts, setPurchaseCounts] = useState<Record<string, number>>({});
   const [isLoading, setIsLoading] = useState(true);
   const { profile, refreshProfile } = useAuth();
@@ -40,8 +57,9 @@ export default function Products() {
       .from('investment_products')
       .select('*')
       .eq('is_active', true)
+      .order('sort_order', { ascending: true })
       .order('investment_amount', { ascending: true });
-    if (data) setProducts(data);
+    if (data) setProducts(data as any);
     setIsLoading(false);
   };
 
@@ -58,9 +76,10 @@ export default function Products() {
     }
   };
 
-  const getLimit = (amount: number) => (amount === 3500 ? 1 : 5);
-  const isMaxedOut = (productId: string, amount: number) =>
-    (purchaseCounts[productId] || 0) >= getLimit(amount);
+  const isExpired = (p: Product) => !!p.available_until && new Date(p.available_until).getTime() <= Date.now();
+  const getLimit = (p: Product) => (p.category === 'regular' && p.investment_amount === 3500 ? 1 : p.max_purchases || 5);
+  const isMaxedOut = (p: Product) => (purchaseCounts[p.id] || 0) >= getLimit(p);
+
 
   const [investingId, setInvestingId] = useState<string | null>(null);
   const investingRef = useRef(false);
@@ -72,11 +91,17 @@ export default function Products() {
     const product = products.find((p) => p.id === productId);
     if (!product || !profile?.user_id) return;
 
-    const limit = getLimit(product.investment_amount);
+    if (isExpired(product)) {
+      toast.error('Igihe cyo kugura uyu mushinga cyarangiye.');
+      return;
+    }
+
+    const limit = getLimit(product);
     if ((purchaseCounts[productId] || 0) >= limit) {
       toast.error(limit === 1 ? 'Uyu mushinga washoboraga kugurwa rimwe gusa.' : `Wagejeje ku kigero ntarengwa cyo kugura uyu mushinga (${limit}).`);
       return;
     }
+
 
     investingRef.current = true;
     setInvestingId(productId);
@@ -119,8 +144,10 @@ export default function Products() {
           amount: product.investment_amount,
           daily_profit: dailyProfit,
           end_date: endDate.toISOString(),
+          payout_type: product.payout_type || 'daily',
           status: 'active'
         });
+
 
       if (investError) { toast.error('Failed to create investment'); return; }
 
@@ -136,8 +163,7 @@ export default function Products() {
 
       refreshProfile();
       setPurchaseCounts(prev => ({ ...prev, [productId]: (prev[productId] || 0) + 1 }));
-      const names: Record<string, string> = { '3500': 'Petane Peteroli Mbisi', '10000': 'Petane Mazutu', '20000': 'Petane Essence', '30000': 'Wireless Duo', '40000': 'Petane LPG', '50000': 'Petane Cargo', '100000': 'Petane Marine', '250000': 'Petane Tanker', '500000': 'Petane Fleet', '1000000': 'Petane Global Energy' };
-      setInvestSuccess({ show: true, amount: product.investment_amount, name: names[product.investment_amount.toString()] || 'Petane Shipping' });
+      setInvestSuccess({ show: true, amount: product.investment_amount, name: product.name || 'Petane Shipping' });
     } finally {
       investingRef.current = false;
       setInvestingId(null);
@@ -152,17 +178,41 @@ export default function Products() {
     );
   }
 
+  const visible = products.filter((p) => (p.category || 'regular') === category && !isExpired(p));
+
   return (
     <div className="page-container bg-[hsl(226_78%_90%)]">
-      <div className="flex items-center gap-4 mb-6">
+      <div className="flex items-center gap-4 mb-4">
         <Link to="/dashboard" className="w-10 h-10 bg-card rounded-xl flex items-center justify-center shadow-card hover:shadow-lg-custom transition-all">
           <ArrowLeft className="w-5 h-5 text-foreground" />
         </Link>
         <h1 className="page-title mb-0 flex-1 text-left">{t('products.title')}</h1>
       </div>
 
+      {/* Category tabs */}
+      <div className="flex items-center gap-2 mb-4">
+        {TABS.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setCategory(tab.id)}
+            className={`flex-1 py-2.5 rounded-full text-xs font-black tracking-wide transition-all ${
+              category === tab.id
+                ? 'bg-primary text-primary-foreground shadow-button'
+                : 'bg-card text-muted-foreground border border-border'
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
       <div className="grid grid-cols-1 gap-3">
-        {products.map((product, index) => (
+        {visible.length === 0 && (
+          <div className="bg-card rounded-2xl p-8 text-center text-sm text-muted-foreground shadow-card">
+            Nta mishinga iri muri iki cyiciro ubu.
+          </div>
+        )}
+        {visible.map((product, index) => (
           <div key={product.id} style={{ animationDelay: `${index * 0.05}s` }}>
             <ProductCard
               id={product.id}
@@ -171,11 +221,20 @@ export default function Products() {
               duration={product.duration_days}
               onInvest={handleInvest}
               isLoading={investingId === product.id}
-              purchased={isMaxedOut(product.id, product.investment_amount)}
+              purchased={isMaxedOut(product)}
+              category={product.category}
+              payoutType={product.payout_type}
+              imageKey={product.image_key}
+              name={product.name}
+              tierLabel={product.tier_label}
+              availableUntil={product.available_until}
+              purchasedCount={purchaseCounts[product.id] || 0}
+              maxPurchases={getLimit(product)}
             />
           </div>
         ))}
       </div>
+
 
       <SuccessNotification
         isOpen={investSuccess.show}

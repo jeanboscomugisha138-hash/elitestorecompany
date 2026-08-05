@@ -82,7 +82,15 @@ interface Product {
   daily_profit_rate: number;
   duration_days: number;
   is_active: boolean;
+  category?: string;
+  payout_type?: string;
+  name?: string | null;
+  tier_label?: string | null;
+  image_key?: string | null;
+  max_purchases?: number;
+  available_until?: string | null;
 }
+
 
 interface Transaction {
   id: string;
@@ -275,7 +283,16 @@ export default function AdminDashboard() {
     daily_profit_rate: '',
     duration_days: '',
     is_active: true,
+    available_until: '',
+    max_purchases: '',
   });
+  const [productCategory, setProductCategory] = useState<'all' | 'regular' | 'compound' | 'bonus'>('all');
+  const [showNewBonusForm, setShowNewBonusForm] = useState(false);
+  const [newBonus, setNewBonus] = useState({
+    investment_amount: '', daily_profit_rate: '', duration_days: '',
+    available_days: '2', name: '', tier_label: '', image_key: 'bonus-1',
+  });
+
   const { signOut } = useAuth();
   const navigate = useNavigate();
 
@@ -705,6 +722,13 @@ export default function AdminDashboard() {
   };
 
   // Product edit functions
+  const toLocalInput = (iso?: string | null) => {
+    if (!iso) return '';
+    const d = new Date(iso);
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  };
+
   const startEditProduct = (product: Product) => {
     setEditingProduct(product);
     setEditProductData({
@@ -712,12 +736,14 @@ export default function AdminDashboard() {
       daily_profit_rate: (product.daily_profit_rate * 100).toString(),
       duration_days: product.duration_days.toString(),
       is_active: product.is_active,
+      available_until: toLocalInput(product.available_until),
+      max_purchases: (product.max_purchases ?? 5).toString(),
     });
   };
 
   const cancelEditProduct = () => {
     setEditingProduct(null);
-    setEditProductData({ investment_amount: '', daily_profit_rate: '', duration_days: '', is_active: true });
+    setEditProductData({ investment_amount: '', daily_profit_rate: '', duration_days: '', is_active: true, available_until: '', max_purchases: '' });
   };
 
   const saveProduct = async () => {
@@ -739,6 +765,8 @@ export default function AdminDashboard() {
         daily_profit_rate: rate,
         duration_days: duration,
         is_active: editProductData.is_active,
+        max_purchases: parseInt(editProductData.max_purchases) || 5,
+        available_until: editProductData.available_until ? new Date(editProductData.available_until).toISOString() : null,
       })
       .eq('id', editingProduct.id);
 
@@ -751,6 +779,49 @@ export default function AdminDashboard() {
     cancelEditProduct();
     fetchData();
   };
+
+  const createBonusProduct = async () => {
+    const amount = parseFloat(newBonus.investment_amount);
+    const rate = parseFloat(newBonus.daily_profit_rate) / 100;
+    const duration = parseInt(newBonus.duration_days);
+    const days = parseFloat(newBonus.available_days);
+
+    if (isNaN(amount) || isNaN(rate) || isNaN(duration) || isNaN(days)) {
+      toast.error('Please fill all fields correctly');
+      return;
+    }
+
+    const { error } = await supabase.from('investment_products').insert({
+      investment_amount: amount,
+      daily_profit_rate: rate,
+      duration_days: duration,
+      is_active: true,
+      category: 'bonus',
+      payout_type: 'daily',
+      max_purchases: 2,
+      name: newBonus.name || 'Bonus Product',
+      tier_label: newBonus.tier_label || 'VIP',
+      image_key: newBonus.image_key,
+      available_until: new Date(Date.now() + days * 86400000).toISOString(),
+    });
+
+    if (error) { toast.error(error.message || 'Failed to create product'); return; }
+    toast.success('Bonus product created');
+    setShowNewBonusForm(false);
+    setNewBonus({ investment_amount: '', daily_profit_rate: '', duration_days: '', available_days: '2', name: '', tier_label: '', image_key: 'bonus-1' });
+    fetchData();
+  };
+
+  const toggleProductActive = async (product: Product) => {
+    const { error } = await supabase
+      .from('investment_products')
+      .update({ is_active: !product.is_active })
+      .eq('id', product.id);
+    if (error) { toast.error('Failed to update product'); return; }
+    toast.success(product.is_active ? 'Product hidden from users' : 'Product is now visible');
+    fetchData();
+  };
+
 
   const handleApproveDeposit = async (tx: Transaction) => {
     if (tx.status !== 'pending') {
@@ -1307,23 +1378,78 @@ export default function AdminDashboard() {
 
             {activeTab === 'products' && (
               <div className="bg-card rounded-2xl shadow-card overflow-hidden">
-                <div className="p-4 border-b border-border flex items-center justify-between">
+                <div className="p-4 border-b border-border flex flex-wrap items-center justify-between gap-3">
                   <h2 className="font-semibold text-foreground">Products Management</h2>
-                  <span className="text-sm text-muted-foreground">{products.length} products</span>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {(['all', 'regular', 'compound', 'bonus'] as const).map((c) => (
+                      <button
+                        key={c}
+                        onClick={() => setProductCategory(c)}
+                        className={`px-3 py-1.5 rounded-full text-xs font-bold uppercase transition-colors ${
+                          productCategory === c ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+                        }`}
+                      >
+                        {c}
+                      </button>
+                    ))}
+                    <button
+                      onClick={() => setShowNewBonusForm((v) => !v)}
+                      className="px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-600 text-white flex items-center gap-1"
+                    >
+                      <Plus className="w-3 h-3" /> Bonus product
+                    </button>
+                  </div>
                 </div>
+
+                {showNewBonusForm && (
+                  <div className="p-4 border-b border-border bg-muted/40 grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <input placeholder="Amount (RWF)" type="number" value={newBonus.investment_amount}
+                      onChange={(e) => setNewBonus({ ...newBonus, investment_amount: e.target.value })}
+                      className="px-3 py-2 border border-border rounded-lg bg-background text-foreground text-sm" />
+                    <input placeholder="Daily rate %" type="number" value={newBonus.daily_profit_rate}
+                      onChange={(e) => setNewBonus({ ...newBonus, daily_profit_rate: e.target.value })}
+                      className="px-3 py-2 border border-border rounded-lg bg-background text-foreground text-sm" />
+                    <input placeholder="Duration (days)" type="number" value={newBonus.duration_days}
+                      onChange={(e) => setNewBonus({ ...newBonus, duration_days: e.target.value })}
+                      className="px-3 py-2 border border-border rounded-lg bg-background text-foreground text-sm" />
+                    <input placeholder="Available for (days)" type="number" step="0.01" value={newBonus.available_days}
+                      onChange={(e) => setNewBonus({ ...newBonus, available_days: e.target.value })}
+                      className="px-3 py-2 border border-border rounded-lg bg-background text-foreground text-sm" />
+                    <input placeholder="Name" value={newBonus.name}
+                      onChange={(e) => setNewBonus({ ...newBonus, name: e.target.value })}
+                      className="px-3 py-2 border border-border rounded-lg bg-background text-foreground text-sm" />
+                    <input placeholder="Tier (VIP 1)" value={newBonus.tier_label}
+                      onChange={(e) => setNewBonus({ ...newBonus, tier_label: e.target.value })}
+                      className="px-3 py-2 border border-border rounded-lg bg-background text-foreground text-sm" />
+                    <select value={newBonus.image_key}
+                      onChange={(e) => setNewBonus({ ...newBonus, image_key: e.target.value })}
+                      className="px-3 py-2 border border-border rounded-lg bg-background text-foreground text-sm">
+                      <option value="bonus-1">Image: Peteroli</option>
+                      <option value="bonus-2">Image: Cargo</option>
+                      <option value="bonus-3">Image: Marine Fleet</option>
+                    </select>
+                    <button onClick={createBonusProduct} className="px-3 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-bold">
+                      Create
+                    </button>
+                  </div>
+                )}
+
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead className="bg-muted">
                       <tr>
                         <th className="text-left p-4 text-sm font-medium text-muted-foreground">Investment</th>
+                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Category</th>
                         <th className="text-left p-4 text-sm font-medium text-muted-foreground">Daily Rate</th>
                         <th className="text-left p-4 text-sm font-medium text-muted-foreground">Duration</th>
+                        <th className="text-left p-4 text-sm font-medium text-muted-foreground">Limit / Ends</th>
                         <th className="text-left p-4 text-sm font-medium text-muted-foreground">Status</th>
                         <th className="text-left p-4 text-sm font-medium text-muted-foreground">Actions</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {products.map((product) => (
+                      {products.filter((p) => productCategory === 'all' || (p.category || 'regular') === productCategory).map((product) => (
+
                         <tr key={product.id} className="border-b border-border hover:bg-muted/50">
                           <td className="p-4">
                             {editingProduct?.id === product.id ? (
@@ -1337,6 +1463,20 @@ export default function AdminDashboard() {
                               <span className="font-medium text-foreground">{product.investment_amount.toLocaleString()} RWF</span>
                             )}
                           </td>
+                          <td className="p-4">
+                            <div className="flex flex-col gap-1">
+                              <span className="px-2 py-1 rounded-full text-[11px] font-bold uppercase bg-primary/10 text-primary w-fit">
+                                {product.category || 'regular'}
+                              </span>
+                              <span className="text-[11px] text-muted-foreground">
+                                {product.tier_label || ''} {product.name ? `· ${product.name}` : ''}
+                              </span>
+                              {product.payout_type === 'maturity' && (
+                                <span className="text-[11px] font-semibold text-emerald-600">Pays at maturity</span>
+                              )}
+                            </div>
+                          </td>
+
                           <td className="p-4">
                             {editingProduct?.id === product.id ? (
                               <div className="flex items-center gap-1">
@@ -1367,6 +1507,34 @@ export default function AdminDashboard() {
                               <span className="text-muted-foreground">{product.duration_days} days</span>
                             )}
                           </td>
+                          <td className="p-4">
+                            {editingProduct?.id === product.id ? (
+                              <div className="flex flex-col gap-1">
+                                <input
+                                  type="number"
+                                  value={editProductData.max_purchases}
+                                  onChange={(e) => setEditProductData({ ...editProductData, max_purchases: e.target.value })}
+                                  className="w-20 px-2 py-1 border border-border rounded-lg bg-background text-foreground text-xs"
+                                />
+                                <input
+                                  type="datetime-local"
+                                  value={editProductData.available_until}
+                                  onChange={(e) => setEditProductData({ ...editProductData, available_until: e.target.value })}
+                                  className="px-2 py-1 border border-border rounded-lg bg-background text-foreground text-xs"
+                                />
+                              </div>
+                            ) : (
+                              <div className="flex flex-col text-xs">
+                                <span className="text-muted-foreground">Max {product.max_purchases ?? 5}x</span>
+                                {product.available_until && (
+                                  <span className={new Date(product.available_until) <= new Date() ? 'text-destructive font-semibold' : 'text-foreground'}>
+                                    {formatDate(product.available_until)}
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                          </td>
+
                           <td className="p-4">
                             {editingProduct?.id === product.id ? (
                               <select
@@ -1402,13 +1570,23 @@ export default function AdminDashboard() {
                                 </button>
                               </div>
                             ) : (
-                              <button
-                                onClick={() => startEditProduct(product)}
-                                className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
-                              >
-                                <Edit className="w-4 h-4" />
-                              </button>
+                              <div className="flex gap-1">
+                                <button
+                                  onClick={() => startEditProduct(product)}
+                                  className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                                >
+                                  <Edit className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={() => toggleProductActive(product)}
+                                  title={product.is_active ? 'Hide from users' : 'Show to users'}
+                                  className="p-2 text-muted-foreground hover:bg-muted rounded-lg transition-colors"
+                                >
+                                  {product.is_active ? <ToggleRight className="w-4 h-4 text-emerald-600" /> : <ToggleLeft className="w-4 h-4" />}
+                                </button>
+                              </div>
                             )}
+
                           </td>
                         </tr>
                       ))}
