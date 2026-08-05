@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Phone, Lock, ArrowRight, ShieldCheck, Zap, BadgeCheck } from 'lucide-react';
+import { Eye, EyeOff, Phone, Lock, ArrowRight, ShieldCheck, Zap, BadgeCheck, ShieldAlert, Send } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
@@ -14,6 +15,7 @@ export default function Login() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [adminTaps, setAdminTaps] = useState(0);
+  const [lockedOpen, setLockedOpen] = useState(false);
   const navigate = useNavigate();
   const { signIn } = useAuth();
 
@@ -25,6 +27,20 @@ export default function Login() {
     if (password.length < 6) { setError(t('auth.passwordTooShort')); setIsLoading(false); return; }
     const { error: signInError } = await signIn(phone, password);
     if (signInError) { setError(signInError.message); setIsLoading(false); return; }
+    const { data: authData } = await supabase.auth.getUser();
+    if (authData.user) {
+      const { data: prof } = await supabase
+        .from('profiles')
+        .select('is_locked')
+        .eq('user_id', authData.user.id)
+        .maybeSingle();
+      if (prof?.is_locked) {
+        await supabase.auth.signOut();
+        setIsLoading(false);
+        setLockedOpen(true);
+        return;
+      }
+    }
     sessionStorage.setItem('justLoggedIn', 'true');
     toast.success(t('auth.welcomeBackToast'));
     navigate('/dashboard');
@@ -32,6 +48,35 @@ export default function Login() {
 
   return (
     <div className="auth-safe-page min-h-screen flex flex-col justify-center">
+      {lockedOpen && (
+        <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-slate-900/70 animate-fade-in" onClick={() => setLockedOpen(false)} />
+          <div className="relative w-full max-w-[330px] bg-card rounded-3xl overflow-hidden shadow-2xl border border-border/50 animate-scale-in">
+            <div className="h-1.5 w-full bg-gradient-to-r from-destructive via-destructive to-destructive/60" />
+            <div className="px-5 pt-5 pb-5 text-center">
+              <div className="w-14 h-14 mx-auto rounded-2xl bg-destructive/10 flex items-center justify-center mb-3">
+                <ShieldAlert className="w-7 h-7 text-destructive" strokeWidth={2.3} />
+              </div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-destructive">Konti yafunzwe</p>
+              <h2 className="text-base font-black text-foreground mt-1 leading-tight">Mukiriya wacu</h2>
+              <p className="text-xs text-muted-foreground mt-2 leading-relaxed font-medium">
+                Account yawe yafunzwe by'agateganyo. Andikira umuyobozi wa Petane Company agufashe.
+              </p>
+              <a
+                href="https://t.me/petaneshipping"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-primary text-primary-foreground text-sm font-black active:opacity-90"
+              >
+                <Send className="w-4 h-4" /> Vugisha Umuyobozi
+              </a>
+              <button onClick={() => setLockedOpen(false)} className="mt-2 w-full py-2.5 rounded-xl bg-muted text-foreground text-xs font-bold">
+                Funga
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <header className="px-5 pt-4 pb-3">
         <div className="max-w-sm mx-auto w-full flex items-center gap-2.5">
           <button

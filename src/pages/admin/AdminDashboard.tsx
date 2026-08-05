@@ -25,6 +25,8 @@ import {
   Settings as SettingsIcon,
   Bell,
   Send,
+  Lock,
+  Unlock,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
@@ -70,6 +72,7 @@ interface Profile {
   invested_amount: number;
   withdraw_phone: string | null;
   withdraw_name: string | null;
+  is_locked: boolean;
   created_at: string;
 }
 
@@ -255,6 +258,7 @@ export default function AdminDashboard() {
   const [editingWithdrawUser, setEditingWithdrawUser] = useState<Profile | null>(null);
   const [editWithdrawAcct, setEditWithdrawAcct] = useState({ name: '', phone: '' });
   const [savingWithdrawAcct, setSavingWithdrawAcct] = useState(false);
+  const [lockingUserId, setLockingUserId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
   const [viewingInvestmentsUser, setViewingInvestmentsUser] = useState<Profile | null>(null);
@@ -638,6 +642,22 @@ export default function AdminDashboard() {
     setEditInvestedAmount('');
     fetchData();
     fetchStats();
+  };
+
+  // Lock / unlock a user account
+  const toggleUserLock = async (user: Profile) => {
+    if (lockingUserId) return;
+    const nextLocked = !user.is_locked;
+    if (nextLocked && !window.confirm(`Lock ${user.full_name}'s account? They will not be able to sign in.`)) return;
+    setLockingUserId(user.user_id);
+    const { error } = await supabase
+      .from('profiles')
+      .update({ is_locked: nextLocked, locked_at: nextLocked ? new Date().toISOString() : null })
+      .eq('user_id', user.user_id);
+    setLockingUserId(null);
+    if (error) { toast.error(error.message || 'Failed to update account status'); return; }
+    toast.success(nextLocked ? 'Account locked' : 'Account unlocked');
+    fetchData();
   };
 
   // Withdraw account edit (admin can override the locked account)
@@ -1035,7 +1055,14 @@ export default function AdminDashboard() {
                               {user.full_name.charAt(0).toUpperCase()}
                             </div>
                             <div className="min-w-0">
-                              <p className="font-semibold text-foreground truncate">{user.full_name}</p>
+                              <div className="flex items-center gap-1.5 min-w-0">
+                                <p className="font-semibold text-foreground truncate">{user.full_name}</p>
+                                {user.is_locked && (
+                                  <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-rose-500/10 text-rose-600 text-[9px] font-black uppercase tracking-wide">
+                                    <Lock className="w-2.5 h-2.5" /> Locked
+                                  </span>
+                                )}
+                              </div>
                               <p className="text-xs text-muted-foreground">{user.phone} • {formatDate(user.created_at)}</p>
                             </div>
                           </div>
@@ -1062,6 +1089,9 @@ export default function AdminDashboard() {
                                 </button>
                                 <button onClick={() => (editingWithdrawUser?.id === user.id ? cancelEditWithdraw() : startEditWithdraw(user))} className="p-2 text-sky-600 hover:bg-sky-500/10 rounded-lg" title="Edit withdraw account">
                                   <Wallet className="w-4 h-4" />
+                                </button>
+                                <button onClick={() => toggleUserLock(user)} disabled={lockingUserId === user.user_id} className={`p-2 rounded-lg disabled:opacity-50 ${user.is_locked ? 'text-emerald-600 hover:bg-emerald-500/10' : 'text-rose-600 hover:bg-rose-500/10'}`} title={user.is_locked ? 'Unlock account' : 'Lock account'}>
+                                  {user.is_locked ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
                                 </button>
                                 <button onClick={() => handleDeleteUser(user)} disabled={deletingUserId === user.user_id} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg disabled:opacity-50" title="Delete">
                                   <Trash2 className="w-4 h-4" />

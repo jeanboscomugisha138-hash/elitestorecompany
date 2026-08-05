@@ -17,6 +17,7 @@ interface Profile {
   withdraw_phone: string | null;
   withdraw_password: string | null;
   withdraw_name: string | null;
+  is_locked: boolean;
 }
 
 interface AuthContextType {
@@ -48,6 +49,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .maybeSingle();
 
     if (!error && data) {
+      if ((data as Profile).is_locked) {
+        await supabase.auth.signOut();
+        setProfile(null);
+        return;
+      }
       setProfile(data as Profile);
     }
   };
