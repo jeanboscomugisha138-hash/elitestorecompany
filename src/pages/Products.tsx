@@ -91,11 +91,17 @@ export default function Products() {
     const product = products.find((p) => p.id === productId);
     if (!product || !profile?.user_id) return;
 
-    const limit = getLimit(product.investment_amount);
+    if (isExpired(product)) {
+      toast.error('Igihe cyo kugura uyu mushinga cyarangiye.');
+      return;
+    }
+
+    const limit = getLimit(product);
     if ((purchaseCounts[productId] || 0) >= limit) {
       toast.error(limit === 1 ? 'Uyu mushinga washoboraga kugurwa rimwe gusa.' : `Wagejeje ku kigero ntarengwa cyo kugura uyu mushinga (${limit}).`);
       return;
     }
+
 
     investingRef.current = true;
     setInvestingId(productId);
