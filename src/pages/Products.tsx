@@ -163,8 +163,7 @@ export default function Products() {
 
       refreshProfile();
       setPurchaseCounts(prev => ({ ...prev, [productId]: (prev[productId] || 0) + 1 }));
-      const names: Record<string, string> = { '3500': 'Petane Peteroli Mbisi', '10000': 'Petane Mazutu', '20000': 'Petane Essence', '30000': 'Wireless Duo', '40000': 'Petane LPG', '50000': 'Petane Cargo', '100000': 'Petane Marine', '250000': 'Petane Tanker', '500000': 'Petane Fleet', '1000000': 'Petane Global Energy' };
-      setInvestSuccess({ show: true, amount: product.investment_amount, name: names[product.investment_amount.toString()] || 'Petane Shipping' });
+      setInvestSuccess({ show: true, amount: product.investment_amount, name: product.name || 'Petane Shipping' });
     } finally {
       investingRef.current = false;
       setInvestingId(null);
@@ -179,17 +178,41 @@ export default function Products() {
     );
   }
 
+  const visible = products.filter((p) => (p.category || 'regular') === category && !isExpired(p));
+
   return (
     <div className="page-container bg-[hsl(226_78%_90%)]">
-      <div className="flex items-center gap-4 mb-6">
+      <div className="flex items-center gap-4 mb-4">
         <Link to="/dashboard" className="w-10 h-10 bg-card rounded-xl flex items-center justify-center shadow-card hover:shadow-lg-custom transition-all">
           <ArrowLeft className="w-5 h-5 text-foreground" />
         </Link>
         <h1 className="page-title mb-0 flex-1 text-left">{t('products.title')}</h1>
       </div>
 
+      {/* Category tabs */}
+      <div className="flex items-center gap-2 mb-4">
+        {TABS.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setCategory(tab.id)}
+            className={`flex-1 py-2.5 rounded-full text-xs font-black tracking-wide transition-all ${
+              category === tab.id
+                ? 'bg-primary text-primary-foreground shadow-button'
+                : 'bg-card text-muted-foreground border border-border'
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
       <div className="grid grid-cols-1 gap-3">
-        {products.map((product, index) => (
+        {visible.length === 0 && (
+          <div className="bg-card rounded-2xl p-8 text-center text-sm text-muted-foreground shadow-card">
+            Nta mishinga iri muri iki cyiciro ubu.
+          </div>
+        )}
+        {visible.map((product, index) => (
           <div key={product.id} style={{ animationDelay: `${index * 0.05}s` }}>
             <ProductCard
               id={product.id}
@@ -198,11 +221,20 @@ export default function Products() {
               duration={product.duration_days}
               onInvest={handleInvest}
               isLoading={investingId === product.id}
-              purchased={isMaxedOut(product.id, product.investment_amount)}
+              purchased={isMaxedOut(product)}
+              category={product.category}
+              payoutType={product.payout_type}
+              imageKey={product.image_key}
+              name={product.name}
+              tierLabel={product.tier_label}
+              availableUntil={product.available_until}
+              purchasedCount={purchaseCounts[product.id] || 0}
+              maxPurchases={getLimit(product)}
             />
           </div>
         ))}
       </div>
+
 
       <SuccessNotification
         isOpen={investSuccess.show}
