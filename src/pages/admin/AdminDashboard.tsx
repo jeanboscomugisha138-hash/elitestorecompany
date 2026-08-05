@@ -1464,6 +1464,20 @@ export default function AdminDashboard() {
                             )}
                           </td>
                           <td className="p-4">
+                            <div className="flex flex-col gap-1">
+                              <span className="px-2 py-1 rounded-full text-[11px] font-bold uppercase bg-primary/10 text-primary w-fit">
+                                {product.category || 'regular'}
+                              </span>
+                              <span className="text-[11px] text-muted-foreground">
+                                {product.tier_label || ''} {product.name ? `· ${product.name}` : ''}
+                              </span>
+                              {product.payout_type === 'maturity' && (
+                                <span className="text-[11px] font-semibold text-emerald-600">Pays at maturity</span>
+                              )}
+                            </div>
+                          </td>
+
+                          <td className="p-4">
                             {editingProduct?.id === product.id ? (
                               <div className="flex items-center gap-1">
                                 <input
