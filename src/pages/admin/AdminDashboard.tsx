@@ -714,6 +714,13 @@ export default function AdminDashboard() {
   };
 
   // Product edit functions
+  const toLocalInput = (iso?: string | null) => {
+    if (!iso) return '';
+    const d = new Date(iso);
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  };
+
   const startEditProduct = (product: Product) => {
     setEditingProduct(product);
     setEditProductData({
@@ -721,12 +728,14 @@ export default function AdminDashboard() {
       daily_profit_rate: (product.daily_profit_rate * 100).toString(),
       duration_days: product.duration_days.toString(),
       is_active: product.is_active,
+      available_until: toLocalInput(product.available_until),
+      max_purchases: (product.max_purchases ?? 5).toString(),
     });
   };
 
   const cancelEditProduct = () => {
     setEditingProduct(null);
-    setEditProductData({ investment_amount: '', daily_profit_rate: '', duration_days: '', is_active: true });
+    setEditProductData({ investment_amount: '', daily_profit_rate: '', duration_days: '', is_active: true, available_until: '', max_purchases: '' });
   };
 
   const saveProduct = async () => {
@@ -748,6 +757,8 @@ export default function AdminDashboard() {
         daily_profit_rate: rate,
         duration_days: duration,
         is_active: editProductData.is_active,
+        max_purchases: parseInt(editProductData.max_purchases) || 5,
+        available_until: editProductData.available_until ? new Date(editProductData.available_until).toISOString() : null,
       })
       .eq('id', editingProduct.id);
 
@@ -760,6 +771,49 @@ export default function AdminDashboard() {
     cancelEditProduct();
     fetchData();
   };
+
+  const createBonusProduct = async () => {
+    const amount = parseFloat(newBonus.investment_amount);
+    const rate = parseFloat(newBonus.daily_profit_rate) / 100;
+    const duration = parseInt(newBonus.duration_days);
+    const days = parseFloat(newBonus.available_days);
+
+    if (isNaN(amount) || isNaN(rate) || isNaN(duration) || isNaN(days)) {
+      toast.error('Please fill all fields correctly');
+      return;
+    }
+
+    const { error } = await supabase.from('investment_products').insert({
+      investment_amount: amount,
+      daily_profit_rate: rate,
+      duration_days: duration,
+      is_active: true,
+      category: 'bonus',
+      payout_type: 'daily',
+      max_purchases: 2,
+      name: newBonus.name || 'Bonus Product',
+      tier_label: newBonus.tier_label || 'VIP',
+      image_key: newBonus.image_key,
+      available_until: new Date(Date.now() + days * 86400000).toISOString(),
+    });
+
+    if (error) { toast.error(error.message || 'Failed to create product'); return; }
+    toast.success('Bonus product created');
+    setShowNewBonusForm(false);
+    setNewBonus({ investment_amount: '', daily_profit_rate: '', duration_days: '', available_days: '2', name: '', tier_label: '', image_key: 'bonus-1' });
+    fetchData();
+  };
+
+  const toggleProductActive = async (product: Product) => {
+    const { error } = await supabase
+      .from('investment_products')
+      .update({ is_active: !product.is_active })
+      .eq('id', product.id);
+    if (error) { toast.error('Failed to update product'); return; }
+    toast.success(product.is_active ? 'Product hidden from users' : 'Product is now visible');
+    fetchData();
+  };
+
 
   const handleApproveDeposit = async (tx: Transaction) => {
     if (tx.status !== 'pending') {
