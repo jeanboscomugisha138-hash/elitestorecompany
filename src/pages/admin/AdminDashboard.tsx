@@ -1570,13 +1570,23 @@ export default function AdminDashboard() {
                                 </button>
                               </div>
                             ) : (
-                              <button
-                                onClick={() => startEditProduct(product)}
-                                className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
-                              >
-                                <Edit className="w-4 h-4" />
-                              </button>
+                              <div className="flex gap-1">
+                                <button
+                                  onClick={() => startEditProduct(product)}
+                                  className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                                >
+                                  <Edit className="w-4 h-4" />
+                                </button>
+                                <button
+                                  onClick={() => toggleProductActive(product)}
+                                  title={product.is_active ? 'Hide from users' : 'Show to users'}
+                                  className="p-2 text-muted-foreground hover:bg-muted rounded-lg transition-colors"
+                                >
+                                  {product.is_active ? <ToggleRight className="w-4 h-4 text-emerald-600" /> : <ToggleLeft className="w-4 h-4" />}
+                                </button>
+                              </div>
                             )}
+
                           </td>
                         </tr>
                       ))}
