@@ -144,8 +144,10 @@ export default function Products() {
           amount: product.investment_amount,
           daily_profit: dailyProfit,
           end_date: endDate.toISOString(),
+          payout_type: product.payout_type || 'daily',
           status: 'active'
         });
+
 
       if (investError) { toast.error('Failed to create investment'); return; }
 
