@@ -17,12 +17,29 @@ interface Product {
   investment_amount: number;
   daily_profit_rate: number;
   duration_days: number;
+  category: string;
+  payout_type: string;
+  name: string | null;
+  tier_label: string | null;
+  image_key: string | null;
+  max_purchases: number;
+  available_until: string | null;
+  sort_order: number;
 }
+
+type Category = 'regular' | 'compound' | 'bonus';
+
+const TABS: { id: Category; label: string }[] = [
+  { id: 'regular', label: 'REGULAR' },
+  { id: 'compound', label: 'COMPOUND' },
+  { id: 'bonus', label: 'BONUS' },
+];
 
 export default function Products() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
+  const [category, setCategory] = useState<Category>('regular');
   const [purchaseCounts, setPurchaseCounts] = useState<Record<string, number>>({});
   const [isLoading, setIsLoading] = useState(true);
   const { profile, refreshProfile } = useAuth();
@@ -40,8 +57,9 @@ export default function Products() {
       .from('investment_products')
       .select('*')
       .eq('is_active', true)
+      .order('sort_order', { ascending: true })
       .order('investment_amount', { ascending: true });
-    if (data) setProducts(data);
+    if (data) setProducts(data as any);
     setIsLoading(false);
   };
 
@@ -58,9 +76,10 @@ export default function Products() {
     }
   };
 
-  const getLimit = (amount: number) => (amount === 3500 ? 1 : 5);
-  const isMaxedOut = (productId: string, amount: number) =>
-    (purchaseCounts[productId] || 0) >= getLimit(amount);
+  const isExpired = (p: Product) => !!p.available_until && new Date(p.available_until).getTime() <= Date.now();
+  const getLimit = (p: Product) => (p.category === 'regular' && p.investment_amount === 3500 ? 1 : p.max_purchases || 5);
+  const isMaxedOut = (p: Product) => (purchaseCounts[p.id] || 0) >= getLimit(p);
+
 
   const [investingId, setInvestingId] = useState<string | null>(null);
   const investingRef = useRef(false);
