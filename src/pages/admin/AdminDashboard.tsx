@@ -1509,6 +1509,34 @@ export default function AdminDashboard() {
                           </td>
                           <td className="p-4">
                             {editingProduct?.id === product.id ? (
+                              <div className="flex flex-col gap-1">
+                                <input
+                                  type="number"
+                                  value={editProductData.max_purchases}
+                                  onChange={(e) => setEditProductData({ ...editProductData, max_purchases: e.target.value })}
+                                  className="w-20 px-2 py-1 border border-border rounded-lg bg-background text-foreground text-xs"
+                                />
+                                <input
+                                  type="datetime-local"
+                                  value={editProductData.available_until}
+                                  onChange={(e) => setEditProductData({ ...editProductData, available_until: e.target.value })}
+                                  className="px-2 py-1 border border-border rounded-lg bg-background text-foreground text-xs"
+                                />
+                              </div>
+                            ) : (
+                              <div className="flex flex-col text-xs">
+                                <span className="text-muted-foreground">Max {product.max_purchases ?? 5}x</span>
+                                {product.available_until && (
+                                  <span className={new Date(product.available_until) <= new Date() ? 'text-destructive font-semibold' : 'text-foreground'}>
+                                    {formatDate(product.available_until)}
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                          </td>
+
+                          <td className="p-4">
+                            {editingProduct?.id === product.id ? (
                               <select
                                 value={editProductData.is_active ? 'active' : 'inactive'}
                                 onChange={(e) => setEditProductData({ ...editProductData, is_active: e.target.value === 'active' })}
