@@ -16,6 +16,7 @@ import Referral from "./pages/Referral";
 import History from "./pages/History";
 import Settings from "./pages/Settings";
 import AboutUs from "./pages/AboutUs";
+import Rewards from "./pages/Rewards";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import MyInvestments from "./pages/MyInvestments";
@@ -86,6 +87,8 @@ function AppRoutes() {
       <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
       <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
       <Route path="/about" element={<ProtectedRoute><AboutUs /></ProtectedRoute>} />
+      <Route path="/rewards" element={<ProtectedRoute><Rewards /></ProtectedRoute>} />
+
       <Route path="/my-investments" element={<ProtectedRoute><MyInvestments /></ProtectedRoute>} />
       <Route path="/withdrawal-account" element={<ProtectedRoute><WithdrawalAccount /></ProtectedRoute>} />
 

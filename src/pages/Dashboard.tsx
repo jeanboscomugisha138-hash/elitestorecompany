@@ -54,7 +54,7 @@ export default function Dashboard() {
     { label: 'Bikuza', emoji: '⬇️', to: '/withdraw' },
     { label: 'Amateka', emoji: '🕐', to: '/history' },
     { label: 'Bonus', emoji: '🎁', onClick: () => setGiftDialogOpen(true) },
-    { label: 'Abo turi bo', emoji: '👥', to: '/about' },
+    { label: 'Shaka ibihembo', emoji: '🏆', to: '/rewards' },
     { label: 'Ubufasha', emoji: '🎧', onClick: () => setAboutOpen(true) },
     { label: 'Shora', emoji: '📦', to: '/products' },
     { label: 'Ibyaguzwe', emoji: '💼', to: '/my-investments' },

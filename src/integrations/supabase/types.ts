@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      ambassador_claims: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          referrals_count: number
+          tier: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          referrals_count?: number
+          tier: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          referrals_count?: number
+          tier?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       daily_bonuses: {
         Row: {
           amount: number
@@ -483,7 +510,23 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      claim_ambassador_reward: { Args: { _tier: string }; Returns: Json }
+      count_qualified_referrals: {
+        Args: { _min_invested: number; _user_id: string }
+        Returns: number
+      }
       generate_referral_code: { Args: never; Returns: string }
+      get_ambassador_progress: {
+        Args: never
+        Returns: {
+          claimed: boolean
+          min_invested: number
+          qualified: number
+          required_referrals: number
+          reward_amount: number
+          tier: string
+        }[]
+      }
       get_team_members: {
         Args: { _user_id: string }
         Returns: {
