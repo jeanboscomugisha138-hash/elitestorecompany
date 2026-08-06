@@ -87,6 +87,14 @@ export default {
           "0%, 100%": { boxShadow: "0 0 0 0 hsl(var(--success) / 0.55), 0 8px 20px -6px hsl(var(--success) / 0.5)" },
           "50%": { boxShadow: "0 0 0 12px hsl(var(--success) / 0), 0 10px 26px -6px hsl(var(--success) / 0.6)" },
         },
+        "pulse-gold": {
+          "0%, 100%": { boxShadow: "0 0 0 0 hsl(38 95% 50% / 0.6), 0 8px 22px -6px hsl(38 95% 45% / 0.55)" },
+          "50%": { boxShadow: "0 0 0 12px hsl(38 95% 50% / 0), 0 12px 28px -6px hsl(24 95% 50% / 0.7)" },
+        },
+        "shine": {
+          "0%": { transform: "translateX(-120%)" },
+          "60%, 100%": { transform: "translateX(220%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
