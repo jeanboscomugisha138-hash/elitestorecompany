@@ -200,10 +200,13 @@ export default function Rewards() {
                       <button
                         onClick={() => claim(t)}
                         disabled={claiming === t.tier}
-                        className="mt-3 w-full bg-primary text-primary-foreground font-black text-sm py-3.5 rounded-xl shadow-button active:scale-[0.98] transition disabled:opacity-60 flex items-center justify-center gap-2"
+                        className="relative overflow-hidden mt-3 w-full bg-gradient-to-r from-amber-400 via-yellow-400 to-orange-500 text-neutral-900 font-black text-[15px] py-4 rounded-2xl ring-2 ring-amber-300/70 animate-pulse-gold active:scale-[0.98] transition disabled:opacity-60 flex items-center justify-center gap-2"
                       >
-                        <Sparkles className="w-4 h-4" />
-                        {claiming === t.tier ? 'Birimo gukorwa...' : `Claim ${Number(t.reward_amount).toLocaleString()} RWF`}
+                        <span className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 bg-white/45 blur-md skew-x-12 animate-shine" />
+                        <Sparkles className="w-4 h-4 relative" />
+                        <span className="relative uppercase tracking-wide">
+                          {claiming === t.tier ? 'Birimo gukorwa...' : `Claim ${Number(t.reward_amount).toLocaleString()} RWF`}
+                        </span>
                       </button>
                     ) : (
                       <button
