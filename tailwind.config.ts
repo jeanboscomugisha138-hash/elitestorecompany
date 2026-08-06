@@ -104,6 +104,8 @@ export default {
         "slide-up": "slide-up 0.4s ease-out",
         "pulse-glow": "pulse-glow 2s ease-in-out infinite",
         "pulse-success": "pulse-success 2s ease-in-out infinite",
+        "pulse-gold": "pulse-gold 1.8s ease-in-out infinite",
+        "shine": "shine 2.4s ease-in-out infinite",
       },
     },
   },
