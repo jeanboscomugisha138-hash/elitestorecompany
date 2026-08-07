@@ -26,6 +26,8 @@ import {
   Bell,
   Send,
   Lock,
+  KeyRound,
+
   Unlock,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
@@ -267,6 +269,8 @@ export default function AdminDashboard() {
   const [editWithdrawAcct, setEditWithdrawAcct] = useState({ name: '', phone: '' });
   const [savingWithdrawAcct, setSavingWithdrawAcct] = useState(false);
   const [lockingUserId, setLockingUserId] = useState<string | null>(null);
+  const [resettingUserId, setResettingUserId] = useState<string | null>(null);
+
   const [searchQuery, setSearchQuery] = useState('');
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
   const [viewingInvestmentsUser, setViewingInvestmentsUser] = useState<Profile | null>(null);
@@ -558,6 +562,42 @@ export default function AdminDashboard() {
       setDeletingUserId(null);
     }
   };
+
+  const handleResetPassword = async (user: Profile) => {
+    if (resettingUserId) return;
+    const newPass = window.prompt(`Ijambobanga rishya rya "${user.full_name}" (${user.phone}):`, '');
+    if (newPass === null) return;
+    if (newPass.length < 6) {
+      toast.error('Password must be at least 6 characters');
+      return;
+    }
+    setResettingUserId(user.user_id);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-reset-password`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session?.access_token}`,
+          },
+          body: JSON.stringify({ user_id: user.user_id, new_password: newPass }),
+        }
+      );
+      const result = await response.json();
+      if (!response.ok) {
+        toast.error(result.error || 'Failed to reset password');
+        return;
+      }
+      toast.success(`Password ya "${user.full_name}" yahinduwe: ${newPass}`);
+    } catch {
+      toast.error('Failed to reset password');
+    } finally {
+      setResettingUserId(null);
+    }
+  };
+
 
   const viewUserInvestments = async (user: Profile) => {
     setViewingInvestmentsUser(user);
