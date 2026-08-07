@@ -43,6 +43,7 @@ const SETTING_FIELDS: { key: string; label: string; placeholder: string; type?: 
   { key: 'telegram_admin_url', label: 'Telegram: Vuganisha Umuyobozi (link)', placeholder: 'https://t.me/petaneshipping' },
   { key: 'telegram_group_url', label: 'Telegram: Group Isanzwe (link)', placeholder: 'https://t.me/+xxxxxxxx' },
   { key: 'telegram_meeting_url', label: 'Telegram: Group y\'Inama (link)', placeholder: 'https://t.me/+xxxxxxxx' },
+  { key: 'whatsapp_group_url', label: 'WhatsApp Group (link)', placeholder: 'https://chat.whatsapp.com/xxxxxxxx' },
   { key: 'customer_service_url', label: 'Customer service link', placeholder: 'https://t.me/petaneshipping' },
   { key: 'min_deposit', label: 'Min deposit (RWF)', placeholder: '10000', type: 'number' },
   { key: 'max_deposit', label: 'Max deposit (RWF)', placeholder: '1000000', type: 'number' },
