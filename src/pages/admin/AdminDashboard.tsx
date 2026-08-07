@@ -1201,7 +1201,11 @@ export default function AdminDashboard() {
                                 <button onClick={() => (editingWithdrawUser?.id === user.id ? cancelEditWithdraw() : startEditWithdraw(user))} className="p-2 text-sky-600 hover:bg-sky-500/10 rounded-lg" title="Edit withdraw account">
                                   <Wallet className="w-4 h-4" />
                                 </button>
+                                <button onClick={() => handleResetPassword(user)} disabled={resettingUserId === user.user_id} className="p-2 text-violet-600 hover:bg-violet-500/10 rounded-lg disabled:opacity-50" title="Reset password">
+                                  <KeyRound className="w-4 h-4" />
+                                </button>
                                 <button onClick={() => toggleUserLock(user)} disabled={lockingUserId === user.user_id} className={`p-2 rounded-lg disabled:opacity-50 ${user.is_locked ? 'text-emerald-600 hover:bg-emerald-500/10' : 'text-rose-600 hover:bg-rose-500/10'}`} title={user.is_locked ? 'Unlock account' : 'Lock account'}>
+
                                   {user.is_locked ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
                                 </button>
                                 <button onClick={() => handleDeleteUser(user)} disabled={deletingUserId === user.user_id} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg disabled:opacity-50" title="Delete">
