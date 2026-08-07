@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Send } from 'lucide-react';
+import { Send, MessageCircle } from 'lucide-react';
 import { PopupModal } from './PopupModal';
 import { useSiteSettings } from '@/hooks/useSiteSettings';
 
