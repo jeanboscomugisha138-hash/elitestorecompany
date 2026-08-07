@@ -26,6 +26,8 @@ import {
   Bell,
   Send,
   Lock,
+  KeyRound,
+
   Unlock,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
@@ -267,6 +269,8 @@ export default function AdminDashboard() {
   const [editWithdrawAcct, setEditWithdrawAcct] = useState({ name: '', phone: '' });
   const [savingWithdrawAcct, setSavingWithdrawAcct] = useState(false);
   const [lockingUserId, setLockingUserId] = useState<string | null>(null);
+  const [resettingUserId, setResettingUserId] = useState<string | null>(null);
+
   const [searchQuery, setSearchQuery] = useState('');
   const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
   const [viewingInvestmentsUser, setViewingInvestmentsUser] = useState<Profile | null>(null);
@@ -558,6 +562,42 @@ export default function AdminDashboard() {
       setDeletingUserId(null);
     }
   };
+
+  const handleResetPassword = async (user: Profile) => {
+    if (resettingUserId) return;
+    const newPass = window.prompt(`Ijambobanga rishya rya "${user.full_name}" (${user.phone}):`, '');
+    if (newPass === null) return;
+    if (newPass.length < 6) {
+      toast.error('Password must be at least 6 characters');
+      return;
+    }
+    setResettingUserId(user.user_id);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/admin-reset-password`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${session?.access_token}`,
+          },
+          body: JSON.stringify({ user_id: user.user_id, new_password: newPass }),
+        }
+      );
+      const result = await response.json();
+      if (!response.ok) {
+        toast.error(result.error || 'Failed to reset password');
+        return;
+      }
+      toast.success(`Password ya "${user.full_name}" yahinduwe: ${newPass}`);
+    } catch {
+      toast.error('Failed to reset password');
+    } finally {
+      setResettingUserId(null);
+    }
+  };
+
 
   const viewUserInvestments = async (user: Profile) => {
     setViewingInvestmentsUser(user);
@@ -1161,7 +1201,11 @@ export default function AdminDashboard() {
                                 <button onClick={() => (editingWithdrawUser?.id === user.id ? cancelEditWithdraw() : startEditWithdraw(user))} className="p-2 text-sky-600 hover:bg-sky-500/10 rounded-lg" title="Edit withdraw account">
                                   <Wallet className="w-4 h-4" />
                                 </button>
+                                <button onClick={() => handleResetPassword(user)} disabled={resettingUserId === user.user_id} className="p-2 text-violet-600 hover:bg-violet-500/10 rounded-lg disabled:opacity-50" title="Reset password">
+                                  <KeyRound className="w-4 h-4" />
+                                </button>
                                 <button onClick={() => toggleUserLock(user)} disabled={lockingUserId === user.user_id} className={`p-2 rounded-lg disabled:opacity-50 ${user.is_locked ? 'text-emerald-600 hover:bg-emerald-500/10' : 'text-rose-600 hover:bg-rose-500/10'}`} title={user.is_locked ? 'Unlock account' : 'Lock account'}>
+
                                   {user.is_locked ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
                                 </button>
                                 <button onClick={() => handleDeleteUser(user)} disabled={deletingUserId === user.user_id} className="p-2 text-destructive hover:bg-destructive/10 rounded-lg disabled:opacity-50" title="Delete">
