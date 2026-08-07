@@ -36,15 +36,26 @@ export function ChannelPopup() {
         </div>
       </div>
 
-      <a
-        href={settings.telegram_meeting_url}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={closePopup}
-        className="w-full bg-gradient-to-r from-[#1747E0] to-[#0E2E9A] text-white font-black text-sm py-3.5 rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition shadow-lg-custom"
-      >
-        <Send className="w-5 h-5" /> INJIRA AHAKORERWA INAMA
-      </a>
+      <div className="space-y-2.5">
+        <a
+          href={settings.telegram_meeting_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={closePopup}
+          className="w-full bg-gradient-to-r from-[#1747E0] to-[#0E2E9A] text-white font-black text-sm py-3.5 rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition shadow-lg-custom"
+        >
+          <Send className="w-5 h-5" /> INJIRA AHAKORERWA INAMA
+        </a>
+        <a
+          href={settings.whatsapp_group_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={closePopup}
+          className="w-full bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white font-black text-sm py-3.5 rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition shadow-lg-custom"
+        >
+          <MessageCircle className="w-5 h-5" /> INJIRA MURI WHATSAPP GROUP
+        </a>
+      </div>
     </PopupModal>
   );
 }
