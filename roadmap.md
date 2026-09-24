@@ -1,2 +1,2 @@
-- [ ] Redesign History page (professional, new look)
-- [ ] Recolor site: yellow, green, blue only
+- [x] Redesign History page (professional, new look)
+- [x] Recolor site: yellow, green, blue only
