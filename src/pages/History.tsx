@@ -32,10 +32,10 @@ const tabs: {
   color: string;
   bg: string;
 }[] = [
-  { id: 'deposits', label: 'Ishyura', short: 'Ishyura', icon: ArrowDownToLine, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-  { id: 'withdrawals', label: 'Kwakira', short: 'Kwakira', icon: ArrowUpFromLine, color: 'text-amber-600', bg: 'bg-amber-50' },
-  { id: 'investments', label: 'Imishinga', short: 'Imishinga', icon: Package, color: 'text-primary', bg: 'bg-primary/10' },
-  { id: 'bonuses', label: 'Bonus', short: 'Bonus', icon: Gift, color: 'text-sky-600', bg: 'bg-sky-50' },
+  { id: 'deposits', label: 'Bitsa', short: 'Bitsa', icon: ArrowDownToLine, color: 'text-success', bg: 'bg-success/10' },
+  { id: 'withdrawals', label: 'Bikuza', short: 'Bikuza', icon: ArrowUpFromLine, color: 'text-accent-foreground', bg: 'bg-accent' },
+  { id: 'investments', label: 'Ibyaguzwe', short: 'Ibyaguzwe', icon: Package, color: 'text-primary', bg: 'bg-primary/10' },
+  { id: 'bonuses', label: 'Bonus', short: 'Bonus', icon: Gift, color: 'text-accent-foreground', bg: 'bg-accent' },
 ];
 
 interface Transaction {
@@ -75,8 +75,8 @@ const StatusPill = ({ status }: { status: string }) => {
     active: { cls: 'bg-emerald-50 text-emerald-700', Icon: CheckCircle2 },
     completed: { cls: 'bg-primary/10 text-primary', Icon: CheckCircle2 },
     pending: { cls: 'bg-amber-50 text-amber-700', Icon: Clock },
-    rejected: { cls: 'bg-rose-50 text-rose-700', Icon: XCircle },
-    cancelled: { cls: 'bg-rose-50 text-rose-700', Icon: XCircle },
+    rejected: { cls: 'bg-amber-50 text-amber-700', Icon: XCircle },
+    cancelled: { cls: 'bg-amber-50 text-amber-700', Icon: XCircle },
   };
   const s = map[status] || { cls: 'bg-muted text-muted-foreground', Icon: AlertCircle };
   const Icon = s.Icon;
@@ -271,7 +271,7 @@ export default function History() {
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between gap-2">
           <p className="text-sm font-bold text-foreground truncate">{title}</p>
-          <p className={`text-sm font-black tabular-nums ${positive ? 'text-emerald-600' : 'text-rose-600'}`}>
+          <p className={`text-sm font-black tabular-nums ${positive ? 'text-emerald-600' : 'text-amber-600'}`}>
             {positive ? '+' : '−'}{amount.toLocaleString()}
             <span className="text-[10px] font-bold text-muted-foreground ml-1">RWF</span>
           </p>
@@ -397,98 +397,97 @@ export default function History() {
   );
 
   return (
-    <div className="min-h-screen pb-24 max-w-md mx-auto bg-[hsl(0_0%_96%)]">
-      {/* Header */}
-      <div className="gradient-primary px-4 pt-4 pb-20 relative">
-        <div className="flex items-center justify-between">
-          <Link
-            to="/dashboard"
-            className="w-10 h-10 rounded-xl bg-primary-foreground/15 flex items-center justify-center"
-          >
-            <ArrowLeft className="w-5 h-5 text-primary-foreground" />
+    <div className="min-h-screen pb-24 max-w-md mx-auto bg-background">
+      {/* Sticky top bar */}
+      <div className="sticky top-0 z-20 bg-card/95 backdrop-blur border-b border-border">
+        <div className="flex items-center justify-between px-4 h-14">
+          <Link to="/dashboard" className="w-9 h-9 rounded-full bg-muted flex items-center justify-center" aria-label="Subira inyuma">
+            <ArrowLeft className="w-4 h-4 text-foreground" />
           </Link>
-          <div className="text-primary-foreground">
-            <h1 className="text-lg font-black tracking-tight">Amateka</h1>
+          <div className="text-center">
+            <h1 className="text-base font-black tracking-tight text-foreground">Amateka y'Ibikorwa</h1>
+            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest">Raporo yawe</p>
           </div>
           <button
             onClick={handleDownloadPDF}
             disabled={isLoading || itemCount === 0}
-            className="w-10 h-10 rounded-xl bg-primary-foreground text-primary flex items-center justify-center disabled:opacity-40 shadow-md"
+            className="h-9 px-3 rounded-full bg-primary text-primary-foreground flex items-center gap-1.5 text-xs font-bold disabled:opacity-40"
             aria-label="PDF"
           >
-            <Download className="w-5 h-5" strokeWidth={2.5} />
+            <Download className="w-3.5 h-3.5" strokeWidth={2.5} /> PDF
           </button>
         </div>
-      </div>
 
-      {/* Overlapping summary card */}
-      <div className="px-3 -mt-14 relative z-10">
-        <div className="bg-card rounded-2xl shadow-card border border-border/40 p-4">
-          <div className="flex items-center justify-between mb-3">
-            <div>
-              <p className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
-                {activeTabData.label} · Igiteranyo
-              </p>
-              <p className="text-2xl font-black text-foreground tabular-nums mt-1">
-                {totalAmount.toLocaleString()}
-                <span className="text-sm font-bold text-primary ml-1.5">RWF</span>
-              </p>
-            </div>
-            <div className={`w-12 h-12 rounded-2xl ${activeTabData.bg} ${activeTabData.color} flex items-center justify-center`}>
-              <activeTabData.icon className="w-6 h-6" strokeWidth={2.3} />
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 pt-3 border-t border-border">
-            <div className="flex-1">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Ibikorwa</p>
-              <p className="text-sm font-black text-foreground">{itemCount}</p>
-            </div>
-            <div className="flex-1 border-l border-border pl-3">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Ubwoko</p>
-              <p className="text-sm font-black text-foreground">{activeTabData.label}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Tabs */}
-      <div className="px-3 mt-4">
-        <div className="bg-card rounded-2xl border border-border/60 p-1 grid grid-cols-4 gap-1">
+        {/* Chip tabs */}
+        <div className="flex gap-2 overflow-x-auto px-4 pb-3 no-scrollbar">
           {tabs.map((tab) => {
             const isActive = activeTab === tab.id;
             return (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex flex-col items-center gap-1 py-2 rounded-xl transition text-[11px] font-bold ${
-                  isActive ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground'
+                className={`shrink-0 flex items-center gap-1.5 h-9 px-4 rounded-full text-xs font-bold border transition ${
+                  isActive
+                    ? 'bg-foreground text-background border-foreground'
+                    : 'bg-card text-muted-foreground border-border'
                 }`}
               >
-                <tab.icon className="w-4 h-4" strokeWidth={2.3} />
-                {tab.short}
+                <tab.icon className="w-3.5 h-3.5" strokeWidth={2.5} />
+                {tab.label}
               </button>
             );
           })}
         </div>
       </div>
 
+      {/* Summary panel */}
+      <div className="px-4 mt-4">
+        <div className="relative overflow-hidden rounded-3xl gradient-primary p-5 text-primary-foreground">
+          <div className="absolute -right-10 -top-10 w-40 h-40 rounded-full bg-primary-foreground/10" />
+          <div className="absolute -right-4 bottom-[-40px] w-28 h-28 rounded-full bg-accent/30" />
+          <div className="relative">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-primary-foreground/20 flex items-center justify-center">
+                <activeTabData.icon className="w-4 h-4" strokeWidth={2.5} />
+              </div>
+              <span className="text-xs font-bold uppercase tracking-widest opacity-90">{activeTabData.label}</span>
+            </div>
+            <p className="text-[11px] mt-4 opacity-80 font-semibold">Igiteranyo cyose</p>
+            <p className="text-3xl font-black tabular-nums leading-tight">
+              {totalAmount.toLocaleString()} <span className="text-base font-bold opacity-80">RWF</span>
+            </p>
+            <div className="mt-4 grid grid-cols-2 gap-2">
+              <div className="rounded-xl bg-primary-foreground/15 px-3 py-2">
+                <p className="text-[10px] uppercase tracking-wider opacity-80 font-bold">Ibikorwa</p>
+                <p className="text-lg font-black">{itemCount}</p>
+              </div>
+              <div className="rounded-xl bg-primary-foreground/15 px-3 py-2">
+                <p className="text-[10px] uppercase tracking-wider opacity-80 font-bold">Impuzandengo</p>
+                <p className="text-lg font-black tabular-nums">
+                  {itemCount ? Math.round(totalAmount / itemCount).toLocaleString() : 0}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Search */}
-      <div className="px-3 mt-3">
-        <div className="flex items-center gap-2 bg-card border border-border/60 rounded-xl px-3 h-11">
+      <div className="px-4 mt-4">
+        <div className="flex items-center gap-2 bg-card border border-border rounded-2xl px-4 h-12 shadow-card">
           <Search className="w-4 h-4 text-muted-foreground shrink-0" />
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Shakisha mu mateka..."
+            placeholder="Shakisha amafaranga cyangwa uko biteye..."
             className="flex-1 bg-transparent border-0 outline-none text-sm placeholder:text-muted-foreground"
           />
         </div>
       </div>
 
       {/* Content */}
-      <div className="px-3 mt-4">
+      <div className="px-4 mt-5">
         {isLoading ? renderLoading() : itemCount === 0 ? renderEmpty() : renderList()}
       </div>
 

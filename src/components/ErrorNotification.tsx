@@ -19,11 +19,11 @@ export function ErrorNotification({
   return (
     <PopupModal isOpen={isOpen} onClose={onClose} accent="warning">
       <div className="flex items-start gap-4">
-        <div className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 bg-red-500/10 text-red-600">
+        <div className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 bg-amber-500/10 text-amber-600">
           <AlertTriangle className="w-7 h-7" strokeWidth={2.2} />
         </div>
         <div className="flex-1 min-w-0 pt-1">
-          <div className="flex items-center gap-1.5 text-red-600 mb-1">
+          <div className="flex items-center gap-1.5 text-amber-600 mb-1">
             <XCircle className="w-3.5 h-3.5" />
             <span className="text-[10px] font-bold uppercase tracking-wider">Ntibyakunze</span>
           </div>

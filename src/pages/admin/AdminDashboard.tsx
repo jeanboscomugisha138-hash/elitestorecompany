@@ -191,7 +191,7 @@ function TxCards({ items, filter, setFilter, onApprove, onReject, processingId, 
               <span className={`text-[10px] font-bold uppercase px-2 py-1 rounded-full whitespace-nowrap ${
                 tx.status === 'approved' ? 'bg-emerald-500/10 text-emerald-600' :
                 tx.status === 'pending' ? 'bg-amber-500/10 text-amber-600' :
-                'bg-rose-500/10 text-rose-600'
+                'bg-amber-500/10 text-amber-600'
               }`}>{tx.status}</span>
             </div>
             {showNet && (
@@ -200,9 +200,9 @@ function TxCards({ items, filter, setFilter, onApprove, onReject, processingId, 
                   <p className="text-[10px] font-semibold uppercase text-muted-foreground">Yasabye</p>
                   <p className="text-sm font-bold text-foreground">{Number(tx.amount).toLocaleString()}</p>
                 </div>
-                <div className="rounded-xl bg-rose-500/10 px-2.5 py-2">
-                  <p className="text-[10px] font-semibold uppercase text-rose-600">Fee</p>
-                  <p className="text-sm font-bold text-rose-600">-{Number(tx.fee_amount ?? Math.round(Number(tx.amount) * 0.15)).toLocaleString()}</p>
+                <div className="rounded-xl bg-amber-500/10 px-2.5 py-2">
+                  <p className="text-[10px] font-semibold uppercase text-amber-600">Fee</p>
+                  <p className="text-sm font-bold text-amber-600">-{Number(tx.fee_amount ?? Math.round(Number(tx.amount) * 0.15)).toLocaleString()}</p>
                 </div>
                 <div className="rounded-xl bg-emerald-500/10 px-2.5 py-2">
                   <p className="text-[10px] font-semibold uppercase text-emerald-600">Azakira</p>
@@ -231,7 +231,7 @@ function TxCards({ items, filter, setFilter, onApprove, onReject, processingId, 
                   <button
                     onClick={() => onReject(tx)}
                     disabled={processingId === tx.id}
-                    className="flex items-center gap-1 px-4 py-2 bg-rose-500 text-white rounded-xl text-sm font-semibold hover:bg-rose-600 transition-colors disabled:opacity-50"
+                    className="flex items-center gap-1 px-4 py-2 bg-amber-500 text-white rounded-xl text-sm font-semibold hover:bg-amber-600 transition-colors disabled:opacity-50"
                   >
                     <X className="w-4 h-4" /> Reject
                   </button>
@@ -1111,7 +1111,7 @@ export default function AdminDashboard() {
             {[
               { label: 'Total Users', value: stats.totalUsers.toLocaleString(), icon: Users, tint: 'text-primary bg-primary/10' },
               { label: 'Deposits', value: `${stats.totalDeposits.toLocaleString()} RWF`, icon: ArrowDownToLine, tint: 'text-green-600 bg-green-500/10' },
-              { label: 'Withdrawals', value: `${withdrawals.filter(w=>w.status==='approved').reduce((s,w)=>s+w.amount,0).toLocaleString()} RWF`, icon: ArrowUpFromLine, tint: 'text-rose-600 bg-rose-500/10' },
+              { label: 'Withdrawals', value: `${withdrawals.filter(w=>w.status==='approved').reduce((s,w)=>s+w.amount,0).toLocaleString()} RWF`, icon: ArrowUpFromLine, tint: 'text-amber-600 bg-amber-500/10' },
               { label: 'Net Paid Out', value: `${withdrawals.filter(w=>w.status==='approved').reduce((s,w)=>s+Number((w as any).net_amount ?? Math.round(w.amount*0.9)),0).toLocaleString()} RWF`, icon: ArrowUpFromLine, tint: 'text-emerald-600 bg-emerald-500/10' },
               { label: 'Investments', value: `${stats.totalInvested.toLocaleString()} RWF`, icon: PiggyBank, tint: 'text-amber-600 bg-amber-500/10' },
               { label: 'Total Balance', value: `${stats.totalBalance.toLocaleString()} RWF`, icon: Wallet, tint: 'text-secondary bg-secondary/10' },
@@ -1170,7 +1170,7 @@ export default function AdminDashboard() {
                               <div className="flex items-center gap-1.5 min-w-0">
                                 <p className="font-semibold text-foreground truncate">{user.full_name}</p>
                                 {user.is_locked && (
-                                  <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-rose-500/10 text-rose-600 text-[9px] font-black uppercase tracking-wide">
+                                  <span className="shrink-0 inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-amber-500/10 text-amber-600 text-[9px] font-black uppercase tracking-wide">
                                     <Lock className="w-2.5 h-2.5" /> Locked
                                   </span>
                                 )}
@@ -1199,13 +1199,13 @@ export default function AdminDashboard() {
                                 <button onClick={() => startEditInvested(user)} className="p-2 text-amber-600 hover:bg-amber-500/10 rounded-lg" title="Edit invested">
                                   <PiggyBank className="w-4 h-4" />
                                 </button>
-                                <button onClick={() => (editingWithdrawUser?.id === user.id ? cancelEditWithdraw() : startEditWithdraw(user))} className="p-2 text-sky-600 hover:bg-sky-500/10 rounded-lg" title="Edit withdraw account">
+                                <button onClick={() => (editingWithdrawUser?.id === user.id ? cancelEditWithdraw() : startEditWithdraw(user))} className="p-2 text-blue-600 hover:bg-blue-500/10 rounded-lg" title="Edit withdraw account">
                                   <Wallet className="w-4 h-4" />
                                 </button>
-                                <button onClick={() => handleResetPassword(user)} disabled={resettingUserId === user.user_id} className="p-2 text-violet-600 hover:bg-violet-500/10 rounded-lg disabled:opacity-50" title="Reset password">
+                                <button onClick={() => handleResetPassword(user)} disabled={resettingUserId === user.user_id} className="p-2 text-amber-600 hover:bg-amber-500/10 rounded-lg disabled:opacity-50" title="Reset password">
                                   <KeyRound className="w-4 h-4" />
                                 </button>
-                                <button onClick={() => toggleUserLock(user)} disabled={lockingUserId === user.user_id} className={`p-2 rounded-lg disabled:opacity-50 ${user.is_locked ? 'text-emerald-600 hover:bg-emerald-500/10' : 'text-rose-600 hover:bg-rose-500/10'}`} title={user.is_locked ? 'Unlock account' : 'Lock account'}>
+                                <button onClick={() => toggleUserLock(user)} disabled={lockingUserId === user.user_id} className={`p-2 rounded-lg disabled:opacity-50 ${user.is_locked ? 'text-emerald-600 hover:bg-emerald-500/10' : 'text-amber-600 hover:bg-amber-500/10'}`} title={user.is_locked ? 'Unlock account' : 'Lock account'}>
 
                                   {user.is_locked ? <Unlock className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
                                 </button>
@@ -1239,11 +1239,11 @@ export default function AdminDashboard() {
                           </div>
                         </div>
 
-                        <div className="mt-3 rounded-xl border border-sky-500/20 bg-sky-500/5 p-3">
+                        <div className="mt-3 rounded-xl border border-blue-500/20 bg-blue-500/5 p-3">
                           <div className="flex items-center justify-between gap-2">
                             <p className="text-[10px] uppercase tracking-wide text-muted-foreground font-semibold">Withdraw account</p>
                             {editingWithdrawUser?.id !== user.id && (
-                              <button onClick={() => startEditWithdraw(user)} className="text-[11px] font-bold text-sky-600 hover:underline">
+                              <button onClick={() => startEditWithdraw(user)} className="text-[11px] font-bold text-blue-600 hover:underline">
                                 {user.withdraw_phone ? 'Change' : 'Set'}
                               </button>
                             )}
@@ -1263,7 +1263,7 @@ export default function AdminDashboard() {
                                 className="w-full px-2 py-1.5 border border-border rounded-md bg-background text-sm"
                               />
                               <div className="flex gap-2">
-                                <button onClick={saveWithdrawAccount} disabled={savingWithdrawAcct} className="flex-1 py-1.5 rounded-md bg-sky-600 text-white text-xs font-bold disabled:opacity-50">
+                                <button onClick={saveWithdrawAccount} disabled={savingWithdrawAcct} className="flex-1 py-1.5 rounded-md bg-blue-600 text-white text-xs font-bold disabled:opacity-50">
                                   {savingWithdrawAcct ? 'Saving...' : 'Save'}
                                 </button>
                                 <button onClick={cancelEditWithdraw} className="px-3 py-1.5 rounded-md border border-border text-xs font-bold">Cancel</button>
@@ -1320,7 +1320,7 @@ export default function AdminDashboard() {
                         <button
                           onClick={() => cancelInvestment(inv)}
                           disabled={cancellingInvestmentId === inv.id}
-                          className="shrink-0 w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center disabled:opacity-50"
+                          className="shrink-0 w-10 h-10 rounded-full bg-amber-500 text-white flex items-center justify-center disabled:opacity-50"
                           title="Cancel investment"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -1393,7 +1393,7 @@ export default function AdminDashboard() {
                               <td className="p-3">
                                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                                   inv.status === 'active' ? 'bg-green-100 text-green-700' :
-                                  inv.status === 'cancelled' ? 'bg-red-100 text-red-700' :
+                                  inv.status === 'cancelled' ? 'bg-amber-100 text-amber-700' :
                                   'bg-muted text-muted-foreground'
                                 }`}>
                                   {inv.status}
@@ -1592,7 +1592,7 @@ export default function AdminDashboard() {
                               </select>
                             ) : (
                               <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                product.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                                product.is_active ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
                               }`}>
                                 {product.is_active ? 'Active' : 'Inactive'}
                               </span>
@@ -1743,7 +1743,7 @@ export default function AdminDashboard() {
                           <td className="p-4 text-muted-foreground">{gc.current_uses} / {gc.max_uses}</td>
                           <td className="p-4">
                             <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                              gc.is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                              gc.is_active ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
                             }`}>
                               {gc.is_active ? 'Active' : 'Inactive'}
                             </span>

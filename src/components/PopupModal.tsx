@@ -13,14 +13,14 @@ const accentBar: Record<NonNullable<PopupModalProps['accent']>, string> = {
   primary: 'from-primary via-primary to-primary/70',
   success: 'from-emerald-500 via-emerald-500 to-emerald-400/70',
   warning: 'from-amber-500 via-amber-500 to-amber-400/70',
-  info: 'from-sky-500 via-sky-500 to-sky-400/70',
+  info: 'from-blue-500 via-blue-500 to-blue-400/70',
 };
 
 const accentGlow: Record<NonNullable<PopupModalProps['accent']>, string> = {
   primary: 'bg-primary/20',
   success: 'bg-emerald-500/20',
   warning: 'bg-amber-500/20',
-  info: 'bg-sky-500/20',
+  info: 'bg-blue-500/20',
 };
 
 export function PopupModal({ isOpen, onClose, children, accent = 'primary' }: PopupModalProps) {
