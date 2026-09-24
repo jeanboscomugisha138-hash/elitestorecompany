@@ -137,13 +137,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const signIn = async (phone: string, password: string) => {
-    const email = phoneToEmail(phone);
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    return { error: error as Error | null };
+    let digits = phone.replace(/\D/g, '');
+    if (digits.startsWith('250') && digits.length === 12) digits = '0' + digits.slice(3);
+    // Accounts created under earlier brand names use legacy domains
+    const domains = ['petaneshippingcompany.app', 'elitestorecompany.app', 'samsungworldtech.app'];
+    let lastError: Error | null = null;
+    for (const d of domains) {
+      const { error } = await supabase.auth.signInWithPassword({ email: `${digits}@${d}`, password });
+      if (!error) return { error: null };
+      lastError = error as Error;
+      if (!/invalid/i.test(error.message)) break;
+    }
+    return { error: lastError };
   };
 
   const signOut = async () => {
