@@ -26,7 +26,12 @@ export default function Login() {
     if (phone.length < 10) { setError(t('auth.invalidPhone')); setIsLoading(false); return; }
     if (password.length < 6) { setError(t('auth.passwordTooShort')); setIsLoading(false); return; }
     const { error: signInError } = await signIn(phone, password);
-    if (signInError) { setError(signInError.message); setIsLoading(false); return; }
+    if (signInError) {
+      const msg = /invalid/i.test(signInError.message)
+        ? "Nimero cyangwa ijambobanga ntibihuye. Ongera ugenzure, cyangwa usabe umuyobozi kuguhindurira ijambobanga."
+        : "Kwinjira ntibyakunze. Ongera ugerageze nyuma gato.";
+      setError(msg); setIsLoading(false); return;
+    }
     const { data: authData } = await supabase.auth.getUser();
     if (authData.user) {
       const { data: prof } = await supabase
