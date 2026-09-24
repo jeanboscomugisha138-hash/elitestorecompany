@@ -69,14 +69,14 @@ export function SuccessNotification({ isOpen, onClose, type, amount, productName
     primary: 'bg-primary/10 text-primary',
     success: 'bg-emerald-500/10 text-emerald-600',
     warning: 'bg-amber-500/10 text-amber-600',
-    info: 'bg-sky-500/10 text-sky-600',
+    info: 'bg-blue-500/10 text-blue-600',
   }[c.accent];
 
   const btnBg = {
     primary: 'bg-primary hover:bg-primary/90',
     success: 'bg-emerald-500 hover:bg-emerald-600',
     warning: 'bg-amber-500 hover:bg-amber-600',
-    info: 'bg-sky-500 hover:bg-sky-600',
+    info: 'bg-blue-500 hover:bg-blue-600',
   }[c.accent];
 
   return (

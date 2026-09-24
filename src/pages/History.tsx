@@ -75,8 +75,8 @@ const StatusPill = ({ status }: { status: string }) => {
     active: { cls: 'bg-emerald-50 text-emerald-700', Icon: CheckCircle2 },
     completed: { cls: 'bg-primary/10 text-primary', Icon: CheckCircle2 },
     pending: { cls: 'bg-amber-50 text-amber-700', Icon: Clock },
-    rejected: { cls: 'bg-rose-50 text-rose-700', Icon: XCircle },
-    cancelled: { cls: 'bg-rose-50 text-rose-700', Icon: XCircle },
+    rejected: { cls: 'bg-amber-50 text-amber-700', Icon: XCircle },
+    cancelled: { cls: 'bg-amber-50 text-amber-700', Icon: XCircle },
   };
   const s = map[status] || { cls: 'bg-muted text-muted-foreground', Icon: AlertCircle };
   const Icon = s.Icon;
@@ -271,7 +271,7 @@ export default function History() {
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between gap-2">
           <p className="text-sm font-bold text-foreground truncate">{title}</p>
-          <p className={`text-sm font-black tabular-nums ${positive ? 'text-emerald-600' : 'text-rose-600'}`}>
+          <p className={`text-sm font-black tabular-nums ${positive ? 'text-emerald-600' : 'text-amber-600'}`}>
             {positive ? '+' : '−'}{amount.toLocaleString()}
             <span className="text-[10px] font-bold text-muted-foreground ml-1">RWF</span>
           </p>

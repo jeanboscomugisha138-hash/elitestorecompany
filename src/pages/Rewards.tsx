@@ -20,7 +20,7 @@ const META: Record<string, { name: string; emoji: string; ring: string; chip: st
   bronze: { name: 'Bronze Ambassador', emoji: '🥉', ring: 'from-amber-500/20 to-amber-600/5', chip: 'bg-amber-500/15 text-amber-700' },
   silver: { name: 'Silver Ambassador', emoji: '🥈', ring: 'from-slate-400/25 to-slate-500/5', chip: 'bg-slate-400/20 text-slate-700' },
   gold: { name: 'Gold Ambassador', emoji: '🥇', ring: 'from-yellow-400/25 to-yellow-500/5', chip: 'bg-yellow-400/20 text-yellow-700' },
-  diamond: { name: 'Diamond Ambassador', emoji: '💎', ring: 'from-cyan-400/25 to-blue-500/5', chip: 'bg-cyan-400/20 text-cyan-700' },
+  diamond: { name: 'Diamond Ambassador', emoji: '💎', ring: 'from-blue-400/25 to-blue-500/5', chip: 'bg-blue-400/20 text-blue-700' },
 };
 
 export default function Rewards() {
@@ -187,7 +187,7 @@ export default function Rewards() {
                     </div>
 
                     {t.tier === 'diamond' && (
-                      <p className="mt-2.5 text-[11px] font-semibold text-cyan-700 bg-cyan-500/10 rounded-lg px-2.5 py-2">
+                      <p className="mt-2.5 text-[11px] font-semibold text-blue-700 bg-blue-500/10 rounded-lg px-2.5 py-2">
                         ✨ Bonus: uhabwa n'akazi muri Petane Shipping Company.
                       </p>
                     )}
@@ -200,7 +200,7 @@ export default function Rewards() {
                       <button
                         onClick={() => claim(t)}
                         disabled={claiming === t.tier}
-                        className="relative overflow-hidden mt-3 w-full bg-gradient-to-r from-amber-400 via-yellow-400 to-orange-500 text-neutral-900 font-black text-[15px] py-4 rounded-2xl ring-2 ring-amber-300/70 animate-pulse-gold active:scale-[0.98] transition disabled:opacity-60 flex items-center justify-center gap-2"
+                        className="relative overflow-hidden mt-3 w-full bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-neutral-900 font-black text-[15px] py-4 rounded-2xl ring-2 ring-amber-300/70 animate-pulse-gold active:scale-[0.98] transition disabled:opacity-60 flex items-center justify-center gap-2"
                       >
                         <span className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 bg-white/45 blur-md skew-x-12 animate-shine" />
                         <Sparkles className="w-4 h-4 relative" />

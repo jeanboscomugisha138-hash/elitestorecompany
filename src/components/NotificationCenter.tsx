@@ -34,10 +34,10 @@ const CATEGORY_ICON: Record<string, any> = {
 
 const CATEGORY_COLOR: Record<string, string> = {
   income: 'text-emerald-600 bg-emerald-50',
-  referral: 'text-indigo-600 bg-indigo-50',
+  referral: 'text-blue-600 bg-blue-50',
   deposit: 'text-blue-600 bg-blue-50',
-  withdrawal: 'text-orange-600 bg-orange-50',
-  service: 'text-pink-600 bg-pink-50',
+  withdrawal: 'text-amber-600 bg-amber-50',
+  service: 'text-amber-600 bg-amber-50',
   announcement: 'text-primary bg-primary/10',
   admin: 'text-primary bg-primary/10',
 };
@@ -215,7 +215,7 @@ export function NotificationCenter({ open, onClose }: Props) {
             <button onClick={markAllRead} className="text-xs font-bold text-primary flex items-center gap-1">
               <CheckCheck className="w-4 h-4" /> Byose byasomwe
             </button>
-            <button onClick={clearAll} className="text-xs font-bold text-red-500 flex items-center gap-1">
+            <button onClick={clearAll} className="text-xs font-bold text-amber-500 flex items-center gap-1">
               <Trash2 className="w-4 h-4" /> Siba byose
             </button>
           </div>
@@ -255,7 +255,7 @@ export function NotificationCenter({ open, onClose }: Props) {
                     </div>
                     <button
                       onClick={(e) => { e.stopPropagation(); deleteOne(n.id); }}
-                      className="w-7 h-7 rounded-full hover:bg-red-50 flex items-center justify-center shrink-0"
+                      className="w-7 h-7 rounded-full hover:bg-amber-50 flex items-center justify-center shrink-0"
                       aria-label="Delete"
                     >
                       <X className="w-4 h-4 text-muted-foreground" />
