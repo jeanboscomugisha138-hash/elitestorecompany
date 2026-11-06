@@ -31,7 +31,7 @@ import {
 import { toast } from 'sonner';
 import { useSiteSettings } from '@/hooks/useSiteSettings';
 import { OnlineServiceDialog } from '@/components/OnlineServiceDialog';
-import petaneLogo from '@/assets/rubis-logo.png';
+import petaneLogo from '@/assets/rubis-logo-square.png';
 
 export default function Settings() {
   const { t } = useTranslation();
