@@ -1,2 +1,3 @@
 - [x] Redesign History page (professional, new look)
 - [x] Recolor site: yellow, green, blue only
+- [ ] Apply a dark teal theme across every page without changing functionality
