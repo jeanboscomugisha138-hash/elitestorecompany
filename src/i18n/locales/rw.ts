@@ -135,7 +135,7 @@ export const rw = {
     withdrawalAmount: 'Amafaranga yo Kubikuza',
     enterAmount: 'Andika amafaranga',
     amount: 'Amafaranga',
-    serviceFee: 'Amafaranga ya serivisi (10%)',
+    serviceFee: 'Amafaranga ya serivisi (20%)',
     youReceive: 'Uzakira',
     investmentRequired: 'Bisaba Ishoramari',
     investmentRequiredDesc: 'Ugomba kuba ufite ishoramari rikora kugira ngo ubikuze.',
