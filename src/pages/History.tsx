@@ -457,11 +457,11 @@ export default function History() {
               {totalAmount.toLocaleString()} <span className="text-base font-bold">RWF</span>
             </p>
             <div className="mt-4 grid grid-cols-2 gap-2">
-              <div className="rounded-xl bg-primary-foreground/15 px-3 py-2">
+              <div className="rounded-xl bg-primary-foreground/10 px-3 py-2">
                 <p className="text-[10px] uppercase tracking-wider font-bold">Ibikorwa</p>
                 <p className="text-lg font-black">{itemCount}</p>
               </div>
-              <div className="rounded-xl bg-primary-foreground/15 px-3 py-2">
+              <div className="rounded-xl bg-primary-foreground/10 px-3 py-2">
                 <p className="text-[10px] uppercase tracking-wider font-bold">Impuzandengo</p>
                 <p className="text-lg font-black tabular-nums">
                   {itemCount ? Math.round(totalAmount / itemCount).toLocaleString() : 0}
