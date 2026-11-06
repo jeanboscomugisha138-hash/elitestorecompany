@@ -192,21 +192,21 @@ export function NotificationCenter({ open, onClose }: Props) {
   return (
     <div className="fixed inset-0 z-[100] flex items-start justify-end sm:justify-center p-0 sm:p-4 bg-black/50 backdrop-blur-sm" onClick={onClose}>
       <div
-        className="w-full sm:max-w-md h-full sm:h-auto sm:max-h-[85vh] bg-white sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col animate-in slide-in-from-right sm:slide-in-from-top-4 duration-200"
+        className="w-full sm:max-w-md h-full sm:h-auto sm:max-h-[85vh] bg-card sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col animate-in slide-in-from-right sm:slide-in-from-top-4 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="bg-gradient-to-br from-[hsl(226,78%,48%)] to-[hsl(226,78%,32%)] px-5 py-4 flex items-center justify-between">
+        <div className="bg-gradient-to-br from-primary to-success px-5 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Bell className="w-5 h-5 text-white" />
-            <h3 className="text-white font-bold text-base">Notification</h3>
+            <Bell className="w-5 h-5 text-primary-foreground" />
+            <h3 className="text-primary-foreground font-bold text-base">Notification</h3>
             {unreadCount > 0 && (
-              <span className="bg-white text-primary text-[11px] font-bold px-2 py-0.5 rounded-full">
+              <span className="bg-card text-primary text-[11px] font-bold px-2 py-0.5 rounded-full">
                 {unreadCount}
               </span>
             )}
           </div>
-          <button onClick={onClose} className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-            <X className="w-4 h-4 text-white" />
+          <button onClick={onClose} className="w-8 h-8 rounded-full bg-primary-foreground/20 flex items-center justify-center">
+            <X className="w-4 h-4 text-primary-foreground" />
           </button>
         </div>
 
@@ -239,7 +239,7 @@ export function NotificationCenter({ open, onClose }: Props) {
                   <li
                     key={n.id}
                     onClick={() => markRead(n.id)}
-                    className={`flex gap-3 p-4 cursor-pointer transition ${n.read ? 'bg-white' : 'bg-primary/[0.04]'}`}
+                    className={`flex gap-3 p-4 cursor-pointer transition ${n.read ? 'bg-card' : 'bg-primary/[0.04]'}`}
                   >
                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${color}`}>
                       <Icon className="w-5 h-5" />

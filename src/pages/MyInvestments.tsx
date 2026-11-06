@@ -52,20 +52,20 @@ export default function MyInvestments() {
 
   return (
     <div
-      className="min-h-screen bg-[hsl(226_78%_96%)] pb-28"
+      className="min-h-screen bg-background pb-28"
       style={{ transform: 'translateZ(0)', WebkitTransform: 'translateZ(0)', backfaceVisibility: 'hidden', isolation: 'isolate' }}
     >
       {/* Flat header — no gradient, no overlap, avoids Samsung/Chrome banding artifacts */}
       <header className="bg-primary px-4 pt-5 pb-5">
         <div className="max-w-md mx-auto flex items-center gap-3">
-          <Link to="/dashboard" className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center active:scale-95 transition">
+          <Link to="/dashboard" className="w-10 h-10 rounded-xl bg-primary-foreground/15 flex items-center justify-center active:scale-95 transition">
             <ArrowLeft className="w-5 h-5 text-primary-foreground" />
           </Link>
           <div className="flex-1 min-w-0">
             <h1 className="text-lg font-black text-primary-foreground leading-tight">Imishinga Yanjye</h1>
             <p className="text-xs text-primary-foreground/80">Imishinga yose waguze</p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-primary-foreground/15 flex items-center justify-center">
             <Package className="w-5 h-5 text-primary-foreground" />
           </div>
         </div>
@@ -74,14 +74,14 @@ export default function MyInvestments() {
       <div className="max-w-md mx-auto px-3 pt-4">
         {/* Stats row */}
         <div className="grid grid-cols-3 gap-2 mb-4">
-          <div className="bg-white rounded-2xl p-3 border border-border">
+          <div className="bg-card rounded-2xl p-3 border border-border">
             <div className="flex items-center gap-1.5 mb-1">
               <TrendingUp className="w-3.5 h-3.5 text-primary" />
               <p className="text-[10px] text-muted-foreground font-bold uppercase">Ikora</p>
             </div>
             <p className="text-xl font-black text-foreground leading-none">{activeCount}</p>
           </div>
-          <div className="bg-white rounded-2xl p-3 border border-border">
+          <div className="bg-card rounded-2xl p-3 border border-border">
             <div className="flex items-center gap-1.5 mb-1">
               <Wallet className="w-3.5 h-3.5 text-primary" />
               <p className="text-[10px] text-muted-foreground font-bold uppercase">Yashowe</p>
@@ -91,7 +91,7 @@ export default function MyInvestments() {
               <span className="text-[10px] text-primary ml-1">RWF</span>
             </p>
           </div>
-          <div className="bg-white rounded-2xl p-3 border border-border">
+          <div className="bg-card rounded-2xl p-3 border border-border">
             <div className="flex items-center gap-1.5 mb-1">
               <Calendar className="w-3.5 h-3.5 text-primary" />
               <p className="text-[10px] text-muted-foreground font-bold uppercase">Buri Munsi</p>
@@ -104,11 +104,11 @@ export default function MyInvestments() {
         </div>
 
         {loading ? (
-          <div className="bg-white rounded-2xl p-8 text-center text-sm text-muted-foreground border border-border">
+          <div className="bg-card rounded-2xl p-8 text-center text-sm text-muted-foreground border border-border">
             Turi gukura amakuru...
           </div>
         ) : items.length === 0 ? (
-          <div className="bg-white rounded-2xl p-8 text-center border border-border">
+          <div className="bg-card rounded-2xl p-8 text-center border border-border">
             <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
               <Package className="w-8 h-8 text-primary" />
             </div>
@@ -128,7 +128,7 @@ export default function MyInvestments() {
               const progress = Math.min(100, Math.round((daysPassed / totalDays) * 100));
               const isActive = it.status === 'active';
               return (
-                <div key={it.id} className="bg-white rounded-2xl p-4 border border-border">
+                <div key={it.id} className="bg-card rounded-2xl p-4 border border-border">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3 min-w-0">
                       <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">

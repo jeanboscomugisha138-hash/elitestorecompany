@@ -1,5 +1,20 @@
 import type { Config } from "tailwindcss";
 
+// Keep existing palette-based status styles in sync with the shared theme.
+const themedPalette = {
+  50: 'hsl(var(--muted))',
+  100: 'hsl(var(--accent))',
+  200: 'hsl(var(--accent-foreground))',
+  300: 'hsl(var(--primary))',
+  400: 'hsl(var(--primary))',
+  500: 'hsl(var(--primary))',
+  600: 'hsl(var(--primary))',
+  700: 'hsl(var(--accent-foreground))',
+  800: 'hsl(var(--foreground))',
+  900: 'hsl(var(--primary-foreground))',
+  950: 'hsl(var(--background))',
+};
+
 export default {
   darkMode: ["class"],
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
@@ -17,6 +32,27 @@ export default {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       colors: {
+        blue: themedPalette,
+        cyan: themedPalette,
+        sky: themedPalette,
+        teal: themedPalette,
+        green: themedPalette,
+        emerald: themedPalette,
+        amber: themedPalette,
+        yellow: themedPalette,
+        orange: themedPalette,
+        red: themedPalette,
+        rose: themedPalette,
+        pink: themedPalette,
+        purple: themedPalette,
+        violet: themedPalette,
+        indigo: themedPalette,
+        slate: themedPalette,
+        gray: themedPalette,
+        neutral: themedPalette,
+        zinc: themedPalette,
+        white: 'hsl(var(--primary-foreground))',
+        black: 'hsl(var(--background))',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -81,16 +117,16 @@ export default {
           to: { opacity: "1", transform: "translateY(0)" },
         },
         "pulse-glow": {
-          "0%, 100%": { boxShadow: "0 0 0 0 hsl(322 85% 55% / 0.6), 0 0 20px 0 hsl(243 75% 55% / 0.4)" },
-          "50%": { boxShadow: "0 0 0 12px hsl(322 85% 55% / 0), 0 0 30px 6px hsl(243 75% 55% / 0.6)" },
+          "0%, 100%": { boxShadow: "0 0 0 0 hsl(var(--primary) / 0.6), 0 0 20px 0 hsl(var(--success) / 0.4)" },
+          "50%": { boxShadow: "0 0 0 12px hsl(var(--primary) / 0), 0 0 30px 6px hsl(var(--success) / 0.6)" },
         },
         "pulse-success": {
           "0%, 100%": { boxShadow: "0 0 0 0 hsl(var(--success) / 0.55), 0 8px 20px -6px hsl(var(--success) / 0.5)" },
           "50%": { boxShadow: "0 0 0 12px hsl(var(--success) / 0), 0 10px 26px -6px hsl(var(--success) / 0.6)" },
         },
         "pulse-gold": {
-          "0%, 100%": { boxShadow: "0 0 0 0 hsl(38 95% 50% / 0.6), 0 8px 22px -6px hsl(38 95% 45% / 0.55)" },
-          "50%": { boxShadow: "0 0 0 12px hsl(38 95% 50% / 0), 0 12px 28px -6px hsl(24 95% 50% / 0.7)" },
+          "0%, 100%": { boxShadow: "0 0 0 0 hsl(var(--primary) / 0.6), 0 8px 22px -6px hsl(var(--primary) / 0.55)" },
+          "50%": { boxShadow: "0 0 0 12px hsl(var(--primary) / 0), 0 12px 28px -6px hsl(var(--success) / 0.7)" },
         },
         "shine": {
           "0%": { transform: "translateX(-120%)" },

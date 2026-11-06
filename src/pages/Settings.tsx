@@ -79,7 +79,7 @@ export default function Settings() {
   ];
 
   return (
-    <div className="min-h-screen pb-24 max-w-md mx-auto bg-[hsl(0_0%_96%)]">
+    <div className="min-h-screen pb-24 max-w-md mx-auto bg-background">
       {/* Red header */}
       <div className="bg-primary px-4 pt-4 pb-24 relative">
         <div className="flex items-center justify-between">
@@ -109,7 +109,7 @@ export default function Settings() {
                 {initials}
               </div>
               <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-amber-400 flex items-center justify-center border-2 border-card">
-                <Star className="w-3.5 h-3.5 text-white fill-white" />
+                <Star className="w-3.5 h-3.5 text-primary-foreground fill-primary-foreground" />
               </div>
             </div>
             <div className="flex-1 min-w-0">
@@ -244,7 +244,7 @@ export default function Settings() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => { setPassOpen(false); toast.success('Turi gufungura WhatsApp...'); }}
-            className="bg-[#25D366] text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2"
+            className="bg-success text-primary-foreground font-bold py-3 rounded-xl flex items-center justify-center gap-2"
           >
             <MessageCircle className="w-5 h-5" /> Vugana n'Ubufasha
           </a>

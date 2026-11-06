@@ -101,7 +101,7 @@ export default function Referral() {
     activeLevel === 0 ? teamMembers : teamMembers.filter((m) => m.level === activeLevel);
 
   return (
-    <div className="min-h-screen pb-24 max-w-md mx-auto bg-[hsl(0_0%_96%)]">
+    <div className="min-h-screen pb-24 max-w-md mx-auto bg-background">
       {/* Header */}
       <div className="gradient-primary px-4 pt-4 pb-24 relative">
         <div className="flex items-center justify-between">

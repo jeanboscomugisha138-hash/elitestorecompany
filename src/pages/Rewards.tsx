@@ -77,7 +77,7 @@ export default function Rewards() {
   const totalEarned = tiers.filter((t) => t.claimed).reduce((s, t) => s + Number(t.reward_amount), 0);
 
   return (
-    <div className="min-h-screen pb-24 max-w-md mx-auto bg-[hsl(226_78%_90%)]">
+    <div className="min-h-screen pb-24 max-w-md mx-auto bg-background">
       {/* Header */}
       <div className="gradient-primary px-4 pt-4 pb-24 relative">
         <div className="flex items-center justify-between">
@@ -202,7 +202,7 @@ export default function Rewards() {
                         disabled={claiming === t.tier}
                         className="relative overflow-hidden mt-3 w-full bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-neutral-900 font-black text-[15px] py-4 rounded-2xl ring-2 ring-amber-300/70 animate-pulse-gold active:scale-[0.98] transition disabled:opacity-60 flex items-center justify-center gap-2"
                       >
-                        <span className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 bg-white/45 blur-md skew-x-12 animate-shine" />
+                        <span className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 bg-primary-foreground/45 blur-md skew-x-12 animate-shine" />
                         <Sparkles className="w-4 h-4 relative" />
                         <span className="relative uppercase tracking-wide">
                           {claiming === t.tier ? 'Birimo gukorwa...' : `Claim ${Number(t.reward_amount).toLocaleString()} RWF`}
@@ -253,7 +253,7 @@ export default function Rewards() {
 
             <button
               onClick={() => setSuccess(null)}
-              className="mt-5 w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm py-3.5 rounded-2xl transition active:scale-[0.98]"
+              className="mt-5 w-full bg-emerald-500 hover:bg-emerald-600 text-primary-foreground font-bold text-sm py-3.5 rounded-2xl transition active:scale-[0.98]"
             >
               Byumvikanye
             </button>
