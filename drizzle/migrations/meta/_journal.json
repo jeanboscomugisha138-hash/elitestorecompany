@@ -43,6 +43,13 @@
       "when": 1793980229648,
       "tag": "0005_rubis_telegram_links",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793992295549,
+      "tag": "0006_update_ambassador_tiers",
+      "breakpoints": true
     }
   ]
 }
