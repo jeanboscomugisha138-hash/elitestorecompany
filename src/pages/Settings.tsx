@@ -18,6 +18,7 @@ import {
   Gift,
   Package,
   Star,
+  Eye,
 } from 'lucide-react';
 import { useState } from 'react';
 import {
@@ -39,6 +40,7 @@ export default function Settings() {
   const navigate = useNavigate();
   const [serviceOpen, setServiceOpen] = useState(false);
   const [passOpen, setPassOpen] = useState(false);
+  const [investedVisible, setInvestedVisible] = useState(true);
 
   const handleLogout = async () => { await signOut(); navigate('/login'); };
   const name = profile?.full_name || 'Umukiriya';
@@ -126,6 +128,29 @@ export default function Settings() {
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Invested amount card */}
+        <div className="bg-card rounded-3xl shadow-card border border-border/40 p-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
+              <Wallet className="w-5 h-5 text-primary" strokeWidth={2.5} />
+            </div>
+            <div>
+              <div className="text-primary text-sm font-extrabold tracking-tight">{t('dashboard.totalInvested')}</div>
+              <div className="text-foreground text-xl font-black leading-tight mt-0.5">
+                <span className="text-primary text-xs font-extrabold mr-1">RWF</span>
+                {investedVisible ? (profile?.invested_amount || 0).toLocaleString() : 'XXXXXX'}
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={() => setInvestedVisible(v => !v)}
+            className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shadow-button active:scale-95 transition"
+            aria-label="Hisha cyangwa wereke amafaranga washoyemo"
+          >
+            <Eye className="w-5 h-5 text-primary-foreground" strokeWidth={2.5} />
+          </button>
         </div>
 
         {/* Referral code strip */}
