@@ -17,13 +17,13 @@
     --primary: 45 96% 50%;
     --primary-foreground: 150 60% 10%;
     /* Brighter blue used when blue is the text colour on the dark green background */
-    --primary-text: 45 100% 60%;
+    --primary-text: 52 100% 78%;
 
     --secondary: 146 45% 36%;
     --secondary-foreground: 0 0% 100%;
 
     --muted: 146 42% 25%;
-    --muted-foreground: 140 30% 90%;
+    --muted-foreground: 0 0% 96%;
 
     --accent: 45 96% 50%;
     --accent-foreground: 150 60% 10%;
