@@ -145,7 +145,7 @@ export default function Deposit() {
           )}
           <div className="flex-1">
             <h1 className="text-lg font-bold">{t('deposit.title')}</h1>
-            <p className="text-xs text-primary-foreground/75">
+            <p className="text-xs text-primary-foreground">
               {step === 1 ? t('deposit.enterDetails') : t('deposit.reviewDetails')}
             </p>
           </div>
@@ -158,9 +158,9 @@ export default function Deposit() {
       <div className="max-w-md mx-auto px-4 -mt-6">
         {/* Step indicator */}
         <div className="flex justify-center mb-5">
-          <div className="inline-flex items-center gap-2 bg-primary-foreground/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm border border-border/50">
+          <div className="inline-flex items-center gap-2 bg-primary-foreground backdrop-blur-sm rounded-full px-4 py-2 shadow-sm border border-border/50">
             <div className={`w-2 h-2 rounded-full ${step === 1 ? 'bg-primary' : 'bg-primary/30'}`} />
-            <span className="text-xs font-bold text-foreground">
+            <span className="text-xs font-bold text-background">
               {t('deposit.stepIndicator', { current: step, total: 2 })}
             </span>
             <div className={`w-2 h-2 rounded-full ${step === 2 ? 'bg-primary' : 'bg-primary/30'}`} />
@@ -186,7 +186,7 @@ export default function Deposit() {
                   max={maxDeposit}
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  className="w-full h-16 text-xl font-extrabold text-center rounded-2xl border-2 border-primary/20 bg-primary/5 focus:border-primary focus:bg-card focus:outline-none transition-colors placeholder:text-muted-foreground/50 placeholder:text-sm placeholder:font-semibold"
+                  className="w-full h-16 text-xl font-extrabold text-center rounded-2xl border-2 border-primary/20 bg-primary/5 focus:border-primary focus:bg-card focus:outline-none transition-colors placeholder:text-muted-foreground/80 placeholder:text-sm placeholder:font-semibold"
                   required
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-primary">RWF</span>
@@ -291,13 +291,13 @@ export default function Deposit() {
                   <Wallet className="w-5 h-5 text-primary-foreground" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[10px] text-primary-foreground/70 font-semibold uppercase tracking-wider">{t('deposit.sendMoneyTo')}</p>
+                  <p className="text-[10px] text-primary-foreground font-semibold uppercase tracking-wider">{t('deposit.sendMoneyTo')}</p>
                   <p className="text-lg font-extrabold text-primary-foreground truncate leading-tight">{momoName}</p>
                 </div>
               </div>
 
               <div className="bg-primary-foreground/15 backdrop-blur-sm rounded-2xl p-4 mb-4 border border-border/20">
-                <p className="text-[10px] text-primary-foreground/80 mb-2 uppercase tracking-wider font-semibold">{t('deposit.momoNumber')}</p>
+                <p className="text-[10px] text-primary-foreground mb-2 uppercase tracking-wider font-semibold">{t('deposit.momoNumber')}</p>
                 <div className="flex items-center justify-between gap-3">
                   <p className="text-2xl font-extrabold text-primary-foreground tracking-tight break-all flex-1 leading-tight">{momoNumber}</p>
                   <button type="button" onClick={handleCopy} className="w-11 h-11 rounded-xl bg-card flex items-center justify-center flex-shrink-0 active:scale-95 transition-transform shadow-md">

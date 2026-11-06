@@ -98,14 +98,14 @@ export default function Rewards() {
         </div>
 
         <div className="mt-5 text-primary-foreground">
-          <p className="text-[11px] font-bold uppercase tracking-wider text-primary-foreground/70">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-primary-foreground">
             Porogaramu y'Ambassadors
           </p>
           <p className="text-3xl font-black tabular-nums mt-1">
             {totalEarned.toLocaleString()}
-            <span className="text-base font-bold text-primary-foreground/80 ml-1.5">RWF</span>
+            <span className="text-base font-bold text-primary-foreground ml-1.5">RWF</span>
           </p>
-          <p className="text-[12px] font-semibold text-primary-foreground/85 mt-1">
+          <p className="text-[12px] font-semibold text-primary-foreground mt-1">
             Ibihembo wamaze gufata
           </p>
         </div>

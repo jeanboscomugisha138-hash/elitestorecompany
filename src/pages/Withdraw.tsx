@@ -211,7 +211,7 @@ export default function Withdraw() {
               min={minWithdraw} max={maxWithdraw}
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="w-full h-16 text-xl font-black text-center rounded-2xl border-2 border-primary/20 bg-primary/5 focus:border-primary focus:bg-card focus:outline-none transition-colors placeholder:text-muted-foreground/50 placeholder:text-sm"
+              className="w-full h-16 text-xl font-black text-center rounded-2xl border-2 border-primary/20 bg-primary/5 focus:border-primary focus:bg-card focus:outline-none transition-colors placeholder:text-muted-foreground/80 placeholder:text-sm"
             />
             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-black text-primary">RWF</span>
           </div>

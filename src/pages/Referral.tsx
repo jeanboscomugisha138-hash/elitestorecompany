@@ -123,14 +123,14 @@ export default function Referral() {
 
         {/* Hero income */}
         <div className="mt-5 text-primary-foreground">
-          <p className="text-[11px] font-bold uppercase tracking-wider text-primary-foreground/70">
+          <p className="text-[11px] font-bold uppercase tracking-wider text-primary-foreground">
             Amafaranga wabonye
           </p>
           <p className="text-4xl font-black tabular-nums mt-1">
             {totalIncome.toLocaleString()}
-            <span className="text-base font-bold text-primary-foreground/80 ml-1.5">RWF</span>
+            <span className="text-base font-bold text-primary-foreground ml-1.5">RWF</span>
           </p>
-          <div className="flex items-center gap-3 mt-2 text-[12px] font-semibold text-primary-foreground/85">
+          <div className="flex items-center gap-3 mt-2 text-[12px] font-semibold text-primary-foreground">
             <span className="inline-flex items-center gap-1">
               <Users className="w-3.5 h-3.5" /> {teamMembers.length} bose
             </span>
@@ -242,7 +242,7 @@ export default function Referral() {
               { n: '03', t: 'Amafaranga ajya muri konti yawe ya referral vuba.' },
             ].map((s) => (
               <li key={s.n} className="flex gap-3">
-                <span className="text-[11px] font-black text-primary/70 tabular-nums shrink-0 mt-0.5">
+                <span className="text-[11px] font-black text-primary tabular-nums shrink-0 mt-0.5">
                   {s.n}
                 </span>
                 <p className="text-[12px] text-foreground leading-relaxed">{s.t}</p>

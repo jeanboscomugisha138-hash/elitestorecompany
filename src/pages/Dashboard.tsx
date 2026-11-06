@@ -181,7 +181,7 @@ export default function Dashboard() {
             {quickActions.map((a, i) => {
               const inner = (
                 <>
-                  <div className="relative w-14 h-14 rounded-full flex items-center justify-center bg-gradient-to-br from-primary/30 to-accent/20 border border-primary/40 shadow-[0_6px_16px_-6px_hsl(var(--primary)/0.6)] group-hover:-translate-y-0.5 group-active:scale-90 transition-transform">
+                  <div className="relative w-14 h-14 rounded-full flex items-center justify-center bg-primary/15 border border-primary/40 shadow-[0_6px_16px_-6px_hsl(var(--primary)/0.6)] group-hover:-translate-y-0.5 group-active:scale-90 transition-transform">
                     <span className="absolute inset-1 rounded-full bg-card/70" aria-hidden />
                     <span aria-hidden className="relative text-2xl leading-none">{a.emoji}</span>
                   </div>
