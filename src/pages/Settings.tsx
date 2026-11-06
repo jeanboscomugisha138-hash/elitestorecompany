@@ -86,7 +86,7 @@ export default function Settings() {
           <img
             src={petaneLogo}
             alt="Rubis"
-            className="h-11 w-auto brightness-0 invert"
+            className="logo-halo h-11 w-11 object-contain"
           />
           <div className="flex items-center gap-3">
             <button className="w-10 h-10 rounded-lg border-2 border-primary-foreground/50 flex items-center justify-center">

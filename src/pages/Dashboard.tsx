@@ -71,7 +71,7 @@ export default function Dashboard() {
           <img
             src={petaneLogo}
             alt="Rubis Company"
-            className="h-14 w-auto brightness-0 invert"
+            className="logo-halo h-14 w-14 object-contain"
           />
           <div className="flex items-center gap-3">
             <button
