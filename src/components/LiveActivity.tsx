@@ -1,53 +1,58 @@
 import { useEffect, useState } from 'react';
 import { TrendingUp, Trophy, Users, Wallet } from 'lucide-react';
 
-const NAMES = [
-  'Mugisha','Uwase','Niyonzima','Habimana','Mukamana','Ishimwe','Nshimiyimana','Mukandayisenga','Munyaneza','Ingabire',
-  'Hakizimana','Uwineza','Bizimana','Mukashema','Nzeyimana','Uwimana','Tuyishime','Mukamugema','Rwema','Iradukunda',
-  'Niyibizi','Mukantwari','Sebatware','Umutoni','Nshuti','Nyirahabimana','Bigirimana','Mukabaranga','Twagirayezu','Uwizeyimana',
-  'Mukamurenzi','Nsengiyumva','Mukandori','Hakorimana','Kayitesi','Twizeyimana','Nyiramana','Uwamahoro','Mugabo','Mukantabana',
-  'Nshimirimana','Mukabazungu','Habiyaremye','Mukamusoni','Nizeyimana','Mukasine','Twagiramungu','Uwizeye','Manirakiza','Mukashyaka',
-  'Munyemana','Nyirahirwa','Bizumuremyi','Mukantagara','Hagenimana','Umulisa','Twahirwa','Mukamfizi','Rugema','Nyirabageni',
-  'Mukandutiye','Nshimiyimana','Iyamuremye','Mukamana','Bagirishya','Uwamariya','Twagirumukiza','Mukantwali','Mucyo','Niyitegeka',
-  'Niyonsaba','Mukandayisenga','Tuyizere','Umugwaneza','Habinshuti','Mukasonga','Niyirora','Uwitonze','Munyangabe','Mukamutara',
-  'Bizimungu','Mukandayambaje','Hategekimana','Uwitije','Tuyishimire','Mukantaganda','Nzabonimpa','Uwamariya','Habineza','Mukasakindi',
-  'Niyibaho','Umutesi','Mukandahiro','Sebahire','Nyiransabimana','Tuyizere','Mukabunani','Nyandwi','Uwambaje','Mugemana',
-  'Mukamugisha','Nshimiyimfura','Uwamungu','Bizoza','Mukantarindwa','Hakimana','Uwingabire','Munyandinda','Mukamana','Niyonkuru',
-  'Tuyirenge','Mukanyirigira','Habiyambere','Uwizera','Munyentwari','Mukamutesi','Sibomana','Nyiranzeyimana','Mukashema','Twesigye',
-  'Uwitware','Nshimiyumukiza','Mukabikino','Hakuzwumuremyi','Niyonzima','Mukanyamibwa','Tuyizere','Uwanyirigira','Munana','Mukamuziga',
-  'Bagaza','Niragire','Mukantezimana','Uwituze','Nyirahirwa','Mukandanga','Twagiramungu','Uwizeyimana','Habarurema','Mukandori',
-  'Nizeyimana','Mukamuziga','Twizere','Uwimanimpaye','Munyakazi','Mukamutesi','Bizimana','Nyiramana','Mukasine','Hakizimana',
-  'Niyibizi','Uwababyeyi','Mukandori','Tuyisenge','Mukamugema','Sebatware','Uwizeyimana','Munyaneza','Mukantabana','Habineza',
-  'Twagiramungu','Uwineza','Mukantwari','Bizumuremyi','Niyibaho','Mukamfizi','Hagenimana','Uwamahoro','Mukamana','Twahirwa',
-  'Mukandutiye','Nshimirimana','Uwizera','Habiyaremye','Mukasonga','Tuyirenge','Bizimana','Mukamuziga','Hakimana','Uwitonze',
-  'Mukamugisha','Niyonsaba','Twesigye','Mukantezimana','Iradukunda','Mukabazungu','Uwingabire','Habinshuti','Mukasakindi','Niyibizi',
-  'Tuyizere','Mukamutara','Bizoza','Nyirahabimana','Mukandayisenga','Uwitware','Nshimiyimana','Munyemana','Mukasine','Twizere'
+// Fictional investor identities. None of these names is used by a real member.
+const SURNAMES = [
+  'Bizimungu','Semugeshi','Rwigema','Gahima','Kankindi','Habonimana','Sinayiko','Kanyangezi',
+  'Rugwiro','Mbonabucya','Niyibigenkerwa','Sebera','Busingye','Nshimiyimfura','Mukabandana',
+  'Nyirabaganwa','Uwingabiye','Munyabagisha','Rukara','Gisaro','Bishya','Muganga','Nshobora',
+  'Habarugira','Seburikoko','Nyirandayisabye','Kanyamukama','Rugemantaba','Mukamureshabyi',
+  'Ndayishemye','Gashugi','Bimenyimana','Nyirandobanani','Mukandiramwe','Rugwiza',
+  'Habiyakare','Sebahinzi','Nkuranga','Butoyi','Mukashonga','Bwiza','Kanyemba','Habinshuti',
 ];
 
-// --- Extended pool: 1000 fictional Rwandan investor records with masked phones ---
-const SURNAMES = ['Mugisha','Uwase','Niyonzima','Habimana','Mukamana','Ishimwe','Nshimiyimana','Munyaneza','Ingabire','Hakizimana','Uwineza','Bizimana','Mukashema','Nzeyimana','Uwimana','Tuyishime','Rwema','Iradukunda','Niyibizi','Umutoni','Nshuti','Bigirimana','Twagirayezu','Uwizeyimana','Nsengiyumva','Kayitesi','Twizeyimana','Uwamahoro','Mugabo','Nshimirimana','Habiyaremye','Uwizeye','Manirakiza','Munyemana','Twahirwa','Iyamuremye','Bagirishya','Uwamariya','Mucyo','Niyitegeka','Tuyizere','Umugwaneza','Habinshuti','Uwitonze','Bizimungu','Hategekimana','Tuyishimire','Nzabonimpa','Habineza','Niyibaho','Umutesi','Sebahire','Tuyizere','Nyandwi','Uwambaje','Mugemana','Uwamungu','Bizoza','Hakimana','Uwingabire','Niyonkuru','Tuyirenge','Habiyambere','Uwizera','Sibomana','Twesigye','Uwitware','Niyonzima','Uwanyirigira','Bagaza','Niragire','Uwituze','Habarurema','Nizeyimana','Twizere','Uwimanimpaye','Bizimana','Hakizimana','Niyibizi','Uwababyeyi','Uwizeyimana','Habineza','Twagiramungu','Uwineza','Bizumuremyi','Hagenimana','Uwamahoro','Twahirwa','Nshimirimana','Uwizera','Tuyirenge','Bizimana','Hakimana','Uwitonze','Niyonsaba','Twesigye','Iradukunda','Uwingabire','Habinshuti','Niyibizi','Bizoza'];
-const GIVEN = ['Jean','Marie','Alphonse','Emmanuel','Claudine','Pascal','Josiane','Fidele','Aline','Vincent','Beatrice','Eric','Chantal','Innocent','Solange','Damascene','Odette','Theogene','Josephine','Patrick','Diane','Bosco','Immaculee','Fabrice','Yvette','Jacques','Christine','Andre','Grace','Olivier','Sandrine','Emile','Justine','Placide','Liliane','Serge','Nadine','Faustin','Berthe','Aimable','Divine','Cyprien','Rachel','Elias','Sarah','Prince','Peace','Angel','Kevin','Sylvie'];
+const GIVEN = [
+  'Kanyike','Ndahindurwa','Mukashumba','Rukoma','Gashayija','Ndayambaje','Sebagabo',
+  'Nyirandukwe','Kiribagabo','Mucurangezi','Nyirandayobera','Bwatsi','Kanyamata','Ruganzu',
+  'Ndagano','Butoyi','Mukashonga','Bwiza','Kanyemba','Sebera','Busingye','Gisaro','Bishya',
+  'Muganga','Nshobora','Habinshuti','Mukabandana','Rukara','Munyabagisha','Nshimiyimfura',
+  'Kankindi','Rugwiro','Mbonabucya','Habonimana','Sinayiko','Kanyangezi','Niyibigenkerwa',
+  'Semugeshi','Rwigema','Gahima','Nyirabaganwa','Uwingabiye','Nyirandayisabye','Kanyamukama',
+  'Rugemantaba','Mukamureshabyi','Ndayishemye','Gashugi','Bimenyimana','Nyirandobanani',
+  'Mukandiramwe','Rugwiza','Habiyakare','Sebahinzi','Nkuranga','Bizimungu',
+];
+
 const MOBILE_PREFIXES = ['72','73','78','79'];
 
-function pad2(n: number) { return n < 10 ? '0' + n : String(n); }
 function seedRand(seed: number) {
   let s = seed >>> 0;
   return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 0xffffffff; };
 }
-function generateExtendedNames(count: number): string[] {
-  const rand = seedRand(20260720);
+
+function pad3(n: number) { return String(n % 1000).padStart(3, '0'); }
+
+// Builds the feed identities: a short plain-name set plus a large masked-phone set.
+function buildNames(count: number): string[] {
+  const rand = seedRand(20261106);
   const out: string[] = [];
-  for (let i = 0; i < count; i++) {
+  const used = new Set<string>();
+  while (out.length < count) {
     const first = GIVEN[Math.floor(rand() * GIVEN.length)];
     const last = SURNAMES[Math.floor(rand() * SURNAMES.length)];
-    const prefix = MOBILE_PREFIXES[Math.floor(rand() * MOBILE_PREFIXES.length)];
-    const first3 = String(100 + Math.floor(rand() * 900)).slice(0, 3);
-    const last2 = pad2(Math.floor(rand() * 100));
-    out.push(`${last} ${first[0]}. +2507${prefix.slice(1)}${first3.slice(0,1)}****${last2}`);
+    const key = `${last}|${first}`;
+    if (used.has(key)) continue;
+    used.add(key);
+    if (out.length < 120) {
+      out.push(`${last} ${first}`);
+    } else {
+      const prefix = MOBILE_PREFIXES[Math.floor(rand() * MOBILE_PREFIXES.length)];
+      out.push(`${last} ${first[0]}. 07${prefix[1]}***${pad3(Math.floor(rand() * 1000))}`);
+    }
   }
   return out;
 }
-NAMES.push(...generateExtendedNames(1000));
+
+const NAMES = buildNames(1000);
 
 const ACTIONS = [
   { t: 'invested in VIP', amounts: [10000, 20000, 30000, 40000, 50000, 100000, 250000, 500000], icon: TrendingUp, color: 'from-primary to-secondary' },
