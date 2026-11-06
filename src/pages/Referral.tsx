@@ -223,16 +223,15 @@ export default function Referral() {
         <div className="bg-card rounded-2xl border border-border/60 divide-y divide-border/50 overflow-hidden">
           {tiers.map((t) => (
             <div key={t.level} className="flex items-center gap-3 p-3.5">
-              <div className="w-11 h-11 rounded-2xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                <span className="text-sm font-black">L{t.level}</span>
+              <div className="w-[72px] h-[64px] rounded-2xl bg-primary text-primary-foreground flex flex-col items-center justify-center shrink-0 shadow-lg ring-2 ring-primary/40">
+                <span className="text-2xl font-black leading-none tabular-nums">{t.rate}</span>
+                <span className="text-[9px] font-bold uppercase tracking-wider mt-1">Komisiyo</span>
               </div>
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <p className="text-sm font-black text-foreground">Urwego rwa {t.level}</p>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary text-primary-foreground">
-                    {t.rate}
-                  </span>
-                </div>
+                <p className="text-base font-black text-foreground">Urwego rwa {t.level}</p>
+                <p className="text-[11px] font-semibold text-primary">
+                  Uhabwa {t.rate} by'ayo ashoye
+                </p>
                 <p className="text-[11px] text-muted-foreground mt-0.5">
                   {t.guests} inshuti · {t.income.toLocaleString()} RWF wabonye
                 </p>
