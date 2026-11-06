@@ -13,12 +13,6 @@ export function OnlineServiceDialog({ open, onOpenChange }: { open: boolean; onO
       icon: MessageCircle,
     },
     {
-      label: 'Injira muri Group Isanzwe',
-      sub: 'Group yacu rusange ya buri munsi',
-      href: settings.telegram_group_url,
-      icon: Users2,
-    },
-    {
       label: 'Injira muri Group y\'Inama',
       sub: 'Aho tuganirira inama z\'ishoramari',
       href: settings.telegram_meeting_url,
