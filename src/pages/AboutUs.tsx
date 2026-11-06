@@ -44,7 +44,7 @@ export default function AboutUs() {
           <div className="w-10" />
         </div>
         <div className="flex flex-col items-center mt-5">
-          <div className="w-16 h-16 rounded-2xl bg-primary-foreground flex items-center justify-center shadow-lg">
+          <div className="w-16 h-16 rounded-2xl logo-halo flex items-center justify-center shadow-lg">
             <img src={petaneLogo} alt="Rubis Company" className="h-10 w-auto" />
           </div>
           <p className="text-primary-foreground/90 text-xs font-bold mt-2 tracking-widest uppercase">RUBIS COMPANY</p>
