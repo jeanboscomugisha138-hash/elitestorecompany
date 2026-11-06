@@ -158,9 +158,9 @@ export default function Deposit() {
       <div className="max-w-md mx-auto px-4 -mt-6">
         {/* Step indicator */}
         <div className="flex justify-center mb-5">
-          <div className="inline-flex items-center gap-2 bg-primary-foreground/80 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm border border-border/50">
+          <div className="inline-flex items-center gap-2 bg-primary-foreground backdrop-blur-sm rounded-full px-4 py-2 shadow-sm border border-border/50">
             <div className={`w-2 h-2 rounded-full ${step === 1 ? 'bg-primary' : 'bg-primary/30'}`} />
-            <span className="text-xs font-bold text-foreground">
+            <span className="text-xs font-bold text-background">
               {t('deposit.stepIndicator', { current: step, total: 2 })}
             </span>
             <div className={`w-2 h-2 rounded-full ${step === 2 ? 'bg-primary' : 'bg-primary/30'}`} />

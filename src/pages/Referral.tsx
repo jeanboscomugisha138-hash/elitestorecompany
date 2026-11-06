@@ -242,7 +242,7 @@ export default function Referral() {
               { n: '03', t: 'Amafaranga ajya muri konti yawe ya referral vuba.' },
             ].map((s) => (
               <li key={s.n} className="flex gap-3">
-                <span className="text-[11px] font-black text-primary/70 tabular-nums shrink-0 mt-0.5">
+                <span className="text-[11px] font-black text-primary tabular-nums shrink-0 mt-0.5">
                   {s.n}
                 </span>
                 <p className="text-[12px] text-foreground leading-relaxed">{s.t}</p>
