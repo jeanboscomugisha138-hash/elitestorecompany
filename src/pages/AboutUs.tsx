@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Globe, Shield, Users, Sparkles, Target, Ship } from 'lucide-react';
+import { ArrowLeft, Globe, Shield, Users, Sparkles, Target, Fuel } from 'lucide-react';
 import { BottomNav } from '@/components/BottomNav';
 import rubisLogo from '@/assets/rubis-logo-square.png';
 
@@ -59,13 +59,13 @@ export default function AboutUs() {
             MENYA NEZA RUBIS SHARE COMPANY
           </h2>
           <p className="text-[13px] text-muted-foreground leading-relaxed">
-            Rubis Company ni urubuga rwa sosiyete ikorera mu rwego rwa marine logistics n’ubwikorezi bwo mu nyanja, rugamije gutanga amahirwe yo kwitabira ibikorwa bifitanye isano n’iterambere ry’ubucuruzi n’ishoramari.
+            RUBIS SHARE COMPANY ni sosiyete itanga serivisi z’ubucuruzi bw’ibikomoka kuri peteroli, harimo esanse na mazutu. Iha kandi abanyamuryango bayo amahirwe yo kugura imigabane, bakizigamira, maze bakajya bungukirwa n’inyungu ziva mu bikorwa byayo.
           </p>
           <p className="text-[13px] text-muted-foreground leading-relaxed mt-3">
             Sosiyete yatangijwe mu mwaka wa 1997 muri Leta Zunze Ubumwe za Amerika, ikaba yaragiye ikura igera ku rwego mpuzamahanga ikorera mu bihugu bitandukanye ku isi hose. Kugeza ubu, ifite umuryango mugari w’abakozi n’abafatanyabikorwa barenga 10,000 ku isi hose, bagira uruhare mu guteza imbere ibikorwa byayo.
           </p>
           <p className="text-[13px] text-muted-foreground leading-relaxed mt-3">
-            Mu rwego rwo kugeza amahirwe ku bantu benshi, Rubis Company yatangiye ibikorwa byayo mu Rwanda muri Werurwe 2026, igamije gufasha abantu kubona uburyo bushya bwo kwiteza imbere binyuze mu gukoresha ikoranabuhanga no kubona amakuru ajyanye na serivisi zitangwa.
+            Mu rwego rwo kugeza amahirwe ku bantu benshi, RUBIS SHARE COMPANY yatangiye ibikorwa byayo mu Rwanda muri Werurwe 2026, igamije gufasha abantu kubona uburyo bushya bwo kwiteza imbere binyuze mu gukoresha ikoranabuhanga no kubona amakuru ajyanye na serivisi zitangwa.
           </p>
         </div>
 
@@ -78,7 +78,7 @@ export default function AboutUs() {
             <h3 className="text-[15px] font-black text-foreground">Icyerekezo cyacu mu Rwanda</h3>
           </div>
           <p className="text-[13px] text-muted-foreground leading-relaxed">
-            Rubis Company yiyemeje gukorera mu Rwanda mu gihe cy’imyaka 3, aho izakomeza gutanga serivisi no guteza imbere abakoresha bayo mbere yo kwagurira ibikorwa mu kindi gihugu hakurikijwe gahunda y’iterambere rya sosiyete.
+            RUBIS SHARE COMPANY yiyemeje gukorera mu Rwanda mu gihe cy’imyaka 3, aho izakomeza gutanga serivisi no guteza imbere abakoresha bayo mbere yo kwagurira ibikorwa mu kindi gihugu hakurikijwe gahunda y’iterambere rya sosiyete.
           </p>
         </div>
 
@@ -86,7 +86,7 @@ export default function AboutUs() {
         <div className="bg-card rounded-2xl shadow-card border border-border/40 p-5">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-              <Ship className="w-5 h-5 text-primary" strokeWidth={2.3} />
+              <Fuel className="w-5 h-5 text-primary" strokeWidth={2.3} />
             </div>
             <h3 className="text-[15px] font-black text-foreground">Indangagaciro zacu</h3>
           </div>
@@ -117,7 +117,7 @@ export default function AboutUs() {
             Abakoresha bashobora kureba ibisobanuro birambuye bya buri gahunda cyangwa serivisi mbere yo gufata icyemezo. Intego yacu ni uko buri mukoresha agira amakuru ahagije kandi agasobanukirwa neza n’ibyo ahitamo.
           </p>
           <p className="text-[13px] text-muted-foreground leading-relaxed mt-3">
-            Rubis Company ikomeje kubaka urubuga ruhuza ikoranabuhanga, umutekano n’imikoreshereze yoroshye kugira ngo itange uburambe bwiza ku bakoresha bayo.
+            RUBIS SHARE COMPANY ikomeje kubaka urubuga ruhuza ikoranabuhanga, umutekano n’imikoreshereze yoroshye kugira ngo itange uburambe bwiza ku bakoresha bayo.
           </p>
         </div>
 
