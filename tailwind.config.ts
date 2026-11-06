@@ -51,7 +51,7 @@ export default {
         gray: themedPalette,
         neutral: themedPalette,
         zinc: themedPalette,
-        white: 'hsl(var(--primary-foreground))',
+        white: 'hsl(var(--foreground))',
         black: 'hsl(var(--background))',
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
