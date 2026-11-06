@@ -31,7 +31,7 @@ import {
 import { toast } from 'sonner';
 import { useSiteSettings } from '@/hooks/useSiteSettings';
 import { OnlineServiceDialog } from '@/components/OnlineServiceDialog';
-import petaneLogo from '@/assets/rubis-logo-square.png';
+import rubisLogo from '@/assets/rubis-logo-square.png';
 
 export default function Settings() {
   const { t } = useTranslation();
@@ -84,7 +84,7 @@ export default function Settings() {
       {/* Header: logo, name & phone, bell */}
       <div className="bg-primary px-4 pt-4 pb-20 relative">
         <div className="flex items-center gap-3">
-          <img src={petaneLogo} alt="Rubis" className="logo-halo h-12 w-12 object-contain shrink-0" />
+          <img src={rubisLogo} alt="RUBIS SHARE COMPANY" className="logo-halo h-12 w-12 object-contain shrink-0" />
           <div className="flex-1 min-w-0">
             <h2 className="text-[16px] font-black text-primary-foreground leading-tight truncate">{name}</h2>
             <p className="text-[13px] text-primary-foreground font-bold mt-0.5">Konti - {profile?.phone || '---'}</p>
@@ -225,7 +225,7 @@ export default function Settings() {
         </button>
 
         <div className="text-center text-[10px] text-muted-foreground font-semibold pt-2">
-          RUBIS COMPANY · v1.0.0
+          RUBIS SHARE COMPANY · v1.0.0
         </div>
 
       </div>

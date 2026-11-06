@@ -27,7 +27,7 @@ export function OnlineServiceDialog({ open, onOpenChange }: { open: boolean; onO
           <Headphones className="w-6 h-6 text-primary" />
         </div>
         <div className="flex-1 min-w-0 pt-1">
-          <h3 className="text-lg font-black text-foreground leading-tight">Ubufasha bwa RUBIS COMPANY</h3>
+          <h3 className="text-lg font-black text-foreground leading-tight">Ubufasha bwa RUBIS SHARE COMPANY</h3>
           <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
             Hitamo uburyo ushaka kutugeraho kuri Telegram.
           </p>

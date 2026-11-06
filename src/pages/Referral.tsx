@@ -81,8 +81,8 @@ export default function Referral() {
 
   const share = async () => {
     const shareData = {
-      title: 'RUBIS COMPANY',
-      text: `Injira uri kuri RUBIS COMPANY ukoresheje kode yanjye: ${referralCode}`,
+      title: 'RUBIS SHARE COMPANY',
+      text: `Injira uri kuri RUBIS SHARE COMPANY ukoresheje kode yanjye: ${referralCode}`,
       url: referralLink,
     };
     try {

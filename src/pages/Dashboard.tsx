@@ -28,7 +28,7 @@ import { LiveActivity } from '@/components/LiveActivity';
 import { ProductAssistant } from '@/components/ProductAssistant';
 import { NotificationBell } from '@/components/NotificationCenter';
 import { AppDownloadDialog, startAppInstall } from '@/components/AppDownloadDialog';
-import petaneLogo from '@/assets/rubis-logo-square.png';
+import rubisLogo from '@/assets/rubis-logo-square.png';
 
 export default function Dashboard() {
   const { profile, refreshProfile } = useAuth();
@@ -95,8 +95,8 @@ export default function Dashboard() {
       <div className="gradient-primary px-4 pt-4 pb-20 relative">
         <div className="flex items-center justify-between">
           <img
-            src={petaneLogo}
-            alt="Rubis Company"
+            src={rubisLogo}
+            alt="RUBIS SHARE COMPANY"
             className="logo-halo h-14 w-14 object-contain shrink-0"
           />
           <div className="flex-1 min-w-0 ml-3">

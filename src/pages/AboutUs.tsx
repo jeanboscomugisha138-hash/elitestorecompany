@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Globe, Shield, Users, Sparkles, Target, Ship } from 'lucide-react';
 import { BottomNav } from '@/components/BottomNav';
-import petaneLogo from '@/assets/rubis-logo-square.png';
+import rubisLogo from '@/assets/rubis-logo-square.png';
 
 const values = [
   {
@@ -45,9 +45,9 @@ export default function AboutUs() {
         </div>
         <div className="flex flex-col items-center mt-5">
           <div className="w-16 h-16 rounded-2xl logo-halo flex items-center justify-center shadow-lg">
-            <img src={petaneLogo} alt="Rubis Company" className="h-10 w-auto" />
+            <img src={rubisLogo} alt="RUBIS SHARE COMPANY" className="h-10 w-auto" />
           </div>
-          <p className="text-primary-foreground/90 text-xs font-bold mt-2 tracking-widest uppercase">RUBIS COMPANY</p>
+          <p className="text-primary-foreground/90 text-xs font-bold mt-2 tracking-widest uppercase">RUBIS SHARE COMPANY</p>
         </div>
       </div>
 
@@ -56,7 +56,7 @@ export default function AboutUs() {
         {/* Intro card */}
         <div className="bg-card rounded-2xl shadow-card border border-border/40 p-5">
           <h2 className="text-[15px] font-black text-foreground leading-tight mb-3">
-            MENYA NEZA RUBIS COMPANY
+            MENYA NEZA RUBIS SHARE COMPANY
           </h2>
           <p className="text-[13px] text-muted-foreground leading-relaxed">
             Rubis Company ni urubuga rwa sosiyete ikorera mu rwego rwa marine logistics n’ubwikorezi bwo mu nyanja, rugamije gutanga amahirwe yo kwitabira ibikorwa bifitanye isano n’iterambere ry’ubucuruzi n’ishoramari.
@@ -124,7 +124,7 @@ export default function AboutUs() {
         {/* Footer note */}
         <div className="text-center pt-2 pb-4">
           <p className="text-[10px] text-muted-foreground font-semibold">
-            RUBIS COMPANY · Kigali, Rwanda · 1997 – {new Date().getFullYear()}
+            RUBIS SHARE COMPANY · Kigali, Rwanda · 1997 – {new Date().getFullYear()}
           </p>
         </div>
       </div>

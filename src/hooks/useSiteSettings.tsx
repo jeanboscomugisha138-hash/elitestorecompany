@@ -37,7 +37,7 @@ const DEFAULTS: SiteSettings = {
   withdraw_end_hour: '22',
   withdraw_fee_percent: '20',
   announcements: [
-    'Welcome to RUBIS COMPANY!',
+    'Welcome to RUBIS SHARE COMPANY!',
   ].join('\n'),
 };
 

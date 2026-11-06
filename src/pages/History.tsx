@@ -176,7 +176,7 @@ export default function History() {
       doc.setTextColor(255, 255, 255);
       doc.setFont('helvetica', 'bold');
       doc.setFontSize(16);
-      doc.text('RUBIS COMPANY', 30, 15);
+      doc.text('RUBIS SHARE COMPANY', 30, 15);
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(9);
       doc.text('Kigali, Rwanda', 30, 22);
@@ -244,7 +244,7 @@ export default function History() {
         doc.setDrawColor(225, 227, 235);
         doc.line(14, ph - 18, pageWidth - 14, ph - 18);
         doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(120, 122, 140);
-        doc.text('RUBIS COMPANY · Raporo yemewe · Ubwiru', 14, ph - 11);
+        doc.text('RUBIS SHARE COMPANY · Raporo yemewe · Ubwiru', 14, ph - 11);
         doc.text(`Ipaji ${p}/${pageCount}`, pageWidth - 14, ph - 11, { align: 'right' });
       }
 
