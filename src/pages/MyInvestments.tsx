@@ -16,16 +16,16 @@ interface Investment {
 }
 
 const PRODUCT_NAMES: Record<string, string> = {
-  '3500': 'Petane Peteroli Mbisi',
-  '10000': 'Petane Mazutu',
-  '20000': 'Petane Essence',
+  '3500': 'Rubis Peteroli Mbisi',
+  '10000': 'Rubis Mazutu',
+  '20000': 'Rubis Essence',
   '30000': 'Wireless Duo',
-  '40000': 'Petane LPG',
-  '50000': 'Petane Cargo',
-  '100000': 'Petane Marine',
-  '250000': 'Petane Tanker',
-  '500000': 'Petane Fleet',
-  '1000000': 'Petane Global Energy',
+  '40000': 'Rubis LPG',
+  '50000': 'Rubis Cargo',
+  '100000': 'Rubis Marine',
+  '250000': 'Rubis Tanker',
+  '500000': 'Rubis Fleet',
+  '1000000': 'Rubis Global Energy',
 };
 
 export default function MyInvestments() {

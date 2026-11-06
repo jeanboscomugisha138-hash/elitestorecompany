@@ -59,8 +59,8 @@ export default function Rewards() {
 
   const share = async () => {
     const shareData = {
-      title: 'Petane Shipping — Ambassador',
-      text: `Injira kuri Petane Shipping ukoresheje kode yanjye: ${referralCode}`,
+      title: 'Rubis Company — Ambassador',
+      text: `Injira kuri Rubis Company ukoresheje kode yanjye: ${referralCode}`,
       url: referralLink,
     };
     try {
@@ -188,7 +188,7 @@ export default function Rewards() {
 
                     {t.tier === 'diamond' && (
                       <p className="mt-2.5 text-[11px] font-semibold text-blue-700 bg-blue-500/10 rounded-lg px-2.5 py-2">
-                        ✨ Bonus: uhabwa n'akazi muri Petane Shipping Company.
+                        ✨ Bonus: uhabwa n'akazi muri Rubis Company.
                       </p>
                     )}
 
@@ -247,7 +247,7 @@ export default function Rewards() {
             </div>
 
             <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
-              Turagushimiye cyane ku bwitange wagaragaje mu gukwirakwiza Petane Shipping. Komeza
+              Turagushimiye cyane ku bwitange wagaragaje mu gukwirakwiza Rubis Company. Komeza
               gutumira inshuti ubone ibindi bihembo binini kurushaho.
             </p>
 

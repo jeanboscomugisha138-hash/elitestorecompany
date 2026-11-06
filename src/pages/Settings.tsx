@@ -31,7 +31,7 @@ import {
 import { toast } from 'sonner';
 import { useSiteSettings } from '@/hooks/useSiteSettings';
 import { OnlineServiceDialog } from '@/components/OnlineServiceDialog';
-import petaneLogo from '@/assets/petane-logo.png';
+import petaneLogo from '@/assets/rubis-logo.png';
 
 export default function Settings() {
   const { t } = useTranslation();
@@ -85,7 +85,7 @@ export default function Settings() {
         <div className="flex items-center justify-between">
           <img
             src={petaneLogo}
-            alt="Petane"
+            alt="Rubis"
             className="h-11 w-auto brightness-0 invert"
           />
           <div className="flex items-center gap-3">
@@ -221,7 +221,7 @@ export default function Settings() {
         </button>
 
         <div className="text-center text-[10px] text-muted-foreground font-semibold pt-2">
-          PETANE SHIPPING · v1.0.0
+          RUBIS COMPANY · v1.0.0
         </div>
 
         <LiveActivity />

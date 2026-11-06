@@ -37,7 +37,7 @@ const DEFAULTS: SiteSettings = {
   withdraw_end_hour: '22',
   withdraw_fee_percent: '15',
   announcements: [
-    'Welcome to PETANE SHIPPING!',
+    'Welcome to RUBIS COMPANY!',
   ].join('\n'),
 };
 

@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import petaneLogo from '@/assets/petane-logo.png';
+import petaneLogo from '@/assets/rubis-logo.png';
 
 export default function Login() {
   const { t } = useTranslation();
@@ -65,7 +65,7 @@ export default function Login() {
               <p className="text-[10px] font-black uppercase tracking-widest text-destructive">Konti yafunzwe</p>
               <h2 className="text-base font-black text-foreground mt-1 leading-tight">Mukiriya wacu</h2>
               <p className="text-xs text-muted-foreground mt-2 leading-relaxed font-medium">
-                Account yawe yafunzwe by'agateganyo. Andikira umuyobozi wa Petane Company agufashe.
+                Account yawe yafunzwe by'agateganyo. Andikira umuyobozi wa Rubis Company agufashe.
               </p>
               <a
                 href="https://t.me/petaneshipping"
@@ -99,10 +99,10 @@ export default function Login() {
             className="auth-safe-logo-box w-10 h-10 flex items-center justify-center shrink-0 bg-white rounded-xl"
             aria-label="logo"
           >
-            <img src={petaneLogo} alt="Petane Shipping" className="h-7 w-auto object-contain pointer-events-none" />
+            <img src={petaneLogo} alt="Rubis Company" className="h-7 w-auto object-contain pointer-events-none" />
           </button>
           <div className="min-w-0">
-            <p className="text-[10px] font-black uppercase tracking-widest text-primary">PETANE SHIPPING</p>
+            <p className="text-[10px] font-black uppercase tracking-widest text-primary">RUBIS COMPANY</p>
             <h1 className="text-foreground text-base font-black leading-tight truncate">{t('auth.welcomeBack')}</h1>
           </div>
         </div>

@@ -163,7 +163,7 @@ export default function Products() {
 
       refreshProfile();
       setPurchaseCounts(prev => ({ ...prev, [productId]: (prev[productId] || 0) + 1 }));
-      setInvestSuccess({ show: true, amount: product.investment_amount, name: product.name || 'Petane Shipping' });
+      setInvestSuccess({ show: true, amount: product.investment_amount, name: product.name || 'Rubis Company' });
     } finally {
       investingRef.current = false;
       setInvestingId(null);
