@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import petaneLogo from '@/assets/rubis-logo-square.png';
+import rubisLogo from '@/assets/rubis-logo-square.png';
 
 export default function Login() {
   const { t } = useTranslation();
@@ -99,10 +99,10 @@ export default function Login() {
             className="auth-safe-logo-box w-16 h-16 flex items-center justify-center shrink-0 !bg-transparent !border-0"
             aria-label="logo"
           >
-            <img src={petaneLogo} alt="Rubis Company" className="logo-halo h-16 w-16 object-cover pointer-events-none" />
+            <img src={rubisLogo} alt="RUBIS SHARE COMPANY" className="logo-halo h-16 w-16 object-cover pointer-events-none" />
           </button>
           <div className="min-w-0">
-            <p className="text-[10px] font-black uppercase tracking-widest text-primary">RUBIS COMPANY</p>
+            <p className="text-[10px] font-black uppercase tracking-widest text-primary">RUBIS SHARE COMPANY</p>
             <h1 className="text-foreground text-lg font-black leading-tight">{t('auth.welcomeBack')}</h1>
           </div>
         </div>

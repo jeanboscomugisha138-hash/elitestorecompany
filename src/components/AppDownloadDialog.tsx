@@ -50,7 +50,7 @@ export function AppDownloadDialog({ isOpen, onClose }: AppDownloadDialogProps) {
         <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center shadow-button">
           <Smartphone className="w-8 h-8 text-primary-foreground" strokeWidth={2.2} />
         </div>
-        <h3 className="text-lg font-black text-foreground mt-3">App ya RUBIS COMPANY</h3>
+        <h3 className="text-lg font-black text-foreground mt-3">App ya RUBIS SHARE COMPANY</h3>
 
         <div className="mt-2 inline-flex items-center gap-1.5 bg-primary/15 border border-primary/40 rounded-full px-3 py-1.5">
           <ShieldCheck className="w-4 h-4 text-primary" strokeWidth={2.4} />
