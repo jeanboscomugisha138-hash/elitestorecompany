@@ -131,7 +131,7 @@ export default function Login() {
                 </div>
               )}
 
-              <form onSubmit={handleLogin} className="space-y-2">
+              <form onSubmit={handleLogin} className="space-y-3">
                 <div>
                   <label className="login-label" htmlFor="login-phone">{t('auth.phone')}</label>
                   <div className="login-field">
