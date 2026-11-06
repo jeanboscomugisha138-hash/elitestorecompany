@@ -1,30 +1,29 @@
 import { PopupModal } from './PopupModal';
 import { Download, Smartphone, ShieldCheck } from 'lucide-react';
 
-/**
- * The APK download link (Google Drive) shown to users.
- * The file must be shared as "Anyone with the link" for this to work.
- */
-export const APK_URL =
-  'https://drive.usercontent.google.com/download?id=1FjLw7Hsp_6yKOp3VQYOrZkL0N7zADQmC&export=download&confirm=t';
-export const APK_VERSION = 'v1.0.0';
-export const APK_SIZE = '2.92 MB';
+import { supabase } from '@/integrations/supabase/client';
 
-/**
- * Starts the APK download. Must be called directly inside a user gesture
- * (a click handler) — otherwise mobile browsers block it as a popup.
- * Opening in a new tab is what lets Android Chrome show its download prompt.
- */
-export function startApkDownload() {
-  const a = document.createElement('a');
-  a.href = APK_URL;
-  a.download = 'rubis-company.apk';
-  a.target = '_blank';
-  a.rel = 'noopener noreferrer';
-  a.style.display = 'none';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+/** The APK lives in the private "app-files" storage bucket (uploaded by admin). */
+export const APK_PATH = 'rubis-company.apk';
+export const APK_VERSION = 'v1.0.0';
+export const APK_SIZE = '';
+
+let cachedUrl: string | null = null;
+
+/** Prefetch a signed download URL so the click can start the download instantly. */
+export async function prepareApkUrl() {
+  const { data } = await supabase.storage
+    .from('app-files')
+    .createSignedUrl(APK_PATH, 60 * 60 * 6, { download: 'rubis-company.apk' });
+  cachedUrl = data?.signedUrl ?? null;
+  return cachedUrl;
+}
+
+/** Call synchronously inside a click. Returns false if the app file isn't available. */
+export function startApkDownload(): boolean {
+  if (!cachedUrl) return false;
+  window.location.href = cachedUrl;
+  return true;
 }
 
 interface AppDownloadDialogProps {
@@ -56,9 +55,7 @@ export function AppDownloadDialog({ isOpen, onClose }: AppDownloadDialogProps) {
           </span>
         </div>
 
-        <div className="text-[11px] font-bold text-foreground mt-2">
-          {APK_VERSION} • {APK_SIZE}
-        </div>
+        <div className="text-[11px] font-bold text-foreground mt-2">{APK_VERSION}</div>
 
         <button
           onClick={startApkDownload}
