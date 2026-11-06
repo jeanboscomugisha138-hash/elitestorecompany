@@ -49,11 +49,11 @@ const SETTING_FIELDS: { key: string; label: string; placeholder: string; group: 
   { group: 'Kubikuza (Withdraw)', key: 'withdraw_fee_percent', label: 'Amafaranga y\'ikiguzi (%)', placeholder: '20', type: 'number' },
   { group: 'Kubikuza (Withdraw)', key: 'withdraw_start_hour', label: 'Isaha yo gutangira (0-23)', placeholder: '7', type: 'number' },
   { group: 'Kubikuza (Withdraw)', key: 'withdraw_end_hour', label: 'Isaha yo gusoza (0-23)', placeholder: '22', type: 'number' },
-  { group: 'Serivisi z\'abakiriya', key: 'customer_service_url', label: 'Serivisi y\'abakiriya (link)', placeholder: 'https://t.me/...' },
-  { group: 'Serivisi z\'abakiriya', key: 'telegram_admin_url', label: 'Telegram: Vugana n\'umuyobozi', placeholder: 'https://t.me/...' },
-  { group: 'Serivisi z\'abakiriya', key: 'telegram_group_url', label: 'Telegram: Group isanzwe', placeholder: 'https://t.me/+...' },
-  { group: 'Serivisi z\'abakiriya', key: 'telegram_meeting_url', label: 'Telegram: Group y\'inama', placeholder: 'https://t.me/+...' },
-  { group: 'Serivisi z\'abakiriya', key: 'whatsapp_group_url', label: 'WhatsApp group (link)', placeholder: 'https://chat.whatsapp.com/...' },
+  { group: 'Serivisi z\'abakiriya', key: 'customer_service_url', label: 'Serivisi y\'abakiriya (link)', placeholder: 'https://t.me/petaneshipping' },
+  { group: 'Serivisi z\'abakiriya', key: 'telegram_admin_url', label: 'Telegram: Vugana n\'umuyobozi', placeholder: 'https://t.me/petaneshipping' },
+  { group: 'Serivisi z\'abakiriya', key: 'telegram_group_url', label: 'Telegram: Group isanzwe', placeholder: 'https://t.me/+SS_wfux-pzI0OTRh' },
+  { group: 'Serivisi z\'abakiriya', key: 'telegram_meeting_url', label: 'Telegram: Group y\'inama', placeholder: 'https://t.me/+SS_wfux-pzI0OTRh' },
+  { group: 'Serivisi z\'abakiriya', key: 'whatsapp_group_url', label: 'WhatsApp group (link)', placeholder: 'https://chat.whatsapp.com/BWX4g0c8Ff2IPvXRtIfP9x?s=cl&p=a&ilr=4' },
 ];
 
 
