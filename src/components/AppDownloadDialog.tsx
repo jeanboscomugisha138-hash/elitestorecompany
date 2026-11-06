@@ -1,30 +1,34 @@
+import { useEffect, useState } from 'react';
 import { PopupModal } from './PopupModal';
-import { Download, Smartphone, ShieldCheck } from 'lucide-react';
+import { Download, Smartphone, ShieldCheck, CheckCircle2 } from 'lucide-react';
 
-import { supabase } from '@/integrations/supabase/client';
-
-/** The APK lives in the private "app-files" storage bucket (uploaded by admin). */
-export const APK_PATH = 'rubis-company.apk';
-export const APK_VERSION = 'v1.0.0';
-export const APK_SIZE = '';
-
-let cachedUrl: string | null = null;
-
-/** Prefetch a signed download URL so the click can start the download instantly. */
-export async function prepareApkUrl() {
-  const { data } = await supabase.storage
-    .from('app-files')
-    .createSignedUrl(APK_PATH, 60 * 60 * 6, { download: 'rubis-company.apk' });
-  cachedUrl = data?.signedUrl ?? null;
-  return cachedUrl;
+// Capture the browser's install prompt as early as possible.
+let deferredPrompt: any = null;
+if (typeof window !== 'undefined') {
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+  });
+  window.addEventListener('appinstalled', () => { deferredPrompt = null; });
 }
 
-/** Call synchronously inside a click. Returns false if the app file isn't available. */
-export function startApkDownload(): boolean {
-  if (!cachedUrl) return false;
-  window.location.href = cachedUrl;
+export function isAppInstalled() {
+  return (
+    window.matchMedia?.('(display-mode: standalone)').matches ||
+    (navigator as any).standalone === true
+  );
+}
+
+/** Call inside a click. Shows the native install prompt when available. Returns true if prompted. */
+export function startAppInstall(): boolean {
+  if (!deferredPrompt) return false;
+  const p = deferredPrompt;
+  deferredPrompt = null;
+  p.prompt();
   return true;
 }
+
+const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent);
 
 interface AppDownloadDialogProps {
   isOpen: boolean;
@@ -32,43 +36,51 @@ interface AppDownloadDialogProps {
 }
 
 export function AppDownloadDialog({ isOpen, onClose }: AppDownloadDialogProps) {
+  const [installed, setInstalled] = useState(false);
+  useEffect(() => { if (isOpen) setInstalled(isAppInstalled()); }, [isOpen]);
+
+  const steps = isIOS()
+    ? ['Kanda akamenyetso ka "Share" hasi.', 'Hitamo "Add to Home Screen".']
+    : ['Kanda utudomo 3 (⋮) hejuru muri browser.', 'Hitamo "Install app" cyangwa "Add to Home screen".'];
+
   return (
     <PopupModal isOpen={isOpen} onClose={onClose} accent="primary">
       <div className="flex flex-col items-center text-center">
-        {/* Android icon */}
-        <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center shadow-[0_10px_24px_-10px_hsl(var(--primary)/0.8)]">
+        <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center shadow-button">
           <Smartphone className="w-8 h-8 text-primary-foreground" strokeWidth={2.2} />
         </div>
+        <h3 className="text-lg font-black text-foreground mt-3">App ya RUBIS COMPANY</h3>
 
-        <h3 className="text-lg font-black text-foreground mt-3">
-          App ya Rubis Company
-        </h3>
-        <p className="text-[12px] text-muted-foreground font-semibold mt-1 leading-snug">
-          Download yatangiye. Fungura file uyikore install.
-        </p>
-
-        {/* Verified badge */}
-        <div className="mt-3 inline-flex items-center gap-1.5 bg-primary/15 border border-primary/40 rounded-full px-3 py-1.5">
+        <div className="mt-2 inline-flex items-center gap-1.5 bg-primary/15 border border-primary/40 rounded-full px-3 py-1.5">
           <ShieldCheck className="w-4 h-4 text-primary" strokeWidth={2.4} />
-          <span className="text-[11px] font-black tracking-wide text-primary">
-            Verified Secure APK
-          </span>
+          <span className="text-[11px] font-black tracking-wide text-primary">Verified Secure App</span>
         </div>
 
-        <div className="text-[11px] font-bold text-foreground mt-2">{APK_VERSION}</div>
+        {installed ? (
+          <p className="flex items-center gap-1.5 text-[12px] font-bold text-foreground mt-3">
+            <CheckCircle2 className="w-4 h-4 text-primary" /> App yamaze gushyirwa kuri telefoni yawe.
+          </p>
+        ) : (
+          <>
+            <div className="w-full bg-background/40 border border-border/50 rounded-2xl p-3 mt-3 text-left space-y-2">
+              {steps.map((s, i) => (
+                <div key={i} className="flex items-start gap-2">
+                  <span className="w-5 h-5 rounded-full bg-primary text-primary-foreground text-[11px] font-black flex items-center justify-center shrink-0">{i + 1}</span>
+                  <span className="text-[12px] font-semibold text-foreground leading-snug">{s}</span>
+                </div>
+              ))}
+            </div>
+            <button
+              onClick={() => { if (startAppInstall()) onClose(); }}
+              className="w-full mt-3 flex items-center justify-center gap-2 bg-primary text-primary-foreground font-black text-sm py-3 rounded-2xl shadow-button active:scale-[0.98] transition"
+            >
+              <Download className="w-5 h-5" strokeWidth={2.4} />
+              Shyiramo App
+            </button>
+          </>
+        )}
 
-        <button
-          onClick={startApkDownload}
-          className="w-full mt-4 flex items-center justify-center gap-2 bg-primary text-primary-foreground font-black text-sm py-3 rounded-2xl shadow-button active:scale-[0.98] transition"
-        >
-          <Download className="w-5 h-5" strokeWidth={2.4} />
-          Ongera ukuremo
-        </button>
-
-        <button
-          onClick={onClose}
-          className="w-full mt-3 text-[12px] font-bold text-muted-foreground py-2 active:opacity-60 transition"
-        >
+        <button onClick={onClose} className="w-full mt-2 text-[12px] font-bold text-muted-foreground py-2">
           Funga
         </button>
       </div>

@@ -27,7 +27,7 @@ import { OnlineServiceDialog } from '@/components/OnlineServiceDialog';
 import { GiftCodeDialog } from '@/components/GiftCodeDialog';
 import { LiveActivity } from '@/components/LiveActivity';
 import { NotificationCenter, useUnreadCount } from '@/components/NotificationCenter';
-import { AppDownloadDialog, startApkDownload, prepareApkUrl } from '@/components/AppDownloadDialog';
+import { AppDownloadDialog, startAppInstall } from '@/components/AppDownloadDialog';
 import petaneLogo from '@/assets/rubis-logo-square.png';
 
 export default function Dashboard() {
@@ -46,8 +46,6 @@ export default function Dashboard() {
   const [notifOpen, setNotifOpen] = useState(false);
   const [appDialogOpen, setAppDialogOpen] = useState(false);
   const unreadCount = useUnreadCount();
-
-  useEffect(() => { prepareApkUrl(); }, []);
 
   useEffect(() => {
     (async () => {
@@ -70,7 +68,7 @@ export default function Dashboard() {
     { label: 'Bonus', icon: Gift, onClick: () => setGiftDialogOpen(true) },
     { label: 'Shaka ibihembo', icon: Trophy, to: '/rewards' },
     { label: 'Ubufasha', icon: Headset, onClick: () => setAboutOpen(true) },
-    { label: 'App', icon: Smartphone, onClick: () => { if (startApkDownload()) setAppDialogOpen(true); else { toast.error('App ntiraboneka ubu. Ongera ugerageze nyuma.'); prepareApkUrl(); } } },
+    { label: 'App', icon: Smartphone, onClick: () => { if (!startAppInstall()) setAppDialogOpen(true); } },
     { label: 'Ibyaguzwe', icon: Briefcase, to: '/my-investments' },
   ];
 
