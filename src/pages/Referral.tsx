@@ -114,7 +114,7 @@ export default function Referral() {
           <h1 className="text-primary-foreground text-lg font-black tracking-tight">Tumira Inshuti</h1>
           <button
             onClick={share}
-            className="w-10 h-10 rounded-xl bg-primary-foreground text-primary flex items-center justify-center shadow-md"
+            className="w-10 h-10 rounded-xl bg-primary-foreground text-primary-deep flex items-center justify-center shadow-md"
             aria-label="Sangiza"
           >
             <Share2 className="w-5 h-5" strokeWidth={2.5} />

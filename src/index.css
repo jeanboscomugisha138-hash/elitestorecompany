@@ -5,23 +5,25 @@
 @layer base {
   :root {
     color-scheme: dark;
-    --background: 222 70% 12%;
+    --background: 43 68% 9%;
     --foreground: 0 0% 100%;
 
-    --card: 221 62% 17%;
+    --card: 42 52% 14%;
     --card-foreground: 0 0% 100%;
 
-    --popover: 221 60% 19%;
+    --popover: 42 50% 16%;
     --popover-foreground: 0 0% 100%;
 
     --primary: 220 100% 50%;
     --primary-foreground: 0 0% 100%;
+    /* Brighter blue used when blue is the text colour on the dark gold background */
+    --primary-text: 220 100% 68%;
 
-    --secondary: 220 55% 24%;
+    --secondary: 42 45% 20%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 221 45% 21%;
-    --muted-foreground: 218 25% 75%;
+    --muted: 42 40% 18%;
+    --muted-foreground: 42 24% 78%;
 
     --accent: 220 100% 50%;
     --accent-foreground: 0 0% 100%;
@@ -32,8 +34,8 @@
     --success: 220 100% 50%;
     --success-foreground: 0 0% 100%;
 
-    --border: 220 40% 28%;
-    --input: 220 40% 30%;
+    --border: 42 35% 26%;
+    --input: 42 35% 28%;
     --ring: 220 100% 50%;
 
     --radius: 1rem;
@@ -254,5 +256,25 @@
 
   .page-title {
     @apply text-2xl font-bold text-foreground text-center mb-6;
+  }
+}
+
+@layer utilities {
+  /* Blue as text needs more lightness to stay readable on dark gold. */
+  .text-primary {
+    color: hsl(var(--primary-text));
+  }
+
+  .text-primary\/70 {
+    color: hsl(var(--primary-text) / 0.7);
+  }
+
+  .hover\:text-primary:hover {
+    color: hsl(var(--primary-text));
+  }
+
+  /* Deep blue for text sitting on white or light surfaces. */
+  .text-primary-deep {
+    color: hsl(var(--primary));
   }
 }
