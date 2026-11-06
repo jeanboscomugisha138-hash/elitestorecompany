@@ -278,3 +278,15 @@
     color: hsl(var(--primary));
   }
 }
+
+@layer utilities {
+  /* Small yellow text needs a lighter yellow to stay readable on green */
+  .text-primary { color: hsl(var(--primary-text)); }
+  /* Logos: gradient halo so they stand out on the green background */
+  .logo-halo {
+    background: radial-gradient(circle, hsl(0 0% 100% / 0.95) 0%, hsl(var(--primary) / 0.9) 70%, hsl(var(--primary) / 0.6) 100%);
+    box-shadow: 0 0 0 2px hsl(var(--primary)), 0 6px 20px -4px hsl(var(--primary) / 0.6);
+    border-radius: 9999px;
+    padding: 3px;
+  }
+}
