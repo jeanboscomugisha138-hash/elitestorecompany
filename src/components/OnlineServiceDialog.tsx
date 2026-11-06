@@ -13,7 +13,7 @@ export function OnlineServiceDialog({ open, onOpenChange }: { open: boolean; onO
       icon: MessageCircle,
     },
     {
-      label: 'Injira muri Group y\'Inama',
+      label: 'Injira kuri Telegram y\'Uruganiriro',
       sub: 'Aho tuganirira inama z\'ishoramari',
       href: settings.telegram_meeting_url,
       icon: Video,
