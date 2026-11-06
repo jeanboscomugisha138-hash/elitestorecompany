@@ -61,7 +61,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen pb-24 max-w-md mx-auto bg-[hsl(226_78%_90%)]">
+    <div className="min-h-screen pb-24 max-w-md mx-auto bg-background">
       <ChannelPopup />
       <ReferralCommissionListener />
 
@@ -81,7 +81,7 @@ export default function Dashboard() {
             >
               <Bell className="w-7 h-7 text-primary-foreground" strokeWidth={2} />
               {unreadCount > 0 && (
-                <span className="absolute top-0 right-0 min-w-[16px] h-4 px-1 rounded-full bg-emerald-500 text-[10px] text-white font-bold flex items-center justify-center">
+                <span className="absolute top-0 right-0 min-w-[16px] h-4 px-1 rounded-full bg-emerald-500 text-[10px] text-primary-foreground font-bold flex items-center justify-center">
                   {unreadCount > 9 ? '9+' : unreadCount}
                 </span>
               )}

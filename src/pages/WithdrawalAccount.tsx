@@ -57,17 +57,17 @@ export default function WithdrawalAccount() {
   };
 
   return (
-    <div className="min-h-screen bg-[hsl(226_78%_90%)] pb-28">
+    <div className="min-h-screen bg-background pb-28">
       <div className="gradient-primary px-4 pt-6 pb-14 rounded-b-[2rem] shadow-lg-custom">
         <div className="max-w-md mx-auto flex items-center gap-3">
-          <Link to="/settings" className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center active:scale-95 transition">
+          <Link to="/settings" className="w-10 h-10 rounded-xl bg-primary-foreground/15 flex items-center justify-center active:scale-95 transition">
             <ArrowLeft className="w-5 h-5 text-primary-foreground" />
           </Link>
           <div className="flex-1">
             <h1 className="text-lg font-black text-primary-foreground">Konti yo Kwakira</h1>
             <p className="text-xs text-primary-foreground/80">Konti uzajya wakirira amafaranga</p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-primary-foreground/15 flex items-center justify-center">
             <Shield className="w-5 h-5 text-primary-foreground" />
           </div>
         </div>

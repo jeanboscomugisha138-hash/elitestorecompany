@@ -48,14 +48,14 @@ export function OnlineServiceDialog({ open, onOpenChange }: { open: boolean; onO
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => onOpenChange(false)}
-            className="flex items-center gap-3 p-3.5 rounded-2xl bg-gradient-to-r from-[#1747E0] to-[#0E2E9A] text-white active:scale-[0.98] transition shadow-lg-custom"
+            className="flex items-center gap-3 p-3.5 rounded-2xl bg-gradient-to-r from-primary to-success text-primary-foreground active:scale-[0.98] transition shadow-lg-custom"
           >
-            <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center flex-shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-primary-foreground/15 flex items-center justify-center flex-shrink-0">
               <Icon className="w-5 h-5" />
             </div>
             <div className="flex-1 min-w-0 text-left">
               <div className="text-sm font-black leading-tight">{label}</div>
-              <div className="text-[11px] text-white/80 mt-0.5 leading-tight">{sub}</div>
+              <div className="text-[11px] text-primary-foreground/80 mt-0.5 leading-tight">{sub}</div>
             </div>
             <Send className="w-4 h-4 opacity-80" />
           </a>

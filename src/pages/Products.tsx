@@ -172,7 +172,7 @@ export default function Products() {
 
   if (isLoading) {
     return (
-      <div className="page-container bg-[hsl(226_78%_90%)] flex items-center justify-center">
+      <div className="page-container bg-background flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
       </div>
     );
@@ -181,7 +181,7 @@ export default function Products() {
   const visible = products.filter((p) => (p.category || 'regular') === category && !isExpired(p));
 
   return (
-    <div className="page-container bg-[hsl(226_78%_90%)]">
+    <div className="page-container bg-background">
       <div className="flex items-center gap-4 mb-4">
         <Link to="/dashboard" className="w-10 h-10 bg-card rounded-xl flex items-center justify-center shadow-card hover:shadow-lg-custom transition-all">
           <ArrowLeft className="w-5 h-5 text-foreground" />
@@ -250,27 +250,27 @@ export default function Products() {
         accent="primary"
       >
         <div className="text-center">
-          <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-[#1747E0] to-[#0E2E9A] flex items-center justify-center shadow-lg-custom mb-4">
-            <Wallet className="w-8 h-8 text-white" strokeWidth={2.4} />
+          <div className="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-success flex items-center justify-center shadow-lg-custom mb-4">
+            <Wallet className="w-8 h-8 text-primary-foreground" strokeWidth={2.4} />
           </div>
           <h3 className="text-lg font-black text-foreground leading-tight">Amafaranga ntahagije</h3>
           <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed px-2">
             Ntushobora kugura uyu mushinga ubu kuko amafaranga uri ku konti yawe ari make.
           </p>
 
-          <div className="mt-4 rounded-2xl bg-gradient-to-br from-[#1747E0] to-[#0E2E9A] text-white p-4 shadow-lg-custom">
+          <div className="mt-4 rounded-2xl bg-gradient-to-br from-primary to-success text-primary-foreground p-4 shadow-lg-custom">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-white/80">Ukeneye</span>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-primary-foreground/80">Ukeneye</span>
               <span className="text-lg font-black">{insufficient.needed.toLocaleString()} <span className="text-xs">RWF</span></span>
             </div>
-            <div className="h-px bg-white/20 my-2" />
+            <div className="h-px bg-primary-foreground/20 my-2" />
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-white/80">Ufite</span>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-primary-foreground/80">Ufite</span>
               <span className="text-lg font-black">{insufficient.have.toLocaleString()} <span className="text-xs">RWF</span></span>
             </div>
-            <div className="h-px bg-white/20 my-2" />
+            <div className="h-px bg-primary-foreground/20 my-2" />
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-white/80">Wongeraho</span>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-primary-foreground/80">Wongeraho</span>
               <span className="text-lg font-black text-yellow-200">
                 {Math.max(0, insufficient.needed - insufficient.have).toLocaleString()} <span className="text-xs">RWF</span>
               </span>
@@ -286,7 +286,7 @@ export default function Products() {
 
           <button
             onClick={() => { setInsufficient({ show: false, needed: 0, have: 0 }); navigate('/deposit'); }}
-            className="mt-4 w-full bg-gradient-to-r from-[#1747E0] to-[#0E2E9A] text-white font-black text-sm py-3.5 rounded-2xl active:scale-[0.98] transition shadow-lg-custom"
+            className="mt-4 w-full bg-gradient-to-r from-primary to-success text-primary-foreground font-black text-sm py-3.5 rounded-2xl active:scale-[0.98] transition shadow-lg-custom"
           >
             BITSA AMAFARANGA UBU
           </button>
