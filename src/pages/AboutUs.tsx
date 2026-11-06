@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Globe, Shield, Users, Sparkles, Target, Ship } from 'lucide-react';
+import { ArrowLeft, Globe, Shield, Users, Sparkles, Target, Fuel } from 'lucide-react';
 import { BottomNav } from '@/components/BottomNav';
 import rubisLogo from '@/assets/rubis-logo-square.png';
 
@@ -86,7 +86,7 @@ export default function AboutUs() {
         <div className="bg-card rounded-2xl shadow-card border border-border/40 p-5">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-              <Ship className="w-5 h-5 text-primary" strokeWidth={2.3} />
+              <Fuel className="w-5 h-5 text-primary" strokeWidth={2.3} />
             </div>
             <h3 className="text-[15px] font-black text-foreground">Indangagaciro zacu</h3>
           </div>
