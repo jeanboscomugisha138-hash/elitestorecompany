@@ -14,7 +14,6 @@ import {
   MessageCircle,
   ChevronRight,
   Bell,
-  ScanLine,
   Copy,
   Gift,
   Package,
@@ -81,69 +80,54 @@ export default function Settings() {
 
   return (
     <div className="min-h-screen pb-24 max-w-md mx-auto bg-background">
-      {/* Red header */}
-      <div className="bg-primary px-4 pt-4 pb-24 relative">
-        <div className="flex items-center justify-between">
-          <img
-            src={petaneLogo}
-            alt="Rubis"
-            className="logo-halo h-11 w-11 object-contain"
-          />
-          <div className="flex items-center gap-3">
-            <button className="w-10 h-10 rounded-lg border-2 border-primary-foreground/50 flex items-center justify-center">
-              <ScanLine className="w-5 h-5 text-primary-foreground" />
-            </button>
-            <NotificationBell />
+      {/* Header: logo, name & phone, bell */}
+      <div className="bg-primary px-4 pt-4 pb-20 relative">
+        <div className="flex items-center gap-3">
+          <img src={petaneLogo} alt="Rubis" className="logo-halo h-12 w-12 object-contain shrink-0" />
+          <div className="flex-1 min-w-0">
+            <h2 className="text-[16px] font-black text-primary-foreground leading-tight truncate">{name}</h2>
+            <p className="text-[13px] text-primary-foreground font-bold mt-0.5">Konti - {profile?.phone || '---'}</p>
           </div>
+          <NotificationBell />
         </div>
-        <h1 className="text-primary-foreground text-lg font-black mt-4 tracking-tight">Konti Yanjye</h1>
+        <div className="flex items-center justify-between mt-4">
+          <h1 className="text-primary-foreground text-lg font-black tracking-tight">Konti Yanjye</h1>
+          <span className="inline-flex items-center gap-1 bg-primary-foreground/10 text-primary-foreground text-[10px] font-black px-2.5 py-1 rounded-full">
+            <Star className="w-3 h-3 fill-primary-foreground" /> UMWIZERWA · {memberSince}
+          </span>
+        </div>
       </div>
 
-      {/* Profile hero card */}
-      <div className="px-3 -mt-20 relative z-10 space-y-3">
-        <div className="bg-card rounded-2xl shadow-card border border-border/40 overflow-hidden">
-          <div className="p-5 flex items-center gap-4">
-            <div className="relative">
-              <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-2xl font-black shadow-[0_8px_20px_-6px_hsl(var(--primary)/0.5)]">
-                {initials}
-              </div>
-              <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-amber-400 flex items-center justify-center border-2 border-card">
-                <Star className="w-3.5 h-3.5 text-primary-foreground fill-primary-foreground" />
-              </div>
+      {/* Balance card */}
+      <div className="px-3 -mt-16 relative z-10 space-y-3">
+        <div className="bg-card rounded-3xl shadow-card border border-border/40 overflow-hidden">
+          <div className="h-1 bg-primary" />
+          <div className="px-5 pt-4 pb-4">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-black tracking-[0.14em] text-muted-foreground">AMAFARANGA UFITE</span>
+              <span className="w-8 h-8 rounded-xl bg-primary/15 flex items-center justify-center">
+                <Wallet className="w-4 h-4 text-primary" />
+              </span>
             </div>
-            <div className="flex-1 min-w-0">
-              <h2 className="text-lg font-black text-foreground truncate leading-tight">{name}</h2>
-              <p className="text-xs text-muted-foreground font-semibold mt-0.5">
-                Konti - {profile?.phone || '---'}
-              </p>
-              <div className="inline-flex items-center gap-1 mt-1.5 bg-primary/10 text-primary text-[10px] font-black px-2 py-0.5 rounded-full">
-                <Star className="w-2.5 h-2.5 fill-primary" /> UMWIZERWA · {memberSince}
-              </div>
+            <div className="mt-1 flex items-baseline gap-1.5">
+              <span className="text-[30px] font-black text-foreground leading-none tracking-tight">
+                {(profile?.main_balance || 0).toLocaleString()}
+              </span>
+              <span className="text-sm font-black text-primary">RWF</span>
             </div>
           </div>
-
-          {/* Stats row */}
-          <div className="grid grid-cols-3 border-t border-border">
-            <div className="p-3 text-center">
-              <div className="text-[15px] font-black text-foreground leading-none">
-                {(profile?.main_balance || 0).toLocaleString()}
+          <div className="grid grid-cols-2 gap-2 px-3 pb-3">
+            <div className="rounded-2xl bg-background/40 border border-border/40 p-3">
+              <div className="text-[10px] font-black tracking-wider text-muted-foreground">INYUNGU</div>
+              <div className="text-[15px] font-black text-foreground mt-1">
+                {(profile?.total_profit || 0).toLocaleString()} <span className="text-[10px] text-primary">RWF</span>
               </div>
-              <div className="text-[9px] text-primary font-black mt-1">RWF</div>
-              <div className="text-[10px] text-muted-foreground mt-0.5 leading-tight">Ayo ufiteho</div>
             </div>
-            <div className="p-3 text-center border-x border-border">
-              <div className="text-[15px] font-black text-foreground leading-none">
-                {(profile?.total_profit || 0).toLocaleString()}
+            <div className="rounded-2xl bg-background/40 border border-border/40 p-3">
+              <div className="text-[10px] font-black tracking-wider text-muted-foreground">BONUS</div>
+              <div className="text-[15px] font-black text-foreground mt-1">
+                {(profile?.referral_balance || 0).toLocaleString()} <span className="text-[10px] text-primary">RWF</span>
               </div>
-              <div className="text-[9px] text-primary font-black mt-1">RWF</div>
-              <div className="text-[10px] text-muted-foreground mt-0.5 leading-tight">Inyungu</div>
-            </div>
-            <div className="p-3 text-center">
-              <div className="text-[15px] font-black text-foreground leading-none">
-                {(profile?.referral_balance || 0).toLocaleString()}
-              </div>
-              <div className="text-[9px] text-primary font-black mt-1">RWF</div>
-              <div className="text-[10px] text-muted-foreground mt-0.5 leading-tight">Bonus</div>
             </div>
           </div>
         </div>
