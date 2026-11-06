@@ -11,7 +11,7 @@ import {
   Gift,
   Trophy,
   Headset,
-  Package,
+  Smartphone,
   Briefcase,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
@@ -26,6 +26,7 @@ import { OnlineServiceDialog } from '@/components/OnlineServiceDialog';
 import { GiftCodeDialog } from '@/components/GiftCodeDialog';
 import { LiveActivity } from '@/components/LiveActivity';
 import { NotificationCenter, useUnreadCount } from '@/components/NotificationCenter';
+import { AppDownloadDialog, startApkDownload } from '@/components/AppDownloadDialog';
 import petaneLogo from '@/assets/rubis-logo-square.png';
 
 export default function Dashboard() {
@@ -42,6 +43,7 @@ export default function Dashboard() {
   const [aboutOpen, setAboutOpen] = useState(false);
   const [balanceVisible, setBalanceVisible] = useState(true);
   const [notifOpen, setNotifOpen] = useState(false);
+  const [appDialogOpen, setAppDialogOpen] = useState(false);
   const unreadCount = useUnreadCount();
 
   useEffect(() => {
@@ -65,7 +67,7 @@ export default function Dashboard() {
     { label: 'Bonus', icon: Gift, onClick: () => setGiftDialogOpen(true) },
     { label: 'Shaka ibihembo', icon: Trophy, to: '/rewards' },
     { label: 'Ubufasha', icon: Headset, onClick: () => setAboutOpen(true) },
-    { label: 'Shora', icon: Package, to: '/products' },
+    { label: 'App', icon: Smartphone, onClick: () => { startApkDownload(); setAppDialogOpen(true); } },
     { label: 'Ibyaguzwe', icon: Briefcase, to: '/my-investments' },
   ];
 
@@ -232,6 +234,7 @@ export default function Dashboard() {
       <GiftCodeDialog open={giftDialogOpen} onOpenChange={setGiftDialogOpen} onRedeemed={refreshProfile} />
       <OnlineServiceDialog open={aboutOpen} onOpenChange={setAboutOpen} />
       <NotificationCenter open={notifOpen} onClose={() => setNotifOpen(false)} />
+      <AppDownloadDialog isOpen={appDialogOpen} onClose={() => setAppDialogOpen(false)} />
 
       <BottomNav />
     </div>
