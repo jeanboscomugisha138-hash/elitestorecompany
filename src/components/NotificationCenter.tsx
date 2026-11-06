@@ -195,7 +195,7 @@ export function NotificationCenter({ open, onClose }: Props) {
         className="w-full sm:max-w-md h-full sm:h-auto sm:max-h-[85vh] bg-card sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col animate-in slide-in-from-right sm:slide-in-from-top-4 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="bg-gradient-to-br from-primary to-success px-5 py-4 flex items-center justify-between">
+        <div className="bg-primary px-5 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Bell className="w-5 h-5 text-primary-foreground" />
             <h3 className="text-primary-foreground font-bold text-base">Notification</h3>
