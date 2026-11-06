@@ -277,7 +277,12 @@ export default function Deposit() {
                 </div>
               </div>
 
-              <a href={`tel:${encodeURIComponent(momoNumber)}`} className="w-full bg-card text-primary font-bold py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-transform text-sm shadow-md">
+              <div className="bg-card/95 rounded-2xl p-3 mb-3 text-center">
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold mb-1">Kode yo kwishyura (MoMo)</p>
+                <p className="text-xl font-extrabold text-primary tracking-wide font-mono">*182*1*1*{momoNumber}#</p>
+              </div>
+
+              <a href={`tel:${encodeURIComponent(`*182*1*1*${momoNumber}#`)}`} className="w-full bg-card text-primary font-bold py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-transform text-sm shadow-md">
                 <Phone className="w-4 h-4" />
                 {t('deposit.callToPay')}
               </a>
