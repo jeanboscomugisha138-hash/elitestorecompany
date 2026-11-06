@@ -206,16 +206,17 @@ export default function Withdraw() {
             <p className="text-base font-black text-foreground">Amafaranga ubikuza</p>
           </div>
 
-          <div className="relative mb-3">
+          <div className="login-field mb-3">
+            <span className="login-field-icon"><Banknote className="w-4 h-4" strokeWidth={2.4} /></span>
             <input
               type="number" inputMode="numeric"
               placeholder="Andikamo amafaranga"
               min={minWithdraw} max={maxWithdraw}
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="w-full h-16 text-xl font-black text-center rounded-2xl border-2 border-primary/20 bg-primary/5 focus:border-primary focus:bg-card focus:outline-none transition-colors placeholder:text-muted-foreground/80 placeholder:text-sm"
+              className="login-input login-input-amount"
             />
-            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-black text-primary">RWF</span>
+            <span className="login-suffix">RWF</span>
           </div>
 
           <div className="flex items-center justify-between px-1 text-[11px] font-bold text-muted-foreground">
