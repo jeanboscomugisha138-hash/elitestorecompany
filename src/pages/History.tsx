@@ -450,19 +450,19 @@ export default function History() {
               <div className="w-8 h-8 rounded-lg bg-primary-foreground/20 flex items-center justify-center">
                 <activeTabData.icon className="w-4 h-4" strokeWidth={2.5} />
               </div>
-              <span className="text-xs font-bold uppercase tracking-widest opacity-90">{activeTabData.label}</span>
+              <span className="text-xs font-bold uppercase tracking-widest">{activeTabData.label}</span>
             </div>
-            <p className="text-[11px] mt-4 opacity-80 font-semibold">Igiteranyo cyose</p>
+            <p className="text-[11px] mt-4 font-semibold">Igiteranyo cyose</p>
             <p className="text-3xl font-black tabular-nums leading-tight">
-              {totalAmount.toLocaleString()} <span className="text-base font-bold opacity-80">RWF</span>
+              {totalAmount.toLocaleString()} <span className="text-base font-bold">RWF</span>
             </p>
             <div className="mt-4 grid grid-cols-2 gap-2">
               <div className="rounded-xl bg-primary-foreground/15 px-3 py-2">
-                <p className="text-[10px] uppercase tracking-wider opacity-80 font-bold">Ibikorwa</p>
+                <p className="text-[10px] uppercase tracking-wider font-bold">Ibikorwa</p>
                 <p className="text-lg font-black">{itemCount}</p>
               </div>
               <div className="rounded-xl bg-primary-foreground/15 px-3 py-2">
-                <p className="text-[10px] uppercase tracking-wider opacity-80 font-bold">Impuzandengo</p>
+                <p className="text-[10px] uppercase tracking-wider font-bold">Impuzandengo</p>
                 <p className="text-lg font-black tabular-nums">
                   {itemCount ? Math.round(totalAmount / itemCount).toLocaleString() : 0}
                 </p>
