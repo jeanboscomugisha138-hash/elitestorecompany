@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Phone, Lock, ArrowRight, ShieldCheck, Zap, BadgeCheck, ShieldAlert, Send, Fingerprint } from 'lucide-react';
+import { Eye, EyeOff, Phone, Lock, ArrowRight, ShieldCheck, Zap, BadgeCheck, ShieldAlert, Send, Fingerprint, AlertCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
@@ -125,8 +125,9 @@ export default function Login() {
               </div>
 
               {error && (
-                <div className="bg-destructive/15 text-destructive text-xs font-bold p-3 rounded-xl mb-4 text-center border border-destructive/35">
-                  {error}
+                <div className="login-error mb-4 flex items-start gap-2">
+                  <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" strokeWidth={2.5} />
+                  <span>{error}</span>
                 </div>
               )}
 
