@@ -132,38 +132,38 @@ export default function Deposit() {
   return (
     <div className="min-h-screen bg-background pb-28">
       {/* Header */}
-      <div className="bg-primary text-primary-foreground px-4 pt-6 pb-10 rounded-b-[2rem] shadow-lg-custom">
-        <div className="max-w-md mx-auto flex items-center gap-3">
+      <div className="bg-primary text-primary-foreground px-4 pt-3 pb-5 rounded-b-[1.5rem] shadow-lg-custom">
+        <div className="max-w-md mx-auto flex items-center gap-2.5">
           {step === 2 ? (
-            <button type="button" onClick={handleBack} className="w-10 h-10 rounded-xl bg-primary-foreground/15 flex items-center justify-center active:scale-95 transition-transform">
-              <ChevronLeft className="w-5 h-5" />
+            <button type="button" onClick={handleBack} className="w-8 h-8 rounded-lg bg-primary-foreground/15 flex items-center justify-center active:scale-95 transition-transform">
+              <ChevronLeft className="w-4 h-4" />
             </button>
           ) : (
-            <Link to="/dashboard" className="w-10 h-10 rounded-xl bg-primary-foreground/15 flex items-center justify-center active:scale-95 transition-transform">
-              <ArrowLeft className="w-5 h-5" />
+            <Link to="/dashboard" className="w-8 h-8 rounded-lg bg-primary-foreground/15 flex items-center justify-center active:scale-95 transition-transform">
+              <ArrowLeft className="w-4 h-4" />
             </Link>
           )}
-          <div className="flex-1">
-            <h1 className="text-lg font-bold">{t('deposit.title')}</h1>
-            <p className="text-xs text-primary-foreground">
+          <div className="flex-1 min-w-0">
+            <h1 className="text-base font-bold leading-tight truncate">{t('deposit.title')}</h1>
+            <p className="text-[11px] text-primary-foreground leading-tight truncate">
               {step === 1 ? t('deposit.enterDetails') : t('deposit.reviewDetails')}
             </p>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-primary-foreground/15 flex items-center justify-center">
-            <Shield className="w-5 h-5" />
+          <div className="w-8 h-8 rounded-lg bg-primary-foreground/15 flex items-center justify-center">
+            <Shield className="w-4 h-4" />
           </div>
         </div>
       </div>
 
-      <div className="max-w-md mx-auto px-4 -mt-6">
+      <div className="max-w-md mx-auto px-4 -mt-3">
         {/* Step indicator */}
-        <div className="flex justify-center mb-5">
-          <div className="inline-flex items-center gap-2 bg-primary-foreground backdrop-blur-sm rounded-full px-4 py-2 shadow-sm border border-border/50">
-            <div className={`w-2 h-2 rounded-full ${step === 1 ? 'bg-primary' : 'bg-primary/30'}`} />
-            <span className="text-xs font-bold text-background">
+        <div className="flex justify-center mb-3">
+          <div className="inline-flex items-center gap-1.5 bg-primary-foreground backdrop-blur-sm rounded-full px-3 py-1 shadow-sm border border-border/50">
+            <div className={`w-1.5 h-1.5 rounded-full ${step === 1 ? 'bg-primary' : 'bg-primary/30'}`} />
+            <span className="text-[11px] font-bold text-background">
               {t('deposit.stepIndicator', { current: step, total: 2 })}
             </span>
-            <div className={`w-2 h-2 rounded-full ${step === 2 ? 'bg-primary' : 'bg-primary/30'}`} />
+            <div className={`w-1.5 h-1.5 rounded-full ${step === 2 ? 'bg-primary' : 'bg-primary/30'}`} />
           </div>
         </div>
 
