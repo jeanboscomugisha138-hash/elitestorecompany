@@ -201,13 +201,34 @@ export default function Deposit() {
             </div>
 
 
-            {/* Personal Details Card */}
+            {/* Payment Info Card - replaces the old phone-number card */}
             <div className="bg-card rounded-3xl p-5 shadow-elevated border border-border/40 mb-4">
-              <div className="flex items-center gap-2 mb-5">
+              <div className="flex items-center gap-2 mb-4">
                 <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
-                  <User className="w-4 h-4 text-primary" />
+                  <Wallet className="w-4 h-4 text-primary" />
                 </div>
                 <p className="text-base font-bold text-foreground">{t('deposit.paymentDetails')}</p>
+              </div>
+
+              {/* Where to send the money */}
+              <div className="bg-primary rounded-2xl p-4 mb-4 text-primary-foreground">
+                <p className="text-[10px] font-bold uppercase tracking-wider opacity-80">{t('deposit.sendMoneyTo')}</p>
+                <p className="text-lg font-extrabold truncate leading-tight">{momoName}</p>
+
+                <div className="mt-3 bg-primary-foreground/15 rounded-xl p-3 border border-primary-foreground/20">
+                  <p className="text-[10px] font-bold uppercase tracking-wider opacity-80 mb-1">{t('deposit.momoNumber')}</p>
+                  <div className="flex items-center justify-between gap-3">
+                    <p className="text-2xl font-extrabold tracking-tight break-all flex-1 leading-tight">{momoNumber}</p>
+                    <button type="button" onClick={handleCopy} className="w-11 h-11 rounded-xl bg-primary-foreground flex items-center justify-center flex-shrink-0 active:scale-95 transition-transform">
+                      {copied ? <Check className="w-5 h-5 text-primary" /> : <Copy className="w-5 h-5 text-primary" />}
+                    </button>
+                  </div>
+                </div>
+
+                <a href={`tel:${encodeURIComponent(momoNumber)}`} className="mt-3 w-full bg-primary-foreground text-primary font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-transform text-sm">
+                  <Phone className="w-4 h-4" />
+                  {t('deposit.callToPay')}
+                </a>
               </div>
 
               <div className="space-y-3">
