@@ -38,7 +38,7 @@ export function ReferralCommissionListener() {
   }, [user]);
 
   const levelLabels: Record<number, string> = {
-    1: 'Urwego rwa 1 (12%)',
+    1: 'Urwego rwa 1 (15%)',
     2: 'Urwego rwa 2 (2%)',
     3: 'Urwego rwa 3 (1%)',
   };
