@@ -35,7 +35,7 @@ const DEFAULTS: SiteSettings = {
   max_withdraw: '1000000',
   withdraw_start_hour: '7',
   withdraw_end_hour: '22',
-  withdraw_fee_percent: '15',
+  withdraw_fee_percent: '20',
   announcements: [
     'Welcome to RUBIS COMPANY!',
   ].join('\n'),

@@ -109,7 +109,7 @@ export const en = {
     withdrawalAmount: 'Withdrawal Amount',
     enterAmount: 'Enter amount',
     amount: 'Amount',
-    serviceFee: 'Service fee (10%)',
+    serviceFee: 'Service fee (20%)',
     youReceive: 'You receive',
     investmentRequired: 'Investment Required',
     investmentRequiredDesc: 'You need an active investment to withdraw funds.',

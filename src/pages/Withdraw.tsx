@@ -52,7 +52,7 @@ export default function Withdraw() {
     })();
   }, [profile?.user_id, withdrawSuccess.show]);
 
-  const feePercent = parseFloat(settings.withdraw_fee_percent || '15');
+  const feePercent = parseFloat(settings.withdraw_fee_percent || '20');
   const fee = amount ? Math.round(parseFloat(amount) * (feePercent / 100)) : 0;
   const amountToReceive = amount ? parseFloat(amount) - fee : 0;
 
