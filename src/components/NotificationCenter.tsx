@@ -301,3 +301,26 @@ export function useUnreadCount() {
 
   return count;
 }
+
+/** Professional notification bell: opens the Notification Center, shows unread badge. */
+export function NotificationBell({ className = '' }: { className?: string }) {
+  const [open, setOpen] = useState(false);
+  const count = useUnreadCount();
+  return (
+    <>
+      <button
+        onClick={() => setOpen(true)}
+        aria-label="Notification"
+        className={`relative w-11 h-11 rounded-2xl bg-primary text-primary-foreground shadow-button flex items-center justify-center active:scale-95 transition ${className}`}
+      >
+        <Bell className={`w-[22px] h-[22px] ${count > 0 ? 'animate-[wiggle_1.2s_ease-in-out_infinite]' : ''}`} strokeWidth={2.4} />
+        {count > 0 && (
+          <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 rounded-full bg-destructive text-destructive-foreground text-[10px] font-black flex items-center justify-center ring-2 ring-background">
+            {count > 9 ? '9+' : count}
+          </span>
+        )}
+      </button>
+      <NotificationCenter open={open} onClose={() => setOpen(false)} />
+    </>
+  );
+}

@@ -26,7 +26,7 @@ import { Link } from 'react-router-dom';
 import { OnlineServiceDialog } from '@/components/OnlineServiceDialog';
 import { GiftCodeDialog } from '@/components/GiftCodeDialog';
 import { LiveActivity } from '@/components/LiveActivity';
-import { NotificationCenter, useUnreadCount } from '@/components/NotificationCenter';
+import { NotificationBell } from '@/components/NotificationCenter';
 import { AppDownloadDialog, startAppInstall } from '@/components/AppDownloadDialog';
 import petaneLogo from '@/assets/rubis-logo-square.png';
 
@@ -43,9 +43,7 @@ export default function Dashboard() {
   const [giftDialogOpen, setGiftDialogOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [balanceVisible, setBalanceVisible] = useState(true);
-  const [notifOpen, setNotifOpen] = useState(false);
   const [appDialogOpen, setAppDialogOpen] = useState(false);
-  const unreadCount = useUnreadCount();
 
   useEffect(() => {
     (async () => {
@@ -94,18 +92,7 @@ export default function Dashboard() {
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => setNotifOpen(true)}
-              className="relative w-10 h-10 rounded-lg flex items-center justify-center active:scale-95 transition"
-              aria-label="Notifications"
-            >
-              <Bell className="w-7 h-7 text-primary-foreground" strokeWidth={2} />
-              {unreadCount > 0 && (
-                <span className="absolute top-0 right-0 min-w-[16px] h-4 px-1 rounded-full bg-emerald-500 text-[10px] text-primary-foreground font-bold flex items-center justify-center">
-                  {unreadCount > 9 ? '9+' : unreadCount}
-                </span>
-              )}
-            </button>
+            <NotificationBell />
           </div>
         </div>
       </div>
@@ -234,7 +221,6 @@ export default function Dashboard() {
 
       <GiftCodeDialog open={giftDialogOpen} onOpenChange={setGiftDialogOpen} onRedeemed={refreshProfile} />
       <OnlineServiceDialog open={aboutOpen} onOpenChange={setAboutOpen} />
-      <NotificationCenter open={notifOpen} onClose={() => setNotifOpen(false)} />
       <AppDownloadDialog isOpen={appDialogOpen} onClose={() => setAppDialogOpen(false)} />
 
       <BottomNav />
