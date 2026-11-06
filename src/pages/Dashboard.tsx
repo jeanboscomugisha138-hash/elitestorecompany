@@ -57,6 +57,24 @@ export default function Dashboard() {
 
   const mask = (v: number) => (balanceVisible ? v.toLocaleString() : 'XXXXXX');
 
+  const referralLink = `${window.location.origin}/register?ref=${profile?.referral_code || ''}`;
+  const [copied, setCopied] = useState(false);
+  const copyReferralLink = async () => {
+    try {
+      await navigator.clipboard.writeText(referralLink);
+    } catch {
+      const el = document.createElement('textarea');
+      el.value = referralLink;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+    }
+    setCopied(true);
+    toast.success('Link yakopowe!');
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   const quickActions = [
     { label: 'Bitsa', icon: Banknote, to: '/deposit' },
     { label: 'Bikuza', icon: ArrowDownToLine, to: '/withdraw' },
