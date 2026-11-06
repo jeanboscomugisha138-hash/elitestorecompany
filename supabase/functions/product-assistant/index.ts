@@ -42,7 +42,11 @@ Deno.serve(async (req) => {
         "Uri umufasha w'abashoramari. Subiza mu Kinyarwanda gusa, mu magambo make kandi asobanutse. Shingira ku makuru y'ibicuruzwa ari hasi gusa; niba igisubizo kitarimo, vuga ko utabizi ubohereze kuri serivisi y'abakiriya. Ntukemeze inyungu zirenze izanditse. Amafaranga ni RWF. Andi mategeko: amafaranga ntarengwa yo kubitsa 3,500 RWF; kubikuza bisaba kuba warashoye; amafaranga yo kubikuza ni 20%.\n\nIbicuruzwa:\n" + catalog,
       input: q,
     });
-    return json({ answer: res.output_text ?? "" });
+    // deno-lint-ignore no-explicit-any
+    const r = res as any;
+    const answer: string = r.output_text ||
+      (r.output ?? []).flatMap((o: any) => o.content ?? []).filter((c: any) => c.type === "output_text").map((c: any) => c.text).join("\n");
+    return json({ answer });
   } catch (e) {
     if (e instanceof GatewayError) {
       const status = e.httpStatus === 429 ? 429 : e.httpStatus === 402 ? 402 : 500;
