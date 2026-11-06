@@ -255,6 +255,34 @@ export default function Deposit() {
           </>
         ) : (
           <>
+            {/* Recipient Card - bold blue */}
+            <div className="gradient-primary rounded-3xl p-5 shadow-elevated mb-4 text-primary-foreground">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-11 h-11 rounded-2xl bg-primary-foreground/20 flex items-center justify-center backdrop-blur-sm">
+                  <Wallet className="w-5 h-5 text-primary-foreground" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[10px] text-primary-foreground font-semibold uppercase tracking-wider">{t('deposit.sendMoneyTo')}</p>
+                  <p className="text-lg font-extrabold text-primary-foreground truncate leading-tight">{momoName}</p>
+                </div>
+              </div>
+
+              <div className="bg-primary-foreground/15 backdrop-blur-sm rounded-2xl p-4 mb-4 border border-border/20">
+                <p className="text-[10px] text-primary-foreground mb-2 uppercase tracking-wider font-semibold">{t('deposit.momoNumber')}</p>
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-2xl font-extrabold text-primary-foreground tracking-tight break-all flex-1 leading-tight">{momoNumber}</p>
+                  <button type="button" onClick={handleCopy} className="w-11 h-11 rounded-xl bg-card flex items-center justify-center flex-shrink-0 active:scale-95 transition-transform shadow-md">
+                    {copied ? <Check className="w-5 h-5 text-primary" /> : <Copy className="w-5 h-5 text-primary" />}
+                  </button>
+                </div>
+              </div>
+
+              <a href={`tel:${encodeURIComponent(momoNumber)}`} className="w-full bg-card text-primary font-bold py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-transform text-sm shadow-md">
+                <Phone className="w-4 h-4" />
+                {t('deposit.callToPay')}
+              </a>
+            </div>
+
             {/* Review Card */}
             <div className="bg-card rounded-3xl p-5 shadow-elevated border border-border/40 mb-4">
               <div className="flex items-center justify-between mb-4">
