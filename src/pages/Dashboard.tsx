@@ -4,6 +4,15 @@ import {
   PiggyBank,
   Bell,
   Eye,
+  Crown,
+  Banknote,
+  ArrowDownToLine,
+  History,
+  Gift,
+  Trophy,
+  Headset,
+  Package,
+  Briefcase,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -50,14 +59,14 @@ export default function Dashboard() {
   const mask = (v: number) => (balanceVisible ? v.toLocaleString() : 'XXXXXX');
 
   const quickActions = [
-    { label: 'Bitsa', emoji: '💸', to: '/deposit' },
-    { label: 'Bikuza', emoji: '⬇️', to: '/withdraw' },
-    { label: 'Amateka', emoji: '🕐', to: '/history' },
-    { label: 'Bonus', emoji: '🎁', onClick: () => setGiftDialogOpen(true) },
-    { label: 'Shaka ibihembo', emoji: '🏆', to: '/rewards' },
-    { label: 'Ubufasha', emoji: '🎧', onClick: () => setAboutOpen(true) },
-    { label: 'Shora', emoji: '📦', to: '/products' },
-    { label: 'Ibyaguzwe', emoji: '💼', to: '/my-investments' },
+    { label: 'Bitsa', icon: Banknote, to: '/deposit' },
+    { label: 'Bikuza', icon: ArrowDownToLine, to: '/withdraw' },
+    { label: 'Amateka', icon: History, to: '/history' },
+    { label: 'Bonus', icon: Gift, onClick: () => setGiftDialogOpen(true) },
+    { label: 'Shaka ibihembo', icon: Trophy, to: '/rewards' },
+    { label: 'Ubufasha', icon: Headset, onClick: () => setAboutOpen(true) },
+    { label: 'Shora', icon: Package, to: '/products' },
+    { label: 'Ibyaguzwe', icon: Briefcase, to: '/my-investments' },
   ];
 
   return (
@@ -132,14 +141,12 @@ export default function Dashboard() {
               to="/products"
               className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-black text-[13px] py-2.5 rounded-xl active:scale-[0.98] transition"
             >
-              <span aria-hidden>👑</span>
-              <PiggyBank className="w-4 h-4" strokeWidth={2.5} /> Gura VIP
+              <Crown className="w-4 h-4" strokeWidth={2.5} /> Gura VIP
             </Link>
             <Link
               to="/deposit"
               className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-black text-[13px] py-2.5 rounded-xl active:scale-[0.98] transition"
             >
-              <span aria-hidden>💸</span>
               <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} /> Bitsa
             </Link>
           </div>
@@ -179,11 +186,12 @@ export default function Dashboard() {
         <div className="dashboard-card p-4">
           <div className="grid grid-cols-4 gap-y-4 gap-x-2">
             {quickActions.map((a, i) => {
+              const Icon = a.icon;
               const inner = (
                 <>
                   <div className="relative w-14 h-14 rounded-full flex items-center justify-center bg-primary/15 border border-primary/40 shadow-[0_6px_16px_-6px_hsl(var(--primary)/0.6)] group-hover:-translate-y-0.5 group-active:scale-90 transition-transform">
                     <span className="absolute inset-1 rounded-full bg-card/70" aria-hidden />
-                    <span aria-hidden className="relative text-2xl leading-none">{a.emoji}</span>
+                    <Icon className="relative w-6 h-6 text-primary" strokeWidth={2.3} aria-hidden />
                   </div>
                   <span className="text-[11px] font-bold text-foreground mt-2 text-center leading-tight">{a.label}</span>
                 </>
