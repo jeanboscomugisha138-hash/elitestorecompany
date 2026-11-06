@@ -1,12 +1,12 @@
 import { PopupModal } from './PopupModal';
-import { Download, Smartphone, ShieldCheck, AlertTriangle, RefreshCw } from 'lucide-react';
+import { Download, Smartphone, ShieldCheck } from 'lucide-react';
 
 /**
  * The APK download link (Google Drive) shown to users.
  * The file must be shared as "Anyone with the link" for this to work.
  */
 export const APK_URL =
-  'https://drive.google.com/uc?export=download&id=1FjLw7Hsp_6yKOp3VQYOrZkL0N7zADQmC';
+  'https://drive.usercontent.google.com/download?id=1FjLw7Hsp_6yKOp3VQYOrZkL0N7zADQmC&export=download&confirm=t';
 export const APK_VERSION = 'v1.0.0';
 export const APK_SIZE = '2.92 MB';
 
@@ -45,7 +45,7 @@ export function AppDownloadDialog({ isOpen, onClose }: AppDownloadDialogProps) {
           App ya Rubis Company
         </h3>
         <p className="text-[12px] text-muted-foreground font-semibold mt-1 leading-snug">
-          Download yatangiriye. Fungura file wavuyemo hanyuma uyikore install.
+          Download yatangiye. Fungura file uyikore install.
         </p>
 
         {/* Verified badge */}
@@ -60,49 +60,13 @@ export function AppDownloadDialog({ isOpen, onClose }: AppDownloadDialogProps) {
           {APK_VERSION} • {APK_SIZE}
         </div>
 
-        {/* Install steps */}
-        <div className="w-full bg-background/40 border border-border/50 rounded-2xl p-3 mt-4 text-left space-y-2">
-          {[
-            'Kanda Download hano hasi niba itatangiriye.',
-            'Fungura file ya rubis-company.apk wavuyemo.',
-            'Ubasabye "Install from unknown sources" emeza.',
-            'Kanda Install — app irakora kuri telefoni yawe.',
-          ].map((step, i) => (
-            <div key={i} className="flex items-start gap-2">
-              <span className="w-5 h-5 rounded-full bg-primary text-primary-foreground text-[11px] font-black flex items-center justify-center shrink-0 mt-0.5">
-                {i + 1}
-              </span>
-              <span className="text-[11.5px] font-semibold text-foreground leading-snug">
-                {step}
-              </span>
-            </div>
-          ))}
-        </div>
-
-        {/* Fallback download button */}
         <button
           onClick={startApkDownload}
           className="w-full mt-4 flex items-center justify-center gap-2 bg-primary text-primary-foreground font-black text-sm py-3 rounded-2xl shadow-button active:scale-[0.98] transition"
         >
           <Download className="w-5 h-5" strokeWidth={2.4} />
-          Kuriza Download
+          Ongera ukuremo
         </button>
-
-        <div className="w-full flex items-start gap-2 bg-background/40 border border-border/50 rounded-2xl p-2.5 mt-3">
-          <RefreshCw className="w-4 h-4 text-primary shrink-0 mt-0.5" strokeWidth={2.2} />
-          <span className="text-[10.5px] font-semibold text-muted-foreground leading-snug">
-            Download itatangiriye? Kanda "Kuriza Download" hejuru, cyangwa fungura
-            browser mushya ukongere ukande.
-          </span>
-        </div>
-
-        <div className="w-full flex items-start gap-2 rounded-2xl p-2.5 mt-2 bg-destructive/20 border border-destructive/40">
-          <AlertTriangle className="w-4 h-4 text-destructive shrink-0 mt-0.5" strokeWidth={2.2} />
-          <span className="text-[10.5px] font-bold text-foreground leading-snug">
-            Iyi app ikorera kuri Android gusa. Ntishyire kuri Play Store —
-            install ikorwa uva kuri file wavuyemo.
-          </span>
-        </div>
 
         <button
           onClick={onClose}
