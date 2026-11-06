@@ -1934,6 +1934,28 @@ export default function AdminDashboard() {
                     {savingSettings ? 'Saving...' : 'Save Settings'}
                   </button>
                 </div>
+                <div className="p-4 border-t border-border space-y-2">
+                  <div className="text-sm font-bold text-foreground">App (APK) — Download file</div>
+                  <p className="text-xs text-muted-foreground">Upload the .apk file. Users download it directly from the "App" button.</p>
+                  <input
+                    type="file"
+                    accept=".apk,application/vnd.android.package-archive"
+                    className="block w-full text-sm text-foreground"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      const t = toast.loading('Uploading APK...');
+                      const { error } = await supabase.storage.from('app-files').upload('rubis-company.apk', file, {
+                        upsert: true,
+                        contentType: 'application/vnd.android.package-archive',
+                      });
+                      toast.dismiss(t);
+                      if (error) toast.error('Upload failed: ' + error.message);
+                      else toast.success('APK uploaded — users can download it now');
+                      e.target.value = '';
+                    }}
+                  />
+                </div>
               </div>
             )}
           </>
