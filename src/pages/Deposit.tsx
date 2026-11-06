@@ -210,20 +210,20 @@ export default function Deposit() {
                 <p className="text-base font-bold text-foreground">{t('deposit.paymentDetails')}</p>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <div>
-                  <label className="text-xs font-semibold text-foreground mb-1.5 block ml-1">{t('deposit.phoneNumber')}</label>
-                  <div className="relative">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <input type="tel" placeholder="Nimero ugiye gukoresha wishyura" value={phone} onChange={(e) => setPhone(e.target.value)} className="input-field pl-11 text-sm" required />
+                  <label className="login-label" htmlFor="de-phone">{t('deposit.phoneNumber')}</label>
+                  <div className="login-field">
+                    <span className="login-field-icon"><Phone className="w-4 h-4" strokeWidth={2.4} /></span>
+                    <input id="de-phone" type="tel" inputMode="numeric" placeholder="Nimero ugiye gukoresha wishyura" value={phone} onChange={(e) => setPhone(e.target.value)} className="login-input" required />
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-foreground mb-1.5 block ml-1">{t('deposit.fullName')}</label>
-                  <div className="relative">
-                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <input type="text" placeholder="Amazina ugiye gukoresha wishyura" value={name} onChange={(e) => setName(e.target.value)} className="input-field pl-11 text-sm" required />
+                  <label className="login-label" htmlFor="de-name">{t('deposit.fullName')}</label>
+                  <div className="login-field">
+                    <span className="login-field-icon"><User className="w-4 h-4" strokeWidth={2.4} /></span>
+                    <input id="de-name" type="text" placeholder="Amazina ugiye gukoresha wishyura" value={name} onChange={(e) => setName(e.target.value)} className="login-input" required />
                   </div>
                 </div>
               </div>
