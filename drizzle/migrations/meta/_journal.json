@@ -50,6 +50,13 @@
       "when": 1793992295549,
       "tag": "0006_update_ambassador_tiers",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1793995293491,
+      "tag": "0007_update_payment_phone",
+      "breakpoints": true
     }
   ]
 }

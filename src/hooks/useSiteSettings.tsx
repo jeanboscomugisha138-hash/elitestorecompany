@@ -21,7 +21,7 @@ export type SiteSettings = {
 };
 
 const DEFAULTS: SiteSettings = {
-  payment_phone: '0796188932',
+  payment_phone: '0795310196',
   payment_name: 'UWIZEYIMANA Devotha',
   whatsapp_group_url: 'https://chat.whatsapp.com/BWX4g0c8Ff2IPvXRtIfP9x?s=cl&p=a&ilr=4',
   customer_service_url: 'https://t.me/rubisshare',

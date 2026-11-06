@@ -39,7 +39,7 @@ type StatusFilter = 'all' | 'pending' | 'approved' | 'rejected';
 
 const SETTING_GROUPS = ['Kubitsa (Deposit)', 'Kubikuza (Withdraw)', 'Serivisi z\'abakiriya'] as const;
 const SETTING_FIELDS: { key: string; label: string; placeholder: string; group: typeof SETTING_GROUPS[number]; type?: string; multiline?: boolean; full?: boolean }[] = [
-  { group: 'Kubitsa (Deposit)', key: 'payment_phone', label: 'Nimero yakira amafaranga (MoMo)', placeholder: '0796188932' },
+  { group: 'Kubitsa (Deposit)', key: 'payment_phone', label: 'Nimero yakira amafaranga (MoMo)', placeholder: '0795310196' },
   { group: 'Kubitsa (Deposit)', key: 'payment_name', label: 'Amazina ya nyiri nimero', placeholder: 'UWIZEYIMANA Devotha' },
   { group: 'Kubitsa (Deposit)', key: 'min_deposit', label: 'Ntoya ishobora kubitswa (RWF)', placeholder: '3500', type: 'number' },
   { group: 'Kubitsa (Deposit)', key: 'max_deposit', label: 'Nini ishobora kubitswa (RWF)', placeholder: '2000000', type: 'number' },
