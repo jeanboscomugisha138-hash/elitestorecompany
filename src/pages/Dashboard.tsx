@@ -139,13 +139,13 @@ export default function Dashboard() {
           <div className="grid grid-cols-2 gap-2.5 mt-3 pt-3 border-t border-border/60">
             <Link
               to="/products"
-              className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-black text-[13px] py-2.5 rounded-xl active:scale-[0.98] transition"
+              className="flex items-center justify-center gap-2 bg-primary text-primary-foreground font-black text-[13px] py-2.5 rounded-xl active:scale-[0.98] transition shadow-button"
             >
               <Crown className="w-4 h-4" strokeWidth={2.5} /> Gura VIP
             </Link>
             <Link
               to="/deposit"
-              className="flex items-center justify-center gap-2 bg-primary/10 text-primary font-black text-[13px] py-2.5 rounded-xl active:scale-[0.98] transition"
+              className="flex items-center justify-center gap-2 bg-primary text-primary-foreground font-black text-[13px] py-2.5 rounded-xl active:scale-[0.98] transition shadow-button"
             >
               <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} /> Bitsa
             </Link>
@@ -189,9 +189,8 @@ export default function Dashboard() {
               const Icon = a.icon;
               const inner = (
                 <>
-                  <div className="relative w-14 h-14 rounded-full flex items-center justify-center bg-primary/15 border border-primary/40 shadow-[0_6px_16px_-6px_hsl(var(--primary)/0.6)] group-hover:-translate-y-0.5 group-active:scale-90 transition-transform">
-                    <span className="absolute inset-1 rounded-full bg-card/70" aria-hidden />
-                    <Icon className="relative w-6 h-6 text-primary" strokeWidth={2.3} aria-hidden />
+                  <div className="relative w-14 h-14 rounded-full flex items-center justify-center bg-primary border border-primary shadow-[0_6px_16px_-6px_hsl(var(--primary)/0.6)] group-hover:-translate-y-0.5 group-active:scale-90 transition-transform">
+                    <Icon className="relative w-6 h-6 text-primary-foreground" strokeWidth={2.3} aria-hidden />
                   </div>
                   <span className="text-[11px] font-bold text-foreground mt-2 text-center leading-tight">{a.label}</span>
                 </>
@@ -219,7 +218,7 @@ export default function Dashboard() {
               Imishinga ya Rubis Company
             </div>
           </div>
-          <span className="text-xs font-bold bg-primary/10 text-primary px-3 py-1.5 rounded-full">
+          <span className="text-xs font-bold bg-primary text-primary-foreground px-3 py-1.5 rounded-full">
             Reba
           </span>
         </Link>

@@ -22,7 +22,7 @@ export function BottomNav() {
               to={path}
               className={`flex flex-col items-center py-2 px-4 rounded-xl transition-all duration-200 ${
                 isActive
-                  ? 'text-primary'
+                  ? 'bg-primary text-primary-foreground'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
