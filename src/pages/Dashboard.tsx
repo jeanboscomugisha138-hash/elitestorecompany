@@ -17,7 +17,7 @@ import { OnlineServiceDialog } from '@/components/OnlineServiceDialog';
 import { GiftCodeDialog } from '@/components/GiftCodeDialog';
 import { LiveActivity } from '@/components/LiveActivity';
 import { NotificationCenter, useUnreadCount } from '@/components/NotificationCenter';
-import petaneLogo from '@/assets/rubis-logo.png';
+import petaneLogo from '@/assets/rubis-logo-square.png';
 
 export default function Dashboard() {
   const { t } = useTranslation();

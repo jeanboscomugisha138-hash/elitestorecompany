@@ -233,7 +233,7 @@
     display: flex;
     align-items: center;
     gap: 0.6rem;
-    padding: 0.5rem 0.55rem;
+    padding: 0.3rem 0.45rem;
     background: hsl(146 58% 12%);
     border: 1px solid hsl(146 45% 74% / 0.3);
     border-radius: 1.1rem;
@@ -254,8 +254,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2.15rem;
-    height: 2.15rem;
+    width: 1.75rem;
+    height: 1.75rem;
     border-radius: 0.7rem;
     flex-shrink: 0;
     background: hsl(var(--primary) / 0.16);
@@ -277,7 +277,7 @@
     outline: none;
     color: hsl(var(--foreground));
     font-weight: 800;
-    font-size: 0.95rem;
+    font-size: 0.875rem;
     letter-spacing: 0.03em;
   }
 
@@ -291,8 +291,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2.1rem;
-    height: 2.1rem;
+    width: 1.75rem;
+    height: 1.75rem;
     border-radius: 0.7rem;
     flex-shrink: 0;
     background: hsl(0 0% 100% / 0.09);
@@ -440,9 +440,7 @@
   .text-primary { color: hsl(var(--primary-text)); }
   /* Logos: gradient halo so they stand out on the green background */
   .logo-halo {
-    background: radial-gradient(circle, hsl(0 0% 100% / 0.95) 0%, hsl(var(--primary) / 0.9) 70%, hsl(var(--primary) / 0.6) 100%);
-    box-shadow: 0 0 0 2px hsl(var(--primary)), 0 6px 20px -4px hsl(var(--primary) / 0.6);
-    border-radius: 9999px;
-    padding: 3px;
+    border-radius: 0.6rem;
+    box-shadow: 0 0 0 1.5px hsl(var(--primary) / 0.7), 0 6px 18px -6px hsl(0 0% 0% / 0.6);
   }
 }

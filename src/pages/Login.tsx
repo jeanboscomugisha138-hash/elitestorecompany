@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import petaneLogo from '@/assets/rubis-logo.png';
+import petaneLogo from '@/assets/rubis-logo-square.png';
 
 export default function Login() {
   const { t } = useTranslation();
@@ -58,7 +58,7 @@ export default function Login() {
           <div className="absolute inset-0 bg-slate-900/70 animate-fade-in" onClick={() => setLockedOpen(false)} />
           <div className="relative w-full max-w-[330px] bg-card rounded-3xl overflow-hidden shadow-2xl border border-border/50 animate-scale-in">
             <div className="h-1.5 w-full bg-gradient-to-r from-destructive via-destructive to-destructive/60" />
-            <div className="px-5 pt-5 pb-5 text-center">
+            <div className="px-5 pt-4 pb-4 text-center">
               <div className="w-14 h-14 mx-auto rounded-2xl bg-destructive/10 flex items-center justify-center mb-3">
                 <ShieldAlert className="w-7 h-7 text-destructive" strokeWidth={2.3} />
               </div>
@@ -82,7 +82,7 @@ export default function Login() {
           </div>
         </div>
       )}
-      <header className="px-5 pt-8 pb-5">
+      <header className="px-5 pt-4 pb-3">
         <div className="max-w-sm mx-auto w-full flex flex-col items-center text-center gap-2">
           <button
             type="button"
@@ -96,10 +96,10 @@ export default function Login() {
               }
               setTimeout(() => setAdminTaps(0), 1500);
             }}
-            className="auth-safe-logo-box w-20 h-20 flex items-center justify-center shrink-0 bg-white rounded-2xl"
+            className="auth-safe-logo-box w-16 h-16 flex items-center justify-center shrink-0 !bg-transparent !border-0"
             aria-label="logo"
           >
-            <img src={petaneLogo} alt="Rubis Company" className="logo-halo h-14 w-auto object-contain pointer-events-none" />
+            <img src={petaneLogo} alt="Rubis Company" className="logo-halo h-16 w-16 object-cover pointer-events-none" />
           </button>
           <div className="min-w-0">
             <p className="text-[10px] font-black uppercase tracking-widest text-primary">RUBIS COMPANY</p>
@@ -112,8 +112,8 @@ export default function Login() {
         <div className="max-w-sm mx-auto w-full">
           <section className="login-card">
             <div className="login-card-bar" />
-            <div className="px-5 pt-5 pb-5">
-              <div className="flex items-center justify-between gap-3 mb-5">
+            <div className="px-5 pt-4 pb-4">
+              <div className="flex items-center justify-between gap-3 mb-3">
                 <div className="min-w-0">
                   <p className="text-[10px] font-black tracking-[0.2em] text-primary uppercase">Konti Yawe</p>
                   <p className="text-xl font-black text-foreground leading-tight mt-0.5">Injira muri Konti</p>
@@ -131,7 +131,7 @@ export default function Login() {
                 </div>
               )}
 
-              <form onSubmit={handleLogin} className="space-y-4">
+              <form onSubmit={handleLogin} className="space-y-2.5">
                 <div>
                   <label className="login-label" htmlFor="login-phone">{t('auth.phone')}</label>
                   <div className="login-field">
@@ -178,7 +178,7 @@ export default function Login() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="login-button w-full font-black text-[15px] py-3.5 active:opacity-90 disabled:opacity-60 flex items-center justify-center gap-2 mt-1"
+                  className="login-button w-full font-black text-[15px] py-3 active:opacity-90 disabled:opacity-60 flex items-center justify-center gap-2 mt-1"
                 >
                   {isLoading ? t('auth.signingIn') : t('auth.login')}
                   {!isLoading && <ArrowRight className="w-4 h-4" strokeWidth={2.6} />}
@@ -187,15 +187,12 @@ export default function Login() {
             </div>
           </section>
 
-          <p className="login-hint mt-4">
+          <p className="login-hint mt-3">
             <Fingerprint className="w-3.5 h-3.5" strokeWidth={2.3} />
             Amakuru yawe arindwa na Rubis Company
           </p>
 
-          <div className="mt-4 rounded-2xl border-2 border-accent bg-card px-4 py-3 text-center">
-            <p className="text-sm font-bold text-foreground">{t('auth.newHere')}</p>
-            <Link to="/signup" className="mt-2 inline-flex w-full items-center justify-center rounded-xl bg-accent py-2.5 text-sm font-black text-accent-foreground active:opacity-90">{t('auth.register')}</Link>
-          </div>
+          <p className="mt-3 text-center text-sm font-bold text-foreground">{t('auth.newHere')} <Link to="/signup" className="text-accent font-black underline underline-offset-4">{t('auth.register')}</Link></p>
         </div>
       </main>
     </div>

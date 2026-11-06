@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Globe, Shield, Users, Sparkles, Target, Ship } from 'lucide-react';
 import { BottomNav } from '@/components/BottomNav';
-import petaneLogo from '@/assets/rubis-logo.png';
+import petaneLogo from '@/assets/rubis-logo-square.png';
 
 const values = [
   {

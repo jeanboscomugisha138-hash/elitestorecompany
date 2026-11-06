@@ -4,7 +4,7 @@ import { Eye, EyeOff, Phone, Lock, User, Gift, ArrowRight, UserPlus, ShieldCheck
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { SuccessNotification } from '@/components/SuccessNotification';
-import petaneLogo from '@/assets/rubis-logo.png';
+import petaneLogo from '@/assets/rubis-logo-square.png';
 
 export default function Signup() {
   const { t } = useTranslation();
@@ -40,10 +40,10 @@ export default function Signup() {
 
   return (
     <div className="auth-safe-page min-h-screen flex flex-col justify-center">
-      <header className="px-5 pt-8 pb-5">
+      <header className="px-5 pt-4 pb-3">
         <div className="max-w-sm mx-auto w-full flex flex-col items-center text-center gap-2">
-          <div className="auth-safe-logo-box w-20 h-20 flex items-center justify-center shrink-0 bg-white rounded-2xl">
-            <img src={petaneLogo} alt="Rubis Company" className="logo-halo h-14 w-auto object-contain" />
+          <div className="auth-safe-logo-box w-16 h-16 flex items-center justify-center shrink-0 !bg-transparent !border-0">
+            <img src={petaneLogo} alt="Rubis Company" className="logo-halo h-16 w-16 object-cover" />
           </div>
           <div className="min-w-0">
             <p className="text-[10px] font-black uppercase tracking-widest text-primary">RUBIS COMPANY</p>
@@ -56,8 +56,8 @@ export default function Signup() {
         <div className="max-w-sm mx-auto w-full">
           <section className="login-card">
             <div className="login-card-bar" />
-            <div className="px-5 pt-5 pb-5">
-              <div className="flex items-center justify-between gap-3 mb-5">
+            <div className="px-5 pt-4 pb-4">
+              <div className="flex items-center justify-between gap-3 mb-3">
                 <div className="min-w-0">
                   <p className="text-[10px] font-black tracking-[0.2em] text-primary uppercase">Iyandikishe</p>
                   <p className="text-xl font-black text-foreground leading-tight mt-0.5">Kora Konti Nshya</p>
@@ -75,7 +75,7 @@ export default function Signup() {
                 </div>
               )}
 
-              <form onSubmit={handleSignup} className="space-y-4">
+              <form onSubmit={handleSignup} className="space-y-2.5">
                 <div>
                   <label className="login-label" htmlFor="su-name">{t('auth.fullName')}</label>
                   <div className="login-field">
@@ -111,7 +111,7 @@ export default function Signup() {
                   </div>
                 </div>
 
-                <button type="submit" disabled={isLoading} className="login-button w-full font-black text-[15px] py-3.5 active:opacity-90 disabled:opacity-60 flex items-center justify-center gap-2 mt-1">
+                <button type="submit" disabled={isLoading} className="login-button w-full font-black text-[15px] py-3 active:opacity-90 disabled:opacity-60 flex items-center justify-center gap-2 mt-1">
                   {isLoading ? t('auth.creatingAccount') : t('auth.register')}
                   {!isLoading && <ArrowRight className="w-4 h-4" strokeWidth={2.6} />}
                 </button>
@@ -119,15 +119,12 @@ export default function Signup() {
             </div>
           </section>
 
-          <p className="login-hint mt-4">
+          <p className="login-hint mt-3">
             <Fingerprint className="w-3.5 h-3.5" strokeWidth={2.3} />
             Amakuru yawe arindwa na Rubis Company
           </p>
 
-          <div className="mt-4 rounded-2xl border-2 border-accent bg-card px-4 py-3 text-center">
-            <p className="text-sm font-bold text-foreground">{t('auth.haveAccount')}</p>
-            <Link to="/login" className="mt-2 inline-flex w-full items-center justify-center rounded-xl bg-accent py-2.5 text-sm font-black text-accent-foreground active:opacity-90">{t('auth.login')}</Link>
-          </div>
+          <p className="mt-3 text-center text-sm font-bold text-foreground">{t('auth.haveAccount')} <Link to="/login" className="text-accent font-black underline underline-offset-4">{t('auth.login')}</Link></p>
         </div>
       </main>
 
