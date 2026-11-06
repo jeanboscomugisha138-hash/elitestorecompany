@@ -56,7 +56,7 @@ export function AppDownloadDialog({ isOpen, onClose }: AppDownloadDialogProps) {
           </span>
         </div>
 
-        <div className="text-[11px] font-bold text-muted-foreground mt-2">
+        <div className="text-[11px] font-bold text-foreground mt-2">
           {APK_VERSION} • {APK_SIZE}
         </div>
 
@@ -96,9 +96,9 @@ export function AppDownloadDialog({ isOpen, onClose }: AppDownloadDialogProps) {
           </span>
         </div>
 
-        <div className="w-full flex items-start gap-2 rounded-2xl p-2.5 mt-2 bg-destructive/15 border border-destructive/30">
+        <div className="w-full flex items-start gap-2 rounded-2xl p-2.5 mt-2 bg-destructive/20 border border-destructive/40">
           <AlertTriangle className="w-4 h-4 text-destructive shrink-0 mt-0.5" strokeWidth={2.2} />
-          <span className="text-[10.5px] font-semibold text-foreground leading-snug">
+          <span className="text-[10.5px] font-bold text-foreground leading-snug">
             Iyi app ikorera kuri Android gusa. Ntishyire kuri Play Store —
             install ikorwa uva kuri file wavuyemo.
           </span>

@@ -11,7 +11,7 @@ import {
   Gift,
   Trophy,
   Headset,
-  Download,
+  Smartphone,
   Briefcase,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
@@ -67,7 +67,7 @@ export default function Dashboard() {
     { label: 'Bonus', icon: Gift, onClick: () => setGiftDialogOpen(true) },
     { label: 'Shaka ibihembo', icon: Trophy, to: '/rewards' },
     { label: 'Ubufasha', icon: Headset, onClick: () => setAboutOpen(true) },
-    { label: 'App', icon: Download, onClick: () => { startApkDownload(); setAppDialogOpen(true); } },
+    { label: 'App', icon: Smartphone, onClick: () => { startApkDownload(); setAppDialogOpen(true); } },
     { label: 'Ibyaguzwe', icon: Briefcase, to: '/my-investments' },
   ];
 
