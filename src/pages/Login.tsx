@@ -99,7 +99,7 @@ export default function Login() {
             className="auth-safe-logo-box w-10 h-10 flex items-center justify-center shrink-0 bg-white rounded-xl"
             aria-label="logo"
           >
-            <img src={petaneLogo} alt="Rubis Company" className="h-7 w-auto object-contain pointer-events-none" />
+            <img src={petaneLogo} alt="Rubis Company" className="logo-halo h-7 w-auto object-contain pointer-events-none" />
           </button>
           <div className="min-w-0">
             <p className="text-[10px] font-black uppercase tracking-widest text-primary">RUBIS COMPANY</p>

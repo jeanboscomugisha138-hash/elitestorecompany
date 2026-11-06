@@ -52,7 +52,7 @@ export default function Signup() {
       <header className="auth-safe-header px-5 pt-6 pb-2">
         <div className="max-w-sm mx-auto w-full flex items-center justify-center gap-3">
           <div className="auth-safe-logo-box w-12 h-12 flex items-center justify-center shrink-0 border-border">
-            <img src={petaneLogo} alt="Rubis Company" className="h-9 w-auto object-contain" />
+            <img src={petaneLogo} alt="Rubis Company" className="logo-halo h-9 w-auto object-contain" />
           </div>
           <div className="min-w-0 text-left">
             <p className="text-[10px] font-black uppercase tracking-widest text-primary">RUBIS COMPANY</p>
