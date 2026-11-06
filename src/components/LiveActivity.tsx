@@ -39,6 +39,7 @@ function buildNames(count: number): string[] {
   while (out.length < count) {
     const first = GIVEN[Math.floor(rand() * GIVEN.length)];
     const last = SURNAMES[Math.floor(rand() * SURNAMES.length)];
+    if (first === last) continue;
     const key = `${last}|${first}`;
     if (used.has(key)) continue;
     used.add(key);
