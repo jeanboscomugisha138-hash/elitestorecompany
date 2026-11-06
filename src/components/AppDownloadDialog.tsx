@@ -37,6 +37,7 @@ interface AppDownloadDialogProps {
 
 export function AppDownloadDialog({ isOpen, onClose }: AppDownloadDialogProps) {
   const [installed, setInstalled] = useState(false);
+  const [hint, setHint] = useState(false);
   useEffect(() => { if (isOpen) setInstalled(isAppInstalled()); }, [isOpen]);
 
   const steps = isIOS()
@@ -71,12 +72,25 @@ export function AppDownloadDialog({ isOpen, onClose }: AppDownloadDialogProps) {
               ))}
             </div>
             <button
-              onClick={() => { if (startAppInstall()) onClose(); }}
+              onClick={() => {
+                if (startAppInstall()) { onClose(); return; }
+                const inFrame = window.self !== window.top;
+                if (inFrame) {
+                  window.open(window.location.origin, '_blank');
+                } else {
+                  setHint(true);
+                }
+              }}
               className="w-full mt-3 flex items-center justify-center gap-2 bg-primary text-primary-foreground font-black text-sm py-3 rounded-2xl shadow-button active:scale-[0.98] transition"
             >
               <Download className="w-5 h-5" strokeWidth={2.4} />
               Shyiramo App
             </button>
+            {hint && (
+              <p className="text-[12px] font-bold text-primary mt-2 leading-snug">
+                Browser yawe ntiyemera gushyiramo App mu buryo bwikora. Kurikiza intambwe 1 na 2 ziri haruguru (koresha Chrome kuri Android cyangwa Safari kuri iPhone).
+              </p>
+            )}
           </>
         )}
 
