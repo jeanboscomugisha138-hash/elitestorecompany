@@ -457,7 +457,7 @@ export default function AdminDashboard() {
       const { data } = await supabase.from('site_settings').select('key, value');
       const map: Record<string, string> = {};
       (data || []).forEach((r: any) => { map[r.key] = r.value; });
-      SETTING_FIELDS.forEach(f => { if (!(f.key in map)) map[f.key] = ''; });
+      SETTING_FIELDS.forEach(f => { if (!map[f.key]) map[f.key] = f.placeholder; });
       setSiteSettings(map);
     }
 
