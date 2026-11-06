@@ -18,6 +18,7 @@ import { GiftCodeDialog } from '@/components/GiftCodeDialog';
 import { LiveActivity } from '@/components/LiveActivity';
 import { NotificationCenter, useUnreadCount } from '@/components/NotificationCenter';
 import petaneLogo from '@/assets/petane-logo.png';
+import { Button } from '@/components/ui/button';
 
 export default function Dashboard() {
   const { t } = useTranslation();
@@ -176,20 +177,20 @@ export default function Dashboard() {
           IBIKORWA
         </div>
 
-        <div className="dashboard-card p-4">
-          <div className="grid grid-cols-4 gap-y-4 gap-x-2">
+        <div className="border-y border-border/60 py-5">
+          <div className="grid grid-cols-4 gap-y-5 gap-x-2">
             {quickActions.map((a, i) => {
               const inner = (
                 <>
-                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center transition active:scale-95 bg-primary/10 text-primary">
-                    <span aria-hidden className="text-2xl leading-none">{a.emoji}</span>
+                  <div className={`h-14 w-14 shrink-0 rounded-full border flex items-center justify-center shadow-card transition-colors motion-reduce:transition-none group-hover:border-primary group-hover:bg-accent ${i < 2 ? 'border-primary/40 bg-accent' : 'border-border bg-card'}`}>
+                    <span aria-hidden className="text-2xl leading-none transition-transform motion-reduce:transition-none group-hover:scale-110">{a.emoji}</span>
                   </div>
-                  <span className="text-[11px] font-semibold text-foreground mt-1.5 text-center leading-tight">{a.label}</span>
+                  <span className="text-[11px] font-bold text-foreground text-center leading-tight min-h-7 flex items-center justify-center max-w-full">{a.label}</span>
                 </>
               );
-              const cls = 'flex flex-col items-center';
-              if (a.to) return <Link key={i} to={a.to} className={cls}>{inner}</Link>;
-              return <button key={i} onClick={a.onClick} className={cls}>{inner}</button>;
+              const cls = 'group h-[100px] w-full min-w-0 flex-col gap-2 whitespace-normal rounded-lg p-0 hover:bg-transparent active:opacity-75';
+              if (a.to) return <Button key={i} variant="ghost" asChild className={cls}><Link to={a.to}>{inner}</Link></Button>;
+              return <Button key={i} variant="ghost" onClick={a.onClick} className={cls}>{inner}</Button>;
             })}
           </div>
         </div>
