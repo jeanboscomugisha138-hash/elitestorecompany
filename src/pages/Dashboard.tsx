@@ -25,6 +25,7 @@ import { Link } from 'react-router-dom';
 import { OnlineServiceDialog } from '@/components/OnlineServiceDialog';
 import { GiftCodeDialog } from '@/components/GiftCodeDialog';
 import { LiveActivity } from '@/components/LiveActivity';
+import { ProductAssistant } from '@/components/ProductAssistant';
 import { NotificationBell } from '@/components/NotificationCenter';
 import { AppDownloadDialog, startAppInstall } from '@/components/AppDownloadDialog';
 import petaneLogo from '@/assets/rubis-logo-square.png';
@@ -218,6 +219,7 @@ export default function Dashboard() {
 
       <div className="px-3 mt-5 space-y-4">
         <LiveActivity />
+        <ProductAssistant />
       </div>
 
       <GiftCodeDialog open={giftDialogOpen} onOpenChange={setGiftDialogOpen} onRedeemed={refreshProfile} />
