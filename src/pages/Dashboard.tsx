@@ -1,7 +1,6 @@
 import { toast } from 'sonner';
 import {
   ArrowUpRight,
-  PiggyBank,
   Bell,
   Crown,
   Banknote,
