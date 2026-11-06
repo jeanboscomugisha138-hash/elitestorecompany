@@ -68,7 +68,7 @@ export default function Login() {
                 Account yawe yafunzwe by'agateganyo. Andikira umuyobozi wa Rubis Company agufashe.
               </p>
               <a
-                href="https://t.me/petaneshipping"
+                href="https://t.me/rubisshare"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-4 w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-primary text-primary-foreground text-sm font-black active:opacity-90"
