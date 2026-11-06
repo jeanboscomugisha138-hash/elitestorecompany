@@ -2,4 +2,4 @@
 - [x] Recolor site: yellow, green, blue only
 - [x] Apply a dark teal theme across every page without changing functionality
 - [x] Website background dark gold (superseded by green)
-- [ ] Website background green, other colours yellow, white and blue
+- [x] Website background green, other colours yellow, white and blue
