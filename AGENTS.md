@@ -1,0 +1,1 @@
+Use global semantic CSS tokens for application themes; legacy Tailwind palette aliases resolve to these tokens so existing status styles follow theme updates without changing business behavior.
