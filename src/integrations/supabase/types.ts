@@ -535,6 +535,7 @@ export type Database = {
           id: string
           invested_amount: number
           level: number
+          phone: string
         }[]
       }
       has_role: {
