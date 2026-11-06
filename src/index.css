@@ -305,6 +305,40 @@
     background: hsl(0 0% 100% / 0.2);
   }
 
+  .login-suffix {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2rem;
+    padding: 0 0.6rem;
+    border-radius: 0.65rem;
+    flex-shrink: 0;
+    margin-right: 0.15rem;
+    background: hsl(0 0% 100% / 0.09);
+    border: 1px solid hsl(0 0% 100% / 0.16);
+    color: hsl(var(--primary-text));
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+  }
+
+  .login-input-amount {
+    font-size: 1.3rem;
+    font-weight: 900;
+    letter-spacing: 0.01em;
+  }
+
+  .login-input::-webkit-outer-spin-button,
+  .login-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .login-input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
   .login-label {
     display: block;
     margin: 0 0 0.3rem 0.7rem;

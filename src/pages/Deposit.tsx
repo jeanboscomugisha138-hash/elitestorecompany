@@ -178,18 +178,20 @@ export default function Deposit() {
                 <p className="text-base font-bold text-foreground">{t('deposit.amount')}</p>
               </div>
 
-              <div className="relative mb-3">
+              <div className="login-field mb-3">
+                <span className="login-field-icon"><Banknote className="w-4 h-4" strokeWidth={2.4} /></span>
                 <input
                   type="number"
-                  placeholder="Andikamo amafaranga"
+                  inputMode="numeric"
+                  placeholder="Amafaranga"
                   min={minDeposit}
                   max={maxDeposit}
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  className="w-full h-16 text-xl font-extrabold text-center rounded-2xl border-2 border-primary/20 bg-primary/5 focus:border-primary focus:bg-card focus:outline-none transition-colors placeholder:text-muted-foreground/80 placeholder:text-sm placeholder:font-semibold"
+                  className="login-input login-input-amount"
                   required
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-primary">RWF</span>
+                <span className="login-suffix">RWF</span>
               </div>
 
               <div className="flex items-center justify-between px-1 text-[11px] font-semibold text-muted-foreground">
@@ -208,20 +210,20 @@ export default function Deposit() {
                 <p className="text-base font-bold text-foreground">{t('deposit.paymentDetails')}</p>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3">
                 <div>
-                  <label className="text-xs font-semibold text-foreground mb-1.5 block ml-1">{t('deposit.phoneNumber')}</label>
-                  <div className="relative">
-                    <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <input type="tel" placeholder="Nimero ugiye gukoresha wishyura" value={phone} onChange={(e) => setPhone(e.target.value)} className="input-field pl-11 text-sm" required />
+                  <label className="login-label" htmlFor="de-phone">{t('deposit.phoneNumber')}</label>
+                  <div className="login-field">
+                    <span className="login-field-icon"><Phone className="w-4 h-4" strokeWidth={2.4} /></span>
+                    <input id="de-phone" type="tel" inputMode="numeric" placeholder="Nimero ugiye gukoresha wishyura" value={phone} onChange={(e) => setPhone(e.target.value)} className="login-input" required />
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-foreground mb-1.5 block ml-1">{t('deposit.fullName')}</label>
-                  <div className="relative">
-                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <input type="text" placeholder="Amazina ugiye gukoresha wishyura" value={name} onChange={(e) => setName(e.target.value)} className="input-field pl-11 text-sm" required />
+                  <label className="login-label" htmlFor="de-name">{t('deposit.fullName')}</label>
+                  <div className="login-field">
+                    <span className="login-field-icon"><User className="w-4 h-4" strokeWidth={2.4} /></span>
+                    <input id="de-name" type="text" placeholder="Amazina ugiye gukoresha wishyura" value={name} onChange={(e) => setName(e.target.value)} className="login-input" required />
                   </div>
                 </div>
               </div>
