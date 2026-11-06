@@ -71,8 +71,16 @@ export default function Dashboard() {
           <img
             src={petaneLogo}
             alt="Rubis Company"
-            className="logo-halo h-14 w-14 object-contain"
+            className="logo-halo h-14 w-14 object-contain shrink-0"
           />
+          <div className="flex-1 min-w-0 ml-3">
+            <h2 className="text-[16px] font-black text-primary-foreground leading-tight truncate">
+              {profile?.full_name || 'Umukiriya'}
+            </h2>
+            <p className="text-[13px] text-primary-foreground font-bold mt-0.5">
+              Konti - {profile?.phone || '---'}
+            </p>
+          </div>
           <div className="flex items-center gap-3">
             <button
               onClick={() => setNotifOpen(true)}
@@ -95,15 +103,7 @@ export default function Dashboard() {
         <div className="dashboard-card px-4 pt-4 pb-4">
 
           {/* Header row: name + account number */}
-          <div className="flex items-start justify-between mb-3">
-            <div className="flex-1 min-w-0">
-              <h2 className="text-[16px] font-black text-foreground leading-tight tracking-tight truncate">
-                {profile?.full_name || 'Umukiriya'}
-              </h2>
-              <p className="text-[13px] text-muted-foreground mt-0.5 font-bold">
-                Konti - {profile?.phone || '---'}
-              </p>
-            </div>
+          <div className="flex items-start justify-end mb-3">
             <Link
               to="/settings"
               className="text-primary text-[13px] font-bold whitespace-nowrap ml-3 hover:underline"
