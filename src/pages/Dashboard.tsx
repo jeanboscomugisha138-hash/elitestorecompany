@@ -1,10 +1,8 @@
 import { toast } from 'sonner';
 import {
   ArrowUpRight,
-  Wallet,
   PiggyBank,
   Bell,
-  Eye,
   Crown,
   Banknote,
   ArrowDownToLine,
@@ -16,7 +14,6 @@ import {
   Briefcase,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { BottomNav } from '@/components/BottomNav';
@@ -31,10 +28,8 @@ import { AppDownloadDialog, startAppInstall } from '@/components/AppDownloadDial
 import petaneLogo from '@/assets/rubis-logo-square.png';
 
 export default function Dashboard() {
-  const { t } = useTranslation();
   const { profile, refreshProfile } = useAuth();
   const balance = profile?.main_balance || 0;
-  const totalInvested = profile?.invested_amount || 0;
   const dailyProfit = Number(profile?.total_profit || 0);
   const referralEarned = Number(profile?.referral_balance || 0);
   const [giftEarned, setGiftEarned] = useState(0);
@@ -143,28 +138,6 @@ export default function Dashboard() {
         </div>
 
 
-        {/* Invested / wallet card - Airtel Money style */}
-        <div className="dashboard-card p-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center">
-              <Wallet className="w-5 h-5 text-primary" strokeWidth={2.5} />
-            </div>
-            <div>
-              <div className="text-primary text-sm font-extrabold tracking-tight">{t('dashboard.totalInvested')}</div>
-              <div className="text-foreground text-xl font-black leading-tight mt-0.5">
-                <span className="text-primary text-xs font-extrabold mr-1">RWF</span>
-                {mask(totalInvested)}
-              </div>
-            </div>
-          </div>
-          <button
-            onClick={() => setBalanceVisible(v => !v)}
-            className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shadow-button active:scale-95 transition"
-            aria-label="Toggle balance"
-          >
-            <Eye className="w-5 h-5 text-primary-foreground" strokeWidth={2.5} />
-          </button>
-        </div>
       </div>
 
       {/* Quick actions grid */}
