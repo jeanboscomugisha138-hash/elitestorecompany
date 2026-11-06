@@ -33,10 +33,19 @@ Deno.serve(async (req) => {
     const S: Record<string, string> = {};
     (st ?? []).forEach((r: any) => { S[r.key] = String(r.value ?? ""); });
     const g = (k: string, d: string) => S[k] || d;
-    const catalog = (products ?? []).map((p) => {
-      const daily = Math.round(p.investment_amount * p.daily_profit_rate / 100);
-      const total = daily * p.duration_days;
-      return `- ${p.name ?? p.tier_label} (${p.category}): igiciro ${p.investment_amount} RWF, inyungu ${p.daily_profit_rate}% ku munsi (~${daily} RWF/umunsi), iminsi ${p.duration_days}, inyungu yose ~${total} RWF, kwishyura: ${p.payout_type === "compound" ? "rimwe ku iherezo" : "buri munsi saa sita z'ijoro"}, ushobora kugura inshuro ${p.max_purchases}`;
+    const NAMES: Record<string, string> = { "VIP 1": "VIP1 Fresh Orange", "VIP 2": "VIP2 Orange Juice", "VIP 3": "VIP3 Orange Trio", "VIP 4": "VIP4 Orange Crate", "VIP 5": "VIP5 Orange Slice", "VIP 6": "VIP6 Premium Juice", "VIP 7": "VIP7 Orange Harvest", "VIP 8": "VIP8 Orange Gift Box", "VIP 9": "VIP9 Golden Orange Tower" };
+    const fmt = (n: number) => Math.round(n).toLocaleString("en-US");
+    const cats: Record<string, string> = { regular: "ISANZWE (Regular)", compound: "COMPOUND", bonus: "BONUS" };
+    const catalog = (products ?? []).map((p: any) => {
+      const rate = Number(p.daily_profit_rate);
+      const frac = rate >= 1 ? rate / 100 : rate;
+      const pct = Math.round(frac * 1000) / 10;
+      const daily = p.investment_amount * frac;
+      const name = p.category === "regular" ? (NAMES[(p.tier_label ?? "").trim()] ?? p.tier_label) : `${p.name ?? ""} (${p.tier_label ?? ""})`;
+      const pay = p.payout_type === "maturity" || p.category === "compound"
+        ? `inyungu ntiyishyurwa buri munsi; yose (${fmt(daily * p.duration_days)} RWF) hamwe n'igishoro (${fmt(p.investment_amount)} RWF) byishyurwa rimwe ku munsi wa ${p.duration_days}`
+        : `buri munsi wakira ${fmt(daily)} RWF saa sita z'ijoro; ku kwezi (iminsi 30) ${fmt(daily * 30)} RWF; yose mu minsi ${p.duration_days} ni ${fmt(daily * p.duration_days)} RWF`;
+      return `- [${cats[p.category] ?? p.category}] ${name}: igiciro ${fmt(p.investment_amount)} RWF, inyungu ${pct}% ku munsi, iminsi ${p.duration_days}, ${pay}. Ushobora kugura inshuro ${p.max_purchases}.`;
     }).join("\n");
 
     const res = await generateResponse({
@@ -55,7 +64,7 @@ AMAKURU Y'URUBUGA:
 - Gift code: andika kode kuri Home ubone bonus.
 - Ibihembo (Ambassador): uko ikipe yawe ishora, ufungura ibihembo kuri paji "Ibihembo".
 - Ubufasha: umuyobozi ${g("telegram_admin_url","https://t.me/rubisshare")}, group ${g("telegram_meeting_url","https://t.me/rubissharecommunity")}.
-- Ntukemeze inyungu zirenze izanditse. Bara neza: inyungu ya buri munsi = igiciro x ijanisha.
+- IBICIRO N'INYUNGU: koresha imibare iri mu rutonde ruri hasi YONYINE, uko yanditse. Ntuhimbe, ntuhindure. Iyo umuntu abajije ashoye amafaranga runaka, mubwire igicuruzwa gihuye n'ayo mafaranga n'inyungu zacyo zanditse. Iyo nta gicuruzwa gihuye neza, mubwire icyegereye. Sobanura neza: igiciro, inyungu ya buri munsi, ku kwezi, iy'igihe cyose, n'igihe yishyurirwa.
 
 IBICURUZWA:
 ` + catalog,
