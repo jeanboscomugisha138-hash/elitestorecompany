@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { PopupModal } from './PopupModal';
-import { Download, Smartphone, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { Download, ShieldCheck, CheckCircle2, Zap, Lock } from 'lucide-react';
+import rubisLogo from '@/assets/rubis-logo-square.png';
 
 // Capture the browser's install prompt as early as possible.
 let deferredPrompt: any = null;
@@ -47,10 +48,17 @@ export function AppDownloadDialog({ isOpen, onClose }: AppDownloadDialogProps) {
   return (
     <PopupModal isOpen={isOpen} onClose={onClose} accent="primary">
       <div className="flex flex-col items-center text-center">
-        <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center shadow-button">
-          <Smartphone className="w-8 h-8 text-primary-foreground" strokeWidth={2.2} />
+        <img src={rubisLogo} alt="RUBIS SHARE COMPANY" className="w-20 h-20 rounded-[22px] object-cover shadow-button ring-2 ring-primary/40" />
+        <h3 className="text-lg font-black text-foreground mt-3 leading-tight">RUBIS SHARE COMPANY</h3>
+        <p className="text-[11px] font-semibold text-muted-foreground mt-0.5">www.rubis-share.online</p>
+        <div className="grid grid-cols-3 gap-2 w-full mt-3">
+          {[{ I: Zap, t: 'Yihuta' }, { I: Lock, t: 'Irinzwe' }, { I: Download, t: 'Ntigura ububiko' }].map(({ I, t }) => (
+            <div key={t} className="flex flex-col items-center gap-1 bg-background/40 border border-border/50 rounded-xl py-2">
+              <I className="w-4 h-4 text-primary" strokeWidth={2.4} />
+              <span className="text-[10px] font-bold text-foreground">{t}</span>
+            </div>
+          ))}
         </div>
-        <h3 className="text-lg font-black text-foreground mt-3">App ya RUBIS SHARE COMPANY</h3>
 
         <div className="mt-2 inline-flex items-center gap-1.5 bg-primary/15 border border-primary/40 rounded-full px-3 py-1.5">
           <ShieldCheck className="w-4 h-4 text-primary" strokeWidth={2.4} />
