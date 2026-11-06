@@ -12,6 +12,9 @@ import {
   Headset,
   Smartphone,
   Briefcase,
+  Users,
+  Copy,
+  Check,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
@@ -165,26 +168,34 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Promo banner */}
-        <Link
-          to="/products"
-          className="mt-3 flex items-center gap-3 bg-card border border-border/60 rounded-2xl p-3 shadow-card active:scale-[0.99] transition"
-        >
-          <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center shrink-0">
-            <PiggyBank className="w-6 h-6 text-primary-foreground" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="text-sm font-bold text-foreground leading-tight">
-              Shora ubone inyungu buri munsi!
+        {/* Invite friends card */}
+        <div className="mt-3 bg-card border border-border/60 rounded-2xl p-3 shadow-card">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shrink-0">
+              <Users className="w-5 h-5 text-primary-foreground" />
             </div>
-            <div className="text-[11px] text-muted-foreground mt-0.5">
-              Imishinga ya Rubis Company
+            <div className="flex-1 min-w-0">
+              <div className="text-sm font-bold text-foreground leading-tight">
+                Tumira inshuti wunguke
+              </div>
+              <div className="text-[11px] text-muted-foreground mt-0.5">
+                Uhabwa komisiyo igera kuri 15% ku bawatumiwe
+              </div>
             </div>
           </div>
-          <span className="text-xs font-bold bg-primary text-primary-foreground px-3 py-1.5 rounded-full">
-            Reba
-          </span>
-        </Link>
+          <div className="mt-2.5 flex items-center gap-2">
+            <div className="flex-1 min-w-0 bg-input border border-border/60 rounded-lg px-2.5 py-2 text-[11px] font-semibold text-foreground truncate select-all">
+              {referralLink}
+            </div>
+            <button
+              onClick={copyReferralLink}
+              className="shrink-0 flex items-center gap-1.5 bg-primary text-primary-foreground text-[11px] font-bold px-3 py-2 rounded-lg active:scale-95 transition"
+            >
+              {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+              {copied ? 'Byakopwe' : 'Kopera'}
+            </button>
+          </div>
+        </div>
 
       </div>
 
