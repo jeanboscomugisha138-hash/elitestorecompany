@@ -115,12 +115,12 @@ export default function Login() {
             <div className="px-5 pt-5 pb-5">
               <div className="flex items-center justify-between gap-3 mb-5">
                 <div className="min-w-0">
-                  <p className="text-[10px] font-black tracking-[0.2em] text-primary uppercase">Injira</p>
+                  <p className="text-[10px] font-black tracking-[0.2em] text-primary uppercase">Konti Yawe</p>
                   <p className="text-xl font-black text-foreground leading-tight mt-0.5">Injira muri Konti</p>
                   <p className="text-[11px] text-muted-foreground font-semibold mt-1">Kanda hano kugira ngo ukomeze</p>
                 </div>
                 <div className="w-12 h-12 rounded-2xl bg-accent flex items-center justify-center shrink-0 shadow-[0_10px_22px_-12px_hsl(var(--primary))]">
-                  <ShieldCheck className="w-5 h-5 text-primary-deep" strokeWidth={2.4} />
+                  <ShieldCheck className="w-5 h-5 text-primary-foreground" strokeWidth={2.4} />
                 </div>
               </div>
 
