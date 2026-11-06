@@ -40,14 +40,14 @@ export default function Signup() {
 
   return (
     <div className="auth-safe-page min-h-screen flex flex-col justify-center">
-      <header className="px-5 pt-4 pb-4">
-        <div className="max-w-sm mx-auto w-full flex items-center gap-2.5">
-          <div className="auth-safe-logo-box w-10 h-10 flex items-center justify-center shrink-0 bg-white rounded-xl">
-            <img src={petaneLogo} alt="Rubis Company" className="logo-halo h-7 w-auto object-contain" />
+      <header className="px-5 pt-8 pb-5">
+        <div className="max-w-sm mx-auto w-full flex flex-col items-center text-center gap-2">
+          <div className="auth-safe-logo-box w-20 h-20 flex items-center justify-center shrink-0 bg-white rounded-2xl">
+            <img src={petaneLogo} alt="Rubis Company" className="logo-halo h-14 w-auto object-contain" />
           </div>
           <div className="min-w-0">
             <p className="text-[10px] font-black uppercase tracking-widest text-primary">RUBIS COMPANY</p>
-            <h1 className="text-foreground text-base font-black leading-tight truncate">{t('auth.createAccount')}</h1>
+            <h1 className="text-foreground text-lg font-black leading-tight">{t('auth.createAccount')}</h1>
           </div>
         </div>
       </header>
@@ -116,19 +116,6 @@ export default function Signup() {
                   {!isLoading && <ArrowRight className="w-4 h-4" strokeWidth={2.6} />}
                 </button>
               </form>
-
-              <div className="auth-safe-trust mt-5 grid grid-cols-3 gap-2 text-center px-2 py-3">
-                {[
-                  { Icon: ShieldCheck, label: 'Umutekano' },
-                  { Icon: Zap, label: 'Byihuse' },
-                  { Icon: BadgeCheck, label: 'Byemejwe' },
-                ].map(({ Icon, label }) => (
-                  <div key={label} className="flex flex-col items-center gap-1 min-w-0">
-                    <Icon className="w-4 h-4" strokeWidth={2.3} />
-                    <span className="text-[9px] font-black truncate max-w-full">{label}</span>
-                  </div>
-                ))}
-              </div>
             </div>
           </section>
 
@@ -137,9 +124,10 @@ export default function Signup() {
             Amakuru yawe arindwa na Rubis Company
           </p>
 
-          <p className="text-center mt-2 text-muted-foreground text-xs font-semibold">
-            {t('auth.haveAccount')} <Link to="/login" className="text-primary font-black hover:underline">{t('auth.login')}</Link>
-          </p>
+          <div className="mt-4 rounded-2xl border-2 border-accent bg-card px-4 py-3 text-center">
+            <p className="text-sm font-bold text-foreground">{t('auth.haveAccount')}</p>
+            <Link to="/login" className="mt-2 inline-flex w-full items-center justify-center rounded-xl bg-accent py-2.5 text-sm font-black text-accent-foreground active:opacity-90">{t('auth.login')}</Link>
+          </div>
         </div>
       </main>
 
