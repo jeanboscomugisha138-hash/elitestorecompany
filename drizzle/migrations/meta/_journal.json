@@ -36,6 +36,13 @@
       "when": 1793979556880,
       "tag": "0004_l1_referral_15",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1793980229648,
+      "tag": "0005_rubis_telegram_links",
+      "breakpoints": true
     }
   ]
 }
