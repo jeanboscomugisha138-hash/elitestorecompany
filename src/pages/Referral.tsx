@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 interface TeamMember {
   id: string;
   full_name: string;
+  phone?: string;
   invested_amount: number;
   created_at: string;
   level: number;
@@ -35,6 +36,7 @@ export default function Referral() {
   const level2 = teamMembers.filter((m) => m.level === 2);
   const level3 = teamMembers.filter((m) => m.level === 3);
   const totalIncome = earnings.reduce((sum, e) => sum + e.total, 0);
+  const teamInvested = teamMembers.reduce((s, m) => s + Number(m.invested_amount || 0), 0);
   const activeMembers = teamMembers.filter((m) => m.invested_amount > 0).length;
 
   useEffect(() => {
@@ -193,6 +195,23 @@ export default function Referral() {
         </div>
       </div>
 
+      {/* Team balance card */}
+      <div className="px-3 mt-4">
+        <div className="bg-card rounded-2xl border border-border/60 shadow-card p-4">
+          <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-muted-foreground mb-3">Umutungo w'Itsinda</p>
+          <div className="grid grid-cols-2 gap-2">
+            <div className="rounded-xl bg-muted/60 border border-border/50 p-3">
+              <p className="text-[10px] font-bold uppercase text-muted-foreground">Team yashoye</p>
+              <p className="text-lg font-black text-foreground tabular-nums mt-1">{teamInvested.toLocaleString()} <span className="text-[11px] text-primary">RWF</span></p>
+            </div>
+            <div className="rounded-xl bg-muted/60 border border-border/50 p-3">
+              <p className="text-[10px] font-bold uppercase text-muted-foreground">Komisiyo zose</p>
+              <p className="text-lg font-black text-foreground tabular-nums mt-1">{totalIncome.toLocaleString()} <span className="text-[11px] text-primary">RWF</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Commission tiers */}
       <div className="px-3 mt-5">
         <div className="flex items-center justify-between mb-2 px-1">
@@ -316,7 +335,10 @@ export default function Referral() {
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-bold text-foreground truncate">{m.full_name}</p>
                   <p className="text-[11px] text-muted-foreground">
-                    Urwego {m.level} · {new Date(m.created_at).toLocaleDateString('en-GB')}
+                    {m.phone || '—'} · L{m.level}
+                  </p>
+                  <p className="text-[11px] font-bold text-primary tabular-nums">
+                    Yashoye: {Number(m.invested_amount || 0).toLocaleString()} RWF
                   </p>
                 </div>
                 <span
