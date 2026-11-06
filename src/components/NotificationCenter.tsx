@@ -195,7 +195,7 @@ export function NotificationCenter({ open, onClose }: Props) {
         className="w-full sm:max-w-md h-full sm:h-auto sm:max-h-[85vh] bg-card sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col animate-in slide-in-from-right sm:slide-in-from-top-4 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="bg-gradient-to-br from-primary to-success px-5 py-4 flex items-center justify-between">
+        <div className="bg-primary px-5 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Bell className="w-5 h-5 text-primary-foreground" />
             <h3 className="text-primary-foreground font-bold text-base">Notification</h3>
@@ -300,4 +300,27 @@ export function useUnreadCount() {
   }, [user, profile?.total_profit]);
 
   return count;
+}
+
+/** Professional notification bell: opens the Notification Center, shows unread badge. */
+export function NotificationBell({ className = '' }: { className?: string }) {
+  const [open, setOpen] = useState(false);
+  const count = useUnreadCount();
+  return (
+    <>
+      <button
+        onClick={() => setOpen(true)}
+        aria-label="Notification"
+        className={`relative w-11 h-11 rounded-2xl bg-primary-foreground text-primary shadow-button flex items-center justify-center active:scale-95 transition ${className}`}
+      >
+        <Bell className={`w-[22px] h-[22px] ${count > 0 ? 'animate-[wiggle_1.2s_ease-in-out_infinite]' : ''}`} strokeWidth={2.4} />
+        {count > 0 && (
+          <span className="absolute -top-1.5 -right-1.5 min-w-[20px] h-5 px-1 rounded-full bg-destructive text-destructive-foreground text-[10px] font-black flex items-center justify-center ring-2 ring-background">
+            {count > 9 ? '9+' : count}
+          </span>
+        )}
+      </button>
+      <NotificationCenter open={open} onClose={() => setOpen(false)} />
+    </>
+  );
 }

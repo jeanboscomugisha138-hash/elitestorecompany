@@ -1,3 +1,4 @@
+import { NotificationBell } from '@/components/NotificationCenter';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { BottomNav } from '@/components/BottomNav';
@@ -92,9 +93,7 @@ export default function Settings() {
             <button className="w-10 h-10 rounded-lg border-2 border-primary-foreground/50 flex items-center justify-center">
               <ScanLine className="w-5 h-5 text-primary-foreground" />
             </button>
-            <button className="relative w-10 h-10 rounded-lg flex items-center justify-center">
-              <Bell className="w-6 h-6 text-primary-foreground" />
-            </button>
+            <NotificationBell />
           </div>
         </div>
         <h1 className="text-primary-foreground text-lg font-black mt-4 tracking-tight">Konti Yanjye</h1>
