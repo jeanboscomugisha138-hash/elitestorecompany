@@ -3,3 +3,4 @@
 - [x] Apply a dark teal theme across every page without changing functionality
 - [x] Website background dark gold (superseded by green)
 - [x] Website background green, other colours yellow, white and blue
+- [x] Redesign login page card and input fields
