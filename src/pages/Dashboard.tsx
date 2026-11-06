@@ -181,13 +181,14 @@ export default function Dashboard() {
             {quickActions.map((a, i) => {
               const inner = (
                 <>
-                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center transition active:scale-95 bg-primary/10 text-primary">
-                    <span aria-hidden className="text-2xl leading-none">{a.emoji}</span>
+                  <div className="relative w-14 h-14 rounded-full flex items-center justify-center bg-gradient-to-br from-primary/30 to-accent/20 border border-primary/40 shadow-[0_6px_16px_-6px_hsl(var(--primary)/0.6)] group-hover:-translate-y-0.5 group-active:scale-90 transition-transform">
+                    <span className="absolute inset-1 rounded-full bg-card/70" aria-hidden />
+                    <span aria-hidden className="relative text-2xl leading-none">{a.emoji}</span>
                   </div>
-                  <span className="text-[11px] font-semibold text-foreground mt-1.5 text-center leading-tight">{a.label}</span>
+                  <span className="text-[11px] font-bold text-foreground mt-2 text-center leading-tight">{a.label}</span>
                 </>
               );
-              const cls = 'flex flex-col items-center';
+              const cls = 'group flex flex-col items-center rounded-xl py-1';
               if (a.to) return <Link key={i} to={a.to} className={cls}>{inner}</Link>;
               return <button key={i} onClick={a.onClick} className={cls}>{inner}</button>;
             })}
