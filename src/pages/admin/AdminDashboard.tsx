@@ -37,21 +37,23 @@ import { toast } from 'sonner';
 type TabType = 'overview' | 'users' | 'deposits' | 'withdrawals' | 'investments' | 'giftcodes' | 'products' | 'notifications' | 'settings';
 type StatusFilter = 'all' | 'pending' | 'approved' | 'rejected';
 
-const SETTING_FIELDS: { key: string; label: string; placeholder: string; type?: string; multiline?: boolean; full?: boolean }[] = [
-  { key: 'payment_phone', label: 'Nimero yakira amafaranga (MoMo)', placeholder: '0799599856' },
-  { key: 'payment_name', label: 'Amazina yakira amafaranga', placeholder: 'Cedric KWIBUKWANIMANA' },
-  { key: 'telegram_admin_url', label: 'Telegram: Vuganisha Umuyobozi (link)', placeholder: 'https://t.me/petaneshipping' },
-  { key: 'telegram_group_url', label: 'Telegram: Group Isanzwe (link)', placeholder: 'https://t.me/+xxxxxxxx' },
-  { key: 'telegram_meeting_url', label: 'Telegram: Group y\'Inama (link)', placeholder: 'https://t.me/+xxxxxxxx' },
-  { key: 'whatsapp_group_url', label: 'WhatsApp Group (link)', placeholder: 'https://chat.whatsapp.com/xxxxxxxx' },
-  { key: 'customer_service_url', label: 'Customer service link', placeholder: 'https://t.me/petaneshipping' },
-  { key: 'min_deposit', label: 'Min deposit (RWF)', placeholder: '10000', type: 'number' },
-  { key: 'max_deposit', label: 'Max deposit (RWF)', placeholder: '1000000', type: 'number' },
-  { key: 'min_withdraw', label: 'Min withdraw (RWF)', placeholder: '1000', type: 'number' },
-  { key: 'max_withdraw', label: 'Max withdraw (RWF)', placeholder: '1000000', type: 'number' },
-  { key: 'withdraw_start_hour', label: 'Withdraw start hour (0-23)', placeholder: '7', type: 'number' },
-  { key: 'withdraw_end_hour', label: 'Withdraw end hour (0-23)', placeholder: '22', type: 'number' },
-  { key: 'announcements', label: 'Notification / Announcements (one per line)', placeholder: 'Welcome message...', multiline: true, full: true },
+const SETTING_GROUPS = ['Kubitsa (Deposit)', 'Kubikuza (Withdraw)', 'Serivisi z\'abakiriya'] as const;
+const SETTING_FIELDS: { key: string; label: string; placeholder: string; group: typeof SETTING_GROUPS[number]; type?: string; multiline?: boolean; full?: boolean }[] = [
+  { group: 'Kubitsa (Deposit)', key: 'payment_phone', label: 'Nimero yakira amafaranga (MoMo)', placeholder: '0799599856' },
+  { group: 'Kubitsa (Deposit)', key: 'payment_name', label: 'Amazina ya nyiri nimero', placeholder: 'Cedric KWIBUKWANIMANA' },
+  { group: 'Kubitsa (Deposit)', key: 'min_deposit', label: 'Ntoya ishobora kubitswa (RWF)', placeholder: '3500', type: 'number' },
+  { group: 'Kubitsa (Deposit)', key: 'max_deposit', label: 'Nini ishobora kubitswa (RWF)', placeholder: '2000000', type: 'number' },
+  { group: 'Kubikuza (Withdraw)', key: 'min_withdraw_first', label: 'Ntoya ku kubikuza bwa mbere (RWF)', placeholder: '1000', type: 'number' },
+  { group: 'Kubikuza (Withdraw)', key: 'min_withdraw', label: 'Ntoya ku kubikuza ubutaha (RWF)', placeholder: '3000', type: 'number' },
+  { group: 'Kubikuza (Withdraw)', key: 'max_withdraw', label: 'Nini ishobora kubikuzwa (RWF)', placeholder: '1000000', type: 'number' },
+  { group: 'Kubikuza (Withdraw)', key: 'withdraw_fee_percent', label: 'Amafaranga y\'ikiguzi (%)', placeholder: '20', type: 'number' },
+  { group: 'Kubikuza (Withdraw)', key: 'withdraw_start_hour', label: 'Isaha yo gutangira (0-23)', placeholder: '7', type: 'number' },
+  { group: 'Kubikuza (Withdraw)', key: 'withdraw_end_hour', label: 'Isaha yo gusoza (0-23)', placeholder: '22', type: 'number' },
+  { group: 'Serivisi z\'abakiriya', key: 'customer_service_url', label: 'Serivisi y\'abakiriya (link)', placeholder: 'https://t.me/...' },
+  { group: 'Serivisi z\'abakiriya', key: 'telegram_admin_url', label: 'Telegram: Vugana n\'umuyobozi', placeholder: 'https://t.me/...' },
+  { group: 'Serivisi z\'abakiriya', key: 'telegram_group_url', label: 'Telegram: Group isanzwe', placeholder: 'https://t.me/+...' },
+  { group: 'Serivisi z\'abakiriya', key: 'telegram_meeting_url', label: 'Telegram: Group y\'inama', placeholder: 'https://t.me/+...' },
+  { group: 'Serivisi z\'abakiriya', key: 'whatsapp_group_url', label: 'WhatsApp group (link)', placeholder: 'https://chat.whatsapp.com/...' },
 ];
 
 
@@ -475,9 +477,9 @@ export default function AdminDashboard() {
       }));
       const { error } = await supabase.from('site_settings').upsert(rows, { onConflict: 'key' });
       if (error) {
-        toast.error('Failed to save settings');
+        toast.error('Kubika byanze');
       } else {
-        toast.success('Settings saved successfully');
+        toast.success('Byabitswe neza');
       }
     } finally {
       setSavingSettings(false);
@@ -1889,15 +1891,18 @@ export default function AdminDashboard() {
                 <div className="p-4 border-b border-border flex items-center justify-between">
                   <div>
                     <h2 className="font-semibold text-foreground flex items-center gap-2">
-                      <SettingsIcon className="w-5 h-5 text-primary" /> Platform Settings
+                      <SettingsIcon className="w-5 h-5 text-primary" /> Igenamiterere ry'urubuga
                     </h2>
                     <p className="text-xs text-muted-foreground mt-1">
-                      Update payment details, links and limits used across the app. Changes apply instantly.
+                      Ibi byose bigaragara ku bakoresha ako kanya ubibitse.
                     </p>
                   </div>
                 </div>
-                <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {SETTING_FIELDS.map((f) => (
+                {SETTING_GROUPS.map((g) => (
+                <div key={g} className="p-4 border-b border-border">
+                  <h3 className="text-sm font-bold text-foreground mb-3">{g}</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {SETTING_FIELDS.filter((f) => f.group === g).map((f) => (
                     <div key={f.key} className={`flex flex-col ${f.full ? 'md:col-span-2' : ''}`}>
                       <label className="text-xs font-medium text-muted-foreground mb-1">{f.label}</label>
                       {f.multiline ? (
@@ -1924,14 +1929,16 @@ export default function AdminDashboard() {
                     </div>
                   ))}
                 </div>
-                <div className="p-4 border-t border-border flex justify-end">
+                </div>
+                ))}
+                <div className="p-4 flex justify-end">
                   <button
                     onClick={saveSiteSettings}
                     disabled={savingSettings}
                     className="flex items-center gap-2 px-5 py-2.5 bg-primary text-primary-foreground rounded-xl font-semibold text-sm hover:opacity-90 transition-all disabled:opacity-50"
                   >
                     <Save className="w-4 h-4" />
-                    {savingSettings ? 'Saving...' : 'Save Settings'}
+                    {savingSettings ? 'Kubika...' : 'Bika'}
                   </button>
                 </div>
               </div>
