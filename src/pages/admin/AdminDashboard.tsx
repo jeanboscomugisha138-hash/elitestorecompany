@@ -1060,7 +1060,7 @@ export default function AdminDashboard() {
               <Shield className="w-5 h-5 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="font-extrabold text-lg text-primary tracking-tight">Petane Admin</h1>
+              <h1 className="font-extrabold text-lg text-primary tracking-tight">Rubis Admin</h1>
               <p className="text-[11px] text-muted-foreground -mt-0.5">Control Panel</p>
             </div>
           </div>

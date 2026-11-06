@@ -17,7 +17,7 @@ import { OnlineServiceDialog } from '@/components/OnlineServiceDialog';
 import { GiftCodeDialog } from '@/components/GiftCodeDialog';
 import { LiveActivity } from '@/components/LiveActivity';
 import { NotificationCenter, useUnreadCount } from '@/components/NotificationCenter';
-import petaneLogo from '@/assets/petane-logo.png';
+import petaneLogo from '@/assets/rubis-logo.png';
 
 export default function Dashboard() {
   const { t } = useTranslation();
@@ -70,7 +70,7 @@ export default function Dashboard() {
         <div className="flex items-center justify-between">
           <img
             src={petaneLogo}
-            alt="Petane Shipping"
+            alt="Rubis Company"
             className="h-14 w-auto brightness-0 invert"
           />
           <div className="flex items-center gap-3">
@@ -208,7 +208,7 @@ export default function Dashboard() {
               Shora ubone inyungu buri munsi!
             </div>
             <div className="text-[11px] text-muted-foreground mt-0.5">
-              Imishinga ya Petane Shipping
+              Imishinga ya Rubis Company
             </div>
           </div>
           <span className="text-xs font-bold bg-primary/10 text-primary px-3 py-1.5 rounded-full">

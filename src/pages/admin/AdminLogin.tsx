@@ -62,7 +62,7 @@ export default function AdminLogin() {
             <Shield className="w-10 h-10 text-secondary-foreground" />
           </div>
           <h1 className="text-2xl font-bold text-foreground">Admin Panel</h1>
-          <p className="text-muted-foreground mt-1">PETANE SHIPPING</p>
+          <p className="text-muted-foreground mt-1">RUBIS COMPANY</p>
         </div>
 
         {/* Login Form */}

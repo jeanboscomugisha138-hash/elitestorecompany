@@ -79,8 +79,8 @@ export default function Referral() {
 
   const share = async () => {
     const shareData = {
-      title: 'PETANE SHIPPING',
-      text: `Injira uri kuri PETANE SHIPPING ukoresheje kode yanjye: ${referralCode}`,
+      title: 'RUBIS COMPANY',
+      text: `Injira uri kuri RUBIS COMPANY ukoresheje kode yanjye: ${referralCode}`,
       url: referralLink,
     };
     try {

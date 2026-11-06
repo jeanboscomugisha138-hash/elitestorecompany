@@ -4,7 +4,7 @@ import { Eye, EyeOff, Phone, Lock, User, Gift, ArrowRight, UserPlus, ShieldCheck
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { SuccessNotification } from '@/components/SuccessNotification';
-import petaneLogo from '@/assets/petane-logo.png';
+import petaneLogo from '@/assets/rubis-logo.png';
 
 export default function Signup() {
   const { t } = useTranslation();
@@ -52,10 +52,10 @@ export default function Signup() {
       <header className="auth-safe-header px-5 pt-6 pb-2">
         <div className="max-w-sm mx-auto w-full flex items-center justify-center gap-3">
           <div className="auth-safe-logo-box w-12 h-12 flex items-center justify-center shrink-0 border-border">
-            <img src={petaneLogo} alt="Petane Shipping" className="h-9 w-auto object-contain" />
+            <img src={petaneLogo} alt="Rubis Company" className="h-9 w-auto object-contain" />
           </div>
           <div className="min-w-0 text-left">
-            <p className="text-[10px] font-black uppercase tracking-widest text-primary">PETANE SHIPPING</p>
+            <p className="text-[10px] font-black uppercase tracking-widest text-primary">RUBIS COMPANY</p>
             <h1 className="text-foreground text-lg font-black leading-tight truncate">{t('auth.createAccount')}</h1>
           </div>
         </div>

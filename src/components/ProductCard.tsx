@@ -22,12 +22,12 @@ const productImages: Record<string, { image: string; name: string; tier: string 
   '50000':   { image: shipCargo,    name: 'Ubwikorezi bwa Cargo',   tier: 'VIP 6' },
   '100000':  { image: shipMarine,   name: 'Ubwikorezi bwo mu Nyanja', tier: 'VIP 7' },
   '250000':  { image: shipTanker,   name: 'Gukodesha Ubwato bwa Tanker', tier: 'VIP 8' },
-  '500000':  { image: shipFleet,    name: 'Amato ya Petane',        tier: 'VIP 9' },
+  '500000':  { image: shipFleet,    name: 'Amato ya Rubis',        tier: 'VIP 9' },
   '1000000': { image: shipGlobal,   name: 'Serivisi z\'Ingufu ku Isi', tier: 'VIP 10' },
 };
 
 function getProductInfo(investment: number) {
-  return productImages[investment.toString()] || { image: shipCargo, name: 'Petane Shipping', tier: 'VIP' };
+  return productImages[investment.toString()] || { image: shipCargo, name: 'Rubis Company', tier: 'VIP' };
 }
 
 function useCountdown(target?: string | null) {
