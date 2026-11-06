@@ -255,8 +255,8 @@ export default function Deposit() {
           </>
         ) : (
           <>
-            {/* Recipient Card - bold blue */}
-            <div className="gradient-primary rounded-3xl p-5 shadow-elevated mb-4 text-primary-foreground">
+            {/* Recipient Card - bold blue, compact width */}
+            <div className="gradient-primary rounded-3xl p-5 shadow-elevated mb-4 text-primary-foreground max-w-[340px] mx-auto">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-11 h-11 rounded-2xl bg-primary-foreground/20 flex items-center justify-center backdrop-blur-sm">
                   <Wallet className="w-5 h-5 text-primary-foreground" />
@@ -287,6 +287,23 @@ export default function Deposit() {
                 {t('deposit.callToPay')}
               </a>
             </div>
+
+            {/* Confirm payment button - right below the payment card */}
+            <form onSubmit={handleSubmit} className="mb-4 max-w-[340px] mx-auto">
+              <button
+                type="submit"
+                className="w-full bg-[hsl(var(--success))] text-[hsl(var(--success-foreground))] font-extrabold text-base py-5 px-4 rounded-2xl flex items-center justify-center gap-2 active:scale-[0.98] transition-transform ring-4 ring-[hsl(var(--success)/0.25)] shadow-[0_10px_24px_-6px_hsl(var(--success)/0.55)] animate-pulse-success disabled:opacity-70 disabled:animate-none"
+                disabled={isLoading || hasPending}
+              >
+                {isLoading ? (
+                  <><div className="w-4 h-4 border-2 border-border/30 border-t-primary-foreground rounded-full animate-spin" />{t('deposit.submitting')}</>
+                ) : hasPending ? (
+                  <><Clock className="w-4 h-4" />{t('deposit.pendingInProgress')}</>
+                ) : (
+                  <><CheckCircle2 className="w-6 h-6" />Emeza ko wishyuye</>
+                )}
+              </button>
+            </form>
 
             {/* Review Card */}
             <div className="bg-card rounded-3xl p-5 shadow-elevated border border-border/40 mb-4">
