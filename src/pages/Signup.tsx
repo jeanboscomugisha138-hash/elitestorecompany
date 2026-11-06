@@ -75,7 +75,7 @@ export default function Signup() {
                 </div>
               )}
 
-              <form onSubmit={handleSignup} className="space-y-2.5">
+              <form onSubmit={handleSignup} className="space-y-2">
                 <div>
                   <label className="login-label" htmlFor="su-name">{t('auth.fullName')}</label>
                   <div className="login-field">
