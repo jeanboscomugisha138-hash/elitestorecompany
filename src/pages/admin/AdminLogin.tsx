@@ -61,7 +61,7 @@ export default function AdminLogin() {
           <div className="w-20 h-20 bg-secondary rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
             <Shield className="w-10 h-10 text-secondary-foreground" />
           </div>
-          <h1 className="text-2xl font-bold text-secondary">Admin Panel</h1>
+          <h1 className="text-2xl font-bold text-foreground">Admin Panel</h1>
           <p className="text-muted-foreground mt-1">PETANE SHIPPING</p>
         </div>
 
