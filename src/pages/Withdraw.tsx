@@ -109,9 +109,11 @@ export default function Withdraw() {
     if (error) {
       const msg = /gitegereje|pending/i.test(error.message)
         ? 'Ufite ibikuza bigitegereje kwemezwa. Tegereza byemezwe.'
-        : /ahagije/i.test(error.message)
-          ? 'Ntufite amafaranga ahagije kuri konti yawe.'
-          : 'Ntibyakunze kohereza ibikuza. Gerageza nanone.';
+        : /kubanza kugura|ntibikuza/i.test(error.message)
+          ? 'Kugira ngo ubikuze amafaranga, ugomba kubanza kugura umushinga.'
+          : /ahagije/i.test(error.message)
+            ? 'Ntufite amafaranga ahagije kuri konti yawe.'
+            : 'Ntibyakunze kohereza ibikuza. Gerageza nanone.';
       showError(msg, 'Ibikuza ntibyohererejwe'); return;
     }
 
