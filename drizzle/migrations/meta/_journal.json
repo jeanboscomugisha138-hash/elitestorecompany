@@ -8,6 +8,13 @@
       "when": 1793972462379,
       "tag": "0000_commission_12_2_1",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1793973287248,
+      "tag": "0001_welcome_bonus_2000_and_invest_before_withdraw",
+      "breakpoints": true
     }
   ]
 }

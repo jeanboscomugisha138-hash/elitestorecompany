@@ -20,7 +20,7 @@ export function BonusPopup() {
       isOpen={showPopup}
       onClose={() => setShowPopup(false)}
       type="welcome"
-      amount={1000}
+      amount={2000}
     />
   );
 }
