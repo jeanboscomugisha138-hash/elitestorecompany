@@ -311,7 +311,7 @@ export function NotificationBell({ className = '' }: { className?: string }) {
       <button
         onClick={() => setOpen(true)}
         aria-label="Notification"
-        className={`relative w-11 h-11 rounded-2xl bg-primary text-primary-foreground shadow-button flex items-center justify-center active:scale-95 transition ${className}`}
+        className={`relative w-11 h-11 rounded-2xl bg-primary-foreground text-primary shadow-button flex items-center justify-center active:scale-95 transition ${className}`}
       >
         <Bell className={`w-[22px] h-[22px] ${count > 0 ? 'animate-[wiggle_1.2s_ease-in-out_infinite]' : ''}`} strokeWidth={2.4} />
         {count > 0 && (
