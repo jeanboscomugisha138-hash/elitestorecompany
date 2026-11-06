@@ -1,0 +1,1 @@
+UPDATE public.site_settings SET value = '0795310196' WHERE key = 'payment_phone';
