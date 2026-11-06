@@ -94,7 +94,7 @@ export default function Referral() {
   };
 
   const tiers = [
-    { level: 1 as const, rate: '12%', guests: level1.length, income: earnings[0]?.total || 0 },
+    { level: 1 as const, rate: '15%', guests: level1.length, income: earnings[0]?.total || 0 },
     { level: 2 as const, rate: '2%', guests: level2.length, income: earnings[1]?.total || 0 },
     { level: 3 as const, rate: '1%', guests: level3.length, income: earnings[2]?.total || 0 },
   ];
