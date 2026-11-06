@@ -61,7 +61,7 @@ export function GiftCodeDialog({
           value={code}
           onChange={(e) => { setCode(e.target.value.toUpperCase()); setError(''); }}
           maxLength={50}
-          className="w-full h-14 text-center uppercase tracking-[0.3em] font-black text-base rounded-2xl border-2 border-primary/20 bg-primary/5 focus:border-primary focus:bg-white focus:outline-none transition-colors placeholder:text-muted-foreground/40 placeholder:text-xs placeholder:tracking-widest"
+          className="w-full h-14 text-center uppercase tracking-[0.3em] font-black text-base text-foreground rounded-2xl border-2 border-primary/20 bg-primary/5 focus:border-primary focus:bg-card focus:outline-none transition-colors placeholder:text-muted-foreground/80 placeholder:text-xs placeholder:tracking-widest"
         />
 
         {error && (

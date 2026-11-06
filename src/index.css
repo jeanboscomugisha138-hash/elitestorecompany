@@ -174,7 +174,7 @@
   }
 
   .auth-safe-input::placeholder {
-    color: hsl(var(--muted-foreground) / 0.7);
+    color: hsl(var(--muted-foreground) / 0.85);
     font-weight: 500;
   }
 
