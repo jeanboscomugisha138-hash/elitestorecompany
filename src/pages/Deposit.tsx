@@ -183,7 +183,7 @@ export default function Deposit() {
                 <input
                   type="number"
                   inputMode="numeric"
-                  placeholder="Andikamo amafaranga"
+                  placeholder="Amafaranga"
                   min={minDeposit}
                   max={maxDeposit}
                   value={amount}

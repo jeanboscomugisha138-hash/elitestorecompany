@@ -210,7 +210,7 @@ export default function Withdraw() {
             <span className="login-field-icon"><Banknote className="w-4 h-4" strokeWidth={2.4} /></span>
             <input
               type="number" inputMode="numeric"
-              placeholder="Andikamo amafaranga"
+              placeholder="Amafaranga"
               min={minWithdraw} max={maxWithdraw}
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
