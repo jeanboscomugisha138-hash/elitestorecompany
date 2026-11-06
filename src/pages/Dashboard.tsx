@@ -1,10 +1,8 @@
 import { toast } from 'sonner';
 import {
   ArrowUpRight,
-  Wallet,
   PiggyBank,
   Bell,
-  Eye,
   Crown,
   Banknote,
   ArrowDownToLine,
@@ -16,7 +14,6 @@ import {
   Briefcase,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { BottomNav } from '@/components/BottomNav';
@@ -31,10 +28,8 @@ import { AppDownloadDialog, startAppInstall } from '@/components/AppDownloadDial
 import petaneLogo from '@/assets/rubis-logo-square.png';
 
 export default function Dashboard() {
-  const { t } = useTranslation();
   const { profile, refreshProfile } = useAuth();
   const balance = profile?.main_balance || 0;
-  const totalInvested = profile?.invested_amount || 0;
   const dailyProfit = Number(profile?.total_profit || 0);
   const referralEarned = Number(profile?.referral_balance || 0);
   const [giftEarned, setGiftEarned] = useState(0);
