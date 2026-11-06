@@ -1,3 +1,4 @@
+import { toast } from 'sonner';
 import {
   ArrowUpRight,
   Wallet,
@@ -45,6 +46,8 @@ export default function Dashboard() {
   const [notifOpen, setNotifOpen] = useState(false);
   const [appDialogOpen, setAppDialogOpen] = useState(false);
   const unreadCount = useUnreadCount();
+
+  useEffect(() => { prepareApkUrl(); }, []);
 
   useEffect(() => {
     (async () => {
