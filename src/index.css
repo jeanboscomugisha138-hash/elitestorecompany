@@ -5,36 +5,36 @@
 @layer base {
   :root {
     color-scheme: dark;
-    --background: 183 58% 8%;
-    --foreground: 174 30% 94%;
+    --background: 222 70% 12%;
+    --foreground: 0 0% 100%;
 
-    --card: 182 46% 12%;
-    --card-foreground: 174 30% 94%;
+    --card: 221 62% 17%;
+    --card-foreground: 0 0% 100%;
 
-    --popover: 182 44% 14%;
-    --popover-foreground: 174 30% 94%;
+    --popover: 221 60% 19%;
+    --popover-foreground: 0 0% 100%;
 
-    --primary: 174 64% 53%;
-    --primary-foreground: 183 65% 7%;
+    --primary: 354 85% 50%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 181 39% 20%;
-    --secondary-foreground: 174 30% 94%;
+    --secondary: 220 55% 24%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 182 34% 17%;
-    --muted-foreground: 178 20% 68%;
+    --muted: 221 45% 21%;
+    --muted-foreground: 218 25% 75%;
 
-    --accent: 179 42% 21%;
-    --accent-foreground: 173 64% 76%;
+    --accent: 218 60% 26%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 45 82% 65%;
-    --destructive-foreground: 183 65% 7%;
+    --destructive: 354 85% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --success: 164 57% 60%;
-    --success-foreground: 183 65% 7%;
+    --success: 214 90% 56%;
+    --success-foreground: 0 0% 100%;
 
-    --border: 181 29% 25%;
-    --input: 181 29% 28%;
-    --ring: 174 64% 53%;
+    --border: 220 40% 28%;
+    --input: 220 40% 30%;
+    --ring: 354 85% 50%;
 
     --radius: 1rem;
 
