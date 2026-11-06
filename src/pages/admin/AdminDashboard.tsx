@@ -232,7 +232,7 @@ function TxCards({ items, filter, setFilter, onApprove, onReject, processingId, 
                   <button
                     onClick={() => onReject(tx)}
                     disabled={processingId === tx.id}
-                    className="flex items-center gap-1 px-4 py-2 bg-amber-500 text-white rounded-xl text-sm font-semibold hover:bg-amber-600 transition-colors disabled:opacity-50"
+                    className="flex items-center gap-1 px-4 py-2 bg-destructive text-destructive-foreground rounded-xl text-sm font-semibold hover:bg-destructive/90 transition-colors disabled:opacity-50"
                   >
                     <X className="w-4 h-4" /> Reject
                   </button>
