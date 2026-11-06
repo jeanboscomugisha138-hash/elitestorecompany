@@ -19,7 +19,6 @@ import {
   Package,
   Star,
 } from 'lucide-react';
-import { LiveActivity } from '@/components/LiveActivity';
 import { useState } from 'react';
 import {
   Dialog,
@@ -92,9 +91,6 @@ export default function Settings() {
         </div>
         <div className="flex items-center justify-between mt-4">
           <h1 className="text-primary-foreground text-lg font-black tracking-tight">Konti Yanjye</h1>
-          <span className="inline-flex items-center gap-1 bg-primary-foreground/10 text-primary-foreground text-[10px] font-black px-2.5 py-1 rounded-full">
-            <Star className="w-3 h-3 fill-primary-foreground" /> UMWIZERWA · {memberSince}
-          </span>
         </div>
       </div>
 
@@ -207,7 +203,6 @@ export default function Settings() {
           RUBIS COMPANY · v1.0.0
         </div>
 
-        <LiveActivity />
       </div>
 
       <OnlineServiceDialog open={serviceOpen} onOpenChange={setServiceOpen} />
