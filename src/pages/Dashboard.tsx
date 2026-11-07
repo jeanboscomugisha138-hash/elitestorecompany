@@ -14,6 +14,7 @@ import {
   Users,
   Copy,
   Check,
+  CalendarDays,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
@@ -218,6 +219,20 @@ export default function Dashboard() {
       </div>
 
       <div className="px-3 mt-5 space-y-4">
+        {/* Launch date badge */}
+        <div className="flex items-center gap-3 rounded-2xl border border-primary/40 bg-primary/10 px-4 py-3">
+          <div className="w-9 h-9 rounded-xl bg-primary/20 flex items-center justify-center shrink-0">
+            <CalendarDays className="w-4.5 h-4.5 text-primary" strokeWidth={2.3} />
+          </div>
+          <div className="min-w-0">
+            <p className="text-[12px] font-black text-foreground leading-tight">
+              Yatangijwe ku mugaragaro: 06 Ugushyingo 2026
+            </p>
+            <p className="text-[11px] text-muted-foreground leading-snug">
+              Ni bwo abanyamuryango batangiye kwemererwa gushora imari.
+            </p>
+          </div>
+        </div>
         <LiveActivity />
         <ProductAssistant />
       </div>
