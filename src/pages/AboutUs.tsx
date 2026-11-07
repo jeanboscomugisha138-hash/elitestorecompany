@@ -69,6 +69,15 @@ export default function AboutUs() {
           </p>
         </div>
 
+        {/* Launch date card */}
+        <div className="rounded-2xl border border-primary/40 bg-primary/10 p-5 text-center">
+          <p className="text-[11px] font-bold uppercase tracking-widest text-primary">Itariki y'itangizwa ku mugaragaro</p>
+          <p className="mt-1 text-xl font-black text-foreground">06 Ugushyingo 2026</p>
+          <p className="mt-1 text-[12px] text-muted-foreground leading-relaxed">
+            Ni bwo abanyamuryango batangiye kwemererwa gushora imari no kugura imigabane muri RUBIS SHARE COMPANY.
+          </p>
+        </div>
+
         {/* Vision card */}
         <div className="bg-card rounded-2xl shadow-card border border-border/40 p-5">
           <div className="flex items-center gap-3 mb-3">
