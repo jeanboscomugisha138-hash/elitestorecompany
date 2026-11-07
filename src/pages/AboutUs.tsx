@@ -62,10 +62,10 @@ export default function AboutUs() {
             RUBIS SHARE COMPANY ni sosiyete itanga serivisi z’ubucuruzi bw’ibikomoka kuri peteroli, harimo esanse na mazutu. Iha kandi abanyamuryango bayo amahirwe yo kugura imigabane, bakizigamira, maze bakajya bungukirwa n’inyungu ziva mu bikorwa byayo.
           </p>
           <p className="text-[13px] text-muted-foreground leading-relaxed mt-3">
-            Sosiyete yatangijwe mu mwaka wa 1997 muri Leta Zunze Ubumwe za Amerika, ikaba yaragiye ikura igera ku rwego mpuzamahanga ikorera mu bihugu bitandukanye ku isi hose. Kugeza ubu, ifite umuryango mugari w’abakozi n’abafatanyabikorwa barenga 10,000 ku isi hose, bagira uruhare mu guteza imbere ibikorwa byayo.
+            Sosiyete yatangijwe mu mwaka wa 1997 muri Leta Zunze Ubumwe za Amerika, ikaba yaragiye ikura igera ku rwego mpuzamahanga ikorera mu bihugu bitandukanye ku isi hose. Kugeza ubu, ifite umuryango mugari w’abakozi n’abafatanyabikorwa barenga 75,000 ku isi hose, bagira uruhare mu guteza imbere ibikorwa byayo.
           </p>
           <p className="text-[13px] text-muted-foreground leading-relaxed mt-3">
-            Mu rwego rwo kugeza amahirwe ku bantu benshi, RUBIS SHARE COMPANY yatangiye ibikorwa byayo mu Rwanda muri Werurwe 2026, igamije gufasha abantu kubona uburyo bushya bwo kwiteza imbere binyuze mu gukoresha ikoranabuhanga no kubona amakuru ajyanye na serivisi zitangwa.
+            Mu rwego rwo kugeza amahirwe ku bantu benshi, RUBIS SHARE COMPANY yaje mu Rwanda, igamije gufasha abantu kubona uburyo bushya bwo kwiteza imbere binyuze mu gukoresha ikoranabuhanga no kubona amakuru ajyanye na serivisi zitangwa.
           </p>
         </div>
 
