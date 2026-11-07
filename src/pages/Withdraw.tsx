@@ -21,8 +21,8 @@ export default function Withdraw() {
   const [approvedCount, setApprovedCount] = useState(0);
   const [checking, setChecking] = useState(true);
 
-  const startHour = parseInt(settings.withdraw_start_hour || '7');
-  const endHour = parseInt(settings.withdraw_end_hour || '22');
+  const startHour = parseInt(settings.withdraw_start_hour || '8');
+  const endHour = parseInt(settings.withdraw_end_hour || '21');
   const minFirst = parseInt(settings.min_withdraw_first || '1000');
   const minRecurring = parseInt(settings.min_withdraw || '3000');
   const maxWithdraw = parseInt(settings.max_withdraw || '1000000');
@@ -255,6 +255,36 @@ export default function Withdraw() {
             <><CheckCircle2 className="w-5 h-5" />Emeza Ibikuza</>
           )}
         </button>
+
+        {/* Amategeko yo kubikuza */}
+        <div className="dashboard-card p-4 mb-3">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
+              <Shield className="w-4 h-4 text-primary" />
+            </div>
+            <p className="text-sm font-black text-foreground">Amategeko yo kubikuza</p>
+          </div>
+          <ul className="space-y-2.5">
+            <li className="flex items-start gap-2.5">
+              <Clock className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Kubikuza bikorwa kuva <span className="font-black text-foreground">saa 08:00 za mu gitondo</span> kugeza <span className="font-black text-foreground">saa 21:00 z'ijoro</span>.
+              </p>
+            </li>
+            <li className="flex items-start gap-2.5">
+              <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Amafaranga yawe agerahwa kuri konti yawe <span className="font-black text-foreground">mu gihe kitarenze isaha imwe</span> nyuma yo kwemezwa.
+              </p>
+            </li>
+            <li className="flex items-start gap-2.5">
+              <Headphones className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Niba amafaranga yawe <span className="font-black text-foreground">atinze kugera</span>, ushobora kwaka ubufasha kuri serivisi z'abakiriya maze ugafashwa vuba.
+              </p>
+            </li>
+          </ul>
+        </div>
 
         <a href={settings.customer_service_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3.5 dashboard-card active:scale-[0.99] transition">
           <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">

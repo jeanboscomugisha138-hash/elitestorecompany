@@ -33,8 +33,8 @@ const DEFAULTS: SiteSettings = {
   min_withdraw: '3000',
   min_withdraw_first: '1000',
   max_withdraw: '1000000',
-  withdraw_start_hour: '7',
-  withdraw_end_hour: '22',
+  withdraw_start_hour: '8',
+  withdraw_end_hour: '21',
   withdraw_fee_percent: '20',
   announcements: [
     'Welcome to RUBIS SHARE COMPANY!',
