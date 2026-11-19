@@ -6,4 +6,4 @@
 - [x] Redesign login page card and input fields
 - [x] Home "Shora" action -> "App" button: tap downloads the Android APK + install popup
 - [x] APK download replaced by PWA installation (no Drive link needed)
-- [ ] Allow admin to delete investments atomically without refund and clear the affected user's balance; verify permissions and account readback.
+- [x] Allow admin to delete investments atomically without refund and clear the affected user's balance; verified regular-user denial, automated database test, and admin UI deletion with 0 RWF readback.

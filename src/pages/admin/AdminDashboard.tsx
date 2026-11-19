@@ -33,6 +33,7 @@ import {
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
 
 type TabType = 'overview' | 'users' | 'deposits' | 'withdrawals' | 'investments' | 'giftcodes' | 'products' | 'notifications' | 'settings';
 type StatusFilter = 'all' | 'pending' | 'approved' | 'rejected';
@@ -616,43 +617,19 @@ export default function AdminDashboard() {
   const cancelInvestment = async (investment: UserInvestment) => {
     if (cancellingInvestmentId) return;
     
-    const confirmed = window.confirm(`Cancel this investment of ${investment.amount.toLocaleString()} RWF? The amount will be refunded to the user's balance.`);
+    const confirmed = window.confirm(`Uremeza gusiba iri shoramari rya ${investment.amount.toLocaleString()} RWF? Nta mafaranga azasubizwa. Amafaranga yose asigaye kuri konti y’uyu muntu azashyirwa kuri 0 RWF. Iki gikorwa ntigisubirwaho.`);
     if (!confirmed) return;
 
     setCancellingInvestmentId(investment.id);
     try {
-      // Update investment status
-      const { error: invError } = await supabase
-        .from('user_investments')
-        .update({ status: 'cancelled' })
-        .eq('id', investment.id);
-
+      const { error: invError } = await supabase.rpc('admin_delete_investment', {
+        _investment_id: investment.id,
+      });
       if (invError) {
-        toast.error('Failed to cancel investment');
+        toast.error(invError.message || 'Gusiba ishoramari ntibyakunze.');
         return;
       }
-
-      // Refund balance and reduce invested_amount
-      const userId = viewingInvestmentsUser?.user_id;
-      if (userId) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('main_balance, invested_amount')
-          .eq('user_id', userId)
-          .single();
-
-        if (profile) {
-          await supabase
-            .from('profiles')
-            .update({
-              main_balance: profile.main_balance + investment.amount,
-              invested_amount: Math.max(0, profile.invested_amount - investment.amount),
-            })
-            .eq('user_id', userId);
-        }
-      }
-
-      toast.success('Investment cancelled and amount refunded');
+      toast.success('Ishoramari ryasibwe; amafaranga kuri konti yashyizwe kuri 0 RWF, nta yasubijwe.');
       // Refresh investments list
       if (viewingInvestmentsUser) {
         viewUserInvestments(viewingInvestmentsUser);
@@ -660,7 +637,7 @@ export default function AdminDashboard() {
       fetchData();
       fetchStats();
     } catch (error) {
-      toast.error('Failed to cancel investment');
+      toast.error('Gusiba ishoramari ntibyakunze.');
     } finally {
       setCancellingInvestmentId(null);
     }
@@ -1318,14 +1295,17 @@ export default function AdminDashboard() {
                             {formatDate(inv.start_date)} • <span className={inv.status === 'active' ? 'text-emerald-600 font-semibold' : ''}>{inv.status}</span>
                           </p>
                         </div>
-                        <button
+                        <Button
                           onClick={() => cancelInvestment(inv)}
-                          disabled={cancellingInvestmentId === inv.id}
-                          className="shrink-0 w-10 h-10 rounded-full bg-amber-500 text-white flex items-center justify-center disabled:opacity-50"
-                          title="Cancel investment"
+                          disabled={cancellingInvestmentId !== null}
+                          variant="destructive"
+                          size="icon"
+                          className="shrink-0"
+                          title="Siba ishoramari nta gusubiza amafaranga"
+                          aria-label="Siba ishoramari nta gusubiza amafaranga"
                         >
                           <Trash2 className="w-4 h-4" />
-                        </button>
+                        </Button>
                       </div>
                       <div className="grid grid-cols-3 gap-2">
                         <div className="bg-primary/5 rounded-xl p-2.5">
@@ -1401,16 +1381,16 @@ export default function AdminDashboard() {
                                 </span>
                               </td>
                               <td className="p-3">
-                                {inv.status === 'active' && (
-                                  <button
+                                  <Button
                                     onClick={() => cancelInvestment(inv)}
-                                    disabled={cancellingInvestmentId === inv.id}
-                                    className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors disabled:opacity-50"
-                                    title="Cancel & refund"
+                                    disabled={cancellingInvestmentId !== null}
+                                    variant="destructive"
+                                    size="icon"
+                                    title="Siba ishoramari nta gusubiza amafaranga"
+                                    aria-label="Siba ishoramari nta gusubiza amafaranga"
                                   >
-                                    <XCircle className="w-4 h-4" />
-                                  </button>
-                                )}
+                                    <Trash2 className="w-4 h-4" />
+                                  </Button>
                               </td>
                             </tr>
                           ))}
