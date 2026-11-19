@@ -1,1 +1,2 @@
 Use global semantic CSS tokens for application themes; legacy Tailwind palette aliases resolve to these tokens so existing status styles follow theme updates without changing business behavior.
+Admin investment deletion must use a role-checked database transaction to delete the investment and reset its owner's spendable balances together; client-side multi-step writes can leave partially applied financial changes.

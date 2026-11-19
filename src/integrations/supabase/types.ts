@@ -510,6 +510,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_delete_investment: {
+        Args: { _investment_id: string }
+        Returns: Json
+      }
       claim_ambassador_reward: { Args: { _tier: string }; Returns: Json }
       count_qualified_referrals: {
         Args: { _min_invested: number; _user_id: string }

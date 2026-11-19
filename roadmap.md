@@ -5,4 +5,5 @@
 - [x] Website background green, other colours yellow, white and blue
 - [x] Redesign login page card and input fields
 - [x] Home "Shora" action -> "App" button: tap downloads the Android APK + install popup
-- [ ] APK link not public: Drive file needs "Anyone with the link" sharing (or a new link / the APK file)
+- [x] APK download replaced by PWA installation (no Drive link needed)
+- [ ] Allow admin to delete investments atomically without refund and clear the affected user's balance; verify permissions and account readback.
