@@ -40,6 +40,7 @@ export default function MyInvestments() {
         .from('user_investments')
         .select('id, amount, daily_profit, start_date, end_date, status, product_id')
         .eq('user_id', profile.user_id)
+        .neq('status', 'cancelled')
         .order('created_at', { ascending: false });
       setItems((data as unknown as Investment[]) || []);
       setLoading(false);

@@ -111,7 +111,7 @@ export default function History() {
       const { data } = await supabase.from('withdrawal_transactions').select('*').eq('user_id', profile?.user_id).order('created_at', { ascending: false });
       setWithdrawals(data || []);
     } else if (activeTab === 'investments') {
-      const { data } = await supabase.from('user_investments').select('*').eq('user_id', profile?.user_id).order('created_at', { ascending: false });
+      const { data } = await supabase.from('user_investments').select('*').eq('user_id', profile?.user_id).neq('status', 'cancelled').order('created_at', { ascending: false });
       setInvestments(data || []);
     } else if (activeTab === 'bonuses') {
       const { data } = await supabase.from('daily_bonuses').select('*').eq('user_id', profile?.user_id).order('claimed_at', { ascending: false });
